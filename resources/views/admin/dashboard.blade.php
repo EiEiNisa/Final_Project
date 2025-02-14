@@ -8,6 +8,6 @@
     }
 </style>
 <div class="container py-2">
-    <p class="head">Hi</p>
+    <p class="head"><a class="nav-link" href="/admin/record" style="color: #fff;line-height: 2;">ข้อมูลสุขภาพ</a></p>
 </div>
 @endsection

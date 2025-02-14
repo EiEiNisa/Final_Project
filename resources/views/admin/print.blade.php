@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายละเอียดของ {{ $record->name }}</title>
+    <title>รายละเอียดของ {{ $recorddata->name }}</title>
 </head>
 
 <body>
-    <h1>รายละเอียดของ {{ $record->name }} {{ $record->surname }}</h1>
-    <p>เลขบัตรประจำตัวประชาชน: {{ $record->id_card }}</p>
-    <p>บ้านเลขที่: {{ $record->housenumber }}</p>
-    <p>โรคประจำตัว: {{ $record->disease->name ?? 'ไม่มีโรค' }}</p>
+    <h1>รายละเอียดของ {{ $recorddata->name }} {{ $recorddata->surname }}</h1>
+    <p>เลขบัตรประจำตัวประชาชน: {{ $recorddata->id_card }}</p>
+    <p>บ้านเลขที่: {{ $recorddata->housenumber }}</p>
+    <p>โรคประจำตัว: {{ $recorddata->disease->name ?? 'ไม่มีโรค' }}</p>
 </body>
 
 </html>
