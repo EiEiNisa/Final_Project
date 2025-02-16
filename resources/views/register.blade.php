@@ -196,7 +196,8 @@
         <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITEKEY') }}"></div>
         @error('g-recaptcha-response')
         <div class="text-danger">{{ $message }}</div>
-        @enderror <br>
+        @enderror
+        <br>
         <button type="submit">ลงทะเบียน</button>
     </form>
 </div>

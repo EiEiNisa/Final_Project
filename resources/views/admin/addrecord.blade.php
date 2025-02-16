@@ -283,26 +283,30 @@ form {
     }
 
     .button-container {
-            justify-content: center; 
-            flex-direction: row;
-            gap: 10px;
-        }
+        justify-content: center;
+        flex-direction: row;
+        gap: 10px;
+    }
 }
 </style>
 
 <div class="container py-2">
     <div class="head">
         <h4><strong>HEALTH CARD</strong></h4>
-        <a href="/admin/record" type="button" class="btn btn-success">กลับ</a>
+        <a href="/admin/record" type="button" class="btn btn-secondary">กลับ</a>
     </div>
 
     <div class="rectangle-box">
         <form id="Recorddata" action="{{ route('recorddata.store') }}" method="POST">
             @csrf
             <!--ข้อมูลประจำตัว-->
-            <div class="form-group3">
-                <h4><strong>ข้อมูลประจำตัว</strong></h4>
+            <div class="d-flex justify-content-between align-items-center p-3 w-100">
+                <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลประจำตัว</h4>
+                <a href="{{ route('edit_form_record') }}" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
+                </a>
             </div>
+
 
             <div class="form-group1">
                 <label for="id_card">เลขบัตรประจำตัวประชาชน</label>
@@ -492,11 +496,34 @@ form {
                     placeholder="กรอกรอบเอว" step="0.1" required>
             </div>
 
+
             <div class="form-group1">
                 <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI</label>
                 <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi') }}"
                     placeholder="กรอกดัชนีมวล BMI" step="0.1" required>
             </div>
+
+            <script>
+            document.getElementById('height').addEventListener('input', calculateBMI);
+            document.getElementById('weight').addEventListener('input', calculateBMI);
+
+            function calculateBMI() {
+                let weight = parseFloat(document.getElementById('weight').value); // น้ำหนัก
+                let height = parseFloat(document.getElementById('height').value); // ส่วนสูง
+
+                // ตรวจสอบว่าไม่มีค่าว่างและค่าผิดปกติ
+                if (!isNaN(weight) && weight > 0 && !isNaN(height) && height > 0) {
+                    // แปลงส่วนสูงให้เป็นเมตร (ถ้ารับค่าเป็นเซนติเมตร)
+                    height = height / 100; // เปลี่ยนจากเซนติเมตรเป็นเมตร
+
+                    let bmi = weight / (height * height); // คำนวณ BMI
+                    document.getElementById('bmi').value = bmi.toFixed(1); // แสดงค่า BMI 1 ตำแหน่งทศนิยม
+                } else {
+                    document.getElementById('bmi').value = ''; // ถ้าไม่ได้กรอกข้อมูลที่ถูกต้องให้เคลียร์ค่า BMI
+                }
+            }
+            </script>
+
 
             <div class="form-group1">
                 <label for="phone" style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์</label>
@@ -509,6 +536,15 @@ form {
                 <input type="text" class="form-control" id="idline" name="idline" value="{{ old('idline') }}"
                     placeholder="กรอกไอดีไลน์" required>
             </div>
+
+            @foreach($extra_fields as $field)
+            <div class="form-group1">
+                <label for="{{ $field }}"
+                    style="margin-bottom: 5px; text-align: left; color: #020364;">{{ ucfirst($field) }}</label>
+                <input type="text" class="form-control" id="{{ $field }}" name="extra_fields[{{ $field }}]"
+                    value="{{ old('extra_fields.' . $field) }}" placeholder="กรอก {{ ucfirst($field) }}">
+            </div>
+            @endforeach
 
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>

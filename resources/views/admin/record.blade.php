@@ -492,7 +492,7 @@ button.btn-primary:hover {
 
                         <a href="{{ route('recorddata.update', $data->id) }}" type="button"
                             class="btn btn-primary btn-sm">
-                            <i class="fa-solid fa-pen"></i>
+                            <i class="fas fa-edit me-1"></i> 
                         </a>
 
                         <form id="deleteForm{{ $data->id }}"

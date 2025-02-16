@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('idline');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->json('extra_fields')->nullable();
             $table->timestamps();
         });        
     }

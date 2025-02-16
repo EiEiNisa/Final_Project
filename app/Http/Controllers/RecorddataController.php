@@ -11,6 +11,8 @@ use App\Models\HealthZone2;
 use App\Models\Disease;
 use App\Models\LifestyleHabit;
 use App\Models\ElderlyInformation;
+use Illuminate\Support\Facades\Schema;
+
 
 class RecorddataController
 {
@@ -27,12 +29,26 @@ class RecorddataController
     if ($users->isEmpty()) {
         return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
     }
-    return view('admin.addrecord')->with('users', $users);  
+
+    $columns = Schema::getColumnListing('recorddata');
+    //dd($columns);
+
+    $exclude_columns = ['id','user_id', 'id_card', 'prefix','name','surname','housenumber','birthdate',
+    'age','blood_group','weight','height','bmi','waistline','phone','idline','created_at', 'updated_at' ,'file_name',
+    'file_path'];
+    //dd($exclude_columns);
+
+    $extra_fields = array_diff($columns, $exclude_columns);
+    //dd($extra_fields);
+
+    return view('admin.addrecord', compact('extra_fields', 'users'));
+ 
 }
 
     public function store(Request $request)
 {
     $validated = $request->validate([
+        // การตรวจสอบค่า (Validation rules)
         'user_id' => 'required|exists:users,id',
         'id_card' => 'required|digits:13',
         'prefix' => 'required|string',
@@ -48,7 +64,7 @@ class RecorddataController
         'bmi' => 'required|numeric|min:0',
         'phone' => 'required|numeric|digits:10',
         'idline' => 'required|string|max:255',
-
+        
         'zone1_normal' => 'nullable|boolean',
         'zone1_risk_group' => 'nullable|boolean',
         'zone1_good_control' => 'nullable|boolean',
@@ -72,7 +88,12 @@ class RecorddataController
         'zone2_heart' => 'nullable|boolean',
         'zone2_eye' => 'nullable|boolean',
     ]);
-    
+
+    $extra_fields = $request->input('extra_fields');  // ได้ array ที่ซ้อนกัน
+    //$extra_fields = $request->input('extra_fields.extra_fields');  // ถ้า extra_fields ถูกซ้อนภายใน
+
+    // ตรวจสอบว่า extra_fields มีข้อมูลที่คาดหวังหรือไม่
+    if (isset($extra_fields) && is_array($extra_fields)) {
         $recorddata = Recorddata::firstOrCreate(
             ['id_card' => $request->input('id_card')],
             [
@@ -93,8 +114,21 @@ class RecorddataController
             ]
         );
     
+        // เพิ่มค่าฟิลด์จาก extra_fields ใน Recorddata
+        foreach ($extra_fields as $field => $value) {
+            $recorddata->{$field} = $value;
+        }
+    }
+
+        // ตอนนี้ $recorddata ถูกสร้างแล้ว
+        foreach ($extra_fields as $field => $value) {
+            // เพิ่มค่าฟิลด์ใหม่ในข้อมูลที่ต้องการบันทึก
+            $recorddata->{$field} = $value;  // ใส่ค่าในโมเดล
+        }
+
+        
         $healthRecord = HealthRecord::create([
-            'recorddata_id' => $recorddata->id, // ใช้ id_card ที่มีอยู่แล้ว
+            'recorddata_id' => $recorddata->id,
             'sys' => $request->input('sys'),
             'dia' => $request->input('dia'),
             'pul' => $request->input('pul'),
@@ -118,7 +152,7 @@ class RecorddataController
             'zone1_eye' => filter_var($request->input('zone1_eye', false), FILTER_VALIDATE_BOOLEAN),
             'zone1_foot' => filter_var($request->input('zone1_foot', false), FILTER_VALIDATE_BOOLEAN),
         ]);
-        
+        //dd($healthZone);
         $healthZone2 = HealthZone2::create([
             'recorddata_id' => $recorddata->id,
             'zone2_normal' => filter_var($request->input('zone2_normal', false), FILTER_VALIDATE_BOOLEAN),
@@ -454,5 +488,51 @@ public function update(Request $request, $id)
     }
 }
 
+public function edit_form()
+{
+    $columns = Schema::getColumnListing('recorddata');
+
+    // ค่าที่ไม่ต้องการในอาร์เรย์
+    $excludeColumns = ['user_id', 'created_at', 'updated_at', 'file_name', 'file_path', 'id'];
+
+    // กรองคอลัมน์ที่ไม่ต้องการออก
+    $columns = array_diff($columns, $excludeColumns);
+
+    return view('admin.edit_form_record', compact('columns'));
+}
+
+
+public function update_record(Request $request)
+{
+    // รับข้อมูลที่ส่งมาจากฟอร์ม
+    $extra_fields = $request->input('extra_fields');
+
+    // ถ้ามี extra_fields ที่ถูกส่งมาจากฟอร์ม
+    if ($extra_fields) {
+        foreach ($extra_fields as $field) {
+            // สร้างคอลัมน์ใหม่ในฐานข้อมูล
+            Schema::table('recorddata', function ($table) use ($field) {
+                // เพิ่มคอลัมน์ใหม่ที่ชื่อจาก value
+                $table->string($field['value'])->nullable();
+            });
+        }
+        return redirect()->route('recorddata.index')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
+    }
+
+    $deletedFields = $request->input('deleted_fields');
+
+    // ถ้ามีคอลัมน์ที่ต้องการลบ
+    if ($deletedFields) {
+        foreach ($deletedFields as $field) {
+            // ลบคอลัมน์จากตาราง recorddata
+            Schema::table('recorddata', function ($table) use ($field) {
+                $table->dropColumn($field); // ลบคอลัมน์จากฐานข้อมูล
+            });
+        }
+        return redirect('/admin/edit_form_record')->with('success', 'ลบฟิลด์เรียบร้อย!');
+    }
+
+    return redirect()->back()->with('warning', 'ไม่มีการเปลี่ยนแปลงใด ๆ');
+}
 
 }

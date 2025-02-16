@@ -26,7 +26,8 @@ class Recorddata extends Model
         'bmi', 
         'phone', 
         'idline',
-        'user_id'
+        'user_id',
+        'extra_fields',
     ];
 
     public function diseases()

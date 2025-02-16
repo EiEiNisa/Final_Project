@@ -64,7 +64,6 @@ Route::post('/admin/addrecord', [RecorddataController::class, 'store'])->name('r
 Route::get('/admin/editrecord/{id}', [RecordDataController::class, 'edit'])->name('recorddata.edit');
 Route::put('/admin/editrecord/{id}', [RecordDataController::class, 'update'])->name('recorddata.update');
 
-
 Route::delete('/admin/record/{id}', [RecordDataController::class, 'destroy'])->name('recorddata.destroy');
 Route::get('/admin/search', [RecorddataController::class, 'search'])->name('recorddata.search');
 
@@ -73,6 +72,9 @@ Route::post('/select-recorder', [UserController::class, 'selectRecorder'])->name
 Route::post('admin/importfile', [ExcelImportController::class, 'import'])->name('import');
 Route::get('/admin/export', [AdminExportController::class, 'export']);
 Route::get('/admin/print/{id}', [PrintController::class, 'showPrintPage'])->name('admin.print');
+Route::get('/admin/edit_form_record', [RecorddataController::class, 'edit_form'])->name('edit_form_record');
+Route::put('/admin/update-record', [RecorddataController::class, 'update_record'])->name('update_record');
+
 
 Route::get('/admin/dashboard', function () {
     return view('/admin/dashboard');
