@@ -95,22 +95,43 @@
 }
 
 @media (max-width: 768px) {
+    body {
+        font-size: 12px;
+    }
 
-    th,
-    td {
-        font-size: 14px;
-        padding: 10px;
+    .title {
+        font-size: 16px;
+    }
+
+    .box {
+        width: 100%;
+        padding: 20px;
+        font-size: 12px;
+    }
+
+    .box button {
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+
+    .text {
+        font-size: 12px;
     }
 
     .btn {
         padding: 6px 12px;
-        font-size: 14px;
+        font-size: 12px;
     }
 
-    .title {
-        font-size: 20px;
+    label {
+        font-size: 12px;
+    }
+
+    .form-control {
+        font-size: 12px;
     }
 }
+
 </style>
 
 <div class="container">

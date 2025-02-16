@@ -212,19 +212,88 @@ form {
     flex-direction: column;
     padding-bottom: 10px;
 }
+
+@media (max-width: 768px) {
+    .title {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .rectangle-box {
+        padding: 15px;
+    }
+
+    #accordionExample {
+        padding: 10px;
+    }
+
+    .accordion-item {
+        margin-bottom: 15px;
+    }
+
+    .accordion-button {
+        padding: 12px;
+    }
+
+    .checkup-title {
+        font-size: 14px;
+    }
+
+    .checkup-date {
+        font-size: 12px;
+    }
+
+    .form-group,
+    .form-group1 {
+        flex-direction: column;
+        /* ถ้าหน้าจอเล็กลง จะจัดเรียงในแนวตั้ง */
+        align-items: flex-start;
+    }
+
+    .form-group label,
+    .form-group1 label {
+        margin-right: 0;
+        margin-bottom: 5px;
+        /* ระยะห่างระหว่าง label และ input/select */
+    }
+
+    .form-group .form-control,
+    .form-group1 .form-control {
+        width: 100%;
+        /* ทำให้ input/select ขยายเต็มความกว้าง */
+    }
+
+
+
+    .circle-container {
+        font-size: 14px;
+    }
+
+    .circle {
+        width: 30px;
+        height: 30px;
+    }
+}
 </style>
 
 <div class="container">
 
     <div class="title">
         <h4><strong>แก้ไขข้อมูล</strong></h4>
-        <a href="/admin/record" class="btn btn-success">กลับไปยังหน้าบันทึกข้อมูล</a>
+        <a href="/admin/record" class="btn btn-success">กลับ</a>
     </div>
 
     <div class="rectangle-box">
         <form action="{{ route('recorddata.update', $recorddata->id) }}" method="POST">
             @csrf
             @method('PUT')
+
+            @if(session('error'))
+            <div class="alert alert-warning">
+                {{ session('error') }}
+            </div>
+            @endif
+
             <div class="form-group3">
                 <h4><strong>ข้อมูลประจำตัว</strong></h4>
             </div>
@@ -301,7 +370,7 @@ form {
 
             <div class="form-group1">
                 <label for="blood_group" class="form-label">กรุ๊ปเลือด</label>
-                <select name="blood_group" id="blood_group" class="form-control" required>
+                <select name="blood_group" id="blood_group" class="form-control">
                     <option value="A" {{ old('blood_group', $recorddata->blood_group) == 'A' ? 'selected' : '' }}>A
                     </option>
                     <option value="B" {{ old('blood_group', $recorddata->blood_group) == 'B' ? 'selected' : '' }}>B
@@ -349,9 +418,12 @@ form {
                     value="{{ old('idline', $recorddata->idline) }}">
             </div>
 
+            <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
+
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
+
 
             <div class="accordion" id="accordionExample">
                 @foreach($healthRecords as $index => $healthRecord)
@@ -360,7 +432,7 @@ form {
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{ $index }}" aria-expanded="true"
                             aria-controls="collapse{{ $index }}">
-                            <span class="checkup-title">ตรวจครั้งที่ {{ $index + 1 }}</span>
+                            <span class="checkup-title">ตรวจครั้งที่ {{ count($healthRecords) - $index }}</span>
                             <span
                                 class="checkup-date">{{ \Carbon\Carbon::parse($healthRecord->created_at)->format('d-m-Y') }}</span>
                         </button>
@@ -369,6 +441,7 @@ form {
                     <div id="collapse{{ $index }}" class="accordion-collapse collapse"
                         aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+
                             <div class="form-group">
                                 <label for="sys{{ $index }}">ความดัน SYS</label>
                                 <input type="text" class="form-control" id="sys{{ $index }}" name="sys[{{ $index }}]"
@@ -410,48 +483,62 @@ form {
                                     readonly>
                             </div>
 
-                            <div class="form-group1">
+                            <!-- blood pressure zone -->
+                            <div class="form-group3">
                                 <label for="health_zone">blood pressure zone</label>
-                                <input type="text" class="form-control" id="health_zone" name="health_zone"
-                                    value="{{ implode(' ' , $zones) }}" readonly>
+                                @if (isset($zones[$index]) && is_array($zones[$index]))
+                                <input type="text" class="form-control" id="health_zone_{{ $index }}"
+                                    name="health_zone{{ $index }}" value="{{ implode(' ', $zones[$index]) }}" readonly>
+                                @else
+                                <input type="text" class="form-control" id="health_zone_{{ $index }}"
+                                    name="health_zone{{ $index }}" value="{{ $zones[$index] ?? '' }}" readonly>
+                                @endif
                             </div>
 
-                            <div class="form-group1">
-                                <label for="health_zone2">blood pressure zone</label>
-                                <input type="text" class="form-control" id="health_zone2" name="health_zone2"
-                                    value="{{ implode(' ' , $zones2) }}" readonly>
+                            <!-- blood pressure zone 2 -->
+                            <div class="form-group3">
+                                <label for="health_zone2">blood pressure zone 2</label>
+                                @if (isset($zones2[$index]) && is_array($zones2[$index]))
+                                <input type="text" class="form-control" id="health_zone2_{{ $index }}"
+                                    name="health_zone2[]" value="{{ implode(' ', $zones2[$index]) }}" readonly>
+                                @else
+                                <input type="text" class="form-control" id="health_zone2_{{ $index }}"
+                                    name="health_zone2[]" value="{{ $zones2[$index] ?? '' }}" readonly>
+                                @endif
                             </div>
 
                             <div class="form-group1">
                                 <label for="diseaseNames">โรคประจำตัว</label>
                                 <input type="text" class="form-control" id="diseaseNames" name="diseaseNames"
-                                    value="{{ implode(' ' , $diseaseNames) }}" readonly>
+                                    value="{{ $diseaseNames[0] ?? '' }}" readonly>
                             </div>
 
                             <div class="form-group1">
                                 <label for="lifestyleshabit">พฤติกรรม-สุขภาพจิต</label>
                                 <input type="text" class="form-control" id="lifestyleshabit" name="lifestyleshabit"
-                                    value="{{ implode(' ' , $lifestyleshabit) }}" readonly>
+                                    value="{{ $lifestyleshabit[0] ?? '' }}" readonly>
                             </div>
 
                             <div class="form-group1">
                                 <label for="elderly">ข้อมูลผู้สูงอายุ</label>
                                 <input type="text" class="form-control" id="elderly" name="elderly"
-                                    value="{{ implode(' ' , $elderly) }}" readonly>
+                                    value="{{ $elderly[0] ?? '' }}" readonly>
                             </div>
 
                             <div class="form-group">
                                 <label for="user_id">ผู้บันทึกข้อมูล</label>
                                 <input type="text" class="form-control" id="user_id" name="user_id"
-                                    value="{{ $user->name }} {{ $user->surname }}" readonly>
+                                    value="{{ isset($user) ? $user->name . ' ' . $user->surname : 'ไม่พบผู้ใช้' }}"
+                                    readonly>
                             </div>
+
+                            <button type="button" class="btn btn-secondary" id="editBtn">แก้ไข ข้อมูล</button>
+
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
-
-            <button type="submit" class="btn btn-primary">Save Changes</button>
 
         </form>
     </div>

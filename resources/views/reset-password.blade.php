@@ -23,7 +23,9 @@
 }
 
 .box {
-    width: 600px;
+    width: 90%;
+    /* Adjusted to be percentage-based for responsiveness */
+    max-width: 600px;
     padding: 45px;
     border: none;
     border-radius: 10px;
@@ -32,7 +34,6 @@
     margin: 20px auto;
     color: #fff;
     font-size: 15px;
-
 }
 
 .box button {
@@ -64,7 +65,6 @@
     height: 2px;
     background: white;
     margin-top: 20px;
-
 }
 
 .text {
@@ -72,11 +72,10 @@
     font-size: 18px;
     color: #fff;
     margin-top: 20px;
-
 }
 
 .button-container {
-    text-align: center
+    text-align: center;
 }
 
 .button {
@@ -96,6 +95,29 @@
 .button:hover {
     background-color: #000145;
 }
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 22px;
+    }
+
+    .box {
+        padding: 20px;
+    }
+
+    .box input {
+        font-size: 12px;
+    }
+
+    .box button {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .text {
+        font-size: 12px;
+    }
+}
 </style>
 
 @if (session('status'))
@@ -110,14 +132,12 @@
 </div>
 @enderror
 
-
 <div class="image">
     <img class="logo1" src="/logo.png" alt="Logo">
 </div>
 
 <div class="title">
-    <p><strong>ตั้งรหัสผ่านใหม่</storng>
-    </p>
+    <p><strong>ตั้งรหัสผ่านใหม่</strong></p>
 </div>
 
 <div class="box">
@@ -132,7 +152,6 @@
         <div class="text-danger">{{ $message }}</div>
         @enderror
         <br>
-        <input type="hidden" name="token" value="{{ $token }}">
         <label for="password" style="margin-bottom: 5px;">รหัสผ่านใหม่</label>
         <input type="password" class="form-control" id="password" name="password" placeholder="รหัสผ่าน" required>
         @error('password')
@@ -146,4 +165,5 @@
         <button type="submit">ตั้งรหัสผ่านใหม่</button>
     </form>
 </div>
+
 @endsection

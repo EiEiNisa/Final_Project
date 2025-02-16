@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminController;
 use App\Models\User;
 use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\AdminExportController;
+use App\Http\Controllers\PrintController;
 
 Route::get('/', function () {
     return view('home');
@@ -69,13 +70,16 @@ Route::get('/admin/search', [RecorddataController::class, 'search'])->name('reco
 
 Route::post('/select-recorder', [UserController::class, 'selectRecorder'])->name('selectRecorder');
 
-// Route (web.php)
 Route::post('admin/importfile', [ExcelImportController::class, 'import'])->name('import');
 Route::get('/admin/export', [AdminExportController::class, 'export']);
+Route::get('/admin/print/{id}', [PrintController::class, 'showPrintPage'])->name('admin.print');
 
 Route::get('/admin/dashboard', function () {
     return view('/admin/dashboard');
 });
+
+Route::post('/admin/search-by-date', [RecorddataController::class, 'searchByDate'])->name('recorddata.searchByDate');
+
 
 Route::get('/admin/record_general_information', function () {
     return view('/admin/record_general_information');

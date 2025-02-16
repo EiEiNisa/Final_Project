@@ -89,21 +89,67 @@ form {
     color: #020364;
 }
 
+
+.blood-pressure-zone {
+    background-color: #f0f0f0;
+    color: #020364;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.blood-pressure-zone label {
+    font-size: 14px;
+}
+
+.blood-pressure-zone {
+    margin: 10px;
+}
+
+.section-title {
+    color: #020364;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
 .circle-container {
     display: flex;
-    gap: 3px;
-    color: #020364;
-    font-size: 15px;
-    font-weight: bold;
+    justify-content: flex-start;
+    /* เรียงจากซ้ายไปขวา */
+    gap: 30px;
+    flex-wrap: nowrap;
+    /* ไม่ให้วงกลมถูกหักเป็นแถวใหม่ */
+    overflow-x: auto;
+    /* ให้สามารถเลื่อนซ้ายขวาได้หากเกินหน้าจอ */
+}
+
+.circle-group {
+    text-align: center;
+    width: 180px;
 }
 
 .circle {
-    width: 35px;
-    height: 35px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+.condition-checks {
     display: flex;
-    flex-direction: column;
-    padding-bottom: 10px;
+    justify-content: center;
+    gap: 30px;
+    padding-top: 20px;
+}
+
+.form-check-inline {
+    margin-right: 15px;
 }
 
 .save {
@@ -115,12 +161,139 @@ form {
     width: 100%;
     gap: 10px;
 }
+
+.zone-health {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding-top: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #020364;
+}
+
+.elderly-checkbox-container {
+    color: #020364;
+    font-size: 15px;
+    font-weight: bold;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .head {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .head a.btn {
+        width: auto;
+        text-align: right;
+    }
+
+    .title {
+        flex-direction: column;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+    }
+
+    .rectangle-box {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    form {
+        flex-direction: column;
+        padding-left: 10px;
+        padding-right: 10px;
+        gap: 10px;
+    }
+
+    .form-group,
+    .form-group1,
+    .form-group2,
+    .form-group3 {
+        flex: 1 1 100%;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    input[type="phone"],
+    input[type="tel"],
+    input[type="date"] {
+        width: 90%;
+    }
+
+    select[name="blood_group"],
+    select[name="prefix"] {
+        width: 90%;
+    }
+
+    .circle-container {
+        display: flex;
+        flex-direction: column;
+        /* วงกลมจะเรียงแนวตั้ง */
+        align-items: flex-start;
+        /* ชิดซ้าย */
+    }
+
+    .circle-group {
+        display: flex;
+        flex-direction: row;
+        /* เรียงวงกลม, label, และ checkbox เป็นแนวนอน */
+        align-items: center;
+        /* ให้วงกลม, label, และ checkbox อยู่ในแนวเดียวกัน */
+        margin-bottom: 20px;
+        /* ระยะห่างระหว่างกลุ่ม */
+        width: 100%;
+        /* ให้ใช้พื้นที่ทั้งหมด */
+    }
+
+    .circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+        /* ระยะห่างระหว่างวงกลมกับข้อความ */
+    }
+
+    label {
+        margin-right: 10px;
+        /* ระยะห่างระหว่าง label กับ checkbox */
+        text-align: left;
+        /* ให้ข้อความชิดซ้าย */
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        /* จัดให้ checkbox อยู่ในแนวเดียวกับ label */
+        margin-right: 10px;
+        /* ระยะห่างระหว่าง checkbox กับกลุ่มถัดไป */
+    }
+
+    .form-check-input {
+        margin-right: 5px;
+    }
+
+    .button-container {
+            justify-content: center; 
+            flex-direction: row;
+            gap: 10px;
+        }
+}
 </style>
 
 <div class="container py-2">
     <div class="head">
         <h4><strong>HEALTH CARD</strong></h4>
-        <a href="/admin/record" type="button" class="btn btn-success">กลับไปยังหน้าบันทึกข้อมูล</a>
+        <a href="/admin/record" type="button" class="btn btn-success">กลับ</a>
     </div>
 
     <div class="rectangle-box">
@@ -336,6 +509,7 @@ form {
                 <input type="text" class="form-control" id="idline" name="idline" value="{{ old('idline') }}"
                     placeholder="กรอกไอดีไลน์" required>
             </div>
+
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
@@ -377,209 +551,161 @@ form {
                     value="{{ old('blood_level') }}" placeholder="กรอกระดับน้ำตาลในเลือด" required>
             </div>
 
-            <!--Blood Pressure Zone 1-->
             <div class="blood-pressure-zone">
-                <h4 style="color:#020364; padding-bottom:10px;"><strong>Blood Pressure Zone</strong></h4>
-                <div class="circle-container" style="margin-bottom: 20px;">
+                <h4>Blood Pressure Zone</h4>
+                <div class="circle-container">
                     <div>
                         <div class="circle" style="background-color: #FFFFFF;"></div>
-                        <label style="padding-bottom:12px;">≤ 120/80 mmHg</label>
-                        <br>
+                        <label>≤ 120/80 mmHg</label>
                         <div class="form-check">
-                            <input type="hidden" name="zone1_normal" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone1_normal" name="zone1_normal"
-                                value="1" {{ old('zone1_normal') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone1_normal">ปกติ</label>
+                            <input type="checkbox" id="zone1_normal" name="zone1_normal" value="1">
+                            <label for="zone1_normal">ปกติ</label>
                         </div>
-
                     </div>
                     <div>
                         <div class="circle" style="background-color: #BEE5B6;"></div>
-                        <label style="padding-bottom:10px;">120/80 - 139/89 mmHg</label>
+                        <label>120/80 - 139/89 mmHg</label>
                         <div class="form-check">
-                            <input type="hidden" name="zone1_risk_group" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone1_risk_group"
-                                name="zone1_risk_group" value="1" {{ old('zone1_risk_group') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone1_risk_group">กลุ่มเสี่ยง</label>
+                            <input type="checkbox" id="zone1_risk_group" name="zone1_risk_group" value="1">
+                            <label for="zone1_risk_group">กลุ่มเสี่ยง</label>
                         </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #558136;"></div>
-                        <label style="padding-bottom:33px;">
+                        <label>
                             < 139/89 mmHg</label>
-                                <input type="hidden" name="zone1_good_control" value="0">
-                                <input class="form-check-input" type="checkbox" id="zone1_good_control"
-                                    name="zone1_good_control" value="1"
-                                    {{ old('zone1_good_control') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="zone1_good_control">คุมได้ดี</label>
+                                <div class="form-check">
+                                    <input type="checkbox" id="zone1_good_control" name="zone1_good_control" value="1">
+                                    <label for="zone1_good_control">คุมได้ดี</label>
+                                </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #FEFB18;"></div>
-                        <label style="padding-bottom:33px;">140/90 - 159/99 mmHg</label>
-                        <div class="form-check form-check-inline">
-                            <input type="hidden" name="zone1_watch_out" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone1_watch_out" name="zone1_watch_out"
-                                value="1" {{ old('zone1_watch_out') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone1_watch_out">เฝ้าระวัง</label>
+                        <label>140/90 - 159/99 mmHg</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone1_watch_out" name="zone1_watch_out" value="1">
+                            <label for="zone1_watch_out">เฝ้าระวัง</label>
                         </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #FF9600;"></div>
-                        <label style="padding-bottom:33px;">160/100 - 179/109 mmHg</label>
-                        <div class="form-check form-check-inline">
-                            <input type="hidden" name="zone1_danger" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone1_danger" name="zone1_danger"
-                                value="1" {{ old('zone1_danger') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone1_danger">อันตราย</label>
+                        <label>160/100 - 179/109 mmHg</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone1_danger" name="zone1_danger" value="1">
+                            <label for="zone1_danger">อันตราย</label>
                         </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #FF0200;"></div>
-                        <label style="padding-bottom:33px;">≥ 180/110 mmHg</label>
-                        <div class="form-check form-check-inline">
-                            <input type="hidden" name="zone1_critical" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone1_critical" name="zone1_critical"
-                                value="1" {{ old('zone1_critical') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone1_critical">วิกฤต</label>
+                        <label>≥ 180/110 mmHg</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone1_critical" name="zone1_critical" value="1">
+                            <label for="zone1_critical">วิกฤต</label>
                         </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #090001;"></div>
-                        <label style="padding-bottom:33px;">โรคแทรกซ้อน</label>
-                        <div class="form-check form-check-inline">
-                            <input type="hidden" name="zone1_complications" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone1_complications"
-                                name="zone1_complications" value="1" {{ old('zone1_complications') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone1_complications">โรคแทรกซ้อน</label>
+                        <label>โรคแทรกซ้อน</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone1_complications" name="zone1_complications" value="1">
+                            <label for="zone1_complications">โรคแทรกซ้อน</label>
                         </div>
                     </div>
                 </div>
 
-                <div
-                    style="display: flex; justify-content: center; align-items: center; color: #020364; font-size: 15px; font-weight: bold; gap:30px; padding-top:10px;">
+                <div class="zone-health">
                     <div class="form-check">
-                        <input type="hidden" name="zone1_heart" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone1_heart" name="zone1_heart" value="1"
-                            {{ old('zone1_heart') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone1_heart">หัวใจ</label>
+                        <input type="checkbox" id="zone1_heart" name="zone1_heart" value="1">
+                        <label for="zone1_heart">หัวใจ</label>
                     </div>
                     <div class="form-check">
-                        <input type="hidden" name="zone1_cerebrovascular" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone1_cerebrovascular"
-                            name="zone1_cerebrovascular" value="1" {{ old('zone1_cerebrovascular') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone1_cerebrovascular">หลอดเลือดสมอง</label>
+                        <input type="checkbox" id="zone1_cerebrovascular" name="zone1_cerebrovascular" value="1">
+                        <label for="zone1_cerebrovascular">หลอดเลือดสมอง</label>
                     </div>
                     <div class="form-check">
-                        <input type="hidden" name="zone1_kidney" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone1_kidney" name="zone1_kidney" value="1"
-                            {{ old('zone1_kidney') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone1_kidney">ไต</label>
+                        <input type="checkbox" id="zone1_kidney" name="zone1_kidney" value="1">
+                        <label for="zone1_kidney">ไต</label>
                     </div>
                     <div class="form-check">
-                        <input type="hidden" name="zone1_eye" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone1_eye" name="zone1_eye" value="1"
-                            {{ old('zone1_eye') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone1_eye">ตา</label>
+                        <input type="checkbox" id="zone1_eye" name="zone1_eye" value="1">
+                        <label for="zone1_eye">ตา</label>
                     </div>
                     <div class="form-check">
-                        <input type="hidden" name="zone1_foot" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone1_foot" name="zone1_foot" value="1"
-                            {{ old('zone1_foot') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone1_foot">เท้า</label>
+                        <input type="checkbox" id="zone1_foot" name="zone1_foot" value="1">
+                        <label for="zone1_foot">เท้า</label>
                     </div>
                 </div>
             </div>
 
-            <!--Blood Pressure Zone 2-->
+            <!-- Blood Pressure Zone 2 -->
             <div class="blood-pressure-zone">
-                <h4 style="color:#020364; padding-bottom:10px;"><strong>Blood Pressure Zone</strong></h4>
-                <div class="circle-container" style="margin-bottom: 20px;">
+                <h4>Blood Pressure Zone</h4>
+                <div class="circle-container">
                     <div>
                         <div class="circle" style="background-color: #FFFFFF;"></div>
-                        <label style="padding-bottom:12px;">≤ 100 mg/dl</label>
-                        <br>
+                        <label>≤ 100 mg/dl</label>
                         <div class="form-check">
-                            <input type="hidden" name="zone2_normal" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone2_normal" name="zone2_normal"
-                                value="1" {{ old('zone2_normal') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone2_normal">ปกติ</label>
+                            <input type="checkbox" id="zone2_normal" name="zone2_normal" value="1">
+                            <label for="zone2_normal">ปกติ</label>
                         </div>
-
                     </div>
                     <div>
                         <div class="circle" style="background-color: #BEE5B6;"></div>
-                        <label style="padding-bottom:10px;">100-125 mg/dl</label>
+                        <label>100-125 mg/dl</label>
                         <div class="form-check">
-                            <input type="hidden" name="zone2_risk_group" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone2_risk_group"
-                                name="zone2_risk_group" value="1" {{ old('zone2_risk_group') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone2_risk_group">กลุ่มเสี่ยง</label>
+                            <input type="checkbox" id="zone2_risk_group" name="zone2_risk_group" value="1">
+                            <label for="zone2_risk_group">กลุ่มเสี่ยง</label>
                         </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #558136;"></div>
-                        <label style="padding-bottom:33px;">
-                            125 mg/dl</label>
-                        <input type="hidden" name="zone2_good_control" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone2_good_control"
-                            name="zone2_good_control" value="1" {{ old('zone2_good_control') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone2_good_control">คุมได้ดี</label>
+                        <label>125 mg/dl</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone2_good_control" name="zone2_good_control" value="1">
+                            <label for="zone2_good_control">คุมได้ดี</label>
+                        </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #FEFB18;"></div>
-                        <label style="padding-bottom:33px;">126-154 mg/dl HbA1c < 7</label>
-                                <div class="form-check form-check-inline">
-                                    <input type="hidden" name="zone2_watch_out" value="0">
-                                    <input class="form-check-input" type="checkbox" id="zone2_watch_out"
-                                        name="zone2_watch_out" value="1" {{ old('zone2_watch_out') ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="zone2_watch_out">เฝ้าระวัง</label>
+                        <label>126-154 mg/dl HbA1c < 7</label>
+                                <div class="form-check">
+                                    <input type="checkbox" id="zone2_watch_out" name="zone2_watch_out" value="1">
+                                    <label for="zone2_watch_out">เฝ้าระวัง</label>
                                 </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #FF9600;"></div>
-                        <label style="padding-bottom:33px;">155-182 mg/dl HbA1c 7-7.9</label>
-                        <div class="form-check form-check-inline">
-                            <input type="hidden" name="zone2_danger" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone2_danger" name="zone2_danger"
-                                value="1" {{ old('zone2_danger') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone2_danger">อันตราย</label>
+                        <label>155-182 mg/dl HbA1c 7-7.9</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone2_danger" name="zone2_danger" value="1">
+                            <label for="zone2_danger">อันตราย</label>
                         </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #FF0200;"></div>
-                        <label style="padding-bottom:33px;">≥ 183 mg/dl HbA1c 8%</label>
-                        <div class="form-check form-check-inline">
-                            <input type="hidden" name="zone2_critical" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone2_critical" name="zone2_critical"
-                                value="1" {{ old('zone2_critical') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone2_critical">วิกฤต</label>
+                        <label>≥ 183 mg/dl HbA1c 8%</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone2_critical" name="zone2_critical" value="1">
+                            <label for="zone2_critical">วิกฤต</label>
                         </div>
                     </div>
                     <div>
                         <div class="circle" style="background-color: #090001;"></div>
-                        <label style="padding-bottom:33px;">โรคแทรกซ้อน</label>
-                        <div class="form-check form-check-inline">
-                            <input type="hidden" name="zone2_complications" value="0">
-                            <input class="form-check-input" type="checkbox" id="zone2_complications"
-                                name="zone2_complications" value="1" {{ old('zone2_complications') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="zone2_complications">โรคแทรกซ้อน</label>
+                        <label>โรคแทรกซ้อน</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="zone2_complications" name="zone2_complications" value="1">
+                            <label for="zone2_complications">โรคแทรกซ้อน</label>
                         </div>
                     </div>
                 </div>
-
-                <div
-                    style="display: flex; justify-content: center; align-items: center; color: #020364; font-size: 15px; font-weight: bold; gap:30px; padding-top:10px;">
+                <div class="zone-health">
                     <div class="form-check">
-                        <input type="hidden" name="zone2_heart" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone2_heart" name="zone2_heart" value="1"
-                            {{ old('zone2_heart') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone2_heart">หัวใจ</label>
+                        <input type="checkbox" id="zone2_heart" name="zone2_heart" value="1">
+                        <label for="zone2_heart">หัวใจ</label>
                     </div>
                     <div class="form-check">
-                        <input type="hidden" name="zone2_eye" value="0">
-                        <input class="form-check-input" type="checkbox" id="zone2_eye" name="zone2_eye" value="1"
-                            {{ old('zone2_eye') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="zone2_eye">ตา</label>
+                        <input type="checkbox" id="zone2_eye" name="zone2_eye" value="1">
+                        <label for="zone2_eye">ตา</label>
                     </div>
                 </div>
             </div>
@@ -640,10 +766,11 @@ form {
 
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="drink" value="0">
-                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1"
+                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1" disabled
                             {{ old('drink') ? 'checked' : '' }}>
                         <label class="form-check-label" for="drink">ดื่ม</label>
                     </div>
+
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="drink_sometimes" value="0">
                         <input class="form-check-input" type="checkbox" name="drink_sometimes" id="drink_sometimes"
@@ -658,7 +785,7 @@ form {
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="smoke" value="0">
-                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1"
+                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1" disabled
                             {{ old('smoke') ? 'checked' : '' }}>
                         <label class="form-check-label" for="smoke">สูบ</label>
                     </div>
@@ -698,63 +825,68 @@ form {
             <!--ข้อมูลผู้สูงอายุ-->
             <div class="elderly_information">
                 <h4 style="color:#020364; padding-bottom:10px;"><strong>ข้อมูลผู้สูงอายุ</strong></h4>
-                <div style="color: #020364; font-size: 15px; font-weight: bold;">
-                    <div>
-                        <div class="form-check form-check-inline">
+                <div class="elderly-checkbox-container" style="color: #020364; font-size: 15px; font-weight: bold;">
+                    <!-- ช่วยเหลือตัวเอง -->
+                    <div class="form-check-container">
+                        <div class="form-check">
                             <input type="hidden" name="help_yourself" value="0">
                             <input class="form-check-input" type="checkbox" name="help_yourself" id="help_yourself"
                                 value="1" {{ old('help_yourself') ? 'checked' : '' }}>
                             <label class="form-check-label" for="help_yourself">ช่วยเหลือตัวเองได้</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="can_help" value="0">
                             <input class="form-check-input" type="checkbox" name="can_help" id="can_help" value="1"
                                 {{ old('can_help') ? 'checked' : '' }}>
                             <label class="form-check-label" for="can_help">ได้</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="cant_help" value="0">
                             <input class="form-check-input" type="checkbox" name="cant_help" id="cant_help" value="1"
                                 {{ old('cant_help') ? 'checked' : '' }}>
                             <label class="form-check-label" for="cant_help">ไม่ได้</label>
                         </div>
                     </div>
-                    <div>
-                        <div class="form-check form-check-inline">
+
+                    <!-- ผู้ดูแล -->
+                    <div class="form-check-container">
+                        <div class="form-check">
                             <input type="hidden" name="caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="caregiver" id="caregiver" value="1"
                                 {{ old('caregiver') ? 'checked' : '' }}>
                             <label class="form-check-label" for="caregiver">ผู้ดูแล</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="have_caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="have_caregiver" id="have_caregiver"
                                 value="1" {{ old('have_caregiver') ? 'checked' : '' }}>
                             <label class="form-check-label" for="have_caregiver">มีผู้ดูแล</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="no_caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="no_caregiver" id="no_caregiver"
                                 value="1" {{ old('no_caregiver') ? 'checked' : '' }}>
                             <label class="form-check-label" for="no_caregiver">ไม่มี</label>
                         </div>
                     </div>
-                    <div>
-                        <div class="form-check form-check-inline">
+
+                    <!-- กลุ่ม -->
+                    <div class="form-check-container">
+                        <div class="form-check">
                             <input type="hidden" name="group1" value="0">
                             <input class="form-check-input" type="checkbox" name="group1" id="group1" value="1"
                                 {{ old('group1') ? 'checked' : '' }}>
                             <label class="form-check-label" for="group1">กลุ่มที่ 1
                                 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="group2" value="0">
                             <input class="form-check-input" type="checkbox" name="group2" id="group2" value="1"
                                 {{ old('group2') ? 'checked' : '' }}>
                             <label class="form-check-label" for="group2">กลุ่มที่ 2
                                 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="group3" value="0">
                             <input class="form-check-input" type="checkbox" name="group3" id="group3" value="1"
                                 {{ old('group3') ? 'checked' : '' }}>
@@ -762,20 +894,22 @@ form {
                                 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้</label>
                         </div>
                     </div>
-                    <div>
-                        <div class="form-check form-check-inline">
+
+                    <!-- สถานะ -->
+                    <div class="form-check-container">
+                        <div class="form-check">
                             <input type="hidden" name="house" value="0">
                             <input class="form-check-input" type="checkbox" name="house" id="house" value="1"
                                 {{ old('house') ? 'checked' : '' }}>
                             <label class="form-check-label" for="house">ติดบ้าน</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="society" value="0">
                             <input class="form-check-input" type="checkbox" name="society" id="society" value="1"
                                 {{ old('society') ? 'checked' : '' }}>
                             <label class="form-check-label" for="society">ติดสังคม</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check">
                             <input type="hidden" name="bed-ridden" value="0">
                             <input class="form-check-input" type="checkbox" name="bed-ridden" id="bed-ridden" value="1"
                                 {{ old('bed-ridden') ? 'checked' : '' }}>
@@ -796,7 +930,6 @@ form {
                     @endforeach
                 </select>
             </div>
-
 
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">

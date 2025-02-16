@@ -2,6 +2,7 @@
 
 @section('content')
 <style>
+/* General styling */
 .image {
     display: flex;
     justify-content: center;
@@ -23,7 +24,10 @@
 }
 
 .box {
-    width: 600px;
+    width: 90%;
+    /* Adjusted to be percentage based for responsiveness */
+    max-width: 600px;
+    /* Max width to prevent it from getting too wide */
     padding: 45px;
     border: none;
     border-radius: 10px;
@@ -32,7 +36,6 @@
     margin: 20px auto;
     color: #fff;
     font-size: 15px;
-
 }
 
 .box button {
@@ -64,7 +67,6 @@
     height: 2px;
     background: white;
     margin-top: 20px;
-
 }
 
 .text {
@@ -72,11 +74,10 @@
     font-size: 18px;
     color: #fff;
     margin-top: 20px;
-
 }
 
 .button-container {
-    text-align: center
+    text-align: center;
 }
 
 .button {
@@ -96,26 +97,49 @@
 .button:hover {
     background-color: #000145;
 }
+
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 22px;
+    }
+
+    .box {
+        padding: 30px;
+    }
+
+    .box button {
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+
+    .text {
+        font-size: 12px;
+    }
+
+    .button {
+        padding: 8px 40px;
+        font-size: 12px;
+    }
+}
 </style>
 
 @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
+<div class="alert alert-success">
+    {{ session('status') }}
+</div>
 @elseif(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
 @endif
-
 
 <div class="image">
     <img class="logo1" src="/logo.png" alt="Logo">
 </div>
 
 <div class="title">
-    <p><strong>ลืมรหัสผ่าน</storng>
-    </p>
+    <p><strong>ลืมรหัสผ่าน</strong></p>
 </div>
 
 <div class="box">

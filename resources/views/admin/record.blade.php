@@ -54,33 +54,53 @@
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    /* จัดเรียงทุกอย่างในแนวตั้ง */
+    align-items: center;
+    /* กึ่งกลางแนวนอน */
+    width: 100%;
+    /* กำหนดให้ box ใช้พื้นที่ทั้งหมด */
+    box-sizing: border-box;
+    /* ให้ padding ไม่ทำให้ขนาดกล่องเกิน */
 }
 
 .form-group-horizontal {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
     flex-wrap: nowrap;
+    /* ป้องกันไม่ให้ช่องค้นหามีการพับแถว */
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
     overflow-x: auto;
+    /* ให้สามารถเลื่อนในแนวนอนได้ */
+    box-sizing: border-box;
 }
 
 .form-group {
-    flex: 1;
-    min-width: 200px;
+    flex: 1 1 200px;
+    /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
+    min-width: 150px;
+    /* กำหนดขนาดขั้นต่ำ */
+    max-width: 250px;
+    /* กำหนดขนาดสูงสุด */
+}
+
+button.btn-primary {
+    flex: 1 1 100%;
+    font-size: 14px;
+    padding: 12px 20px;
+    margin-top: 10px;
 }
 
 label {
     font-size: 14px;
     font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-    /* เพิ่มช่องว่างด้านล่าง */
+    color: #020364;
+    margin-bottom: 8px;
 }
 
 .input-group {
-    display: flex;
-    align-items: center;
     position: relative;
 }
 
@@ -90,23 +110,22 @@ label {
     border: 1px solid #ddd;
     box-sizing: border-box;
     width: 100%;
+    font-size: 14px;
 }
 
-.input-group-text {
-    background-color: #e7e7e7;
-    border: none;
-    border-radius: 50%;
-    padding: 10px;
-    margin-left: -30px;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: #007bff;
+.form-control:focus {
     border-color: #007bff;
+    outline: none;
 }
 
-.btn-primary:hover {
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 35px;
+}
+
+button.btn-primary:hover {
     background-color: #0056b3;
     border-color: #0056b3;
 }
@@ -168,10 +187,9 @@ label {
     color: #721c24;
     transform: scale(1.1);
     cursor: pointer;
-
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .title {
         font-size: 12px;
         flex-direction: column;
@@ -195,15 +213,26 @@ label {
     }
 
     .form-group-horizontal {
-        font-size: 12px;
-        flex-wrap: nowrap;
+        gap: 10px;
+        /* ลดระยะห่างระหว่างช่องค้นหา */
         overflow-x: auto;
+        /* ให้สามารถเลื่อนในแนวนอนได้ */
     }
 
-    .form-group,
-    .btn-primary {
-        font-size: 12px;
-        flex: 0 0 auto;
+    .form-group {
+        flex: 1 1 200px;
+        /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
+        min-width: 150px;
+        /* กำหนดขนาดขั้นต่ำ */
+        max-width: 200px;
+        /* กำหนดขนาดสูงสุด */
+        margin-right: 10px;
+    }
+
+    button.btn-primary {
+        flex: 1 1 100%;
+        margin-top: 15px;
+        padding: 12px 20px;
     }
 
     .form-group label {
@@ -216,11 +245,6 @@ label {
 
     .input-group-text {
         padding: 8px;
-    }
-
-    .btn-primary {
-        padding: 8px 15px;
-        font-size: 12px;
     }
 
     .table,
@@ -247,11 +271,10 @@ label {
     .table td:nth-child(9) {
         word-wrap: break-word;
         white-space: normal;
-
     }
 
     .custom-pagination {
-        font-size: 14px;
+        font-size: 12px;
         padding: 5px;
     }
 
@@ -284,21 +307,21 @@ label {
     }
 
     .modal-body .form-label {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .modal-body .form-control {
         padding: 8px;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .modal-body .btn-primary {
         padding: 10px;
-        font-size: 14px;
+        font-size: 12px;
     }
-
 }
 </style>
+
 
 <div class="container py-2">
 
@@ -524,8 +547,13 @@ label {
                         });
                         </script>
 
+                        <a href="{{ route('admin.print', ['id' => $recorddata->first()->id]) }}" target="_blank"
+                            class="btn btn-warning btn-sm">
+                            <i class="fa-solid fa-print"></i>
+                        </a>
 
-                        <button class="btn btn-warning btn-sm"><i class="fa-solid fa-print"></i></button>
+
+
                     </td>
                 </tr>
                 @endforeach

@@ -165,6 +165,53 @@ tr:hover {
 .btn-confirm:hover {
     background-color: #218838;
 }
+
+@media (max-width: 768px) {
+    th,
+    td {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .title {
+        font-size: 16px;
+    }
+
+    .alert {
+        font-size: 12px;
+    }
+
+    .custom-pagination {
+        font-size: 12px;
+    }
+
+    .custom-pagination a,
+    .custom-pagination span {
+        font-size: 12px;
+    }
+
+    .btn-cancel,
+    .btn-confirm {
+        font-size: 12px;
+    }
+
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+}
+
 </style>
 
 <div class="container py-3">
@@ -277,9 +324,8 @@ tr:hover {
                 });
             });
             </script>
-
-
         </table>
+
         <div class="custom-pagination mt-3">
             @if ($users->onFirstPage())
             <span class="disabled">ย้อนกลับ</span>

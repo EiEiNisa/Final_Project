@@ -92,7 +92,7 @@ footer {
     margin-right: 10px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .navbar {
         flex-direction: column;
         align-items: flex-start;
@@ -101,10 +101,12 @@ footer {
     .navbar-brand,
     .nav-link {
         margin-bottom: 10px;
+        font-size: 12px;
     }
 
     .nav-item {
         margin-bottom: 10px;
+        font-size: 12px;
     }
 
     footer {
@@ -116,6 +118,7 @@ footer {
         padding-top: 10px;
         margin-right: 0;
         margin-bottom: 20px;
+        font-size: 12px;
     }
 
     .footer-iframe {
