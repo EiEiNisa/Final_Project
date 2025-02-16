@@ -116,12 +116,9 @@ form {
 .circle-container {
     display: flex;
     justify-content: flex-start;
-    /* เรียงจากซ้ายไปขวา */
     gap: 30px;
     flex-wrap: nowrap;
-    /* ไม่ให้วงกลมถูกหักเป็นแถวใหม่ */
     overflow-x: auto;
-    /* ให้สามารถเลื่อนซ้ายขวาได้หากเกินหน้าจอ */
 }
 
 .circle-group {
@@ -139,6 +136,14 @@ form {
 
 .form-check {
     margin-bottom: 10px;
+}
+
+.form-check-container label {
+    font-size: 15px;
+    font-weight: bold;
+    color: #020364;
+    text-align: left;
+    /* Ensure text is aligned left */
 }
 
 .condition-checks {
@@ -179,8 +184,13 @@ form {
     font-weight: bold;
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 60px;
+    /* Add spacing between groups */
+    justify-content: space-between;
+    width: 100%;
+    /* Ensure it takes up full width */
 }
+
 
 @media (max-width: 768px) {
     .head {
@@ -286,6 +296,13 @@ form {
         justify-content: center;
         flex-direction: row;
         gap: 10px;
+    }
+
+    .elderly-checkbox-container {
+        flex-direction: column;
+        /* Stack groups vertically on smaller screens */
+        gap: 10px;
+        /* Reduce the gap between groups */
     }
 }
 </style>
@@ -513,13 +530,12 @@ form {
 
                 // ตรวจสอบว่าไม่มีค่าว่างและค่าผิดปกติ
                 if (!isNaN(weight) && weight > 0 && !isNaN(height) && height > 0) {
-                    // แปลงส่วนสูงให้เป็นเมตร (ถ้ารับค่าเป็นเซนติเมตร)
-                    height = height / 100; // เปลี่ยนจากเซนติเมตรเป็นเมตร
+                    height = height / 100;
 
-                    let bmi = weight / (height * height); // คำนวณ BMI
-                    document.getElementById('bmi').value = bmi.toFixed(1); // แสดงค่า BMI 1 ตำแหน่งทศนิยม
+                    let bmi = weight / (height * height);
+                    document.getElementById('bmi').value = bmi.toFixed(1);
                 } else {
-                    document.getElementById('bmi').value = ''; // ถ้าไม่ได้กรอกข้อมูลที่ถูกต้องให้เคลียร์ค่า BMI
+                    document.getElementById('bmi').value = '';
                 }
             }
             </script>
@@ -537,7 +553,7 @@ form {
                     placeholder="กรอกไอดีไลน์" required>
             </div>
 
-            @foreach($extra_fields as $field)
+            @foreach($extra_fields_recorddata as $field)
             <div class="form-group1">
                 <label for="{{ $field }}"
                     style="margin-bottom: 5px; text-align: left; color: #020364;">{{ ucfirst($field) }}</label>
@@ -546,8 +562,11 @@ form {
             </div>
             @endforeach
 
-            <div class="form-group3">
-                <h4><strong>ข้อมูลทั่วไป</strong></h4>
+            <div class="d-flex justify-content-between align-items-center p-3 w-100">
+                <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
+                <a href="{{ route('edit_form_general_information') }}" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
+                </a>
             </div>
 
             <div class="form-group">
@@ -556,6 +575,7 @@ form {
                 <input type="number" class="form-control" id="sys" name="sys" value="{{ old('sys') }}"
                     placeholder="กรอกค่าSYS" required>
             </div>
+
             <div class="form-group">
                 <label for="dia" style="margin-bottom: 5px; text-align: left; color: #020364;">DIA (mmHg)
                 </label>
@@ -586,6 +606,15 @@ form {
                 <input type="number" class="form-control" id="blood_level" name="blood_level"
                     value="{{ old('blood_level') }}" placeholder="กรอกระดับน้ำตาลในเลือด" required>
             </div>
+
+            @foreach($extra_fields_health_records as $field)
+            <div class="form-group1">
+                <label for="{{ $field }}"
+                    style="margin-bottom: 5px; text-align: left; color: #020364;">{{ ucfirst($field) }}</label>
+                <input type="text" class="form-control" id="{{ $field }}" name="extra_fields[{{ $field }}]"
+                    value="{{ old('extra_fields.' . $field) }}" placeholder="กรอก {{ ucfirst($field) }}">
+            </div>
+            @endforeach
 
             <div class="blood-pressure-zone">
                 <h4>Blood Pressure Zone</h4>
@@ -747,8 +776,14 @@ form {
             </div>
 
             <!--โรคประจำตัว-->
+            <div class="d-flex justify-content-between align-items-center p-3 w-100">
+                <h4 class="fw-bold m-0" style="color:#020364;">โรคประจำตัว</h4>
+                <a href="{{ route('edit_form_disease') }}" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
+                </a>
+            </div>
+
             <div class="congenital_disease">
-                <h4 style="color:#020364; padding-bottom:10px;"><strong>โรคประจำตัว</strong></h4>
                 <div style="color: #020364; font-size: 15px; font-weight: bold;">
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="diabetes" value="0">
@@ -796,10 +831,14 @@ form {
             </div>
 
             <!--พฤติกรรม-สุขภาพจิต-->
+            <div class="d-flex justify-content-between align-items-center p-3 w-100">
+                <h4 class="fw-bold m-0" style="color:#020364;">พฤติกรรม-สุขภาพจิต</h4>
+                <a href="{{ route('edit_form_disease') }}" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
+                </a>
+            </div>
             <div class="behavior">
-                <h4 style="color:#020364; padding-bottom:10px;"><strong>พฤติกรรม-สุขภาพจิต</strong></h4>
                 <div style="color: #020364; font-size: 15px; font-weight: bold;">
-
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="drink" value="0">
                         <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1" disabled
@@ -859,8 +898,13 @@ form {
             </div>
 
             <!--ข้อมูลผู้สูงอายุ-->
+            <div class="d-flex justify-content-between align-items-center p-3 w-100">
+                <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ</h4>
+                <a href="{{ route('edit_form_disease') }}" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
+                </a>
+            </div>
             <div class="elderly_information">
-                <h4 style="color:#020364; padding-bottom:10px;"><strong>ข้อมูลผู้สูงอายุ</strong></h4>
                 <div class="elderly-checkbox-container" style="color: #020364; font-size: 15px; font-weight: bold;">
                     <!-- ช่วยเหลือตัวเอง -->
                     <div class="form-check-container">
@@ -955,17 +999,21 @@ form {
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="user_id">ผู้บันทึกข้อมูล</label>
-                <select id="user_id" name="user_id" class="form-control">
-                    <option value="">เลือกผู้บันทึก</option>
-                    @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }} {{ $user->surname }}
-                    </option>
-                    @endforeach
-                </select>
+            <div class="w-100 text-end fw-bold" style="color: #020364;">
+                <div class="d-flex flex-column align-items-end">
+                    <label for="user_id">ผู้บันทึกข้อมูล</label>
+                    <select id="user_id" name="user_id" class="form-control w-50">
+                        <option value="">เลือกผู้บันทึก</option>
+                        @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                            {{ $user->name }} {{ $user->surname }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
+
+
 
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">

@@ -24,26 +24,32 @@ class RecorddataController
     }
     
     public function create()
-{
-    $users = User::all();
-    if ($users->isEmpty()) {
-        return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
+    {
+        $users = User::all();
+        if ($users->isEmpty()) {
+            return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
+        }
+    
+        // ดึงคอลัมน์จากตาราง recorddata
+        $columns_recorddata = Schema::getColumnListing('recorddata');
+        $exclude_columns_recorddata = [
+            'id','user_id', 'id_card', 'prefix','name','surname','housenumber','birthdate',
+            'age','blood_group','weight','height','bmi','waistline','phone','idline','created_at', 'updated_at' ,'file_name',
+            'file_path'
+        ];
+        $extra_fields_recorddata = array_diff($columns_recorddata, $exclude_columns_recorddata);
+    
+        // ดึงคอลัมน์จากตาราง health_records
+        $columns_health_records = Schema::getColumnListing('health_records');
+        $exclude_columns_health_records = [
+            'id', 'recorddata_id', 'sys', 'dia', 'pul', 'body_temp', 'blood_oxygen', 'blood_level', 'created_at', 'updated_at'
+        ];
+        $extra_fields_health_records = array_diff($columns_health_records, $exclude_columns_health_records);
+    
+        // ส่งค่าคอลัมน์ที่ถูกกรองแล้วไปยัง view
+        return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users'));
     }
-
-    $columns = Schema::getColumnListing('recorddata');
-    //dd($columns);
-
-    $exclude_columns = ['id','user_id', 'id_card', 'prefix','name','surname','housenumber','birthdate',
-    'age','blood_group','weight','height','bmi','waistline','phone','idline','created_at', 'updated_at' ,'file_name',
-    'file_path'];
-    //dd($exclude_columns);
-
-    $extra_fields = array_diff($columns, $exclude_columns);
-    //dd($extra_fields);
-
-    return view('admin.addrecord', compact('extra_fields', 'users'));
- 
-}
+    
 
     public function store(Request $request)
 {
@@ -492,47 +498,130 @@ public function edit_form()
 {
     $columns = Schema::getColumnListing('recorddata');
 
-    // ค่าที่ไม่ต้องการในอาร์เรย์
     $excludeColumns = ['user_id', 'created_at', 'updated_at', 'file_name', 'file_path', 'id'];
 
-    // กรองคอลัมน์ที่ไม่ต้องการออก
     $columns = array_diff($columns, $excludeColumns);
 
     return view('admin.edit_form_record', compact('columns'));
 }
 
-
-public function update_record(Request $request)
+public function update_record(Request $request) 
 {
-    // รับข้อมูลที่ส่งมาจากฟอร์ม
+    // รับข้อมูลฟิลด์ที่ต้องการเพิ่มใหม่
     $extra_fields = $request->input('extra_fields');
-
-    // ถ้ามี extra_fields ที่ถูกส่งมาจากฟอร์ม
+    
     if ($extra_fields) {
         foreach ($extra_fields as $field) {
-            // สร้างคอลัมน์ใหม่ในฐานข้อมูล
             Schema::table('recorddata', function ($table) use ($field) {
-                // เพิ่มคอลัมน์ใหม่ที่ชื่อจาก value
                 $table->string($field['value'])->nullable();
             });
         }
         return redirect()->route('recorddata.index')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
     }
 
+    // รับข้อมูลคอลัมน์ที่ลบ
     $deletedFields = $request->input('deleted_fields');
 
-    // ถ้ามีคอลัมน์ที่ต้องการลบ
+    // ตรวจสอบค่าคอลัมน์ที่ลบ
+    dd($deletedFields);  // ตรวจสอบว่าได้ค่าคอลัมน์จริงๆ หรือไม่
+
+    // หากมีฟิลด์ที่ต้องการลบ
     if ($deletedFields) {
         foreach ($deletedFields as $field) {
-            // ลบคอลัมน์จากตาราง recorddata
             Schema::table('recorddata', function ($table) use ($field) {
-                $table->dropColumn($field); // ลบคอลัมน์จากฐานข้อมูล
+                $table->dropColumn($field); // ลบคอลัมน์
             });
         }
-        return redirect('/admin/edit_form_record')->with('success', 'ลบฟิลด์เรียบร้อย!');
+        return redirect()->route('admin.edit_form_record')->with('success', 'ลบฟิลด์เรียบร้อย!');
+    }
+
+    return redirect()->back()->with('error', 'เกิดข้อผิดพลาด');
+}
+
+
+
+public function edit_form_general_information()
+{
+    // ดึงรายชื่อคอลัมน์จาก health_records
+    $healthRecordColumns = Schema::getColumnListing('health_records');
+    $excludeColumnsHealthRecord = ['recorddata_id', 'created_at', 'updated_at', 'file_name', 'file_path', 'id'];
+    $filteredHealthRecordColumns = array_diff($healthRecordColumns, $excludeColumnsHealthRecord);
+
+    // ส่งค่ากลับไปยัง View
+    return view('admin.edit_form_general_information', compact(
+        'filteredHealthRecordColumns', 
+    ));
+}
+
+
+public function update_general_information(Request $request)
+{
+    // รับข้อมูลที่ส่งมาจากฟอร์ม
+    $extra_fields = $request->input('extra_fields');
+    $deletedFields = $request->input('deleted_fields');
+
+    // ตรวจสอบและเพิ่มฟิลด์ใหม่
+    if ($extra_fields) {
+        foreach ($extra_fields as $field) {
+            Schema::table('health_records', function ($table) use ($field) {
+                $table->string($field['value'])->nullable();
+            });
+        }
+        return redirect()->route('recorddata.index')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
+    }
+
+    // ถ้ามีฟิลด์ที่ถูกลบ
+    if ($deletedFields) {
+        foreach ($deletedFields as $field) {
+            Schema::table('health_records', function ($table) use ($field) {
+                $table->dropColumn($field);
+            });
+        }
+        return redirect()->route('admin.edit_form_general_information')->with('success', 'ลบฟิลด์เรียบร้อย!');
     }
 
     return redirect()->back()->with('warning', 'ไม่มีการเปลี่ยนแปลงใด ๆ');
 }
+
+public function edit_form_disease()
+{
+    $diseaseColumns = Schema::getColumnListing('disease');
+    $excludeColumnsDiseases = ['id', 'recorddata_id', 'created_at', 'updated_at'];
+    $filteredDiseaseColumns = array_diff($diseaseColumns, $excludeColumnsDiseases);
+
+    return view('admin.edit_form_disease', compact(
+        'filteredDiseaseColumns'
+    ));
+}
+
+public function update_disease(Request $request)
+{
+    // รับข้อมูลที่ส่งมาจากฟอร์ม
+    $extra_fields = $request->input('extra_fields');
+    $deletedFields = $request->input('deleted_fields');
+
+    // ตรวจสอบและเพิ่มฟิลด์ใหม่
+    if ($extra_fields) {
+        foreach ($extra_fields as $field) {
+            Schema::table('disease', function ($table) use ($field) {
+                $table->string($field['value'])->nullable();
+            });
+        }
+        return redirect()->route('recorddata.index')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
+    }
+
+    // ถ้ามีฟิลด์ที่ถูกลบ
+    if ($deletedFields) {
+        foreach ($deletedFields as $field) {
+            Schema::table('disease', function ($table) use ($field) {
+                $table->dropColumn($field);
+            });
+        }
+        return redirect('/admin/edit_form_general_information')->with('success', 'ลบฟิลด์เรียบร้อย!');
+    }
+
+    return redirect()->back()->with('warning', 'ไม่มีการเปลี่ยนแปลงใด ๆ');
+}
+
 
 }

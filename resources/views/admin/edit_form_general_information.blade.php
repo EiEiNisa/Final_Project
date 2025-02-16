@@ -67,35 +67,27 @@
     @endif
 
     <div class="head">
-        <h4 class="text-center fw-bold mb-4">แก้ไขฟอร์มข้อมูลส่วนตัว</h4>
+        <h4 class="text-center fw-bold mb-4">แก้ไขฟอร์มข้อมูลทั่วไป</h4>
         <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary px-4">กลับ</a>
     </div>
 
     <div class="rectangle-box p-4">
-    <form action="{{ route('update_record') }}" method="POST" class="container">
-    @csrf
-    @method('PUT')
+        <form action="{{ route('update_general_information') }}" method="POST" class="container">
+            @csrf
+            @method('PUT')
 
             <div class="row g-3" id="fieldsContainer">
-                @foreach($columns as $column)
+                @foreach($filteredHealthRecordColumns as $column)
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="form-group">
                         @php
                         $labels = [
-                        'surname' => 'นามสกุล',
-                        'name' => 'ชื่อ',
-                        'id_card' => 'เลขบัตรประจำตัวประชาชน',
-                        'prefix' => 'คำนำหน้าชื่อ',
-                        'housenumber' => 'บ้านเลขที่',
-                        'birthdate' => 'วัน / เดือน / ปีเกิด',
-                        'age' => 'อายุ',
-                        'blood_group' => 'กรุ๊ปเลือด',
-                        'weight' => 'น้ำหนัก',
-                        'height' => 'ส่วนสูง',
-                        'waistline' => 'รอบเอว',
-                        'bmi' => 'ดัชนีมวล BMI',
-                        'phone' => 'เบอร์โทรศัพท์',
-                        'idline' => 'ID Line'
+                        'sys' => 'SYS',
+                        'dia' => 'DIA',
+                        'pul' => 'PUL',
+                        'body_temp' => 'อุณหภูมิร่างกาย',
+                        'blood_oxygen' => 'ระดับออกซิเจนในเลือด',
+                        'blood_level' => 'ระดับน้ำตาลในเลือด',
                         ];
                         $label = $labels[$column] ?? ucfirst($column);
                         @endphp
@@ -113,18 +105,19 @@
                 @endforeach
             </div>
 
-                <!-- Extra fields container -->
-                <div id="extraFieldsContainer" class="mt-4">
-                    <label class="fw-bold">เพิ่มฟิลด์ใหม่</label>
-                    <button type="button" id="addField" class="btn btn-primary btn-sm">เพิ่ม Input</button>
-                </div>
+            <!-- Extra fields container -->
+            <div id="extraFieldsContainer" class="mt-4">
+                <label class="fw-bold">เพิ่มฟิลด์ใหม่</label>
+                <button type="button" id="addField" class="btn btn-primary btn-sm">เพิ่ม Input</button>
+            </div>
 
-                <!-- Submit button -->
-                <div class="mt-4 text-center">
-                    <button type="submit" class="btn btn-success px-4">บันทึก</button>
-                </div>
+            <!-- Submit button -->
+            <div class="mt-4 text-center">
+                <button type="submit" class="btn btn-success px-4">บันทึก</button>
+            </div>
         </form>
     </div>
+    </form>
 </div>
 
 <!-- Modal Confirmation -->
@@ -146,6 +139,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Modal for confirmation -->
 <div class="modal fade" id="confirmDeleteModal2" tabindex="-1" aria-labelledby="confirmDeleteModalLabel2"
@@ -169,65 +163,65 @@
 
 
 <script>
-document.getElementById('addField').addEventListener('click', function() {
-    var container = document.getElementById('extraFieldsContainer');
-    var fieldCount = container.getElementsByClassName('extra-field').length;
-    var newField = document.createElement('div');
-    newField.className = 'extra-field mt-3';
+document.addEventListener("DOMContentLoaded", function() {
+    var container = document.getElementById("extraFieldsContainer");
 
-    newField.innerHTML = `
-        <label for="extra_fields[${fieldCount}][value]">ค่าที่ต้องการเพิ่มในฟอร์ม:</label>
-        <input type="text" name="extra_fields[${fieldCount}][value]" required class="form-control mb-2" placeholder="ค่าที่จะใช้">
-        <button type="button" class="removeField btn btn-danger btn-sm">ลบ</button>
-    `;
-    container.appendChild(newField);
+    // ฟังก์ชันเพิ่มฟิลด์ใหม่
+    document.getElementById("addField").addEventListener("click", function() {
+        var fieldCount = container.getElementsByClassName("extra-field").length;
+        var newField = document.createElement("div");
+        newField.className = "extra-field mt-3";
 
-    // เมื่อคลิกปุ่มลบ
-    newField.querySelector('.removeField').addEventListener('click', function() {
-        var modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal2'));
-        modal.show();
-
-        // เมื่อคลิกปุ่มยืนยันใน Modal
-        document.getElementById('confirmDeleteButton2').addEventListener('click', function() {
-            // ลบฟิลด์จากหน้าฟอร์ม
-            container.removeChild(newField);
-            modal.hide();
-        });
+        newField.innerHTML = `
+            <label for="extra_fields[${fieldCount}][value]">ค่าที่ต้องการเพิ่มในฟอร์ม:</label>
+            <input type="text" name="extra_fields[${fieldCount}][value]" required class="form-control mb-2" placeholder="ค่าที่จะใช้">
+            <button type="button" class="removeField btn btn-danger btn-sm">ลบ</button>
+        `;
+        container.appendChild(newField);
     });
-});
 
-
-document.querySelectorAll(".removeField").forEach(function(button) { 
-    button.addEventListener("click", function() {
-        var column = button.getAttribute("data-column"); // ดึงค่าคอลัมน์
-        var modalElement = document.getElementById("confirmDeleteModal");
-        var modal = new bootstrap.Modal(modalElement);
-        modal.show();
-
-        document.getElementById("confirmDeleteButton").addEventListener("click", function() {
-            // ลบฟิลด์จากหน้าฟอร์ม
-            var field = button.closest(".form-group");
+    // ใช้ Event Delegation เพื่อให้ปุ่มลบทำงานได้แม้จะถูกสร้างใหม่
+    container.addEventListener("click", function(event) {
+        if (event.target.classList.contains("removeField")) {
+            var field = event.target.closest(".extra-field");
             if (field) {
                 field.remove();
             }
+        }
+    });
 
-            // เพิ่ม input hidden เพื่อส่งข้อมูลไปยัง backend หลังจากกดยืนยัน
-            var form = document.querySelector("form");
-            var deletedFieldsInput = document.createElement("input");
-            deletedFieldsInput.type = "hidden";
-            deletedFieldsInput.name = "deleted_fields[]";  // ตรวจสอบชื่อ field ว่าถูกต้อง
-            deletedFieldsInput.value = column;  // ใช้ค่าของ column ที่เลือก
-            form.appendChild(deletedFieldsInput);
+    // กำหนดการลบฟิลด์ที่มาจากฐานข้อมูล
+    document.querySelectorAll(".removeField").forEach(function(button) {
+        button.addEventListener("click", function() {
+            var column = button.getAttribute("data-column");
+            var modal = new bootstrap.Modal(document.getElementById("confirmDeleteModal"));
+            modal.show();
 
-            // ปิด Modal
-            let modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) {
-                modalInstance.hide();
-            }
-        }, { once: true }); // ป้องกัน Event Listener ซ้ำซ้อน
+            document.getElementById("confirmDeleteButton").addEventListener(
+                "click",
+                function() {
+                    // ลบฟิลด์จาก UI
+                    var field = button.closest(".form-group");
+                    if (field) {
+                        field.remove();
+                    }
+
+                    // เพิ่ม input hidden เพื่อส่งข้อมูลไปยัง backend
+                    var form = document.querySelector("form");
+                    var deletedFieldsInput = document.createElement("input");
+                    deletedFieldsInput.type = "hidden";
+                    deletedFieldsInput.name = "deleted_fields[]";
+                    deletedFieldsInput.value = column;
+                    form.appendChild(deletedFieldsInput);
+
+                    modal.hide();
+                }, {
+                    once: true
+                } // ป้องกัน Event Listener ซ้ำซ้อน
+            );
+        });
     });
 });
-
 </script>
 
 @endsection
