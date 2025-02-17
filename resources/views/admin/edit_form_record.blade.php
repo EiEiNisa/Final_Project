@@ -197,34 +197,33 @@ document.getElementById('addField').addEventListener('click', function() {
 });
 
 
-document.querySelectorAll(".removeField").forEach(function(button) { 
-    button.addEventListener("click", function() {
-        var column = button.getAttribute("data-column"); // ดึงค่าคอลัมน์
-        var modalElement = document.getElementById("confirmDeleteModal");
-        var modal = new bootstrap.Modal(modalElement);
+document.querySelectorAll('.removeField').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var column = button.getAttribute('data-column');
+        var modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
         modal.show();
 
-        document.getElementById("confirmDeleteButton").addEventListener("click", function() {
+        // เมื่อกดยืนยันการลบ
+        document.getElementById('confirmDeleteButton').addEventListener('click', function() {
             // ลบฟิลด์จากหน้าฟอร์ม
-            var field = button.closest(".form-group");
+            var field = button.closest('.extra-field');
             if (field) {
-                field.remove();
+                field.remove(); // ลบฟิลด์จากหน้าฟอร์ม
             }
 
-            // เพิ่ม input hidden เพื่อส่งข้อมูลไปยัง backend หลังจากกดยืนยัน
-            var form = document.querySelector("form");
-            var deletedFieldsInput = document.createElement("input");
-            deletedFieldsInput.type = "hidden";
-            deletedFieldsInput.name = "deleted_fields[]";  // ตรวจสอบชื่อ field ว่าถูกต้อง
-            deletedFieldsInput.value = column;  // ใช้ค่าของ column ที่เลือก
+            // ส่งข้อมูลคอลัมน์ที่ต้องการลบไปยัง Controller
+            var form = document.querySelector('form');
+            var deletedFieldsInput = document.createElement('input');
+            deletedFieldsInput.type = 'hidden';
+            deletedFieldsInput.name = 'deleted_fields[]';
+            deletedFieldsInput.value = column;
             form.appendChild(deletedFieldsInput);
 
-            // ปิด Modal
-            let modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) {
-                modalInstance.hide();
-            }
-        }, { once: true }); // ป้องกัน Event Listener ซ้ำซ้อน
+            modal.hide();
+
+            // ส่งฟอร์ม
+            form.submit(); // ส่งฟอร์มไปยัง Controller
+        });
     });
 });
 

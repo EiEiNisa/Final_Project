@@ -18,6 +18,7 @@
     padding-left: 30px;
     padding-right: 30px;
     padding-bottom: 20px;
+    padding-top: 30px;
 }
 
 .rectangle-box {
@@ -1012,8 +1013,6 @@ form {
                     </select>
                 </div>
             </div>
-
-
 
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">

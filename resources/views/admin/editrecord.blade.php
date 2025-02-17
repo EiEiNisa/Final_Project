@@ -37,32 +37,17 @@
     width: 100%;
     max-width: 1000px;
     margin: 20px auto;
-    background-color: #f9f9f9;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: min-height 0.4s ease-out;
 }
 
-.accordion-item {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    margin: 0 auto;
-}
-
 .accordion-header {
-    background-color: #4a90e2;
-    color: white;
+    background-color: #fff;
     padding: 10px 10px;
-    cursor: pointer;
     font-weight: bold;
-    border-bottom: 1px solid #ddd;
-    transition: background-color 0.3s ease;
+    border-radius: 10px;
 }
 
 .accordion-button {
@@ -70,8 +55,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px;
+    color: #fff;
     background: #4a90e2;
-    color: white;
     border: none;
     width: 100%;
 }
@@ -108,7 +93,6 @@
     gap: 15px;
 }
 
-
 .form-group,
 .form-group1 {
     flex: 1 1 calc(50% - 20px);
@@ -132,10 +116,12 @@
     transition: all 0.3s ease;
 }
 
-.form-control:focus {
-    border-color: #4a90e2;
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-    outline: none;
+.accordion-button:focus,
+.accordion-button:active {
+    width: 100%;
+    /* กำหนดความกว้างให้เต็มที่เมื่อกดปุ่ม */
+    transition: width 0.3s ease;
+    /* เพิ่มการเปลี่ยนแปลงความกว้าง */
 }
 
 form {
@@ -213,26 +199,62 @@ form {
     padding-bottom: 10px;
 }
 
+#saveBtn {
+    border: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+#editBtn {
+    border: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
 @media (max-width: 768px) {
-    .title {
-        padding-left: 15px;
-        padding-right: 15px;
+    .accordion-button {
+        padding: 10px 15px;
+        width: 100%;
+        /* ให้ปุ่มกว้างเต็มพื้นที่ในมือถือ */
+        box-sizing: border-box;
     }
 
-    .rectangle-box {
+    .accordion-body {
         padding: 15px;
+        max-height: 400px;
+        /* กำหนดความสูงสูงสุด */
+        overflow-y: auto;
+        /* เพิ่มแถบเลื่อนแนวตั้ง */
     }
 
-    #accordionExample {
-        padding: 10px;
+    .form-group {
+        margin-bottom: 10px;
+        /* ลดระยะห่างระหว่างฟอร์ม */
+    }
+
+    .form-control {
+        width: 100%;
+        /* ฟอร์มกรอกข้อมูลให้เต็มพื้นที่ */
+        margin-bottom: 10px;
+        /* เพิ่มระยะห่างระหว่างช่องกรอกข้อมูล */
+    }
+
+    .circle-container {
+        font-size: 16px;
+        /* เพิ่มขนาดตัวอักษรเล็กน้อยเพื่อให้เห็นชัดเจน */
+    }
+
+    .circle {
+        width: 35px;
+        height: 35px;
     }
 
     .accordion-item {
         margin-bottom: 15px;
-    }
-
-    .accordion-button {
-        padding: 12px;
     }
 
     .checkup-title {
@@ -243,35 +265,26 @@ form {
         font-size: 12px;
     }
 
-    .form-group,
-    .form-group1 {
-        flex-direction: column;
-        /* ถ้าหน้าจอเล็กลง จะจัดเรียงในแนวตั้ง */
-        align-items: flex-start;
-    }
-
     .form-group label,
     .form-group1 label {
-        margin-right: 0;
+        font-size: 14px;
         margin-bottom: 5px;
-        /* ระยะห่างระหว่าง label และ input/select */
     }
 
     .form-group .form-control,
     .form-group1 .form-control {
         width: 100%;
-        /* ทำให้ input/select ขยายเต็มความกว้าง */
-    }
-
-
-
-    .circle-container {
         font-size: 14px;
+        /* ปรับขนาดฟอนต์ให้พอเหมาะ */
     }
 
-    .circle {
-        width: 30px;
-        height: 30px;
+    .accordion-body .form-group1 {
+        margin-bottom: 10px;
+    }
+
+    .accordion-button:focus {
+        background-color: #f8f9fa;
+        border-color: #6c757d;
     }
 }
 </style>
@@ -284,6 +297,17 @@ form {
     </div>
 
     <div class="rectangle-box">
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+        
         <form action="{{ route('recorddata.update', $recorddata->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -301,7 +325,7 @@ form {
             <div class="form-group1">
                 <label for="id_card" class="form-label">เลขบัตรประจำตัวประชาชน</label>
                 <input type="text" class="form-control" id="id_card" name="id_card"
-                    value="{{ old('id_card', $recorddata->id_card) }}">
+                    value="{{ old('id_card', $recorddata->id_card) }}" maxlength="13" readonly>
             </div>
 
             <div class="form-group1">
@@ -344,8 +368,8 @@ form {
 
             <div class="form-group1">
                 <label for="age" class="form-label">อายุ</label>
-                <input type="number" class="form-control" id="age" name="age"
-                    value="{{ old('age', $recorddata->age) }}">
+                <input type="number" class="form-control" id="age" name="age" value="{{ old('age', $recorddata->age) }}"
+                    readonly>
             </div>
 
             <script>
@@ -403,15 +427,36 @@ form {
 
             <div class="form-group1">
                 <label for="bmi" class="form-label">ดัชนีมวล BMI</label>
-                <input type="number" class="form-control" id="bmi" name="bmi"
-                    value="{{ old('bmi', $recorddata->bmi) }}">
+                <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi', $recorddata->bmi) }}"
+                    readonly>
             </div>
+
+            <script>
+            document.getElementById('height').addEventListener('input', calculateBMI);
+            document.getElementById('weight').addEventListener('input', calculateBMI);
+
+            function calculateBMI() {
+                let weight = parseFloat(document.getElementById('weight').value); // น้ำหนัก
+                let height = parseFloat(document.getElementById('height').value); // ส่วนสูง
+
+                // ตรวจสอบว่าไม่มีค่าว่างและค่าผิดปกติ
+                if (!isNaN(weight) && weight > 0 && !isNaN(height) && height > 0) {
+                    height = height / 100;
+
+                    let bmi = weight / (height * height);
+                    document.getElementById('bmi').value = bmi.toFixed(1);
+                } else {
+                    document.getElementById('bmi').value = '';
+                }
+            }
+            </script>
 
             <div class="form-group1">
                 <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" id="phone" name="phone"
-                    value="{{ old('phone', $recorddata->phone) }}">
+                    value="{{ old('phone', $recorddata->phone) }}" maxlength="10">
             </div>
+
             <div class="form-group1">
                 <label for="idline" class="form-label">ID Line</label>
                 <input type="text" class="form-control" id="idline" name="idline"
@@ -420,10 +465,10 @@ form {
 
             <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
 
+            <!--ข้อมูลทั่วไป-->
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
-
 
             <div class="accordion" id="accordionExample">
                 @foreach($healthRecords as $index => $healthRecord)
@@ -532,14 +577,17 @@ form {
                                     readonly>
                             </div>
 
-                            <button type="button" class="btn btn-secondary" id="editBtn">แก้ไข ข้อมูล</button>
+                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
+                                class="btn btn-secondary" id="#editBtn">
+                                แก้ไขข้อมูล
+                            </a>
+
 
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
-
         </form>
     </div>
 </div>

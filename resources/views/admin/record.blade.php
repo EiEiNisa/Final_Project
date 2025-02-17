@@ -551,9 +551,6 @@ button.btn-primary:hover {
                             class="btn btn-warning btn-sm">
                             <i class="fa-solid fa-print"></i>
                         </a>
-
-
-
                     </td>
                 </tr>
                 @endforeach
