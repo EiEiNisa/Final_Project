@@ -298,8 +298,10 @@ form {
     </div>
 
     <div class="rectangle-box">
-    <form action="{{ route('recorddata.update_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $checkup_id]) }}" method="POST">
-    @csrf
+        <form
+            action="{{ route('recorddata.update_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $checkup_id]) }}"
+            method="POST">
+            @csrf
 
             <div class="form-group">
                 <label for="sys" style="margin-bottom: 5px; text-align: left; color: #020364;">SYS
@@ -445,11 +447,6 @@ form {
                         <label for="zone1_eye">{{ $zones['zone1_eye']['label'] }}</label>
                     </div>
 
-                    <div class="form-check">
-                        <input type="checkbox" id="zone1_cerebrovascular" name="zone1_cerebrovascular" value="1"
-                            {{ $zones['zone1_cerebrovascular']['value'] ? 'checked' : '' }}>
-                        <label for="zone1_cerebrovascular">{{ $zones['zone1_cerebrovascular']['label'] }}</label>
-                    </div>
                 </div>
             </div>
 
@@ -764,8 +761,157 @@ form {
                     </div>
                 </div>
             </div>
+            
+            <div class="form-group">
+    <label for="user_id">ผู้บันทึกข้อมูล</label>
+    <select class="form-control" id="user_id" name="user_id">
+        <option value="">เลือกผู้บันทึกข้อมูล</option>
+        @foreach ($userList as $userItem)
+            <option value="{{ $userItem->id }}" 
+                {{ isset($user) && $user->id == $userItem->id ? 'selected' : '' }}>
+                {{ $userItem->name }} {{ $userItem->surname }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-            <button type="submit" class="btn btn-success">บันทึก</button>
+
+
+            <div class="save">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
+                    บันทึก
+                </button>
+
+                <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="saveModalLabel">
+                                    ยืนยันการบันทึกข้อมูล
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                คุณยินยอมให้เก็บข้อมูลนี้หรือไม่
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                                <button type="submit" class="btn btn-success" id="confirmSave">บันทึกข้อมูล</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                document
+                    .getElementById(
+                        'confirmSave'
+                    )
+                    .addEventListener(
+                        'click',
+                        function() {
+                            // บันทึกข้อมูลในฟอร์ม
+                            document
+                                .querySelector(
+                                    'form'
+                                )
+                                .submit(); // ส่งฟอร์มไปที่เซิร์ฟเวอร์
+
+                            // ปิด Modal
+                            const
+                                saveModal =
+                                new bootstrap
+                                .Modal(
+                                    document
+                                    .getElementById(
+                                        'saveModal'
+                                    )
+                                );
+                            saveModal
+                                .hide();
+
+                            // แสดงข้อความยืนยัน (ถ้าต้องการ)
+                            alert
+                                (
+                                    'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
+                        }
+                    );
+                </script>
+
+
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                    data-bs-target="#resetModal">ยกเลิก</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="resetModalLabel">
+                                    ยืนยันการยกเลิก
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                คุณต้องการยกเลิกข้อมูลทั้งหมดใช่หรือไม่?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ไม่</button>
+                                <button type="button" class="btn btn-danger" id="confirmReset">ยกเลิกข้อมูล</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                document
+                    .getElementById(
+                        'confirmReset'
+                    )
+                    .addEventListener(
+                        'click',
+                        function() {
+                            const
+                                form =
+                                document
+                                .getElementById(
+                                    'Recorddata'
+                                );
+                            if (
+                                form) {
+                                form
+                                    .reset(); // รีเซ็ตข้อมูลฟอร์ม
+                            }
+
+                            // ปิด Modal ก่อน
+                            const
+                                resetModal =
+                                new bootstrap
+                                .Modal(
+                                    document
+                                    .getElementById(
+                                        'resetModal'
+                                    )
+                                );
+                            resetModal
+                                .hide();
+
+                            // ใช้ setTimeout เพื่อให้การแสดง alert เกิดขึ้นหลังจากการทำงานหลัก
+                            setTimeout
+                                (function() {
+                                        alert
+                                            (
+                                                'ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว');
+                                    },
+                                    0
+                                ); // การใช้ 0 จะทำให้ alert แสดงหลังจากการรีเซ็ตและปิด Modal ทันที
+                        }
+                    );
+                </script>
         </form>
     </div>
 </div>

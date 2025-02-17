@@ -309,6 +309,17 @@ form {
 </style>
 
 <div class="container py-2">
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
     <div class="head">
         <h4><strong>HEALTH CARD</strong></h4>
         <a href="/admin/record" type="button" class="btn btn-secondary">กลับ</a>
@@ -554,14 +565,21 @@ form {
                     placeholder="กรอกไอดีไลน์" required>
             </div>
 
-            @foreach($extra_fields_recorddata as $field)
+            @php
+            // แปลงข้อมูลจาก extra_fields (JSON) ให้เป็น array
+            $extra_fields = json_decode($recorddata->extra_fields, true) ?: [];
+            @endphp
+
+            @foreach($extra_fields as $field)
             <div class="form-group1">
                 <label for="{{ $field }}"
                     style="margin-bottom: 5px; text-align: left; color: #020364;">{{ ucfirst($field) }}</label>
                 <input type="text" class="form-control" id="{{ $field }}" name="extra_fields[{{ $field }}]"
-                    value="{{ old('extra_fields.' . $field) }}" placeholder="กรอก {{ ucfirst($field) }}">
+                    vvalue="{{ old('extra_fields.' . $field, '') }}"
+                    placeholder="กรอก{{ ucfirst($field) }}">
             </div>
             @endforeach
+
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>

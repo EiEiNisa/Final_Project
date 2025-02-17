@@ -65,6 +65,9 @@
     @if(session('warning'))
     <div class="alert alert-warning">{{ session('warning') }}</div>
     @endif
+    @if(session('error'))
+    <div class="alert alert-warning">{{ session('error') }}</div>
+    @endif
 
     <div class="head">
         <h4 class="text-center fw-bold mb-4">แก้ไขฟอร์มข้อมูลส่วนตัว</h4>

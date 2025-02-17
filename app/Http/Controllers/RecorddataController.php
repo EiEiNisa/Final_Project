@@ -24,32 +24,35 @@ class RecorddataController
     }
     
     public function create()
-    {
-        $users = User::all();
-        if ($users->isEmpty()) {
-            return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
-        }
-    
-        // ดึงคอลัมน์จากตาราง recorddata
-        $columns_recorddata = Schema::getColumnListing('recorddata');
-        $exclude_columns_recorddata = [
-            'id','user_id', 'id_card', 'prefix','name','surname','housenumber','birthdate',
-            'age','blood_group','weight','height','bmi','waistline','phone','idline','created_at', 'updated_at' ,'file_name',
-            'file_path'
-        ];
-        $extra_fields_recorddata = array_diff($columns_recorddata, $exclude_columns_recorddata);
-    
-        // ดึงคอลัมน์จากตาราง health_records
-        $columns_health_records = Schema::getColumnListing('health_records');
-        $exclude_columns_health_records = [
-            'id', 'recorddata_id', 'sys', 'dia', 'pul', 'body_temp', 'blood_oxygen', 'blood_level', 'created_at', 'updated_at'
-        ];
-        $extra_fields_health_records = array_diff($columns_health_records, $exclude_columns_health_records);
-    
-        // ส่งค่าคอลัมน์ที่ถูกกรองแล้วไปยัง view
-        return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users'));
+{
+    $users = User::all();
+    if ($users->isEmpty()) {
+        return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
     }
-    
+
+    // ดึงข้อมูล recorddata ตัวอย่าง (เลือก recorddata ตัวแรกหรือเพิ่มการค้นหาที่เหมาะสม)
+    $recorddata = Recorddata::first(); // หรือใช้ `Recorddata::find($id)` ตามที่คุณต้องการ
+
+    // ดึงคอลัมน์จากตาราง recorddata
+    $columns_recorddata = Schema::getColumnListing('recorddata');
+    $exclude_columns_recorddata = [
+        'id', 'user_id', 'id_card', 'prefix', 'name', 'surname', 'housenumber', 'birthdate',
+        'age', 'blood_group', 'weight', 'height', 'bmi', 'waistline', 'phone', 'idline', 'created_at', 'updated_at', 'file_name',
+        'file_path'
+    ];
+    $extra_fields_recorddata = array_diff($columns_recorddata, $exclude_columns_recorddata);
+
+    // ดึงคอลัมน์จากตาราง health_records
+    $columns_health_records = Schema::getColumnListing('health_records');
+    $exclude_columns_health_records = [
+        'id', 'recorddata_id', 'sys', 'dia', 'pul', 'body_temp', 'blood_oxygen', 'blood_level', 'created_at', 'updated_at'
+    ];
+    $extra_fields_health_records = array_diff($columns_health_records, $exclude_columns_health_records);
+
+    // ส่งค่าคอลัมน์ที่ถูกกรองแล้วและ recorddata ไปยัง view
+    return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata'));
+}
+
 
     public function store(Request $request)
 {
@@ -216,6 +219,8 @@ class RecorddataController
 }
 
 
+
+
 public function edit($id, Request $request)
 {
     $recorddata = Recorddata::findOrFail($id);
@@ -234,86 +239,72 @@ public function edit($id, Request $request)
         return back()->with('error', 'ไม่พบข้อมูล healthRecords');
     }
 
-    $healthZones = HealthZone::where('recorddata_id', $recorddata->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
-    if ($healthZones->isEmpty()) {
-        return back()->with('error', 'ไม่พบข้อมูล health_zone');
-    }
+    // Filter healthZones by the current recorddata_id
+    $healthZones = HealthZone::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
+    $zones = $healthZones->map(function ($zone) {
+        $zoneData = [];
+        // ตรวจสอบว่าแต่ละ field มีค่าเป็น 1 หรือไม่
+        if ($zone->zone1_normal == 1) $zoneData[] = 'ปกติ';
+        if ($zone->zone1_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
+        if ($zone->zone1_good_control == 1) $zoneData[] = 'คุมได้ดี';
+        if ($zone->zone1_watch_out == 1) $zoneData[] = 'เฝ้าระวัง';
+        if ($zone->zone1_danger == 1) $zoneData[] = 'อันตราย';
+        if ($zone->zone1_critical == 1) $zoneData[] = 'วิกฤต';
+        if ($zone->zone1_complications == 1) $zoneData[] = 'โรคแทรกซ้อน';
+        if ($zone->zone1_heart == 1) $zoneData[] = 'หัวใจ';
+        if ($zone->zone1_cerebrovascular == 1) $zoneData[] = 'หลอดเลือดสมอง';
+        if ($zone->zone1_kidney == 1) $zoneData[] = 'ไต';
+        if ($zone->zone1_eye == 1) $zoneData[] = 'ตา';
+        if ($zone->zone1_foot == 1) $zoneData[] = 'เท้า';
+        
+        return $zoneData; // ส่งคืนค่าของ zone ที่มีค่าเป็น 1
+    });
+    //dd($zones);    
 
-    $zones = [];
-    foreach ($healthZones as $index => $healthZone) {
-        // ตรวจสอบการแสดงผลแต่ละ zone ตามลำดับที่
-        $checkupIndex = $index + 1;
-        if ($healthZone->zone1_normal) { $zones[$checkupIndex][] = 'ปกติ'; }
-        if ($healthZone->zone1_risk_group) { $zones[$checkupIndex][] = 'กลุ่มเสี่ยง'; }
-        if ($healthZone->zone1_good_control) { $zones[$checkupIndex][] = 'คุมได้ดี'; }
-        if ($healthZone->zone1_watch_out) { $zones[$checkupIndex][] = 'เฝ้าระวัง'; }
-        if ($healthZone->zone1_danger) { $zones[$checkupIndex][] = 'อันตราย'; }
-        if ($healthZone->zone1_critical) { $zones[$checkupIndex][] = 'วิกฤต'; }
-        if ($healthZone->zone1_complications) { $zones[$checkupIndex][] = 'โรคแทรกซ้อน'; }
-        if ($healthZone->zone1_heart) { $zones[$checkupIndex][] = 'หัวใจ'; }
-        if ($healthZone->zone1_cerebrovascular) { $zones[$checkupIndex][] = 'หลอดเลือดสมอง'; }
-        if ($healthZone->zone1_kidney) { $zones[$checkupIndex][] = 'ไต'; }
-        if ($healthZone->zone1_eye) { $zones[$checkupIndex][] = 'ตา'; }
-        if ($healthZone->zone1_foot) { $zones[$checkupIndex][] = 'เท้า'; }
-    }
-    //dd($zones);
-    $healthZones2 = HealthZone2::where('recorddata_id', $recorddata->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
-    if ($healthZones2->isEmpty()) {
-        return back()->with('error', 'ไม่พบข้อมูล health_zone');
-    }
+    // Filter healthZones2 by the current recorddata_id
+    $healthZones2 = HealthZone2::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
+    $zones2 = $healthZones2->map(function ($zone2) {
+        $zoneData2 = [];
+        if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
+        if ($zone2->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
+        if ($zone2->zone2_good_control == 1) $zoneData2[] = 'คุมได้ดี';
+        if ($zone2->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
+        if ($zone2->zone2_danger == 1) $zoneData2[] = 'อันตราย';
+        if ($zone2->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
+        if ($zone2->zone2_complications == 1) $zoneData2[] = 'โรคแทรกซ้อน';
+        if ($zone2->zone2_heart == 1) $zoneData2[] = 'หัวใจ';
+        if ($zone2->zone2_eye == 1) $zoneData2[] = 'ตา'; 
+        return $zoneData2;
+    });
+    //dd($zones2); 
 
-    $zones2 = [];
-    foreach ($healthZones2 as $index => $healthZone2) {
-        $checkupIndex = $index + 1;
-        $zones2[$checkupIndex] = [];
-        if ($healthZone2->zone2_normal) { $zones2[$checkupIndex][] = 'ปกติ'; }
-        if ($healthZone2->zone2_risk_group) { $zones2[$checkupIndex][] = 'กลุ่มเสี่ยง'; }
-        if ($healthZone2->zone2_good_control) { $zones2[$checkupIndex][] = 'คุมได้ดี'; }
-        if ($healthZone2->zone2_watch_out) { $zones2[$checkupIndex][] = 'เฝ้าระวัง'; }
-        if ($healthZone2->zone2_danger) { $zones2[$checkupIndex][] = 'อันตราย'; }
-        if ($healthZone2->zone2_critical) { $zones2[$checkupIndex][] = 'วิกฤต'; }
-        if ($healthZone2->zone2_complications) { $zones2[$checkupIndex][] = 'โรคแทรกซ้อน'; }
-        if ($healthZone2->zone2_heart) { $zones2[$checkupIndex][] = 'หัวใจ'; }
-        if ($healthZone2->zone2_eye) { $zones2[$checkupIndex][] = 'ตา'; }
-    }
+    $diseases = Disease::where('recorddata_id', $recorddata->id)
+    ->orderBy('created_at', 'desc')
+    ->get();
 
-    $zones = array_map(function ($zone) {
-        return implode(' ', $zone);
-    }, $zones);
-
-    $zones2 = array_map(function ($zone) {
-        return implode(' ', $zone);
-    }, $zones2);
-
-    
     $diseases = Disease::where('recorddata_id', $recorddata->id)
         ->orderBy('created_at', 'desc')
         ->get();
-    if ($diseases->isEmpty()) {
-        return back()->with('error', 'ไม่พบข้อมูลโรค');
-    }
 
-    $diseaseNames = [];
-    foreach ($diseases as $disease) {
-        if ($disease->diabetes) $diseaseNames[] = 'เบาหวาน';
-        if ($disease->cerebral_artery) $diseaseNames[] = 'หลอดเลือดสมอง';
-        if ($disease->kidney) $diseaseNames[] = 'ไต';
-        if ($disease->blood_pressure) $diseaseNames[] = 'ความดันโลหิตสูง';
-        if ($disease->heart) $diseaseNames[] = 'หัวใจ';
-        if ($disease->eye) $diseaseNames[] = 'ตา';
-        if ($disease->other) $diseaseNames[] = 'อื่น ๆ';
-    }
+    $diseaseNames = $diseases->map(function ($disease) { 
+        $names = [];
+        if ($disease->diabetes == 1) $names[] = 'เบาหวาน';
+        if ($disease->cerebral_artery == 1) $names[] = 'หลอดเลือดสมอง';
+        if ($disease->kidney == 1) $names[] = 'ไต';
+        if ($disease->blood_pressure == 1) $names[] = 'ความดันโลหิตสูง';
+        if ($disease->heart == 1) $names[] = 'หัวใจ';
+        if ($disease->eye == 1) $names[] = 'ตา';
+        if ($disease->other == 1) $names[] = 'อื่น ๆ';
+        return ['id' => $disease->id, 'names' => implode(' ', $names)];
+    });
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $id)
         ->orderBy('created_at', 'desc')
         ->get();
+    //dd($lifestyles);
 
-    $lifestyleshabit = [];
-    foreach ($lifestyles as $lifestyle) {
+    $lifestylesHabit = $lifestyles->map(function ($lifestyle) { 
+        $lifestyleshabit = [];
         if ($lifestyle->drink) $lifestyleshabit[] = 'ดื่ม';
         if ($lifestyle->drink_sometimes) $lifestyleshabit[] = 'ดื่มบ้างบางครั้ง';
         if ($lifestyle->dont_drink) $lifestyleshabit[] = 'ไม่ดื่ม';
@@ -323,33 +314,48 @@ public function edit($id, Request $request)
         if ($lifestyle->troubled) $lifestyleshabit[] = 'ทุกข์ใจ ซึม เศร้า';
         if ($lifestyle->dont_live) $lifestyleshabit[] = 'ไม่อยากมีชีวิตอยู่';
         if ($lifestyle->bored) $lifestyleshabit[] = 'เบื่อ';
-    }
+    
+        // Return an array with 'id' and 'lifestyleshabit' as a string
+        return [
+            'id' => $lifestyle->id, 
+            'lifestyleshabit' => implode(' ', $lifestyleshabit) // Join the array into a string
+        ];
+    });
+    
+    //dd($lifestylesHabit); // Check the output
+
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $id)
         ->orderBy('created_at', 'desc')
         ->get();
 
+$elderlyInfo = $elderlyInfos->map(function ($info) { 
     $elderly = [];
-    foreach ($elderlyInfos as $info) {
-        if ($info->help_yourself) $elderly[] = 'ช่วยเหลือตัวเองได้';
-        if ($info->can_help) $elderly[] = 'ได้';
-        if ($info->cant_help) $elderly[] = 'ไม่ได้';
-        if ($info->caregiver) $elderly[] = 'ผู้ดูแล';
-        if ($info->have_caregiver) $elderly[] = 'มีผู้ดูแล';
-        if ($info->no_caregiver) $elderly[] = 'ไม่มี';
-        if ($info->group1) $elderly[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
-        if ($info->group2) $elderly[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
-        if ($info->group3) $elderly[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
-        if ($info->house) $elderly[] = 'ติดบ้าน';
-        if ($info->society) $elderly[] = 'ติดสังคม';
-        if ($info->bed_ridden) $elderly[] = 'ติดเตียง';
-    }
+    if ($info->help_yourself) $elderly[] = 'ช่วยเหลือตัวเองได้';
+    if ($info->can_help) $elderly[] = 'ได้';
+    if ($info->cant_help) $elderly[] = 'ไม่ได้';
+    if ($info->caregiver) $elderly[] = 'ผู้ดูแล';
+    if ($info->have_caregiver) $elderly[] = 'มีผู้ดูแล';
+    if ($info->no_caregiver) $elderly[] = 'ไม่มี';
+    if ($info->group1) $elderly[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
+    if ($info->group2) $elderly[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
+    if ($info->group3) $elderly[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
+    if ($info->house) $elderly[] = 'ติดบ้าน';
+    if ($info->society) $elderly[] = 'ติดสังคม';
+    if ($info->bed_ridden) $elderly[] = 'ติดเตียง';
+
+    return [
+        'id' => $info->id, 
+        'lifestyleshabit' => implode(' ', $elderly)
+    ];
+});
 
     return view('admin.editrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestyleshabit', 'elderly', 'user'
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 
     ));
 }
+
 
 
 public function searchByDate(Request $request)
@@ -470,7 +476,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     }
     //dd($checkup_id);
     //$checkup = Checkup::findOrFail($checkup_id);
-
+    $userList = User::where('role', 'แอดมิน')->get();
     $users = User::where('id', $recorddata->user_id)->first();
 
     if (!$users) {
@@ -593,7 +599,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ส่งข้อมูลไปยังหน้า view
     return view('admin.editrecord_general_information', compact(
         'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'zones', 'zones2', 
-        'diseases', 'lifestyles', 'elderlyInfos', 'users' ,'checkup_id' ,  
+        'diseases', 'lifestyles', 'elderlyInfos', 'users' ,'checkup_id' , 'userList'
     ));
 }
 
@@ -687,7 +693,6 @@ public function update_general_information(Request $request, $recorddata_id, $ch
         return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
     }
 
-
     // ค้นหา LifestyleHabit และอัปเดต
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)->first();
     if ($lifestyles) {
@@ -770,17 +775,51 @@ public function edit_form()
 
 public function update_record(Request $request) 
 {
-    // รับข้อมูลฟิลด์ที่ต้องการเพิ่มใหม่
     $extra_fields = $request->input('extra_fields');
-    
+
     if ($extra_fields) {
+        // สร้าง array ที่เก็บข้อมูลที่ต้องการจะบันทึก
+        $extra_data = [];
+
         foreach ($extra_fields as $field) {
-            Schema::table('recorddata', function ($table) use ($field) {
-                $table->string($field['value'])->nullable();
-            });
+            // แปลงค่าจาก Unicode เป็นข้อความที่ต้องการ
+            $decoded_value = json_decode('"' . $field['value'] . '"'); // แปลงจาก Unicode เป็นข้อความ
+            $extra_data[] = $decoded_value; // เก็บข้อมูลเป็นค่าล้วน (ไม่เก็บในรูปแบบ key => value)
         }
-        return redirect()->route('recorddata.index')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
+
+        // ดึงข้อมูลทั้งหมดจากตาราง Recorddata
+        $records = Recorddata::all();
+
+        // สร้างตัวแปรเพื่อเก็บค่าที่เกิดขึ้นซ้ำ
+        $duplicate_values = [];
+
+        foreach ($records as $record) {
+            // ถ้ามีค่าใน extra_fields ของ record แล้ว ให้ทำการอัปเดต
+            $existing_extra_fields = json_decode($record->extra_fields, true) ?: [];
+
+            // ตรวจสอบว่าค่าใน extra_data มีค่าไหนที่ซ้ำกับข้อมูลที่มีอยู่ใน extra_fields หรือไม่
+            foreach ($extra_data as $value) {
+                if (in_array($value, $existing_extra_fields)) {
+                    $duplicate_values[] = $value; // ถ้ามีค่าซ้ำ ให้เก็บค่าไว้ใน array
+                }
+            }
+
+            // ถ้ามีค่าซ้ำ ให้ไม่ทำการบันทึกและแจ้งเตือน
+            if (count($duplicate_values) > 0) {
+                return redirect()->back()->with('error', 'ค่าที่ระบุมีอยู่ในฐานข้อมูลแล้ว: ' . implode(', ', $duplicate_values) . '. กรุณาใช้ชื่ออื่น');
+            }
+
+            // รวมข้อมูลใหม่เข้าไปใน extra_fields (ถ้ามีค่าใหม่ก็จะเพิ่ม)
+            $updated_extra_fields = array_merge($existing_extra_fields, $extra_data);
+
+            // แปลงข้อมูลกลับเป็น JSON และบันทึก
+            $record->extra_fields = json_encode($updated_extra_fields, JSON_UNESCAPED_UNICODE);
+            $record->save();
+        }
+
+        return redirect()->route('recorddata.create')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
     }
+    
 
     // รับข้อมูลคอลัมน์ที่ลบ
     $deletedFields = $request->input('deleted_fields');

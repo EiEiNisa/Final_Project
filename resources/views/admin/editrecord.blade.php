@@ -307,7 +307,7 @@ form {
             {{ session('error') }}
         </div>
         @endif
-        
+
         <form action="{{ route('recorddata.update', $recorddata->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -531,44 +531,49 @@ form {
                             <!-- blood pressure zone -->
                             <div class="form-group3">
                                 <label for="health_zone">blood pressure zone</label>
-                                @if (isset($zones[$index]) && is_array($zones[$index]))
                                 <input type="text" class="form-control" id="health_zone_{{ $index }}"
-                                    name="health_zone{{ $index }}" value="{{ implode(' ', $zones[$index]) }}" readonly>
-                                @else
-                                <input type="text" class="form-control" id="health_zone_{{ $index }}"
-                                    name="health_zone{{ $index }}" value="{{ $zones[$index] ?? '' }}" readonly>
-                                @endif
+                                    name="health_zone{{ $index }}"
+                                    value="{{ isset($zones[$index]) ? implode(' ', $zones[$index]) : '' }}" readonly>
                             </div>
+
 
                             <!-- blood pressure zone 2 -->
                             <div class="form-group3">
-                                <label for="health_zone2">blood pressure zone 2</label>
-                                @if (isset($zones2[$index]) && is_array($zones2[$index]))
+                                <label for="health_zone2">blood pressure zone</label>
                                 <input type="text" class="form-control" id="health_zone2_{{ $index }}"
-                                    name="health_zone2[]" value="{{ implode(' ', $zones2[$index]) }}" readonly>
-                                @else
-                                <input type="text" class="form-control" id="health_zone2_{{ $index }}"
-                                    name="health_zone2[]" value="{{ $zones2[$index] ?? '' }}" readonly>
-                                @endif
+                                    name="health_zone2{{ $index }}"
+                                    value="{{ isset($zones2[$index]) ? implode(' ', $zones2[$index]) : '' }}" readonly>
                             </div>
 
-                            <div class="form-group1">
-                                <label for="diseaseNames">โรคประจำตัว</label>
-                                <input type="text" class="form-control" id="diseaseNames" name="diseaseNames"
-                                    value="{{ $diseaseNames[0] ?? '' }}" readonly>
-                            </div>
 
+                            @foreach ($diseaseNames as $disease)
                             <div class="form-group1">
-                                <label for="lifestyleshabit">พฤติกรรม-สุขภาพจิต</label>
-                                <input type="text" class="form-control" id="lifestyleshabit" name="lifestyleshabit"
-                                    value="{{ $lifestyleshabit[0] ?? '' }}" readonly>
+                                <label for="disease_{{ $disease['id'] }}">โรคประจำตัว (ID: {{ $disease['id'] }})</label>
+                                <input type="text" class="form-control" id="disease_{{ $disease['id'] }}"
+                                    name="diseaseNames[]" value="{{ $disease['names'] }}" readonly>
                             </div>
+                            @endforeach
 
+
+                            @foreach ($lifestylesHabit as $lifestyle)
                             <div class="form-group1">
-                                <label for="elderly">ข้อมูลผู้สูงอายุ</label>
-                                <input type="text" class="form-control" id="elderly" name="elderly"
-                                    value="{{ $elderly[0] ?? '' }}" readonly>
+                                <label for="lifestyleshabit_{{ $lifestyle['id'] }}">พฤติกรรม-สุขภาพจิต (ID:
+                                    {{ $lifestyle['id'] }})</label>
+                                <input type="text" class="form-control" id="lifestyleshabit_{{ $lifestyle['id'] }}"
+                                    name="lifestyleshabit[{{ $lifestyle['id'] }}]"
+                                    value="{{ $lifestyle['lifestyleshabit'] ?? '' }}" readonly>
                             </div>
+                            @endforeach
+
+                            @foreach ($elderlyInfo as $info)
+                            <div class="form-group1">
+                                <label for="elderlyhabit_{{ $info['id'] }}">ข้อมูลผู้สูงอายุ (ID:
+                                    {{ $info['id'] }})</label>
+                                <input type="text" class="form-control" id="elderlyhabit_{{ $info['id'] }}"
+                                    name="elderlyhabit[{{ $info['id'] }}]" value="{{ $info['lifestyleshabit'] }}"
+                                    readonly>
+                            </div>
+                            @endforeach
 
                             <div class="form-group">
                                 <label for="user_id">ผู้บันทึกข้อมูล</label>
@@ -581,8 +586,6 @@ form {
                                 class="btn btn-secondary" id="#editBtn">
                                 แก้ไขข้อมูล
                             </a>
-
-
                         </div>
                     </div>
                 </div>
