@@ -87,10 +87,10 @@ class RecorddataController
     $recorddata->save();
 }
 
+dd($recorddata);
 if (!$recorddata) {
     return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
 }
-
 
         $healthRecord = HealthRecord::create([
             'recorddata_id' => $recorddata->id,
