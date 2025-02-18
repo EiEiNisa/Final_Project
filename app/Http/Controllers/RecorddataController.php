@@ -537,13 +537,13 @@ public function update(Request $request, $id)
     }
 
     // ค้นหาตามโรคประจำตัว
-    if ($request->filled('diseases')) {
-        $query->whereHas('disease', function ($q) use ($request) {
-            // ค้นหาผู้ที่มีโรคนี้ โดยเช็คว่าโรคมีค่าคือ 1 (มีโรค)
-            $q->where($request->input('diseases'), 1); // ค่าของโรคที่เลือก (จากฟอร์ม select)
+    if ($request->has('diseases') && $request->diseases != '') {
+        $disease = $request->diseases;
+        $query->whereHas('diseases', function($query) use ($disease) {
+            $query->where($disease, 1); // เช็คว่าโรคนั้นๆ ถูกเลือก
         });
     }
-
+    $disease = $request->input('diseases');
     // ทำการค้นหาจาก query ที่กำหนดและทำการแบ่งหน้า
     $recorddata = $query->orderBy('id', 'desc')->paginate(20);
 

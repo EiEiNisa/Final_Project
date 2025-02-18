@@ -358,26 +358,25 @@ button.btn-primary:hover {
                 </div>
 
                 <div class="form-group">
-                    <label for="diseases">โรคประจำตัว</label>
-                    <select id="diseases" class="form-control" name="diseases">
-                        <option value="">เลือกโรคประจำตัว</option>
-                        @php
-                        $diseases = [
-                        'diabetes' => 'เบาหวาน',
-                        'cerebral_artery' => 'หลอดเลือดสมอง',
-                        'kidney' => 'โรคไต',
-                        'blood_pressure' => 'ความดันโลหิตสูง',
-                        'heart' => 'โรคหัวใจ',
-                        'eye' => 'โรคตา',
-                        'other' => 'โรคอื่นๆ'
-                        ];
-                        @endphp
-                        @foreach($diseases as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
+                <label for="diseases">โรคประจำตัว</label>
+                <select id="diseases" class="form-control" name="diseases">
+                    <option value="">เลือกโรคประจำตัว</option>
+                    @php
+                    $diseases = [
+                    'diabetes' => 'เบาหวาน',
+                    'cerebral_artery' => 'หลอดเลือดสมอง',
+                    'kidney' => 'โรคไต',
+                    'blood_pressure' => 'ความดันโลหิตสูง',
+                    'heart' => 'โรคหัวใจ',
+                    'eye' => 'โรคตา',
+                    'other' => 'โรคอื่นๆ'
+                    ];
+                    @endphp
+                    @foreach($diseases as $key => $value)
+                    <option value="{{ $key }}" {{ request('diseases') == $key ? 'selected' : '' }}>{{ $value }}</option>
+                    @endforeach
+                </select>
+            </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">ค้นหา</button>
                 </div>
