@@ -440,7 +440,7 @@ button.btn-primary:hover {
 
                     <td>
 
-                        <a href="{{ route('recorddata.update', $data->id) }}" type="button"
+                        <a href="{{ route('recorddata.view', $data->id) }}" type="button"
                             class="btn btn-primary btn-sm">
                             <i class="fas fa-eye"></i>
                         </a>

@@ -73,7 +73,7 @@ Route::post('/admin/addrecord', [RecorddataController::class, 'store'])->name('r
 // Route สำหรับการแก้ไขข้อมูล โดยใช้ id
 Route::get('/admin/editrecord/{id}', [RecordDataController::class, 'edit'])->name('recorddata.edit');
 Route::put('/admin/editrecord/{id}', [RecordDataController::class, 'update'])->name('recorddata.update');
-
+Route::get('/User/viewrecord/{id}', [RecordDataController::class, 'view'])->name('recorddata.view');
 Route::delete('/admin/record/{id}', [RecordDataController::class, 'destroy'])->name('recorddata.destroy');
 Route::get('/admin/search', [RecorddataController::class, 'search'])->name('recorddata.search');
 Route::get('/User/search', [RecorddataController::class, 'Usersearch'])->name('recorddata.Usersearch');
