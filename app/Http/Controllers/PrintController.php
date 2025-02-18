@@ -16,9 +16,9 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    dd($id); 
+    //dd($id); 
     $recorddata = Recorddata::find($id); 
-    dd($recorddata->id);
+    //dd($recorddata->id);
 
     $currentYear = Carbon::now()->year;
 
