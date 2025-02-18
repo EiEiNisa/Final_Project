@@ -90,6 +90,12 @@ public function submitForm(Request $request)
     return view('admin.form'); 
 }
 
+public function adminhomepage()
+{
+    return view('admin.homepage');
+}
+
+
 public function recordData()
 {
     return $this->belongsTo(RecordData::class, 'recorddata_id');
