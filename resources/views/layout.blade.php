@@ -26,6 +26,14 @@
             padding: 15px 40px;
         }
 
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.1); /* ปรับกรอบของปุ่ม toggle */
+        }
+
+        .navbar-toggler-icon {
+            background-color: white; /* ปรับสีพื้นหลังของปุ่ม toggle */
+        }
+
         footer {
             display: flex;
             flex-direction: column;
