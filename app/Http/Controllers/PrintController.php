@@ -16,14 +16,12 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    dd($id); // ดูว่า $id ที่ได้รับตรงกับที่กดหรือไม่
-    $recorddata = Recorddata::find($id); // ดึงข้อมูล Recorddata โดย ID
+    dd($id); 
+    $recorddata = Recorddata::find($id); 
     dd($recorddata->id);
 
-    // กำหนดปีปัจจุบัน
     $currentYear = Carbon::now()->year;
 
-    // ดึงข้อมูลจากโมเดลต่างๆ ที่เชื่อมโยงกับ Recorddata ID และกรองปีนี้
     $healthRecords = HealthRecord::where('recorddata_id', $id)
         ->whereYear('created_at', $currentYear)
         ->get();
