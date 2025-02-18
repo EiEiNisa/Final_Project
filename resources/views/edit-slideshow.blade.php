@@ -51,7 +51,7 @@
         <div class="form-group">
             <label for="slide{{ $i }}">สไลด์ {{ $i }}</label>
             <div>
-                <img src="{{ asset('storage/app/public/slides/slide' . $i . '.png') }}" class="slide-preview" alt="Slide {{ $i }} Preview">
+                <img src="{{ asset('public/slides/slide' . $i . '.png') }}" class="slide-preview" alt="Slide {{ $i }} Preview">
             </div>
             <input type="file" class="form-control" id="slide{{ $i }}" name="slide{{ $i }}" accept="image/*">
         </div>

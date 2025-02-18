@@ -139,7 +139,7 @@
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
-                <img src="{{ asset('storage/app/public/slides/slide' . $i . '.png') }}" alt="Slide {{ $i }}">
+                <img src="{{ asset('public/slides/slide' . $i . '.png') }}" alt="Slide {{ $i }}">
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
                         @csrf
