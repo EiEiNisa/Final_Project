@@ -49,7 +49,6 @@ class RecorddataController
     return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata'));
 }
 
-
     public function store(Request $request)
 {
     $extra_fields = $request->input('extra_fields');  
