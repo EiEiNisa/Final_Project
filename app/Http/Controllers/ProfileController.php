@@ -40,7 +40,6 @@ class ProfileController extends Controller
             'password' => 'nullable|min:8|confirmed',
         ]);
 
-
         $user->name = $request->name;
         $user->surname = $request->surname;
         $user->username = $request->username;

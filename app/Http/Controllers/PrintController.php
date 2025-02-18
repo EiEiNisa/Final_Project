@@ -46,8 +46,10 @@ class PrintController extends Controller
         ->whereYear('created_at', $currentYear)
         ->get();
 
-    $user = $recorddata->user;
+    $user = $recorddata-> user_id;
     dd($user);
+
+
     $inspections = collect();
 
     $inspectionCount = max(
