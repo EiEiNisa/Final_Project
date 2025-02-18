@@ -9,15 +9,15 @@ class SlideshowController extends Controller
 {
     public function update(Request $request, $id) {
         if ($request->hasFile('slide')) {
-            $filePath = 'slides/slide' . $id . '.png';
+            $filePath = 'uploads/slide' . $id . '.png'; // เปลี่ยนเป็น uploads
 
             // ลบรูปเก่าก่อน (ถ้ามี)
             if (Storage::exists('public/' . $filePath)) {
                 Storage::delete('public/' . $filePath);
             }
 
-            // อัปโหลดรูปใหม่ (ไม่มีการปรับขนาด)
-            $request->file('slide')->storeAs('public/slides', 'slide' . $id . '.png');
+            // อัปโหลดรูปใหม่
+            $request->file('slide')->storeAs('public/uploads', 'slide' . $id . '.png'); // เปลี่ยนเป็น uploads
 
             return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย!');
         }
@@ -27,7 +27,7 @@ class SlideshowController extends Controller
 
     public function delete($id)
     {
-        $filePath = 'public/slides/slide' . $id . '.png';
+        $filePath = 'public/uploads/slide' . $id . '.png'; // เปลี่ยนเป็น uploads
 
         // ตรวจสอบและลบไฟล์
         if (Storage::exists($filePath)) {
