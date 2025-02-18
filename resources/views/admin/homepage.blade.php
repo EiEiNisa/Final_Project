@@ -139,7 +139,7 @@
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
-                <img src="{{ asset('storage/slides/slide' . $i . '.png') }}" alt="Slide {{ $i }}">
+                <img src="{{ asset('storage/' . $slides->images') }}" alt="Slide {{ $i }}">
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -166,7 +166,7 @@
     <div class="row">
         @foreach($articles as $article)
         <div class="card">
-            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
+            <img src="{{ asset('storage/' . $article->images) }}" alt="{{ $article->title }}">
             <div class="card-body">
                 <h5 class="card-title">{{ $article->title }}</h5>
                 <p class="text-muted">โดย {{ $article->author }} - {{ $article->post_date }}</p>
