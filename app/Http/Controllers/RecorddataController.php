@@ -13,6 +13,7 @@ use App\Models\LifestyleHabit;
 use App\Models\ElderlyInformation;
 use Illuminate\Support\Facades\Schema;
 use App\AnotherNamespace\Checkup;
+use Carbon\Carbon;
 
 class RecorddataController
 {
@@ -56,84 +57,46 @@ class RecorddataController
 
     public function store(Request $request)
 {
-    $validated = $request->validate([
-        // การตรวจสอบค่า (Validation rules)
-        'user_id' => 'required|exists:users,id',
-        'id_card' => 'required|digits:13',
-        'prefix' => 'required|string',
-        'name' => 'required|string|max:255',
-        'surname' => 'required|string|max:255',
-        'housenumber' => 'required|string|max:255',
-        'birthdate' => 'required|date',
-        'age' => 'required|integer|min:0',
-        'blood_group' => 'required|in:A,B,AB,O',
-        'weight' => 'required|numeric|min:0',
-        'height' => 'required|numeric|min:0',
-        'waistline' => 'required|numeric|min:0',
-        'bmi' => 'required|numeric|min:0',
-        'phone' => 'required|numeric|digits:10',
-        'idline' => 'required|string|max:255',
-        
-        'zone1_normal' => 'nullable|boolean',
-        'zone1_risk_group' => 'nullable|boolean',
-        'zone1_good_control' => 'nullable|boolean',
-        'zone1_watch_out' => 'nullable|boolean',
-        'zone1_danger' => 'nullable|boolean',
-        'zone1_critical' => 'nullable|boolean',
-        'zone1_complications' => 'nullable|boolean',
-        'zone1_heart' => 'nullable|boolean',
-        'zone1_cerebrovascular' => 'nullable|boolean',
-        'zone1_kidney' => 'nullable|boolean',
-        'zone1_eye' => 'nullable|boolean',
-        'zone1_foot' => 'nullable|boolean',
+    // รับค่า extra_fields
+$extra_fields = $request->input('extra_fields');  
 
-        'zone2_normal' => 'nullable|boolean',
-        'zone2_risk_group' => 'nullable|boolean',
-        'zone2_good_control' => 'nullable|boolean',
-        'zone2_watch_out' => 'nullable|boolean',
-        'zone2_danger' => 'nullable|boolean',
-        'zone2_critical' => 'nullable|boolean',
-        'zone2_complications' => 'nullable|boolean',
-        'zone2_heart' => 'nullable|boolean',
-        'zone2_eye' => 'nullable|boolean',
-    ]);
+// ตรวจสอบว่า extra_fields มีข้อมูลหรือไม่
+if (isset($extra_fields) && is_array($extra_fields)) {
+    $formatted_extra_fields = [];
 
-    $extra_fields = $request->input('extra_fields');  // ได้ array ที่ซ้อนกัน
-    //$extra_fields = $request->input('extra_fields.extra_fields');  // ถ้า extra_fields ถูกซ้อนภายใน
-
-    // ตรวจสอบว่า extra_fields มีข้อมูลที่คาดหวังหรือไม่
-    if (isset($extra_fields) && is_array($extra_fields)) {
-        $recorddata = Recorddata::firstOrCreate(
-            ['id_card' => $request->input('id_card')],
-            [
-                'prefix' => $request->input('prefix'),
-                'name' => $request->input('name'),
-                'surname' => $request->input('surname'),
-                'housenumber' => $request->input('housenumber'),
-                'birthdate' => $request->input('birthdate'),
-                'age' => (int) $request->input('age'),
-                'blood_group' => $request->input('blood_group'),
-                'weight' => (float) $request->input('weight'),
-                'height' => (float) $request->input('height'),
-                'waistline' => (float) $request->input('waistline'),
-                'bmi' => (float) $request->input('bmi'),
-                'phone' => $request->input('phone'),
-                'idline' => $request->input('idline'),
-                'user_id' => $request->user_id,
-            ]
-        );
-    
-        // เพิ่มค่าฟิลด์จาก extra_fields ใน Recorddata
-        foreach ($extra_fields as $field => $value) {
-            $recorddata->{$field} = $value;
-        }
+    // แปลงโครงสร้างข้อมูลให้เป็น [{ "label": "ชื่อเดิม", "value": "ค่าเดิม" }]
+    foreach ($extra_fields as $key => $value) {
+        $formatted_extra_fields[] = [
+            'label' => $key,  // กำหนด label จาก key ของ array เดิม
+            'value' => $value // กำหนด value จากค่าของ array เดิม
+        ];
     }
 
-        // ตอนนี้ $recorddata ถูกสร้างแล้ว
-        foreach ($extra_fields as $field => $value) {
-            // เพิ่มค่าฟิลด์ใหม่ในข้อมูลที่ต้องการบันทึก
-            $recorddata->{$field} = $value;  // ใส่ค่าในโมเดล
-        }
+    // ค้นหาหรือสร้างข้อมูลใน Recorddata
+    $recorddata = Recorddata::firstOrCreate(
+        ['id_card' => $request->input('id_card')],
+        [
+            'prefix' => $request->input('prefix'),
+            'name' => $request->input('name'),
+            'surname' => $request->input('surname'),
+            'housenumber' => $request->input('housenumber'),
+            'birthdate' => $request->input('birthdate'),
+            'age' => (int) $request->input('age'),
+            'blood_group' => $request->input('blood_group'),
+            'weight' => (float) $request->input('weight'),
+            'height' => (float) $request->input('height'),
+            'waistline' => (float) $request->input('waistline'),
+            'bmi' => (float) $request->input('bmi'),
+            'phone' => $request->input('phone'),
+            'idline' => $request->input('idline'),
+            'user_id' => $request->user_id,
+        ]
+    );
+
+    // แปลง extra_fields เป็น JSON และบันทึก
+    $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
+    $recorddata->save();
+}
 
         
         $healthRecord = HealthRecord::create([
@@ -233,7 +196,7 @@ public function edit($id, Request $request)
         $searchDate = \Carbon\Carbon::createFromFormat('Y-m-d', $searchDate)->toDateString();
         $healthRecordsQuery->whereDate('created_at', $searchDate);
     }
-    
+
     $healthRecords = $healthRecordsQuery->orderBy('created_at', 'desc')->get();
     if ($healthRecords->isEmpty()) {
         return back()->with('error', 'ไม่พบข้อมูล healthRecords');
@@ -297,6 +260,7 @@ public function edit($id, Request $request)
         if ($disease->other == 1) $names[] = 'อื่น ๆ';
         return ['id' => $disease->id, 'names' => implode(' ', $names)];
     });
+    //dd($diseaseNames); 
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $id)
         ->orderBy('created_at', 'desc')
@@ -404,6 +368,7 @@ public function update(Request $request, $id)
     
     $data->save();
 
+
     return redirect()->route('recorddata.index')->with('success', 'ข้อมูลถูกบันทึกแล้ว');
 }
 
@@ -483,18 +448,17 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         return back()->with('error', 'ไม่พบข้อมูลผู้ใช้');
     }
 
-    $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
-                             ->where('id', $checkup_id)
-                             ->first();
+    $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)->first();
+//dd($healthRecord);
 
-    if (!$healthRecord) {
-        return back()->with('error', 'ไม่พบข้อมูล healthRecord');
-    }
+if (!$healthRecord) {
+    return back()->with('error', 'ไม่พบข้อมูล healthRecord');
+}
 
     // ค้นหา healthZone ตาม recorddata_id
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                    ->where('id', $checkup_id)
                     ->first();
+                    //dd($healthZone);
     if ($healthZone) {
         $zones = [
             'zone1_normal' => ['value' => $healthZone->zone1_normal, 'label' => 'ปกติ'],
@@ -516,7 +480,6 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
     // ค้นหา healthZone2 ตาม recorddata_id
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                    ->where('id', $checkup_id)
                     ->first();
     if ($healthZone2) {
         $zones2 = [
@@ -536,7 +499,6 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
     // ค้นหา diseases ตาม recorddata_id
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                ->where('id', $checkup_id)
                 ->first();
 
     if ($diseases) {
@@ -555,7 +517,6 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
     // ค้นหา lifestyles ตาม recorddata_id
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                    ->where('id', $checkup_id)
                     ->first();
     if ($lifestyles) {
         $lifestyles = [
@@ -575,7 +536,6 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
     // ค้นหา elderlyInfos ตาม recorddata_id
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                        ->where('id', $checkup_id)
                         ->first();
     if ($elderlyInfos) {
         $elderlyInfos = [
@@ -604,137 +564,168 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 }
 
 
-public function update_general_information(Request $request, $recorddata_id, $checkup_id)
+public function update_general_information(Request $request, $recorddata_id = null, $checkup_id = null) 
 {
-
+    
     //dd($request->all());
+    //dd($recorddata_id, $checkup_id);
 
-    // ค้นหา recorddata โดยใช้ recorddata_id
-    $recorddata = Recorddata::findOrFail($recorddata_id);
+    // หากมี recorddata_id และ checkup_id ให้ทำการอัพเดตข้อมูล
+    if ($recorddata_id && $checkup_id) {
+        // ค้นหา recorddata โดยใช้ recorddata_id
+        $recorddata = Recorddata::findOrFail($recorddata_id);
 
-    if (!$recorddata->user_id) {
-        return back()->with('error', 'ไม่พบ user_id');
-    }
+        if (!$recorddata->user_id) {
+            return back()->with('error', 'ไม่พบ user_id');
+        }
 
-    //dd($checkup_id);
-    // ค้นหา healthRecord โดยใช้ recorddata_id และ checkup_id
-    $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
-                                 ->where('id', $checkup_id)
-                                 ->first();
+        // ค้นหา healthRecord โดยใช้ recorddata_id และ checkup_id
+        $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
 
-    if (!$healthRecord) {
-        return back()->with('error', 'ไม่พบข้อมูล healthRecords');
-    }
+                                    ->first();
+//dd($healthRecord);
+        if (!$healthRecord) {
+            return back()->with('error', 'ไม่พบข้อมูล healthRecords');
+        }
 
-    $healthRecord->update([
+        $updated = $healthRecord->update([
             'sys' => $request->input('sys'),
             'dia' => $request->input('dia'),
             'pul' => $request->input('pul'),
             'body_temp' => $request->input('body_temp'),
             'blood_oxygen' => $request->input('blood_oxygen'),
             'blood_level' => $request->input('blood_level'),
-    ]);
-
-    $healthZone = HealthZone::where('recorddata_id', $recorddata_id)->first();
-    if ($healthZone) {
-        $healthZone->update([
-        'zone1_normal' => $request->has('zone1_normal') ? 1 : 0,
-        'zone1_risk_group' => $request->has('zone1_risk_group') ? 1 : 0,
-        'zone1_good_control' => $request->has('zone1_good_control') ? 1 : 0,
-        'zone1_watch_out' => $request->has('zone1_watch_out') ? 1 : 0,
-        'zone1_danger' => $request->has('zone1_danger') ? 1 : 0,
-        'zone1_critical' => $request->has('zone1_critical') ? 1 : 0,
-        'zone1_complications' => $request->has('zone1_complications') ? 1 : 0,
-        'zone1_heart' => $request->has('zone1_heart') ? 1 : 0,
-        'zone1_cerebrovascular' => $request->has('zone1_cerebrovascular') ? 1 : 0,
-        'zone1_kidney' => $request->has('zone1_kidney') ? 1 : 0,
-        'zone1_eye' => $request->has('zone1_eye') ? 1 : 0,
-        'zone1_foot' => $request->has('zone1_foot') ? 1 : 0,
-        ]);
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล health_zone');
-    }
-
-    // ค้นหา healthZone2 และอัปเดต
-    $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)->first();
-    if ($healthZone2) {
-        $healthZone2->update([
-            'zone2_normal' => $request->has('zone2_normal') ? 1 : 0,
-            'zone2_risk_group' => $request->has('zone2_risk_group') ? 1 : 0,
-            'zone2_good_control' => $request->has('zone2_good_control') ? 1 : 0,
-            'zone2_watch_out' => $request->has('zone2_watch_out') ? 1 : 0,
-            'zone2_danger' => $request->has('zone2_danger') ? 1 : 0,
-            'zone2_critical' => $request->has('zone2_critical') ? 1 : 0,
-            'zone2_complications' => $request->has('zone2_complications') ? 1 : 0,
-            'zone2_heart' => $request->has('zone2_heart') ? 1 : 0,
-            'zone2_eye' => $request->has('zone2_eye') ? 1 : 0,
-
-        ]);
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล health_zone2');
-    }
-
-    // ค้นหา diseases และอัปเดต
-    $diseases = Disease::where('recorddata_id', $recorddata_id)->first();
-    if ($diseases) {
-        $updatediseases = $diseases->update([
-            'diabetes' => $request->input('diabetes', 0),
-            'cerebral_artery' => $request->input('cerebral_artery', 0),
-            'kidney' => $request->input('kidney', 0),
-            'blood_pressure' => $request->input('blood_pressure', 0),
-            'heart' => $request->input('heart', 0),
-            'eye' => $request->input('eye', 0),
-            'other' => $request->input('other', 0),
         ]);
         
-        //dd($updated); // ค่าควรเป็น true ถ้าอัปเดตสำเร็จ
+        //dd($updated);
         
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
+        // อัปเดตข้อมูล HealthZone
+        $healthZone = HealthZone::where('recorddata_id', $recorddata_id)->first();
+        if ($healthZone) {
+            $healthZone->update([
+                'zone1_normal' => $request->has('zone1_normal') ? 1 : 0,
+                'zone1_risk_group' => $request->has('zone1_risk_group') ? 1 : 0,
+                'zone1_good_control' => $request->has('zone1_good_control') ? 1 : 0,
+                'zone1_watch_out' => $request->has('zone1_watch_out') ? 1 : 0,
+                'zone1_danger' => $request->has('zone1_danger') ? 1 : 0,
+                'zone1_critical' => $request->has('zone1_critical') ? 1 : 0,
+                'zone1_complications' => $request->has('zone1_complications') ? 1 : 0,
+                'zone1_heart' => $request->has('zone1_heart') ? 1 : 0,
+                'zone1_cerebrovascular' => $request->has('zone1_cerebrovascular') ? 1 : 0,
+                'zone1_kidney' => $request->has('zone1_kidney') ? 1 : 0,
+                'zone1_eye' => $request->has('zone1_eye') ? 1 : 0,
+                'zone1_foot' => $request->has('zone1_foot') ? 1 : 0,
+            ]);
+        } else {
+            return back()->with('error', 'ไม่พบข้อมูล health_zone');
+        }
+
+        // อัปเดตข้อมูล HealthZone2
+        $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)->first();
+        if ($healthZone2) {
+            $healthZone2->update([
+                'zone2_normal' => $request->has('zone2_normal') ? 1 : 0,
+                'zone2_risk_group' => $request->has('zone2_risk_group') ? 1 : 0,
+                'zone2_good_control' => $request->has('zone2_good_control') ? 1 : 0,
+                'zone2_watch_out' => $request->has('zone2_watch_out') ? 1 : 0,
+                'zone2_danger' => $request->has('zone2_danger') ? 1 : 0,
+                'zone2_critical' => $request->has('zone2_critical') ? 1 : 0,
+                'zone2_complications' => $request->has('zone2_complications') ? 1 : 0,
+                'zone2_heart' => $request->has('zone2_heart') ? 1 : 0,
+                'zone2_eye' => $request->has('zone2_eye') ? 1 : 0,
+            ]);
+        } else {
+            return back()->with('error', 'ไม่พบข้อมูล health_zone2');
+        }
+
+        // อัปเดตข้อมูล Diseases
+        $diseases = Disease::where('recorddata_id', $recorddata_id)->first();
+        if ($diseases) {
+            $diseases->update([
+                'diabetes' => $request->input('diabetes', 0),
+                'cerebral_artery' => $request->input('cerebral_artery', 0),
+                'kidney' => $request->input('kidney', 0),
+                'blood_pressure' => $request->input('blood_pressure', 0),
+                'heart' => $request->input('heart', 0),
+                'eye' => $request->input('eye', 0),
+                'other' => $request->input('other', 0),
+            ]);
+        } else {
+            return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
+        }
+
+        // อัปเดตข้อมูล LifestyleHabit
+        $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)->first();
+        if ($lifestyles) {
+            $lifestyles->update([
+                'drink' => $request->input('drink', 0),
+                'drink_sometimes' => $request->input('drink_sometimes', 0),
+                'dont_drink' => $request->input('dont_drink', 0),
+                'smoke' => $request->input('smoke', 0),
+                'sometime_smoke' => $request->input('sometime_smoke', 0),
+                'dont_smoke' => $request->input('dont_smoke', 0),
+                'troubled' => $request->input('troubled', 0),
+                'dont_live' => $request->input('dont_live', 0),
+                'bored' => $request->input('bored', 0),
+            ]);
+        } else {
+            return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
+        }
+
+        // อัปเดตข้อมูล ElderlyInformation
+        $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)->first();
+        if ($elderlyInfos) {
+            $elderlyInfos->update([
+                'help_yourself' => $request->input('help_yourself', 0),
+                'can_help' => $request->input('can_help', 0),
+                'cant_help' => $request->input('cant_help', 0),
+                'caregiver' => $request->input('caregiver', 0),
+                'have_caregiver' => $request->input('have_caregiver', 0),
+                'no_caregiver' => $request->input('no_caregiver', 0),
+                'group1' => $request->input('group1', 0),
+                'group2' => $request->input('group2', 0),
+                'group3' => $request->input('group3', 0),
+                'house' => $request->input('house', 0),
+                'society' => $request->input('society', 0),
+                'bed_ridden' => $request->input('bed_ridden', 0),
+            ]);
+        } else {
+            return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
+        }
+
+        return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
     }
 
-    // ค้นหา LifestyleHabit และอัปเดต
-    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)->first();
-    if ($lifestyles) {
-        $updatelifestyles = $lifestyles->update([
-            'drink' => $request->input('drink', 0),
-            'drink_sometimes' => $request->input('drink_sometimes', 0),
-            'dont_drink' => $request->input('dont_drink', 0),
-            'smoke' => $request->input('smoke', 0),
-            'sometime_smoke' => $request->input('sometime_smoke', 0),
-            'dont_smoke' => $request->input('dont_smoke', 0),
-            'troubled' => $request->input('troubled', 0),
-            'dont_live' => $request->input('dont_live', 0),
-            'bored' => $request->input('bored', 0),
-        ]);
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
-    }
+    // หากไม่มี recorddata_id และ checkup_id ให้ทำการค้นหาข้อมูลด้วย id_card
+    else {
+        try {
+            $idCard = $request->input('id_card');
+            $data = Recorddata::where('id_card', $idCard)->first();
 
-    // ค้นหา ElderlyInformation และอัปเดต
-    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)->first();
-    if ($elderlyInfos) {
-        $updateelderlyInfos = $elderlyInfos->update([
-            'help_yourself' => $request->input('help_yourself', 0),
-            'can_help' => $request->input('can_help', 0),
-            'cant_help' => $request->input('cant_help', 0),
-            'caregiver' => $request->input('caregiver', 0),
-            'have_caregiver' => $request->input('have_caregiver', 0),
-            'no_caregiver' => $request->input('no_caregiver', 0),
-            'group1' => $request->input('group1', 0),
-            'group2' => $request->input('group2', 0),
-            'group3' => $request->input('group3', 0),
-            'house' => $request->input('house', 0),
-            'society' => $request->input('society', 0),
-            'bed_ridden' => $request->input('bed_ridden', 0),
-        ]);
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
+            if ($data) {
+                // ส่งกลับเป็น JSON
+                return response()->json([
+                    'success' => true,
+                    'data' => $data,
+                ]);
+            } else {
+                // ถ้าไม่พบข้อมูล ส่งกลับ JSON ที่บอกว่าไม่พบข้อมูล
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ไม่พบข้อมูล',
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Search ID Card error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage(),
+            ]);
+        }
     }
-    return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
 }
 
-    public function searchIdCard(Request $request)
+public function searchIdCard(Request $request)
 {
     try {
         $idCard = $request->input('id_card');
@@ -762,65 +753,114 @@ public function update_general_information(Request $request, $recorddata_id, $ch
     }
 }
 
+
 public function edit_form()
 {
+    // ดึงรายชื่อคอลัมน์
     $columns = Schema::getColumnListing('recorddata');
 
+    // กำหนดคอลัมน์ที่ไม่ต้องการ
     $excludeColumns = ['user_id', 'created_at', 'updated_at', 'file_name', 'file_path', 'id'];
 
+    // กรองคอลัมน์
     $columns = array_diff($columns, $excludeColumns);
 
-    return view('admin.edit_form_record', compact('columns'));
+    // ดึงข้อมูลจากฐานข้อมูล (ถ้าต้องการ)
+    $recorddata = Recorddata::first();  // ดึงข้อมูลตัวอย่างจากฐานข้อมูล
+
+    // ดึง extra_fields และแปลงจาก JSON เป็น Array
+    $extra_fields = json_decode($recorddata->extra_fields, true) ?: [];
+
+    // กำหนด label ที่ต้องการ
+    $labels = [
+        'surname' => 'นามสกุล',
+        'name' => 'ชื่อ',
+        'id_card' => 'เลขบัตรประจำตัวประชาชน',
+        'prefix' => 'คำนำหน้าชื่อ',
+        'housenumber' => 'บ้านเลขที่',
+        'birthdate' => 'วัน / เดือน / ปีเกิด',
+        'age' => 'อายุ',
+        'blood_group' => 'กรุ๊ปเลือด',
+        'weight' => 'น้ำหนัก',
+        'height' => 'ส่วนสูง',
+        'waistline' => 'รอบเอว',
+        'bmi' => 'ดัชนีมวล BMI',
+        'phone' => 'เบอร์โทรศัพท์',
+        'idline' => 'ID Line',
+
+    ];
+
+    // ส่งข้อมูลไปที่ View
+    return view('admin.edit_form_record', compact('columns', 'extra_fields', 'recorddata', 'labels'));
 }
+
+
 
 public function update_record(Request $request) 
 {
     $extra_fields = $request->input('extra_fields');
 
     if ($extra_fields) {
-        // สร้าง array ที่เก็บข้อมูลที่ต้องการจะบันทึก
-        $extra_data = [];
+    // สร้าง array ที่เก็บข้อมูลที่ต้องการจะบันทึก
+    $extra_data = [];
 
-        foreach ($extra_fields as $field) {
+    foreach ($extra_fields as $field) {
+        // ตรวจสอบให้มั่นใจว่า $field เป็น array และมี 'value' และ 'label'
+        if (is_array($field) && isset($field['value']) && isset($field['label'])) {
             // แปลงค่าจาก Unicode เป็นข้อความที่ต้องการ
             $decoded_value = json_decode('"' . $field['value'] . '"'); // แปลงจาก Unicode เป็นข้อความ
-            $extra_data[] = $decoded_value; // เก็บข้อมูลเป็นค่าล้วน (ไม่เก็บในรูปแบบ key => value)
-        }
+            $decoded_label = json_decode('"' . $field['label'] . '"'); // แปลงจาก Unicode เป็นข้อความ
 
-        // ดึงข้อมูลทั้งหมดจากตาราง Recorddata
-        $records = Recorddata::all();
-
-        // สร้างตัวแปรเพื่อเก็บค่าที่เกิดขึ้นซ้ำ
-        $duplicate_values = [];
-
-        foreach ($records as $record) {
-            // ถ้ามีค่าใน extra_fields ของ record แล้ว ให้ทำการอัปเดต
-            $existing_extra_fields = json_decode($record->extra_fields, true) ?: [];
-
-            // ตรวจสอบว่าค่าใน extra_data มีค่าไหนที่ซ้ำกับข้อมูลที่มีอยู่ใน extra_fields หรือไม่
-            foreach ($extra_data as $value) {
-                if (in_array($value, $existing_extra_fields)) {
-                    $duplicate_values[] = $value; // ถ้ามีค่าซ้ำ ให้เก็บค่าไว้ใน array
-                }
+            // ตรวจสอบว่าเป็น array แล้วแปลงเป็น string ถ้าจำเป็น
+            if (is_array($decoded_value)) {
+                $decoded_value = json_encode($decoded_value);
             }
 
-            // ถ้ามีค่าซ้ำ ให้ไม่ทำการบันทึกและแจ้งเตือน
-            if (count($duplicate_values) > 0) {
-                return redirect()->back()->with('error', 'ค่าที่ระบุมีอยู่ในฐานข้อมูลแล้ว: ' . implode(', ', $duplicate_values) . '. กรุณาใช้ชื่ออื่น');
+            if (is_array($decoded_label)) {
+                $decoded_label = json_encode($decoded_label);
             }
 
-            // รวมข้อมูลใหม่เข้าไปใน extra_fields (ถ้ามีค่าใหม่ก็จะเพิ่ม)
-            $updated_extra_fields = array_merge($existing_extra_fields, $extra_data);
-
-            // แปลงข้อมูลกลับเป็น JSON และบันทึก
-            $record->extra_fields = json_encode($updated_extra_fields, JSON_UNESCAPED_UNICODE);
-            $record->save();
+            // เก็บข้อมูลที่ได้
+            $extra_data[] = ['label' => $decoded_label, 'value' => $decoded_value];
+        } else {
+            // หาก $field ไม่ใช่ array หรือไม่มี 'value' และ 'label' ให้ข้ามการทำงานนี้
+            continue;
         }
-
-        return redirect()->route('recorddata.create')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
     }
-    
 
+    // ดึงข้อมูลทั้งหมดจากตาราง Recorddata
+    $records = Recorddata::all();
+
+    // สร้างตัวแปรเพื่อเก็บค่าที่เกิดขึ้นซ้ำ
+    $duplicate_values = [];
+
+    foreach ($records as $record) {
+        // ถ้ามีค่าใน extra_fields ของ record แล้ว ให้ทำการอัปเดต
+        $existing_extra_fields = json_decode($record->extra_fields, true) ?: [];
+
+        // ตรวจสอบว่าค่าใน extra_data มีค่าไหนที่ซ้ำกับข้อมูลที่มีอยู่ใน extra_fields หรือไม่
+        foreach ($extra_data as $data) {
+            $value = $data['value']; // ค่า value
+            if (in_array($value, $existing_extra_fields)) {
+                $duplicate_values[] = $value; // ถ้ามีค่าซ้ำ ให้เก็บค่าไว้ใน array
+            }
+        }
+
+        // ถ้ามีค่าซ้ำ ให้ไม่ทำการบันทึกและแจ้งเตือน
+        if (count($duplicate_values) > 0) {
+            return redirect()->back()->with('error', 'ค่าที่ระบุมีอยู่ในฐานข้อมูลแล้ว: ' . implode(', ', $duplicate_values) . '. กรุณาใช้ชื่ออื่น');
+        }
+
+        // รวมข้อมูลใหม่เข้าไปใน extra_fields (ถ้ามีค่าใหม่ก็จะเพิ่ม)
+        $updated_extra_fields = array_merge($existing_extra_fields, $extra_data);
+
+        // แปลงข้อมูลกลับเป็น JSON และบันทึก
+        $record->extra_fields = json_encode($updated_extra_fields, JSON_UNESCAPED_UNICODE);
+        $record->save();
+    }
+
+    return redirect()->route('recorddata.create')->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
+}
     // รับข้อมูลคอลัมน์ที่ลบ
     $deletedFields = $request->input('deleted_fields');
 
@@ -840,6 +880,38 @@ public function update_record(Request $request)
     return redirect()->back()->with('error', 'เกิดข้อผิดพลาด');
 }
 
+public function deleteExtraField(Request $request)
+{
+    // รับค่า label ที่จะลบ
+    $label = $request->input('label');
+
+    // ดึงข้อมูลทุก recorddata ที่มี extra_fields
+    $recorddata = Recorddata::all();  // ดึงทุก recorddata
+
+    // ตรวจสอบหากไม่พบข้อมูล
+    if ($recorddata->isEmpty()) {
+        return response()->json(['message' => 'ไม่พบข้อมูล'], 404);
+    }
+
+    // ลบข้อมูลใน extra_fields สำหรับทุก recorddata ที่มี label ตรงกัน
+    foreach ($recorddata as $data) {
+        // แปลง extra_fields จาก JSON เป็น array
+        $extra_fields = json_decode($data->extra_fields, true);
+
+        // ลบข้อมูลที่มี label ตรงกัน
+        $extra_fields = array_filter($extra_fields, function($field) use ($label) {
+            return $field['label'] !== $label;
+        });
+
+        // รีเซ็ตค่า array ที่ลบ
+        $data->extra_fields = json_encode(array_values($extra_fields));
+
+        // บันทึกข้อมูลใหม่ในฐานข้อมูล
+        $data->save();
+    }
+
+    return response()->json(['success' => true]);
+}
 
 
 public function edit_form_general_information()

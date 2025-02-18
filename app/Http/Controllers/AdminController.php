@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Article;
+use App\Models\RecordData;
+use App\Models\HealthZone;
+use App\Models\Disease;
+use App\Models\ElderlyInformation;
 
 class AdminController extends Controller
 {
@@ -53,5 +58,40 @@ public function changeRole($id)
     $user->save();
 
     return redirect()->route('admin.manageuser')->with('success', 'สิทธิ์ของผู้ใช้ที่อีเมล ' . $user->email . ' ได้รับการเปลี่ยนแปลงเรียบร้อยแล้ว');
+}
+public function submitForm(Request $request)
+    {
+        // ตรวจสอบข้อมูลที่เข้ามา
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'description' => 'required|string',
+            'post_date' => 'required|date',
+            'author' => 'required|string|max:255',
+        ]);
+    
+        // บันทึกรูปภาพ
+        $imagePath = $request->file('image')->store('images', 'public');
+    
+        // สร้างบทความใหม่
+        Article::create([
+            'title' => $request->input('title'),
+            'image' => $imagePath,
+            'description' => $request->input('description'),
+            'post_date' => $request->input('post_date'),
+            'author' => $request->input('author'),
+        ]);
+    
+        // รีไดเร็กต์กลับพร้อมกับข้อความสำเร็จ
+        return redirect()->route('admin.homepage')->with('success', 'บทความใหม่ได้ถูกเพิ่ม');
+    }
+    public function showForm()
+{
+    return view('admin.form'); // เปลี่ยนชื่อวิวตามที่ต้องการ
+}
+
+public function recordData()
+{
+    return $this->belongsTo(RecordData::class, 'recorddata_id');
 }
 }

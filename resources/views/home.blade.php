@@ -2,199 +2,344 @@
 
 @section('content')
 <style>
-.slideshow-container {
-    max-width: 820px;
-    position: relative;
-    margin: auto;
-}
+    /* Slideshow container */
+    .slideshow-container {
+        max-width: 700px;
+        position: relative;
+        margin: auto;
+        border-radius: 15px;
+        overflow: hidden;
+    }
 
-.mySlides img {
-    width: 100%;
-    height: 450px;
-    object-fit: cover;
-}
+    .mySlides img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
 
-.mySlides {
-    display: none;
-}
+    .mySlides {
+        display: none;
+    }
 
-.prev,
-.next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    margin-top: -22px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-}
+    .prev,
+    .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        margin-top: -22px;
+        padding: 16px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        background-color: rgba(242, 246, 227, 0.5);
+    }
 
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
 
-.prev:hover,
-.next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
+    .prev:hover,
+    .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
 
-.dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-}
+    .dot {
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+    }
 
-.active,
-.dot:hover {
-    background-color: #717171;
-}
+    .active,
+    .dot:hover {
+        background-color: #717171;
+    }
 
-.news-header::before,
-.news-header::after {
-    content: "";
-    position: absolute;
-    top: 95.5%;
-    margin-left: 145px;
-    width: 75%;
-    height: 3px;
-    background-color: #fff;
-}
+    /* Article Slideshow Styles */
+    .article-slideshow-container {
+        max-width: 700px;
+        position: relative;
+        margin: auto;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+        margin-top: 50px;
+    }
 
-.row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 50px;
-    margin-top: 20px;
-}
+    .article-slides {
+        display: none;
+        display: flex;
+        justify-content: space-between;
+    }
 
-.line-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+    .card {
+        width: 32%;
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
 
-.line {
-    flex: 1;
-    height: 4px;
-    background: white;
-}
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        transition: transform 0.3s ease;
+    }
 
-.text {
-    margin: 0 10px;
-    font-size: 24px;
-    color: #020364;
-}
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+
+    .card-title {
+        font-size: 15px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-text {
+        color: #555;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #2c3b77;
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 13px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0099cc;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) { /* For tablets and smaller devices */
+        .slideshow-container {
+            max-width: 100%;
+        }
+
+        .mySlides img {
+            height: 250px; /* Reduced size on mobile */
+        }
+
+        .article-slideshow-container {
+            max-width: 100%;
+        }
+
+        .card {
+            width: 48%;
+            margin-bottom: 15px;
+        }
+
+        .card img {
+            height: 180px; /* Adjust image size */
+        }
+
+        .card-title {
+            font-size: 14px;
+        }
+
+        .card-text {
+            font-size: 12px;
+        }
+
+        .btn-primary {
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        .prev, .next {
+            font-size: 16px;
+            padding: 12px;
+        }
+    }
+
+    @media (max-width: 480px) { /* For small phones */
+        .slideshow-container {
+            max-width: 100%;
+        }
+
+        .mySlides img {
+            height: 200px; /* Further reduced height for small screens */
+        }
+
+        .article-slideshow-container {
+            max-width: 100%;
+        }
+
+        .card {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .card img {
+            height: 150px;
+        }
+
+        .card-title {
+            font-size: 13px;
+        }
+
+        .card-text {
+            font-size: 11px;
+        }
+
+        .btn-primary {
+            font-size: 11px;
+            padding: 8px;
+        }
+
+        .prev, .next {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
 </style>
 
-<!--- Content --->
+<!-- Content -->
 <div class="container py-2">
-    <!--- Slideshow --->
+    <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        <div class="mySlides">
-            <img src="/1.png" alt="Slide 1">
-        </div>
-        <div class="mySlides">
-            <img src="/2.png" alt="Slide 2">
-        </div>
-        <div class="mySlides">
-            <img src="/3.png" alt="Slide 3">
-        </div>
-        <div class="mySlides">
-            <img src="/4.png" alt="Slide 4">
-        </div>
+        @for ($i = 1; $i <= 6; $i++)
+            <div class="mySlides">
+                <img src="{{ asset('storage/slides/slide' . $i . '.png') }}" class="slide-preview" alt="Slide {{ $i }}">
+            </div>
+        @endfor
+    
+        <!-- Next/Prev Buttons -->
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
-
+    
     <!-- Dots -->
     <div style="text-align:center">
-        <span class="dot" onclick="currentSlide(1)"></span>
-        <span class="dot" onclick="currentSlide(2)"></span>
-        <span class="dot" onclick="currentSlide(3)"></span>
-        <span class="dot" onclick="currentSlide(4)"></span>
+        @for ($i = 1; $i <= 6; $i++)
+            <span class="dot" onclick="currentSlide({{ $i }})"></span>
+        @endfor
     </div>
-
-    <!-- JavaScript -->
+    
+    <!-- JavaScript for Image Slideshow -->
     <script>
-    let slideIndex = 1;
-    showSlides(slideIndex);
-
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-
-    function currentSlide(n) {
-        showSlides(slideIndex = n);
-    }
-
-    function showSlides(n) {
-        let i;
-        let slides = document.getElementsByClassName("mySlides");
-        let dots = document.getElementsByClassName("dot");
-        if (n > slides.length) {
-            slideIndex = 1
+        let slideIndex = 1;
+        showSlides(slideIndex);
+    
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
         }
-        if (n < 1) {
-            slideIndex = slides.length
+    
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
         }
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+    
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
         }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
-    }
+        setInterval(function() {
+            plusSlides(1);
+        }, 3000); // Change slide every 3 seconds
     </script>
 
-    <div class="line-container">
-        <div class="text"><strong>ข่าวกิจกรรม</strong></div>
-        <div class="line"></div>
+    <!-- Article Slideshow -->
+    <div class="article-slideshow-container py-3">
+        @php
+            $chunkedArticles = $articles->chunk(3); // Group articles in chunks of 3
+        @endphp
+
+        @foreach($chunkedArticles as $chunk)
+            <div class="article-slides">
+                @foreach($chunk as $article)
+                    <div class="card">
+                        <img src="{{ asset('storage/' . $article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $article->title }}</h5>
+                            <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
+                            <p class="text-muted">ผู้เขียน: {{ $article->author }}</p>
+                            <p class="text-muted">วันที่: {{ $article->post_date }}</p>
+                            <a href="{{ route('guest.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
+    
+        <!-- Next/Prev Buttons for Article Slideshow -->
+        <a class="prev" onclick="plusArticleSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusArticleSlides(1)">&#10095;</a>
     </div>
 
-    <!-- Blog Section -->
-    <div class="row">
-        <div class="card" style="width: 18rem; margin-right: 30px;">
-            <img src="/5.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">โครงการดูแลส่งเสริมสุขภาพ</h5>
-                <p class="card-text">โครงการที่มีเป้าหมายหลักในการยกระดับคุณภาพชีวิตของประชาชนในชุมชนทุ่งเศรษฐี....</p>
-                <a href="#" class="btn btn-primary">ดูเพิ่มเติม</a>
-            </div>
-        </div>
-        <div class="card" style="width: 18rem; margin-right: 30px;">
-            <img src="/6.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">วันพ่อแห่งชาติประจำปี 2567 </h5>
-                <p class="card-text">โครงการวันพ่อแห่งชาติ เป็นกิจกรรมสำคัญเพื่อเฉลิมพระเกียรติพระบาทสมเด็จพระบรมชนกาธิเบศร....</p>
-                <a href="#" class="btn btn-primary">ดูเพิ่มเติม</a>
-            </div>
-        </div>
-        <div class="card" style="width: 18rem; margin-right: 30px;">
-            <img src="/7.png" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">NCD</h5>
-                <p class="card-text">รูปแบบบริการ เชิงนวัตกรรมที่มีการใช้
-                    เทคโนโลยีดิจิทัล สำหรับผู้ป่วยโรคเบา
-                    หวานและโรคความดันโลหิตสูง....</p>
-                <a href="#" class="btn btn-primary">ดูเพิ่มเติม</a>
-            </div>
-        </div>
+    <!-- Dots for Article Slideshow -->
+    <div style="text-align:center">
+        @foreach($chunkedArticles as $index => $chunk)
+            <span class="dot" onclick="currentArticleSlide({{ $index + 1 }})"></span>
+        @endforeach
     </div>
+    
+    <!-- JavaScript for Article Slideshow -->
+    <script>
+        let articleSlideIndex = 1;
+        showArticleSlides(articleSlideIndex);
+    
+        function plusArticleSlides(n) {
+            showArticleSlides(articleSlideIndex += n);
+        }
+    
+        function currentArticleSlide(n) {
+            showArticleSlides(articleSlideIndex = n);
+        }
+    
+        function showArticleSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("article-slides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { articleSlideIndex = 1 }
+            if (n < 1) { articleSlideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[articleSlideIndex - 1].style.display = "flex";
+            dots[articleSlideIndex - 1].className += " active";
+        }
+
+    </script>
+
 </div>
 @endsection

@@ -26,18 +26,23 @@ class Recorddata extends Model
         'bmi', 
         'phone', 
         'idline',
-        'user_id',
-        'extra_fields',
     ];
 
     public function diseases()
 {
     return $this->hasOne(Disease::class, 'recorddata_id', 'id');
 }
+// ในโมเดล RecordData
+public function elderlyInformation() {
+    return $this->hasOne(ElderlyInformation::class);
+}
 
-public function user()
-{
-    return $this->belongsTo(User::class);
+public function disease() {
+    return $this->hasOne(Disease::class);
+}
+
+public function healthZone() {
+    return $this->hasOne(HealthZone::class);
 }
 
 }

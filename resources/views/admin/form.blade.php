@@ -13,7 +13,7 @@
         < กลับสู่หน้าหลัก </a>
             <h2 class="text-center mb-4">เพิ่มบทความใหม่</h2>
             <!-- Form for posting -->
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.form.submit') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="title" class="form-label">ชื่อเรื่อง</label>
@@ -42,6 +42,7 @@
 
                 <button type="submit" class="btn btn-primary">เสร็จสิ้น</button>
             </form>
+            
 </div>
 
 @endsection

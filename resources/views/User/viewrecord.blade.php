@@ -37,17 +37,32 @@
     width: 100%;
     max-width: 1000px;
     margin: 20px auto;
+    background-color: #f9f9f9;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: min-height 0.4s ease-out;
 }
 
+.accordion-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 0 auto;
+}
+
 .accordion-header {
-    background-color: #fff;
+    background-color: #4a90e2;
+    color: white;
     padding: 10px 10px;
+    cursor: pointer;
     font-weight: bold;
-    border-radius: 10px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
 }
 
 .accordion-button {
@@ -55,8 +70,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    color: #fff;
     background: #4a90e2;
+    color: white;
     border: none;
     width: 100%;
 }
@@ -93,16 +108,6 @@
     gap: 15px;
 }
 
-.accordion-collapse {
-    /* max-height: 0;  ลบหรือคอมเมนต์ออก */
-    overflow: hidden;
-    transition: max-height 0.1s ease-out;
-}
-
-.accordion-collapse.show {
-    /* max-height: 1000px; ลบหรือคอมเมนต์ออก */
-}
-
 
 .form-group,
 .form-group1 {
@@ -127,12 +132,10 @@
     transition: all 0.3s ease;
 }
 
-.accordion-button:focus,
-.accordion-button:active {
-    width: 100%;
-    /* กำหนดความกว้างให้เต็มที่เมื่อกดปุ่ม */
-    transition: width 0.3s ease;
-    /* เพิ่มการเปลี่ยนแปลงความกว้าง */
+.form-control:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+    outline: none;
 }
 
 form {
@@ -210,62 +213,26 @@ form {
     padding-bottom: 10px;
 }
 
-#saveBtn {
-    border: none;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-}
-
-#editBtn {
-    border: none;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-}
-
 @media (max-width: 768px) {
-    .accordion-button {
-        padding: 10px 15px;
-        width: 100%;
-        /* ให้ปุ่มกว้างเต็มพื้นที่ในมือถือ */
-        box-sizing: border-box;
+    .title {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
-    .accordion-body {
+    .rectangle-box {
         padding: 15px;
-        max-height: 400px;
-        /* กำหนดความสูงสูงสุด */
-        overflow-y: auto;
-        /* เพิ่มแถบเลื่อนแนวตั้ง */
     }
 
-    .form-group {
-        margin-bottom: 10px;
-        /* ลดระยะห่างระหว่างฟอร์ม */
-    }
-
-    .form-control {
-        width: 100%;
-        /* ฟอร์มกรอกข้อมูลให้เต็มพื้นที่ */
-        margin-bottom: 10px;
-        /* เพิ่มระยะห่างระหว่างช่องกรอกข้อมูล */
-    }
-
-    .circle-container {
-        font-size: 16px;
-        /* เพิ่มขนาดตัวอักษรเล็กน้อยเพื่อให้เห็นชัดเจน */
-    }
-
-    .circle {
-        width: 35px;
-        height: 35px;
+    #accordionExample {
+        padding: 10px;
     }
 
     .accordion-item {
         margin-bottom: 15px;
+    }
+
+    .accordion-button {
+        padding: 12px;
     }
 
     .checkup-title {
@@ -276,52 +243,46 @@ form {
         font-size: 12px;
     }
 
-    .form-group label,
-    .form-group1 label {
+    .form-group, .form-group1 {
+        flex-direction: column; /* ถ้าหน้าจอเล็กลง จะจัดเรียงในแนวตั้ง */
+        align-items: flex-start;
+    }
+
+    .form-group label, .form-group1 label {
+        margin-right: 0;
+        margin-bottom: 5px; /* ระยะห่างระหว่าง label และ input/select */
+    }
+
+    .form-group .form-control, .form-group1 .form-control {
+        width: 100%; /* ทำให้ input/select ขยายเต็มความกว้าง */
+    }
+
+
+
+    .circle-container {
         font-size: 14px;
-        margin-bottom: 5px;
     }
 
-    .form-group .form-control,
-    .form-group1 .form-control {
-        width: 100%;
-        font-size: 14px;
-        /* ปรับขนาดฟอนต์ให้พอเหมาะ */
-    }
-
-    .accordion-body .form-group1 {
-        margin-bottom: 10px;
-    }
-
-    .accordion-button:focus {
-        background-color: #f8f9fa;
-        border-color: #6c757d;
+    .circle {
+        width: 30px;
+        height: 30px;
     }
 }
+
 </style>
 
 <div class="container">
 
     <div class="title">
         <h4><strong>แก้ไขข้อมูล</strong></h4>
-        <a href="/admin/record" class="btn btn-success">กลับ</a>
+        <a href="/admin/record" class="btn btn-success">กลับไปยังหน้าบันทึกข้อมูล</a>
     </div>
 
     <div class="rectangle-box">
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
-        @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-        @endif
-
         <form action="{{ route('recorddata.update', $recorddata->id) }}" method="POST">
             @csrf
             @method('PUT')
+
             <div class="form-group3">
                 <h4><strong>ข้อมูลประจำตัว</strong></h4>
             </div>
@@ -329,12 +290,12 @@ form {
             <div class="form-group1">
                 <label for="id_card" class="form-label">เลขบัตรประจำตัวประชาชน</label>
                 <input type="text" class="form-control" id="id_card" name="id_card"
-                    value="{{ old('id_card', $recorddata->id_card) }}" maxlength="13" readonly>
+                    value="{{ old('id_card', $recorddata->id_card) }}" readonly>
             </div>
 
             <div class="form-group1">
                 <label for="prefix" class="form-label">คำนำหน้าชื่อ</label>
-                <select class="form-control" id="prefix" name="prefix">
+                <select class="form-control" id="prefix" name="prefix" required disabled>
                     <option value="ด.ช." {{ old('prefix', $recorddata->prefix) == 'ด.ช.' ? 'selected' : '' }}>ด.ช.
                     </option>
                     <option value="ด.ญ." {{ old('prefix', $recorddata->prefix) == 'ด.ญ.' ? 'selected' : '' }}>ด.ญ.
@@ -349,25 +310,25 @@ form {
             <div class="form-group1">
                 <label for="name" class="form-label">ชื่อ</label>
                 <input type="text" class="form-control" id="name" name="name"
-                    value="{{ old('name', $recorddata->name) }}">
+                    value="{{ old('name', $recorddata->name) }}" readonly>
             </div>
 
             <div class="form-group1">
                 <label for="surname" class="form-label">นามสกุล</label>
                 <input type="text" class="form-control" id="surname" name="surname"
-                    value="{{ old('surname', $recorddata->surname) }}">
+                    value="{{ old('surname', $recorddata->surname) }}" readonly>
             </div>
 
             <div class="form-group1">
                 <label for="housenumber" class="form-label">บ้านเลขที่</label>
                 <input type="text" class="form-control" id="housenumber" name="housenumber"
-                    value="{{ old('housenumber', $recorddata->housenumber) }}">
+                    value="{{ old('housenumber', $recorddata->housenumber) }}" readonly>
             </div>
 
             <div class="form-group1">
                 <label for="birthdate" class="form-label">วัน / เดือน / ปีเกิด</label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate"
-                    value="{{ old('birthdate', $recorddata->birthdate) }}">
+                    value="{{ old('birthdate', $recorddata->birthdate) }}" readonly>
             </div>
 
             <div class="form-group1">
@@ -398,7 +359,7 @@ form {
 
             <div class="form-group1">
                 <label for="blood_group" class="form-label">กรุ๊ปเลือด</label>
-                <select name="blood_group" id="blood_group" class="form-control">
+                <select name="blood_group" id="blood_group" class="form-control" required disabled>
                     <option value="A" {{ old('blood_group', $recorddata->blood_group) == 'A' ? 'selected' : '' }}>A
                     </option>
                     <option value="B" {{ old('blood_group', $recorddata->blood_group) == 'B' ? 'selected' : '' }}>B
@@ -414,19 +375,19 @@ form {
             <div class="form-group1">
                 <label for="weight" class="form-label">น้ำหนัก</label>
                 <input type="number" class="form-control" id="weight" name="weight"
-                    value="{{ old('weight', $recorddata->weight) }}">
+                    value="{{ old('weight', $recorddata->weight) }}" readonly>
             </div>
 
             <div class="form-group1">
                 <label for="height" class="form-label">ส่วนสูง</label>
                 <input type="number" class="form-control" id="height" name="height"
-                    value="{{ old('height', $recorddata->height) }}">
+                    value="{{ old('height', $recorddata->height) }}" readonly>
             </div>
 
             <div class="form-group1">
                 <label for="waistline" class="form-label">รอบเอว</label>
                 <input type="number" class="form-control" id="waistline" name="waistline"
-                    value="{{ old('waistline', $recorddata->waistline) }}">
+                    value="{{ old('waistline', $recorddata->waistline) }}" readonly>
             </div>
 
             <div class="form-group1">
@@ -435,53 +396,46 @@ form {
                     readonly>
             </div>
 
-            <script>
-            document.getElementById('height').addEventListener('input', calculateBMI);
-            document.getElementById('weight').addEventListener('input', calculateBMI);
-
-            function calculateBMI() {
-                let weight = parseFloat(document.getElementById('weight').value); // น้ำหนัก
-                let height = parseFloat(document.getElementById('height').value); // ส่วนสูง
-
-                // ตรวจสอบว่าไม่มีค่าว่างและค่าผิดปกติ
-                if (!isNaN(weight) && weight > 0 && !isNaN(height) && height > 0) {
-                    height = height / 100;
-
-                    let bmi = weight / (height * height);
-                    document.getElementById('bmi').value = bmi.toFixed(1);
-                } else {
-                    document.getElementById('bmi').value = '';
-                }
-            }
-            </script>
-
             <div class="form-group1">
                 <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" id="phone" name="phone"
-                    value="{{ old('phone', $recorddata->phone) }}" maxlength="10">
+                    value="{{ old('phone', $recorddata->phone) }}" readonly>
             </div>
-
             <div class="form-group1">
                 <label for="idline" class="form-label">ID Line</label>
                 <input type="text" class="form-control" id="idline" name="idline"
-                    value="{{ old('idline', $recorddata->idline) }}">
+                    value="{{ old('idline', $recorddata->idline) }}" readonly>
             </div>
 
-            <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
+            <button type="button" class="btn btn-secondary" id="editBtn">แก้ไข ข้อมูล</button>
 
-            <!--ข้อมูลทั่วไป-->
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
+
+            <form method="POST" action="{{ route('recorddata.searchByDate') }}">
+                @csrf
+                <div class="form-group">
+                    <label for="search_date">ค้นหาวันที่:</label>
+                    <input type="date" name="search_date" id="search_date" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">ค้นหา</button>
+            </form>
+
+
+            @if(session('error'))
+            <div class="alert alert-warning">
+                {{ session('error') }}
+            </div>
+            @endif
 
             <div class="accordion" id="accordionExample">
                 @foreach($healthRecords as $index => $healthRecord)
                 <div class="accordion-item" style="margin-bottom: 10px;">
                     <h2 class="accordion-header" id="heading{{ $index }}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse{{ $index }}" aria-expanded="false"
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ $index }}" aria-expanded="true"
                             aria-controls="collapse{{ $index }}">
-
                             <span class="checkup-title">ตรวจครั้งที่ {{ count($healthRecords) - $index }}</span>
                             <span
                                 class="checkup-date">{{ \Carbon\Carbon::parse($healthRecord->created_at)->format('d-m-Y') }}</span>
@@ -535,84 +489,60 @@ form {
 
                             <!-- blood pressure zone -->
                             <div class="form-group3">
-                                <label for="health_zone_{{ $index }}">blood pressure zone</label>
+                                <label for="health_zone">blood pressure zone</label>
+                                @if (isset($zones[$index]) && is_array($zones[$index]))
                                 <input type="text" class="form-control" id="health_zone_{{ $index }}"
-                                    name="health_zone_{{ $index }}"
-                                    value="{{ isset($zones[$index]) ? implode(' ', $zones[$index]) : '' }}" readonly>
+                                    name="health_zone{{ $index }}" value="{{ implode(' ', $zones[$index]) }}" readonly>
+                                @else
+                                <input type="text" class="form-control" id="health_zone_{{ $index }}"
+                                    name="health_zone{{ $index }}" value="{{ $zones[$index] ?? '' }}" readonly>
+                                @endif
                             </div>
-
 
                             <!-- blood pressure zone 2 -->
                             <div class="form-group3">
-                                <label for="health_zone2">blood pressure zone</label>
+                                <label for="health_zone2">blood pressure zone 2</label>
+                                @if (isset($zones2[$index]) && is_array($zones2[$index]))
                                 <input type="text" class="form-control" id="health_zone2_{{ $index }}"
-                                    name="health_zone2{{ $index }}"
-                                    value="{{ isset($zones2[$index]) ? implode(' ', $zones2[$index]) : '' }}" readonly>
+                                    name="health_zone2[]" value="{{ implode(' ', $zones2[$index]) }}" readonly>
+                                @else
+                                <input type="text" class="form-control" id="health_zone2_{{ $index }}"
+                                    name="health_zone2[]" value="{{ $zones2[$index] ?? '' }}" readonly>
+                                @endif
                             </div>
 
-
-                            @foreach ($diseaseNames as $disease)
                             <div class="form-group1">
-                                <label for="disease_{{ $disease['id'] }}">โรคประจำตัว (ID: {{ $disease['id'] }})</label>
-                                <input type="text" class="form-control" id="disease_{{ $disease['id'] }}"
-                                    name="diseaseNames[]" value="{{ $disease['names'] }}" readonly>
+                                <label for="diseaseNames">โรคประจำตัว</label>
+                                <input type="text" class="form-control" id="diseaseNames" name="diseaseNames"
+                                    value="{{ $diseaseNames[0] ?? '' }}" readonly>
                             </div>
-                            @endforeach
 
-
-                            @foreach ($lifestylesHabit as $lifestyle)
                             <div class="form-group1">
-                                <label for="lifestyleshabit_{{ $lifestyle['id'] }}">พฤติกรรม-สุขภาพจิต (ID:
-                                    {{ $lifestyle['id'] }})</label>
-                                <input type="text" class="form-control" id="lifestyleshabit_{{ $lifestyle['id'] }}"
-                                    name="lifestyleshabit[{{ $lifestyle['id'] }}]"
-                                    value="{{ $lifestyle['lifestyleshabit'] ?? '' }}" readonly>
+                                <label for="lifestyleshabit">พฤติกรรม-สุขภาพจิต</label>
+                                <input type="text" class="form-control" id="lifestyleshabit" name="lifestyleshabit"
+                                    value="{{ $lifestyleshabit[0] ?? '' }}" readonly>
                             </div>
-                            @endforeach
 
-                            @foreach ($elderlyInfo as $info)
                             <div class="form-group1">
-                                <label for="elderlyhabit_{{ $info['id'] }}">ข้อมูลผู้สูงอายุ (ID:
-                                    {{ $info['id'] }})</label>
-                                <input type="text" class="form-control" id="elderlyhabit_{{ $info['id'] }}"
-                                    name="elderlyhabit[{{ $info['id'] }}]" value="{{ $info['lifestyleshabit'] }}"
-                                    readonly>
+                                <label for="elderly">ข้อมูลผู้สูงอายุ</label>
+                                <input type="text" class="form-control" id="elderly" name="elderly"
+                                    value="{{ $elderly[0] ?? '' }}" readonly>
                             </div>
-                            @endforeach
 
                             <div class="form-group">
                                 <label for="user_id">ผู้บันทึกข้อมูล</label>
                                 <input type="text" class="form-control" id="user_id" name="user_id"
-                                    value="{{ isset($user) ? $user->name . ' ' . $user->surname : 'ไม่พบผู้ใช้' }}"
-                                    readonly>
+                                    value="{{ $user->name }} {{ $user->surname }}" readonly>
                             </div>
 
-                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
-                                class="btn btn-secondary" id="#editBtn">
-                                แก้ไขข้อมูล
-                            </a>
+                            <button type="button" class="btn btn-secondary" id="editBtn">แก้ไข ข้อมูล</button>
+
                         </div>
                     </div>
                 </div>
                 @endforeach
-
-                <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelectorAll(".accordion-button").forEach(button => {
-                        button.addEventListener("click", function() {
-                            let target = document.querySelector(this.getAttribute(
-                                "data-bs-target"));
-                            if (target.classList.contains("show")) {
-                                bootstrap.Collapse.getInstance(target).hide();
-                            } else {
-                                new bootstrap.Collapse(target).show();
-                            }
-                        });
-                    });
-                });
-                </script>
-
             </div>
+
         </form>
     </div>
 </div>

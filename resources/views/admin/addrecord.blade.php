@@ -332,7 +332,7 @@ form {
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลประจำตัว</h4>
                 <a href="{{ route('edit_form_record') }}" class="btn btn-primary">
-                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
+                    <i class="fas fa-edit me-1"></i> แก้ไขแบบฟอร์ม
                 </a>
             </div>
 
@@ -359,6 +359,7 @@ form {
                 const bmiInput = document.getElementById('bmi');
                 const phoneInput = document.getElementById('phone');
                 const idlineInput = document.getElementById('idline');
+                const extraFieldsInput = document.getElementById('extra_fields'); // สำหรับแสดงค่า extra_fields
 
                 function calculateAge(birthdate) {
                     const birthDate = new Date(birthdate);
@@ -416,15 +417,23 @@ form {
                                         if (bmiInput) bmiInput.value = data.data.bmi || '';
                                         if (phoneInput) phoneInput.value = data.data.phone || '';
                                         if (idlineInput) idlineInput.value = data.data.idline || '';
-                                    } else {
-                                        console.log('ไม่พบข้อมูล');
+
+                                        if (data.data.extra_fields) {
+                                const extraFields = JSON.parse(data.data.extra_fields);
+                                extraFields.forEach(field => {
+                                    const inputElement = document.getElementById(field.label);
+                                    if (inputElement) {
+                                        inputElement.value = field.value || ''; // ใส่ค่าจาก extra_fields ใน input
                                     }
-                                })
-
-
-                                .catch(error => {
-                                    console.error('เกิดข้อผิดพลาด:', error);
                                 });
+                            }
+                        } else {
+                            console.log('ไม่พบข้อมูล');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('เกิดข้อผิดพลาด:', error);
+                    });
                         }
                     });
                 }
@@ -566,26 +575,28 @@ form {
             </div>
 
             @php
-            // แปลงข้อมูลจาก extra_fields (JSON) ให้เป็น array
-            $extra_fields = json_decode($recorddata->extra_fields, true) ?: [];
+            $extra_fields = json_decode($recorddata->extra_fields, true) ?: []; // แปลง JSON string เป็น array
             @endphp
 
             @foreach($extra_fields as $field)
+            @if(is_array($field) && isset($field['label'], $field['value']))
+            @php
+            $label = $field['label'] ?? 'ไม่มี label';
+            $value = $field['value'] ?? 'ไม่มี value';
+            @endphp
             <div class="form-group1">
-                <label for="{{ $field }}"
-                    style="margin-bottom: 5px; text-align: left; color: #020364;">{{ ucfirst($field) }}</label>
-                <input type="text" class="form-control" id="{{ $field }}" name="extra_fields[{{ $field }}]"
-                    vvalue="{{ old('extra_fields.' . $field, '') }}"
-                    placeholder="กรอก{{ ucfirst($field) }}">
+                <label for="{{ $label }}" style="margin-bottom: 5px; text-align: left; color: #020364;">
+                    {{ $label }}
+                </label>
+                <input type="text" class="form-control" id="{{ $label }}" name="extra_fields[{{ $label }}]"
+                    value="{{ $value }}" placeholder="กรอก{{ $label }}">
             </div>
+            @endif
             @endforeach
-
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
-                <a href="{{ route('edit_form_general_information') }}" class="btn btn-primary">
-                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
-                </a>
+
             </div>
 
             <div class="form-group">
@@ -797,9 +808,7 @@ form {
             <!--โรคประจำตัว-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">โรคประจำตัว</h4>
-                <a href="{{ route('edit_form_disease') }}" class="btn btn-primary">
-                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
-                </a>
+
             </div>
 
             <div class="congenital_disease">
@@ -852,9 +861,7 @@ form {
             <!--พฤติกรรม-สุขภาพจิต-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">พฤติกรรม-สุขภาพจิต</h4>
-                <a href="{{ route('edit_form_disease') }}" class="btn btn-primary">
-                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
-                </a>
+
             </div>
             <div class="behavior">
                 <div style="color: #020364; font-size: 15px; font-weight: bold;">
@@ -919,9 +926,7 @@ form {
             <!--ข้อมูลผู้สูงอายุ-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ</h4>
-                <a href="{{ route('edit_form_disease') }}" class="btn btn-primary">
-                    <i class="fas fa-edit me-1"></i> แก้ไขข้อมูล
-                </a>
+
             </div>
             <div class="elderly_information">
                 <div class="elderly-checkbox-container" style="color: #020364; font-size: 15px; font-weight: bold;">

@@ -441,7 +441,7 @@ button.btn-primary:hover {
         <table class="table table-striped table-bordered table-hover">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">ลำดับที่</th>
                     <th scope="col">เลขบัตรประจำตัวประชาชน</th>
                     <th scope="col">ชื่อ-นามสกุล</th>
                     <th scope="col">บ้านเลขที่</th>

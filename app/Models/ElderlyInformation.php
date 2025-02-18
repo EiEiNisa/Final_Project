@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\RecordData;
 
 class ElderlyInformation extends Model
 {
@@ -27,8 +28,16 @@ class ElderlyInformation extends Model
         'bed_ridden',
     ];
 
-    public function recorddata()
-    {
-        return $this->belongsTo(Recorddata::class, 'recorddata_id');
-    }
+
+public function elderlyInformation()
+{
+    return $this->hasMany(ElderlyInformation::class, 'recorddata_id');
+}
+
+public function recordData()
+{
+    return $this->belongsTo(RecordData::class, 'recorddata_id');  // ใช้ชื่อคอลัมน์ที่เชื่อมโยงจริง
+}
+
+
 }
