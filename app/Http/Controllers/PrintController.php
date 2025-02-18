@@ -46,7 +46,8 @@ class PrintController extends Controller
         ->whereYear('created_at', $currentYear)
         ->get();
 
-    $user = $recorddata-> user_id ?? 'ไม่มีข้อมูล';
+    //$user = $recorddata-> user_id ?? 'ไม่มีข้อมูล';
+    $userFullName = isset($recorddata->user_id) ? $recorddata->user_id->name . ' ' . $recorddata->user_id->surname : 'ไม่มีข้อมูล';
 
     $inspections = collect();
 
