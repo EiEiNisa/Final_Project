@@ -407,8 +407,6 @@ form {
                     value="{{ old('idline', $recorddata->idline) }}" readonly>
             </div>
 
-            <button type="button" class="btn btn-secondary" id="editBtn">แก้ไข ข้อมูล</button>
-
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
@@ -534,8 +532,6 @@ form {
                                 <input type="text" class="form-control" id="user_id" name="user_id"
                                     value="{{ $user->name }} {{ $user->surname }}" readonly>
                             </div>
-
-                            <button type="button" class="btn btn-secondary" id="editBtn">แก้ไข ข้อมูล</button>
 
                         </div>
                     </div>

@@ -188,7 +188,7 @@ Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.for
 Route::post('/admin/form', [AdminController::class, 'handleForm'])->name('admin.form.submit');
 Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.form');
 
-Route::get('/admin/homepage', [AdminController::class, 'adminhomepage'])->name('admin.homepage');
+//Route::get('/admin/homepage', [AdminController::class, 'adminhomepage'])->name('admin.homepage');
 Route::post('/admin/form-submit', [AdminController::class, 'submitForm'])->name('admin.form.submit');
 
 Route::get('/view', function () {
