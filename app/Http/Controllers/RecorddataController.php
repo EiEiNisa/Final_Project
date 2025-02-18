@@ -87,7 +87,7 @@ class RecorddataController
     $recorddata->save();
 }
 
-dd($recorddata);
+//dd($recorddata);
 if (!$recorddata) {
     return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
 }

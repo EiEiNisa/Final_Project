@@ -27,7 +27,7 @@ class SlideshowController extends Controller
 
     public function delete($id)
     {
-        $filePath = 'public/uploads/slide' . $id . '.png';
+        $filePath = 'public/slides/slide' . $id . '.png';
 
         // ตรวจสอบและลบไฟล์
         if (Storage::exists($filePath)) {
