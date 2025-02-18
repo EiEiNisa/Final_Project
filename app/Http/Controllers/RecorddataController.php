@@ -26,15 +26,12 @@ class RecorddataController
     
     public function create()
 {
-    $users = User::all();
+    $users = User::where('role', 'แอดมิน')->get();
     if ($users->isEmpty()) {
         return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
     }
 
-    // ดึงข้อมูล recorddata ตัวอย่าง (เลือก recorddata ตัวแรกหรือเพิ่มการค้นหาที่เหมาะสม)
-    $recorddata = Recorddata::first(); // หรือใช้ `Recorddata::find($id)` ตามที่คุณต้องการ
-
-    // ดึงคอลัมน์จากตาราง recorddata
+    $recorddata = Recorddata::first(); 
     $columns_recorddata = Schema::getColumnListing('recorddata');
     $exclude_columns_recorddata = [
         'id', 'user_id', 'id_card', 'prefix', 'name', 'surname', 'housenumber', 'birthdate',
@@ -43,36 +40,30 @@ class RecorddataController
     ];
     $extra_fields_recorddata = array_diff($columns_recorddata, $exclude_columns_recorddata);
 
-    // ดึงคอลัมน์จากตาราง health_records
     $columns_health_records = Schema::getColumnListing('health_records');
     $exclude_columns_health_records = [
         'id', 'recorddata_id', 'sys', 'dia', 'pul', 'body_temp', 'blood_oxygen', 'blood_level', 'created_at', 'updated_at'
     ];
     $extra_fields_health_records = array_diff($columns_health_records, $exclude_columns_health_records);
 
-    // ส่งค่าคอลัมน์ที่ถูกกรองแล้วและ recorddata ไปยัง view
     return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata'));
 }
 
 
     public function store(Request $request)
 {
-    // รับค่า extra_fields
-$extra_fields = $request->input('extra_fields');  
+    $extra_fields = $request->input('extra_fields');  
 
-// ตรวจสอบว่า extra_fields มีข้อมูลหรือไม่
-if (isset($extra_fields) && is_array($extra_fields)) {
-    $formatted_extra_fields = [];
+    if (isset($extra_fields) && is_array($extra_fields)) {
+        $formatted_extra_fields = [];
 
-    // แปลงโครงสร้างข้อมูลให้เป็น [{ "label": "ชื่อเดิม", "value": "ค่าเดิม" }]
-    foreach ($extra_fields as $key => $value) {
-        $formatted_extra_fields[] = [
-            'label' => $key,  // กำหนด label จาก key ของ array เดิม
-            'value' => $value // กำหนด value จากค่าของ array เดิม
-        ];
-    }
+        foreach ($extra_fields as $key => $value) {
+            $formatted_extra_fields[] = [
+                'label' => $key,  
+                'value' => $value 
+            ];
+        }
 
-    // ค้นหาหรือสร้างข้อมูลใน Recorddata
     $recorddata = Recorddata::firstOrCreate(
         ['id_card' => $request->input('id_card')],
         [
@@ -93,12 +84,10 @@ if (isset($extra_fields) && is_array($extra_fields)) {
         ]
     );
 
-    // แปลง extra_fields เป็น JSON และบันทึก
     $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
     $recorddata->save();
 }
 
-        
         $healthRecord = HealthRecord::create([
             'recorddata_id' => $recorddata->id,
             'sys' => $request->input('sys'),
@@ -180,8 +169,6 @@ if (isset($extra_fields) && is_array($extra_fields)) {
 
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
 }
-
-
 
 
 public function edit($id, Request $request)

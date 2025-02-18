@@ -419,21 +419,23 @@ form {
                                         if (idlineInput) idlineInput.value = data.data.idline || '';
 
                                         if (data.data.extra_fields) {
-                                const extraFields = JSON.parse(data.data.extra_fields);
-                                extraFields.forEach(field => {
-                                    const inputElement = document.getElementById(field.label);
-                                    if (inputElement) {
-                                        inputElement.value = field.value || ''; // ใส่ค่าจาก extra_fields ใน input
+                                            const extraFields = JSON.parse(data.data.extra_fields);
+                                            extraFields.forEach(field => {
+                                                const inputElement = document
+                                                    .getElementById(field.label);
+                                                if (inputElement) {
+                                                    inputElement.value = field.value ||
+                                                    ''; // ใส่ค่าจาก extra_fields ใน input
+                                                }
+                                            });
+                                        }
+                                    } else {
+                                        console.log('ไม่พบข้อมูล');
                                     }
+                                })
+                                .catch(error => {
+                                    console.error('เกิดข้อผิดพลาด:', error);
                                 });
-                            }
-                        } else {
-                            console.log('ไม่พบข้อมูล');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('เกิดข้อผิดพลาด:', error);
-                    });
                         }
                     });
                 }
@@ -529,7 +531,8 @@ form {
             </div>
 
             <div class="form-group1">
-                <label for="waistline" style="margin-bottom: 5px; text-align: left; color: #020364;">รอบเอว</label>
+                <label for="waistline" style="margin-bottom: 5px; text-align: left; color: #020364;">รอบเอว
+                    (ซม.)</label>
                 <input type="number" class="form-control" id="waistline" name="waistline" value="{{ old('waistline') }}"
                     placeholder="กรอกรอบเอว" step="0.1" required>
             </div>
@@ -1028,7 +1031,7 @@ form {
                     <label for="user_id">ผู้บันทึกข้อมูล</label>
                     <select id="user_id" name="user_id" class="form-control w-50">
                         <option value="">เลือกผู้บันทึก</option>
-                        @foreach($users as $user)
+                        @foreach($users->where('role', 'admin') as $user)
                         <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                             {{ $user->name }} {{ $user->surname }}
                         </option>
@@ -1036,6 +1039,8 @@ form {
                     </select>
                 </div>
             </div>
+
+
 
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">

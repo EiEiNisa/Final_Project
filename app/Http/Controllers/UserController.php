@@ -47,7 +47,7 @@ class UserController extends Controller
             'role' => 'ผู้ใช้',
         ]);
 
-        $adminEmails = ['nisawarabangsai300146@gmail.com', 'nisawara.ba@rmuti.ac.th'];
+        $adminEmails = ['nisawarabangsai300146@gmail.com', 'nisawara.ba@rmuti.ac.th' , 'varnweaw@gmail.com'];
 
         if (in_array($user->email, $adminEmails)) {
             $user->role = 'แอดมิน';

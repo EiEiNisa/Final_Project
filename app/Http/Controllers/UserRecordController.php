@@ -29,10 +29,8 @@ class UserRecordController extends Controller
             $query->where('disease', 'like', '%' . $request->input('disease') . '%');
         }
     
-        // ดึงข้อมูลพร้อมแบ่งหน้า
         $records = $query->paginate(10);
     
-        // ✅ ส่งตัวแปร 'records' ไปที่ View
         return view('user.record', compact('records'));
         
     }
