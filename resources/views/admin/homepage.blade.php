@@ -166,7 +166,7 @@
     <div class="row">
         @foreach($articles as $article)
         <div class="card">
-            <img src="{{ asset('storage/' . $article->images) }}" alt="{{ $article->title }}">
+            <img src="{{ asset('storage/images/' . $article->images) }}" alt="{{ $article->title }}">
             <div class="card-body">
                 <h5 class="card-title">{{ $article->title }}</h5>
                 <p class="text-muted">โดย {{ $article->author }} - {{ $article->post_date }}</p>

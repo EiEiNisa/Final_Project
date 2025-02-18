@@ -53,7 +53,7 @@
             <div>
                 <img src="{{ asset('storage/slides/slide' . $i . '.png') }}" class="slide-preview" alt="Slide {{ $i }} Preview">
             </div>
-            <input type="file" class="form-control" id="slide{{ $i }}" name="slide{{ $i }}" accept="image/*">
+            <input type="file" class="form-control" id="slide{{ $i }}" name="slides[{{ $i }}]" accept="image/*">
         </div>
         @endfor
 
