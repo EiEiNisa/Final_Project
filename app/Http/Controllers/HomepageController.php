@@ -9,11 +9,10 @@ use App\Models\Article;
 class HomepageController extends Controller
 {
     public function adminHomepage() {
-        $articles = Article::all(); // หรือการดึงข้อมูลจาก Model
+        $articles = Article::all();
         return view('admin.homepage', compact('articles'));
     }
     
-    // ฟังก์ชันสำหรับหน้า user
     public function userHomepage()
 {
     return view('User.homepage');
