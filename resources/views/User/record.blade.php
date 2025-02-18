@@ -1,160 +1,390 @@
-@extends('layoutuser')
+@extends('layoutadmin')
 
 @section('content')
 <style>
+.title {
+    color: #020364;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* เพื่อให้ปุ่มแตกแถวในหน้าจอเล็ก */
+}
+
+.btn-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    /* เพื่อให้ปุ่มแตกแถวในหน้าจอเล็ก */
+}
+
+.table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.table th {
+    background-color: #020364;
+    color: #fff;
+    text-align: center;
+}
+
+.table td {
+    background-color: #7DA7D8;
+    color: #fff;
+    word-wrap: break-word;
+    max-width: 200px;
+    text-align: center;
+}
+
+.table td:nth-child(2),
+.table td:nth-child(7) {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rectangle-box {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    /* จัดเรียงทุกอย่างในแนวตั้ง */
+    align-items: center;
+    /* กึ่งกลางแนวนอน */
+    width: 100%;
+    /* กำหนดให้ box ใช้พื้นที่ทั้งหมด */
+    box-sizing: border-box;
+    /* ให้ padding ไม่ทำให้ขนาดกล่องเกิน */
+}
+
+.form-group-horizontal {
+    display: flex;
+    flex-wrap: nowrap;
+    /* ป้องกันไม่ให้ช่องค้นหามีการพับแถว */
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    overflow-x: auto;
+    /* ให้สามารถเลื่อนในแนวนอนได้ */
+    box-sizing: border-box;
+}
+
+.form-group {
+    flex: 1 1 200px;
+    /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
+    min-width: 150px;
+    /* กำหนดขนาดขั้นต่ำ */
+    max-width: 250px;
+    /* กำหนดขนาดสูงสุด */
+}
+
+button.btn-primary {
+    flex: 1 1 100%;
+    font-size: 14px;
+    padding: 12px 20px;
+    margin-top: 10px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #020364;
+    margin-bottom: 8px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.form-control {
+    border-radius: 30px;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 35px;
+}
+
+button.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.custom-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.custom-pagination a,
+.custom-pagination span {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.custom-pagination a:hover {
+    background-color: #218838;
+}
+
+.custom-pagination .disabled {
+    background-color: #f8d7da;
+    color: #721c24;
+    cursor: not-allowed;
+}
+
+.custom-pagination .disabled:hover {
+    background-color: #f8d7da;
+}
+
+.modal-header {
+    padding: 15px;
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.close-btn {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.close-btn:hover {
+    background-color: #f8d7da;
+    color: #721c24;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
     .title {
-        color: #020364;
-        padding: 20px;
-        display: flex;
+        font-size: 12px;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
     }
 
-    .table-responsive {
+    .title h4 {
+        margin-bottom: 10px;
+    }
+
+    .btn-container {
+        font-size: 12px;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .btn-container .btn {
+        font-size: 12px;
+        width: 30%;
+        margin-bottom: 10px;
+    }
+
+    .form-group-horizontal {
+        gap: 10px;
+        /* ลดระยะห่างระหว่างช่องค้นหา */
         overflow-x: auto;
-    }
-
-    .table {
-        width: 100%;
-        margin-top: 10px;
-        margin-bottom: 50px;
-        border-collapse: collapse;
-        font-size: 14px; /* ลดขนาดตัวอักษรในตาราง */
-    }
-
-    .table th, .table td {
-        padding: 8px; /* ลด padding ของเซลล์ */
-        text-align: left;
-        font-size: 13px; /* ลดขนาดตัวอักษรในตาราง */
-    }
-
-    .table th {
-        background-color: #020364;
-        color: #fff;
-    }
-
-    .table td {
-        background-color: #7DA7D8;
-        color: #fff;
-    }
-
-    .rectangle-box {
-        margin-bottom: 20px;
-        width: 100%;
-        height: 100px;
-        border: none;
-        border-radius: 10px;
-        background-color: #6D91C9;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    form {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 30px;
-        flex-wrap: wrap;
+        /* ให้สามารถเลื่อนในแนวนอนได้ */
     }
 
     .form-group {
-        display: flex;
-        flex-direction: column;
-        width: calc((100% - (4 * 10px)) / 5);
-        color: #020364;
+        flex: 1 1 200px;
+        /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
+        min-width: 150px;
+        /* กำหนดขนาดขั้นต่ำ */
+        max-width: 200px;
+        /* กำหนดขนาดสูงสุด */
+        margin-right: 10px;
     }
 
-    .button {
-        display: inline-block;
-        padding: 5px 20px;
-        background-color: #020364;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 17px;
-        margin-top: 85px;
-        margin-bottom: 60px;
-        text-decoration: none;
+    button.btn-primary {
+        flex: 1 1 100%;
+        margin-top: 15px;
+        padding: 12px 20px;
     }
 
-    .button:hover {
-        background-color: #000145;
+    .form-group label {
+        font-size: 12px;
     }
 
-    /* Responsive Styles */
-    @media (max-width: 768px) {
-        .table th, .table td {
-            font-size: 12px;
-            padding: 6px; /* ลดขนาด padding ให้เล็กลง */
-        }
-
-        .form-group {
-            width: calc(50% - 10px);
-        }
-
-        .button {
-            font-size: 15px;
-            margin-top: 20px;
-        }
-
-        .title {
-            flex-direction: column;
-            align-items: flex-start;
-        }
+    .input-group .form-control {
+        padding: 8px 15px;
     }
 
-    @media (max-width: 480px) {
-        .table th, .table td {
-            font-size: 11px;
-            padding: 5px; /* ลดขนาด padding ให้เล็กลง */
-        }
-
-        .form-group {
-            width: 100%;
-        }
-
-        .button {
-            font-size: 14px;
-            margin-top: 20px;
-        }
-
-        .title {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .rectangle-box {
-            height: auto;
-            padding: 15px;
-        }
+    .input-group-text {
+        padding: 8px;
     }
+
+    .table,
+    .table td {
+        font-size: 12px;
+    }
+
+    .table th,
+    .table td {
+        padding: 6px 8px;
+    }
+
+    .table td:nth-child(2),
+    .table td:nth-child(7) {
+        max-width: 120px;
+    }
+
+    .table td:nth-child(1),
+    .table td:nth-child(3),
+    .table td:nth-child(4),
+    .table td:nth-child(5),
+    .table td:nth-child(6),
+    .table td:nth-child(8),
+    .table td:nth-child(9) {
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+    .custom-pagination {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .custom-pagination a,
+    .custom-pagination span {
+        padding: 6px 12px;
+    }
+
+    .modal-dialog {
+        max-width: 90%;
+        margin: 1.75rem auto;
+    }
+
+    .modal-content {
+        padding: 10px;
+    }
+
+    .modal-header {
+        padding: 10px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+    }
+
+    .close-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+
+    .modal-body .form-label {
+        font-size: 12px;
+    }
+
+    .modal-body .form-control {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .modal-body .btn-primary {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
 </style>
 
+
 <div class="container py-2">
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
     <div class="title">
         <h4><strong>บันทึกข้อมูล</strong></h4>
-        <div>
-            <!-- Add any buttons or links here, similar to the admin layout -->
-        </div>
     </div>
 
     <div class="rectangle-box">
-        <form method="GET" action="{{ route('User.record') }}">
-            <div class="form-group">
-                <label for="name">ชื่อ-นามสกุล</label>
-                <input id="name" class="form-control" type="search" name="name" placeholder="ค้นหาชื่อ-นามสกุล" aria-label="Search">
+        <form action="{{ route('recorddata.search') }}" method="GET">
+            <div class="form-group-horizontal">
+
+                <div class="form-group">
+                    <label for="name">ชื่อ-นามสกุล</label>
+                    <div class="input-group">
+                        <input id="name" class="form-control" type="search" name="name" placeholder="ค้นหาชื่อ-นามสกุล"
+                            aria-label="Search">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="housenumber">บ้านเลขที่</label>
+                    <div class="input-group">
+                        <input id="housenumber" class="form-control" type="search" name="housenumber"
+                            placeholder="ค้นหาบ้านเลขที่" aria-label="Search">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="diseases">โรคประจำตัว</label>
+                    <select id="diseases" class="form-control" name="diseases">
+                        <option value="">เลือกโรคประจำตัว</option>
+                        @php
+                        $diseases = [
+                        'diabetes' => 'เบาหวาน',
+                        'cerebral_artery' => 'หลอดเลือดสมอง',
+                        'kidney' => 'โรคไต',
+                        'blood_pressure' => 'ความดันโลหิตสูง',
+                        'heart' => 'โรคหัวใจ',
+                        'eye' => 'โรคตา',
+                        'other' => 'โรคอื่นๆ'
+                        ];
+                        @endphp
+                        @foreach($diseases as $key => $value)
+                        <option value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">ค้นหา</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="house-number">บ้านเลขที่</label>
-                <input id="house-number" class="form-control" type="search" name="housenumber" placeholder="ค้นหาบ้านเลขที่" aria-label="Search">
-            </div>
-            <div class="form-group">
-                <label for="disease">โรคประจำตัว</label>
-                <input id="disease" class="form-control" type="search" name="disease" placeholder="ค้นหาโรคประจำตัว" aria-label="Search">
-            </div>
-            <button class="button" type="submit">ค้นหา</button>
         </form>
     </div>
 
@@ -163,64 +393,84 @@
     @endphp
 
     <div class="table-responsive">
-        <table class="table">
-            <thead>
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">ลำดับที่</th>
+                    <th scope="col">เลขบัตรประจำตัวประชาชน</th>
                     <th scope="col">ชื่อ-นามสกุล</th>
                     <th scope="col">บ้านเลขที่</th>
                     <th scope="col">วัน/เดือน/ปีเกิด</th>
                     <th scope="col">อายุ</th>
                     <th scope="col">เบอร์โทรศัพท์</th>
                     <th scope="col">โรคประจำตัว</th>
+                    <th scope="col">การจัดการ</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($recorddata as $key => $data)
-                    <tr>
-                        <td scope="row"><strong>{{ $recorddata->firstItem() + $loop->iteration - 1 }}</strong></td>
-                        <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
-                        <td><strong>{{ $data['housenumber'] }}</strong></td>
-                        <td style="text-align: center;">
-                            <strong>{{ Carbon::parse($data['birthdate'])->format('d/m/Y') }}</strong>
-                        </td>
-                        <td style="text-align: center;"><strong>{{ $data['age'] }}</strong></td>
-                        <td style="text-align: center;"><strong>{{ $data['phone'] }}</strong></td>
-                        <td><strong>
+                @foreach($recorddata as $key => $data)
+                <tr>
+                    <td><strong>{{ $recorddata->total() - (($recorddata->currentPage() - 1) * $recorddata->perPage()) - $loop->iteration + 1 }}</strong>
+                    </td>
+                    <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
+                    <td><strong>{{ $data['housenumber'] }}</strong></td>
+                    <td><strong>{{ Carbon::parse($data['birthdate'])->format('d/m/Y') }}</strong></td>
+                    <td><strong>{{ $data['age'] }}</strong></td>
+                    <td><strong>{{ $data['phone'] }}</strong></td>
+                    <td><strong>
                             @if($data->diseases)
-                                @php
-                                $diseaseLabels = [
-                                    'diabetes' => 'เบาหวาน',
-                                    'cerebral_artery' => 'โรคหลอดเลือดสมอง',
-                                    'kidney' => 'โรคไต',
-                                    'blood_pressure' => 'ความดันโลหิตสูง',
-                                    'heart' => 'โรคหัวใจ',
-                                    'eye' => 'โรคตา',
-                                    'other' => 'โรคอื่นๆ'
-                                ];
+                            @php
+                            $diseaseLabels = [
+                            'diabetes' => 'เบาหวาน',
+                            'cerebral_artery' => 'หลอดเลือดสมอง',
+                            'kidney' => 'โรคไต',
+                            'blood_pressure' => 'ความดันโลหิตสูง',
+                            'heart' => 'โรคหัวใจ',
+                            'eye' => 'โรคตา',
+                            'other' => 'โรคอื่นๆ'
+                            ];
 
-                                $selectedDiseases = collect($data->diseases->toArray())
-                                    ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
-                                    ->keys()
-                                    ->map(fn($key) => $diseaseLabels[$key])
-                                    ->implode("\n");
-                                @endphp
-
-                                {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
+                            $selectedDiseases = collect($data->diseases->toArray())
+                            ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
+                            ->keys()
+                            ->map(fn($key) => $diseaseLabels[$key])
+                            ->implode("\n");
+                            @endphp
+                            {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
                             @else
-                                -
+                            -
                             @endif
                         </strong></td>
-                    </tr>
+
+                    <td>
+
+                        <a href="{{ route('recorddata.update', $data->id) }}" type="button"
+                            class="btn btn-primary btn-sm">
+                            <i class="fas fa-edit me-1"></i> 
+                        </a>
+
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
-    </div>
 
-    <!-- Show Pagination -->
-    <div class="pagination">
-        {{ $recorddata->links() }}
-    </div>
+        <div class="custom-pagination mt-3">
+            @if ($recorddata->onFirstPage())
+            <span class="disabled">ย้อนกลับ</span>
+            @else
+            <a href="{{ $recorddata->previousPageUrl() }}">ย้อนกลับ</a>
+            @endif
 
-</div>
-@endsection
+            <span>ทั้งหมด {{ $recorddata->total() }} รายการ</span>
+
+            @if ($recorddata->hasMorePages())
+            <a href="{{ $recorddata->nextPageUrl() }}">ถัดไป</a>
+            @else
+            <span class="disabled">ถัดไป</span>
+            @endif
+        </div>
+
+        <br>
+    </div>
+    @endsection
