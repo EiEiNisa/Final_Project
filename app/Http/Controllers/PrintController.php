@@ -113,7 +113,7 @@ class PrintController extends Controller
 
         $inspections->push([
             'inspection_number' => $i + 1,
-            'user_id' => $recorddata->user_id,
+            'user_id' => $recorddata->user->id ?? 'ไม่มีข้อมูล',
             'date' => $recorddata->created_at->format('d/m/Y'),
             'health_record' => $healthRecord ? [
                 'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',

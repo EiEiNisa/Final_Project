@@ -129,7 +129,7 @@
                 <h5><strong>ตรวจครั้งที่ {{ $inspection['inspection_number'] }}</strong></h5>
                 <div><strong>วันที่ตรวจ:</strong> {{ $inspection['date'] }}</div>
                 <div><strong>ผู้บันทึกข้อมูล:</strong> {{ $inspection['user_id'] }}</div>
-            </div>
+                </div>
 
             <!-- Health Record -->
             <div class="info-box">
