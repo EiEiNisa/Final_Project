@@ -92,7 +92,7 @@ public function submitForm(Request $request)
 
 public function adminhomepage()
 {
-    return view('admin.homepage');
+    return view('admin.homepage', compact('articles'));
 }
 
 

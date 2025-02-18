@@ -17,7 +17,7 @@ class ArticleController extends Controller
         }
         if ($page === 'User/homepage') {
             return view('user.homepage', compact('articles'));
-        }
+        }        
 
         return view('home', compact('articles'));
     }
@@ -68,6 +68,7 @@ public function show($id)
     
         return redirect()->route('admin.homepage')->with('success', $successMessage);
     }
+
     public function search(Request $request)
     {
         $query = $request->input('query');
