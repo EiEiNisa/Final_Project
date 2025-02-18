@@ -16,6 +16,7 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
+    dd($id); // ดูว่า $id ที่ได้รับตรงกับที่กดหรือไม่
     $recorddata = Recorddata::find($id); // ดึงข้อมูล Recorddata โดย ID
     dd($recorddata->id);
 
@@ -146,10 +147,8 @@ class PrintController extends Controller
         ]);
     }
 
-    // ส่งข้อมูลไปยัง view
     return view('admin.print', compact('recorddata', 'inspections', 'healthRecords'));
 }
-
 
 private function getHealthZoneData($healthZone)
 {

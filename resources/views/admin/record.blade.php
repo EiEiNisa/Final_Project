@@ -549,6 +549,7 @@ button.btn-primary:hover {
                         <a href="{{ route('admin.print', ['id' => $recorddata->first()->id]) }}" target="_blank" class="btn btn-warning btn-sm">
                             <i class="fa-solid fa-print"></i>
                         </a>
+                        
                     </td>
                 </tr>
                 @endforeach

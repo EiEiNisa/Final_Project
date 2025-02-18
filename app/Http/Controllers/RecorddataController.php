@@ -852,7 +852,7 @@ public function update_general_information(Request $request, $recorddata_id = nu
             return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
         }
 
-        return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตฟิลด์เรียบร้อย!');
+        return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตข้อมูลสำเร็จเรียบร้อย!');
     }
 
     // หากไม่มี recorddata_id และ checkup_id ให้ทำการค้นหาข้อมูลด้วย id_card
