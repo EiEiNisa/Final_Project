@@ -17,6 +17,7 @@ class PrintController extends Controller
     public function showPrintPage($id)
 {
     $recorddata = Recorddata::find($id); // ดึงข้อมูล Recorddata โดย ID
+    dd($recorddata->id);
 
     // กำหนดปีปัจจุบัน
     $currentYear = Carbon::now()->year;

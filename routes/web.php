@@ -116,7 +116,7 @@ Route::get('/User/record', function () {
 
     // ใช้งาน Carbon
     $now = Carbon::now(); // จะได้เวลาและวันที่ปัจจุบัน
-    $formattedDate = $now->format('Y-m-d H:i:s'); // แปลงเป็นรูปแบบที่ต้องการ
+    $formattedDate = $now->format('Y-m-d H:i:s'); 
 
     return view('User.record', compact('recorddata', 'formattedDate'));
 });
