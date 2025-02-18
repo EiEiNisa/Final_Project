@@ -211,38 +211,36 @@ button.btn-primary:hover {
     }
 
     .form-group-horizontal {
-        gap: 10px;
-        /* ลดระยะห่างระหว่างช่องค้นหา */
-        overflow-x: auto;
-        /* ให้สามารถเลื่อนในแนวนอนได้ */
+        display: flex; /* ใช้ flexbox เพื่อจัดการการจัดเรียง */
+        overflow-x: auto; /* ให้สามารถเลื่อนในแนวนอนได้ */
+        gap: 10px; /* ลดระยะห่างระหว่างช่องค้นหา */
     }
 
     .form-group {
-        flex: 1 1 200px;
-        /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
-        min-width: 150px;
-        /* กำหนดขนาดขั้นต่ำ */
-        max-width: 200px;
-        /* กำหนดขนาดสูงสุด */
-        margin-right: 10px;
+        flex: 1 1 auto; /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
+        min-width: 150px; /* กำหนดขนาดขั้นต่ำ */
+        max-width: 200px; /* กำหนดขนาดสูงสุด */
+        margin-right: 10px; /* ระยะห่างระหว่างช่องค้นหา */
     }
 
+    /* ปรับขนาดปุ่มค้นหา */
     button.btn-primary {
-        flex: 1 1 100%;
-        margin-top: 15px;
-        padding: 12px 20px;
+        flex: 1 1 100%; /* ให้ปุ่มเต็มความกว้าง */
+        margin-top: 15px; /* เพิ่มระยะห่างด้านบน */
+        padding: 12px 20px; /* เพิ่มการเติมภายใน */
     }
 
+    /* ปรับขนาด label และ input */
     .form-group label {
-        font-size: 12px;
+        font-size: 12px; /* ขนาดฟอนต์เล็กลง */
     }
 
     .input-group .form-control {
-        padding: 8px 15px;
+        padding: 8px 15px; /* เพิ่มการเติมภายใน */
     }
 
     .input-group-text {
-        padding: 8px;
+        padding: 8px; /* เพิ่มการเติมภายใน */
     }
 
     .table,
