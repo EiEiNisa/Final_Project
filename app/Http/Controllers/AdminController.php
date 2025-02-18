@@ -59,9 +59,10 @@ public function changeRole($id)
 
     return redirect()->route('admin.manageuser')->with('success', 'สิทธิ์ของผู้ใช้ที่อีเมล ' . $user->email . ' ได้รับการเปลี่ยนแปลงเรียบร้อยแล้ว');
 }
+
+
 public function submitForm(Request $request)
     {
-        // ตรวจสอบข้อมูลที่เข้ามา
         $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif',
@@ -70,10 +71,8 @@ public function submitForm(Request $request)
             'author' => 'required|string|max:255',
         ]);
     
-        // บันทึกรูปภาพ
         $imagePath = $request->file('image')->store('images', 'public');
     
-        // สร้างบทความใหม่
         Article::create([
             'title' => $request->input('title'),
             'image' => $imagePath,
@@ -82,12 +81,13 @@ public function submitForm(Request $request)
             'author' => $request->input('author'),
         ]);
     
-        // รีไดเร็กต์กลับพร้อมกับข้อความสำเร็จ
         return redirect()->route('admin.homepage')->with('success', 'บทความใหม่ได้ถูกเพิ่ม');
     }
+
+
     public function showForm()
 {
-    return view('admin.form'); // เปลี่ยนชื่อวิวตามที่ต้องการ
+    return view('admin.form'); 
 }
 
 public function recordData()

@@ -152,7 +152,7 @@ Route::get('/User/about', function () {
     return view('/User/about');
 });
 
-Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
+//Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
 Route::get('/User/homepage', [HomepageController::class, 'userHomepage'])->name('User.homepage');
 
 

@@ -367,7 +367,7 @@ form {
             <div class="form-group1">
                 <label for="birthdate" class="form-label">วัน / เดือน / ปีเกิด</label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate"
-                    value="{{ old('birthdate', $recorddata->birthdate) }}">
+                    value="{{ old('birthdate', $recorddata->birthdate) }}" readonly>
             </div>
 
             <div class="form-group1">
