@@ -275,7 +275,7 @@ form {
 
     <div class="title">
         <h4><strong>แก้ไขข้อมูล</strong></h4>
-        <a href="/admin/record" class="btn btn-success">กลับไปยังหน้าบันทึกข้อมูล</a>
+        <a href="/User/record" class="btn btn-success">กลับไปยังหน้าบันทึกข้อมูล</a>
     </div>
 
     <div class="rectangle-box">
@@ -535,7 +535,7 @@ form {
                                     readonly>
                             </div>
                             @endforeach
-                            
+
                             <div class="form-group">
                                 <label for="user_id">ผู้บันทึกข้อมูล</label>
                                 <input type="text" class="form-control" id="user_id" name="user_id"
