@@ -391,7 +391,7 @@ button.btn-primary:hover {
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-dark text-white">
+            <thead class="thead-dark">
                 <tr>
                     <th scope="col">ลำดับที่</th>
                     <th scope="col">ชื่อ-นามสกุล</th>
