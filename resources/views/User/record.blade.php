@@ -397,7 +397,6 @@ button.btn-primary:hover {
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">ลำดับที่</th>
-                    <th scope="col">เลขบัตรประจำตัวประชาชน</th>
                     <th scope="col">ชื่อ-นามสกุล</th>
                     <th scope="col">บ้านเลขที่</th>
                     <th scope="col">วัน/เดือน/ปีเกิด</th>
