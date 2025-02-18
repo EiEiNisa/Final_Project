@@ -164,8 +164,8 @@ Route::get('/admin/about', function () {
     return view('/admin/about');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data');
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/admin/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data');
 
 
 Route::get('/admin/edit-slideshow', [SlideshowController::class, 'edit'])->name('edit-slideshow');
@@ -206,8 +206,8 @@ Route::get('/User/homepage', [HomepageuserController::class, 'showHomepage'])->n
 
 Route::get('/User/about', [AboutController::class, 'userIndex'])->name('user.about');
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/dashboard/data', [DashboardController::class, 'fetchData'])->name('dashboard.data');
+Route::get('/User/dashboard', [DashboardController::class, 'index']);
+Route::get('/User/dashboard/data', [DashboardController::class, 'fetchData'])->name('dashboard.data');
 
 Route::get('/User/recode', [UserRecordController::class, 'index'])->name('userrecode.index');
 Route::get('/User/recode/search', [UserRecordController::class, 'search'])->name('userrecode.search');

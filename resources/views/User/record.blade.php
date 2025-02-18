@@ -445,9 +445,8 @@ button.btn-primary:hover {
 
                         <a href="{{ route('recorddata.update', $data->id) }}" type="button"
                             class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit me-1"></i>
+                            <i class="fas fa-eye"></i>
                         </a>
-
                     </td>
                 </tr>
                 @endforeach
