@@ -76,7 +76,7 @@ Route::put('/admin/editrecord/{id}', [RecordDataController::class, 'update'])->n
 
 Route::delete('/admin/record/{id}', [RecordDataController::class, 'destroy'])->name('recorddata.destroy');
 Route::get('/admin/search', [RecorddataController::class, 'search'])->name('recorddata.search');
-
+Route::get('/User/search', [RecorddataController::class, 'Usersearch'])->name('recorddata.Usersearch');
 Route::post('/select-recorder', [UserController::class, 'selectRecorder'])->name('selectRecorder');
 
 Route::post('admin/importfile', [ExcelImportController::class, 'import'])->name('import');

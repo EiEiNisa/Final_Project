@@ -338,7 +338,7 @@ button.btn-primary:hover {
     </div>
 
     <div class="rectangle-box">
-        <form action="{{ route('recorddata.search') }}" method="GET">
+        <form action="{{ route('recorddata.Usersearch') }}" method="GET">
             <div class="form-group-horizontal">
 
                 <div class="form-group">

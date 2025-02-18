@@ -307,7 +307,6 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
 }
 
 
-
 public function searchByDate(Request $request)
 {
     //dd($request->all()); // ตรวจสอบค่าที่ส่งมาจากฟอร์ม
@@ -416,6 +415,39 @@ public function update(Request $request, $id)
     // ส่งข้อมูลไปยัง view
     return view('admin.record', compact('recorddata', 'users', 'diseases'));
 }
+
+
+public function Usersearch(Request $request)
+{
+    // เริ่มสร้าง query สำหรับค้นหาข้อมูล
+    $query = Recorddata::query();
+
+    if ($request->filled('name')) {
+        $searchTerm = $request->input('name');
+        $query->where(function ($q) use ($searchTerm) {
+            $q->whereRaw("CONCAT(name, ' ', surname) LIKE ?", ["%$searchTerm%"]);
+        });
+    }
+
+    if ($request->filled('housenumber')) {
+        $query->where('housenumber', '=', $request->input('housenumber'));
+    }
+
+    if ($request->filled('diseases')) {
+        $query->whereHas('disease', function ($q) use ($request) {
+            // ค้นหาผู้ที่มีโรคนี้ โดยเช็คว่าโรคมีค่าคือ 1 (มีโรค)
+            $q->where($request->input('diseases'), 1); // ค่าของโรคที่เลือก (จากฟอร์ม select)
+        });
+    }
+
+    $recorddata = $query->orderBy('id', 'desc')->paginate(20);
+
+    $users = User::all();
+    $diseases = Disease::all();
+
+    return view('User.record', compact('recorddata', 'users', 'diseases'));
+}
+
 
 public function edit_general_information(Request $request, $recorddata_id, $checkup_id)
 {
