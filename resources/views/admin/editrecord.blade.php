@@ -554,7 +554,7 @@ form {
 
                             @foreach ($diseaseNames as $disease)
                             <div class="form-group1">
-                                <label for="disease_{{ $disease['id'] }}">โรคประจำตัว (ID: {{ $disease['id'] }})</label>
+                                <label for="disease_{{ $disease['id'] }}">โรคประจำตัว</label>
                                 <input type="text" class="form-control" id="disease_{{ $disease['id'] }}"
                                     name="diseaseNames[]" value="{{ $disease['names'] }}" readonly>
                             </div>
@@ -563,8 +563,7 @@ form {
 
                             @foreach ($lifestylesHabit as $lifestyle)
                             <div class="form-group1">
-                                <label for="lifestyleshabit_{{ $lifestyle['id'] }}">พฤติกรรม-สุขภาพจิต (ID:
-                                    {{ $lifestyle['id'] }})</label>
+                                <label for="lifestyleshabit_{{ $lifestyle['id'] }}">พฤติกรรม-สุขภาพจิต</label>
                                 <input type="text" class="form-control" id="lifestyleshabit_{{ $lifestyle['id'] }}"
                                     name="lifestyleshabit[{{ $lifestyle['id'] }}]"
                                     value="{{ $lifestyle['lifestyleshabit'] ?? '' }}" readonly>
@@ -573,8 +572,7 @@ form {
 
                             @foreach ($elderlyInfo as $info)
                             <div class="form-group1">
-                                <label for="elderlyhabit_{{ $info['id'] }}">ข้อมูลผู้สูงอายุ (ID:
-                                    {{ $info['id'] }})</label>
+                                <label for="elderlyhabit_{{ $info['id'] }}">ข้อมูลผู้สูงอายุ</label>
                                 <input type="text" class="form-control" id="elderlyhabit_{{ $info['id'] }}"
                                     name="elderlyhabit[{{ $info['id'] }}]" value="{{ $info['lifestyleshabit'] }}"
                                     readonly>
