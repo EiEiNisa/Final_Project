@@ -46,13 +46,10 @@ class PrintController extends Controller
         ->whereYear('created_at', $currentYear)
         ->get();
 
-    // ดึงข้อมูลผู้ทำการตรวจ
     $user = $recorddata->user;
 
-    // รวมข้อมูลทั้งหมด
     $inspections = collect();
 
-    // คำนวณจำนวนการตรวจทั้งหมด
     $inspectionCount = max(
         $healthRecords->count(),
         $healthZones->count(),
@@ -62,21 +59,16 @@ class PrintController extends Controller
         $elderlyInformations->count()
     );
 
-    // เพิ่มข้อมูลตรวจตามลำดับ
     for ($i = 0; $i < $inspectionCount; $i++) {
-        // ดึงค่า healthRecord สำหรับการตรวจครั้งที่ $i + 1
         $healthRecord = isset($healthRecords[$i]) ? $healthRecords[$i] : null;
 
-        // ดึงค่า healthZone สำหรับการตรวจครั้งที่ $i + 1
         $healthZone = isset($healthZones[$i]) ? $healthZones[$i] : null;
 
-        // ดึงค่า healthZone2, disease, lifestyleHabit และ elderlyInformation สำหรับการตรวจครั้งที่ $i + 1
         $healthZone2 = isset($healthZones2[$i]) ? $healthZones2[$i] : null;
 
         $disease = isset($diseases[$i]) ? $diseases[$i] : null;
         $diseaseNames = [];
 
-        // เช็คว่า disease ประเภทไหนมีค่าเป็น 1
         if ($disease) {
             if ($disease->diabetes == 1) $diseaseNames[] = 'เบาหวาน';
             if ($disease->cerebral_artery == 1) $diseaseNames[] = 'หลอดเลือดสมอง';
@@ -90,14 +82,13 @@ class PrintController extends Controller
         $lifestyleHabit = isset($lifestyleHabits[$i]) ? $lifestyleHabits[$i] : null;
     $habits = [];
 
-    // ตรวจสอบสถานะของแต่ละ habit
     if ($lifestyleHabit) {
-        if ($lifestyleHabit->drink == 1) $habits[] = 'ดื่ม';
-        if ($lifestyleHabit->drink_sometimes == 1) $habits[] = 'ดื่มบ้างบางครั้ง';
-        if ($lifestyleHabit->dont_drink == 1) $habits[] = 'ไม่ดื่ม';
-        if ($lifestyleHabit->smoke == 1) $habits[] = 'สูบ';
-        if ($lifestyleHabit->sometime_smoke == 1) $habits[] = 'สูบบางครั้ง';
-        if ($lifestyleHabit->dont_smoke == 1) $habits[] = 'ไม่สูบ';
+        if ($lifestyleHabit->drink == 1) $habits[] = 'ดื่มแอลกอฮอล์';
+        if ($lifestyleHabit->drink_sometimes == 1) $habits[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
+        if ($lifestyleHabit->dont_drink == 1) $habits[] = 'ไม่ดื่มแอลกอฮอล์';
+        if ($lifestyleHabit->smoke == 1) $habits[] = 'สูบบุหรี่';
+        if ($lifestyleHabit->sometime_smoke == 1) $habits[] = 'สูบบุหรี่บางครั้ง';
+        if ($lifestyleHabit->dont_smoke == 1) $habits[] = 'ไม่สูบบุหรี่';
         if ($lifestyleHabit->troubled == 1) $habits[] = 'ทุกข์ใจ ซึม เศร้า';
         if ($lifestyleHabit->dont_live == 1) $habits[] = 'ไม่อยากมีชีวิตอยู่';
         if ($lifestyleHabit->bored == 1) $habits[] = 'เบื่อ';
@@ -105,12 +96,11 @@ class PrintController extends Controller
     $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
     $elderlyHabits = [];
 
-    // ตรวจสอบสถานะของแต่ละ habit
     if ($elderlyInformation) {
         if ($elderlyInformation->help_yourself == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
-        if ($elderlyInformation->can_help == 1) $elderlyHabits[] = 'ช่วยได้';
-        if ($elderlyInformation->cant_help == 1) $elderlyHabits[] = 'ไม่สามารถช่วยได้';
-        if ($elderlyInformation->caregiver == 1) $elderlyHabits[] = 'มีผู้ดูแล';
+        if ($elderlyInformation->can_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
+        if ($elderlyInformation->cant_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองไม่ได้';
+        if ($elderlyInformation->caregiver == 1) $elderlyHabits[] = 'ผู้ดูแล';
         if ($elderlyInformation->have_caregiver == 1) $elderlyHabits[] = 'มีผู้ดูแล';
         if ($elderlyInformation->no_caregiver == 1) $elderlyHabits[] = 'ไม่มีผู้ดูแล';
         if ($elderlyInformation->group1 == 1) $elderlyHabits[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
@@ -121,7 +111,6 @@ class PrintController extends Controller
         if ($elderlyInformation->bed_ridden == 1) $elderlyHabits[] = 'ติดเตียง';
     }
 
-        // เพิ่มข้อมูลการตรวจในแต่ละรอบ
         $inspections->push([
             'inspection_number' => $i + 1,
             'date' => $recorddata->created_at->format('d/m/Y'),

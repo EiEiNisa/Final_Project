@@ -285,11 +285,11 @@ public function edit($id, Request $request)
 $elderlyInfo = $elderlyInfos->map(function ($info) { 
     $elderly = [];
     if ($info->help_yourself) $elderly[] = 'ช่วยเหลือตัวเองได้';
-    if ($info->can_help) $elderly[] = 'ได้';
-    if ($info->cant_help) $elderly[] = 'ไม่ได้';
+    if ($info->can_help) $elderly[] = 'ช่วยเหลือตัวเองได้';
+    if ($info->cant_help) $elderly[] = 'ช่วยเหลือตัวเองไม่ได้';
     if ($info->caregiver) $elderly[] = 'ผู้ดูแล';
     if ($info->have_caregiver) $elderly[] = 'มีผู้ดูแล';
-    if ($info->no_caregiver) $elderly[] = 'ไม่มี';
+    if ($info->no_caregiver) $elderly[] = 'ไม่มีมีผู้ดูแล';
     if ($info->group1) $elderly[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
     if ($info->group2) $elderly[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
     if ($info->group3) $elderly[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
