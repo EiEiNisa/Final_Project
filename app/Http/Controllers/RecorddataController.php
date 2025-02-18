@@ -258,12 +258,12 @@ public function edit($id, Request $request)
 
     $lifestylesHabit = $lifestyles->map(function ($lifestyle) { 
         $lifestyleshabit = [];
-        if ($lifestyle->drink) $lifestyleshabit[] = 'ดื่ม';
-        if ($lifestyle->drink_sometimes) $lifestyleshabit[] = 'ดื่มบ้างบางครั้ง';
-        if ($lifestyle->dont_drink) $lifestyleshabit[] = 'ไม่ดื่ม';
-        if ($lifestyle->smoke) $lifestyleshabit[] = 'สูบ';
-        if ($lifestyle->sometime_smoke) $lifestyleshabit[] = 'สูบบางครั้ง';
-        if ($lifestyle->dont_smoke) $lifestyleshabit[] = 'ไม่สูบ';
+        if ($lifestyle->drink) $lifestyleshabit[] = 'ดื่มแอลกอฮอล์';
+        if ($lifestyle->drink_sometimes) $lifestyleshabit[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
+        if ($lifestyle->dont_drink) $lifestyleshabit[] = 'ไม่ดื่มแอลกอฮอล์';
+        if ($lifestyle->smoke) $lifestyleshabit[] = 'สูบบุหรี่';
+        if ($lifestyle->sometime_smoke) $lifestyleshabit[] = 'สูบบุหรี่บางครั้ง';
+        if ($lifestyle->dont_smoke) $lifestyleshabit[] = 'ไม่สูบบุหรี่';
         if ($lifestyle->troubled) $lifestyleshabit[] = 'ทุกข์ใจ ซึม เศร้า';
         if ($lifestyle->dont_live) $lifestyleshabit[] = 'ไม่อยากมีชีวิตอยู่';
         if ($lifestyle->bored) $lifestyleshabit[] = 'เบื่อ';
