@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,15 +8,15 @@ class SlideshowController extends Controller
 {
     public function update(Request $request, $id) {
         if ($request->hasFile('slide')) {
-            $filePath = 'uploads/slide' . $id . '.png'; // เปลี่ยนเป็น uploads
+            $filePath = 'slides/slide' . $id . '.png';
 
             // ลบรูปเก่าก่อน (ถ้ามี)
             if (Storage::exists('public/' . $filePath)) {
                 Storage::delete('public/' . $filePath);
             }
 
-            // อัปโหลดรูปใหม่
-            $request->file('slide')->storeAs('public/uploads', 'slide' . $id . '.png'); // เปลี่ยนเป็น uploads
+            // อัปโหลดรูปใหม่ไปยัง public/slides
+            $request->file('slide')->storeAs('public/slides', 'slide' . $id . '.png');
 
             return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย!');
         }
@@ -27,7 +26,7 @@ class SlideshowController extends Controller
 
     public function delete($id)
     {
-        $filePath = 'public/uploads/slide' . $id . '.png'; // เปลี่ยนเป็น uploads
+        $filePath = 'public/slides/slide' . $id . '.png';
 
         // ตรวจสอบและลบไฟล์
         if (Storage::exists($filePath)) {
@@ -38,3 +37,4 @@ class SlideshowController extends Controller
         return back()->with('error', 'ไม่พบไฟล์สไลด์ที่ต้องการลบ');
     }
 }
+
