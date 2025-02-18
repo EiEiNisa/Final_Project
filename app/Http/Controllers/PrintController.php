@@ -46,9 +46,7 @@ class PrintController extends Controller
         ->whereYear('created_at', $currentYear)
         ->get();
 
-    $user = $recorddata-> user_id;
-    //dd($user);
-
+    $user = $recorddata-> user_id ?? 'ไม่มีข้อมูล';
 
     $inspections = collect();
 
@@ -115,7 +113,7 @@ class PrintController extends Controller
 
         $inspections->push([
             'inspection_number' => $i + 1,
-            'user_id' => $recorddata->user_id->id ?? 'ไม่มีข้อมูล',
+            
             'date' => $recorddata->created_at->format('d/m/Y'),
             'health_record' => $healthRecord ? [
                 'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',
