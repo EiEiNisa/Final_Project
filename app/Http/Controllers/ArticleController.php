@@ -48,7 +48,7 @@ public function show($id)
             'description' => 'required|string',
             'post_date' => 'required|date',
             'author' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
+            'images' => 'required|images|mimes:jpeg,png,gif|max:2048',
         ]);
     
         $imagePath = null;
