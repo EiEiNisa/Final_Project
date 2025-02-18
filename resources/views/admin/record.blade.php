@@ -545,7 +545,6 @@ button.btn-primary:hover {
                         });
                         </script>
 
-
                         <a href="{{ route('admin.print', ['id' => $data->id]) }}" target="_blank"
                             class="btn btn-warning btn-sm">
                             <i class="fa-solid fa-print"></i>

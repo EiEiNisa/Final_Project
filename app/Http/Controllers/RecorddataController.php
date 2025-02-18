@@ -91,7 +91,6 @@ dd($recorddata);
 if (!$recorddata) {
     return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
 }
-
         $healthRecord = HealthRecord::create([
             'recorddata_id' => $recorddata->id,
             'sys' => $request->input('sys'),
@@ -174,7 +173,6 @@ if (!$recorddata) {
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
 }
 
-
 public function edit($id, Request $request)
 {
     $recorddata = Recorddata::findOrFail($id);
@@ -250,7 +248,7 @@ public function edit($id, Request $request)
         if ($disease->eye == 1) $names[] = 'ตา';
         if ($disease->other == 1) $names[] = 'อื่น ๆ';
         return ['id' => $disease->id, 'names' => implode(' ', $names)];
-    });
+    })->toArray();
     //dd($diseaseNames); 
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $id)
@@ -275,7 +273,7 @@ public function edit($id, Request $request)
             'id' => $lifestyle->id, 
             'lifestyleshabit' => implode(' ', $lifestyleshabit) // Join the array into a string
         ];
-    });
+    })->toArray();
     
     //dd($lifestylesHabit); // Check the output
 
@@ -303,7 +301,7 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
         'id' => $info->id, 
         'lifestyleshabit' => implode(' ', $elderly)
     ];
-});
+})->toArray();
 
     return view('admin.editrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
