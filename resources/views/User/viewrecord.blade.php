@@ -411,16 +411,6 @@ form {
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
 
-            <form method="POST" action="{{ route('recorddata.searchByDate') }}">
-                @csrf
-                <div class="form-group">
-                    <label for="search_date">ค้นหาวันที่:</label>
-                    <input type="date" name="search_date" id="search_date" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">ค้นหา</button>
-            </form>
-
-
             @if(session('error'))
             <div class="alert alert-warning">
                 {{ session('error') }}
