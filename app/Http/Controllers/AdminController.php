@@ -92,6 +92,7 @@ public function submitForm(Request $request)
 
 public function adminhomepage()
 {
+    $articles = Article::all(); 
     return view('admin.homepage', compact('articles'));
 }
 
