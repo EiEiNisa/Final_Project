@@ -163,7 +163,7 @@
         <a href="/admin/record">บันทึกข้อมูล</a>
         <a href="/admin/dashboard">Dashboard</a>
         <a href="/admin/about">ข้อมูลพื้นฐาน</a>
-        <a href="/admin/form">เพิ่มบทความ</a>
+        <a href="form">เพิ่มบทความ</a>
     </div>
 
     <!-- Content -->
@@ -186,6 +186,7 @@
         <div>
             <h5>หน้าหลัก</h5>
             <a href="/admin/homepage">ข่าวกิจกรรม</a>
+            <a href="/admin/form">เพิ่มบทความ</a>
         </div>
         <div>
             <h5>Dashboard</h5>
