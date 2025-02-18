@@ -394,7 +394,7 @@ button.btn-primary:hover {
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-dark">
+            <thead class="thead-dark text-white">
                 <tr>
                     <th scope="col">ลำดับที่</th>
                     <th scope="col">ชื่อ-นามสกุล</th>
@@ -445,7 +445,7 @@ button.btn-primary:hover {
 
                         <a href="{{ route('recorddata.update', $data->id) }}" type="button"
                             class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit me-1"></i> 
+                            <i class="fas fa-edit me-1"></i>
                         </a>
 
                     </td>
