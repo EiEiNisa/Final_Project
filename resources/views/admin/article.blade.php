@@ -61,7 +61,7 @@
     <div class="article-container">
         <h1 class="article-title">{{ $article->title }}</h1>
         <p class="article-meta">{{ $article->post_date }} | {{ $article->author }}</p>
-        <img class="article-image" src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
+        <img class="article-image" src="{{ asset('storage/' . $article->images) }}" alt="{{ $article->title }}">
         <div class="article-content">
             {!! nl2br(e($article->description)) !!}
         </div>

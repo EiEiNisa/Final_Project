@@ -53,7 +53,7 @@ public function show($id)
     
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('uploads', 'public');
+            $imagesPath = $request->file('images')->store('uploads', 'public');
         }
     
         Article::create([
@@ -61,7 +61,7 @@ public function show($id)
             'description' => $validated['description'],
             'post_date' => $validated['post_date'],
             'author' => $validated['author'],
-            'image' => $imagePath,
+            'images' => $imagesPath,
         ]);
     
         $successMessage = 'เพิ่มบทความสำเร็จ!';
