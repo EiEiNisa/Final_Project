@@ -47,7 +47,7 @@ class PrintController extends Controller
         ->get();
 
     $user = $recorddata-> user_id;
-    dd($user);
+    //dd($user);
 
 
     $inspections = collect();
