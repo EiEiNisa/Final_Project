@@ -196,16 +196,12 @@ Route::get('/view', function () {
     return view('view');
 });
 
-Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
-
-// เส้นทางสำหรับหน้า User.homepage
+//Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
 Route::get('/User/homepage', [ArticleController::class, 'index'])->name('User.homepage');
 
-// เส้นทางสำหรับหน้า home
 Route::get('/home', [ArticleController::class, 'index'])->name('home');
 
 Route::get('/User/homepage', [HomepageuserController::class, 'homepageuser'])->name('User.homepage');
-
 Route::get('/User/homepage', [HomepageuserController::class, 'showHomepage'])->name('User.homepage');
 
 Route::get('/User/about', [AboutController::class, 'userIndex'])->name('user.about');

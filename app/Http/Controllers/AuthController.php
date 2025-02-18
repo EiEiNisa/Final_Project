@@ -32,7 +32,7 @@ class AuthController extends Controller
          if ($user->role == 'แอดมิน') {
              return redirect()->route('admin.homepage');
          } else {
-             return redirect()->route('user.homepage');
+             return redirect()->route('User.homepage');
          }
      }
  
