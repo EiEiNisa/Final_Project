@@ -186,7 +186,6 @@
         <div>
             <h5>หน้าหลัก</h5>
             <a href="/admin/homepage">ข่าวกิจกรรม</a>
-            <a href="/admin/form">เพิ่มบทความ</a>
         </div>
         <div>
             <h5>Dashboard</h5>
