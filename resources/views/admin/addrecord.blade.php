@@ -1031,7 +1031,7 @@ form {
                     <label for="user_id">ผู้บันทึกข้อมูล</label>
                     <select id="user_id" name="user_id" class="form-control w-50">
                         <option value="">เลือกผู้บันทึก</option>
-                        @foreach($users->where('role', 'admin') as $user)
+                        @foreach($users->where('role', 'แอดมิน') as $user)
                         <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                             {{ $user->name }} {{ $user->surname }}
                         </option>
