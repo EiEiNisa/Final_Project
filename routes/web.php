@@ -126,15 +126,9 @@ Route::get('/User/viewrecord', function () {
     return view('User.viewrecord', compact('recorddata')); 
 });
 
-
-
-Route::get('/User/about', function () {
-    return view('/User/about');
-});
-
-Route::get('/admin/dashboard', function () {
-    return view('/admin/dashboard');
-});
+//Route::get('/admin/dashboard', function () {
+  //  return view('/admin/dashboard');
+//});
 
 Route::get('/admin/record_general_information', function () {
     return view('/admin/record_general_information');
@@ -148,9 +142,9 @@ Route::get('/User/record', function () {
     return view('/User/record');
 });
 
-Route::get('/User/about', function () {
-    return view('/User/about');
-});
+//Route::get('/User/about', function () {
+ //   return view('/User/about');
+//});
 
 Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
 Route::get('/User/homepage', [HomepageController::class, 'userHomepage'])->name('User.homepage');
@@ -180,7 +174,6 @@ Route::get('/admin/homepage', function () {
 })->name('homepage');
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.show');
 Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('article.delete');
-
 
 Route::get('/form', [ArticleController::class, 'create'])->name('form');
 Route::post('/admin/form', [AdminController::class, 'submitForm'])->name('admin.submit');
