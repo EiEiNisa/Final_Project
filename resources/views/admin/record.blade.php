@@ -27,24 +27,21 @@
 
 .table th {
     background-color: #020364;
-    color: #fff;
+    color: #fff !important; /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
     text-align: center;
 }
 
 .table td {
     background-color: #7DA7D8;
-    color: #fff;
+    color: #fff !important;
     word-wrap: break-word;
     max-width: 200px;
     text-align: center;
 }
 
-.table td:nth-child(2),
-.table td:nth-child(7) {
-    max-width: 250px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.table td:hover,
+.table th:hover {
+    color: #fff !important;
 }
 
 .rectangle-box {
