@@ -27,7 +27,8 @@
 
 .table th {
     background-color: #020364;
-    color: #fff !important; /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
+    color: #fff !important;
+    /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
     text-align: center;
 }
 
@@ -489,7 +490,7 @@ button.btn-primary:hover {
 
                         <a href="{{ route('recorddata.update', $data->id) }}" type="button"
                             class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit me-1"></i> 
+                            <i class="fas fa-edit me-1"></i>
                         </a>
 
                         <form id="deleteForm{{ $data->id }}"
@@ -544,8 +545,8 @@ button.btn-primary:hover {
                         });
                         </script>
 
-                        <a href="{{ route('admin.print', ['id' => $recorddata->id]) }}" target="_blank"
-                            class="btn btn-warning btn-sm">
+
+                        <a href="{{ route('admin.print', ['id' => $recorddata->first()->id]) }}" target="_blank" class="btn btn-warning btn-sm">
                             <i class="fa-solid fa-print"></i>
                         </a>
                     </td>
