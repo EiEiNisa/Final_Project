@@ -82,23 +82,23 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <img class="logo" src="/logo.png" alt="Logo">
-        <a class="navbar-brand" href="/User/homepage">ชุมชนทุ่งเศรษฐี</a>
+        <a class="navbar-brand" href="/User/homepage" style="color: white;">ชุมชนทุ่งเศรษฐี</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/User/homepage">หน้าหลัก</a>
+                    <a class="nav-link" href="/User/homepage" style="color: white;">หน้าหลัก</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/User/record">บันทึกข้อมูล</a>
+                    <a class="nav-link" href="/User/record" style="color: white;">บันทึกข้อมูล</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/User/dashboard">Dashboard</a>
+                    <a class="nav-link" href="/User/dashboard" style="color: white;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/User/about">ข้อมูลพื้นฐาน</a>
+                    <a class="nav-link" href="/User/about" style="color: white;">ข้อมูลพื้นฐาน</a>
                 </li>
             </ul>
             <li class="nav-item" style="list-style-type: none;">
@@ -109,7 +109,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
                         <li>
-                            <a href="/User/editprofile" class="dropdown-item">แก้ไขโปรไฟล์</a>
+                            <a href="/User/editprofile" class="dropdown-item" >แก้ไขโปรไฟล์</a>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="dropdown-item">ออกจากระบบ</button>
