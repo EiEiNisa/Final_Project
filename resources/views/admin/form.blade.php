@@ -13,6 +13,7 @@
         < กลับสู่หน้าหลัก </a>
             <h2 class="text-center mb-4">เพิ่มบทความใหม่</h2>
             <!-- Form for posting -->
+
             <form action="{{ route('admin.form.submit') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
@@ -21,9 +22,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="image" class="form-label">อัพโหลดรูปภาพ</label>
-                    <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
-                </div>
+    <label for="image" class="form-label">อัพโหลดรูปภาพ</label>
+    <input type="file" class="form-control" id="image" name="images" accept="image/*" required>
+</div>
+
 
                 <div class="mb-3">
                     <label for="description" class="form-label">คำอธิบายในโพสต์</label>

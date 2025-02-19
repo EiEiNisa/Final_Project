@@ -172,11 +172,13 @@ Route::get('/admin/home', [ArticleController::class, 'index'])->name('home');
 Route::get('/admin/homepage', function () {
     return app(ArticleController::class)->index('homepage');
 })->name('homepage');
+
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.show');
 Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('article.delete');
+Route::post('/articles', [ArticleController::class, 'store'])->name('article.store');
 
 Route::get('/form', [ArticleController::class, 'create'])->name('form');
-Route::post('/admin/form', [AdminController::class, 'submitForm'])->name('admin.submit');
+Route::post('/admin/form', [ArticleController::class, 'store'])->name('admin.form.submit');
 Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.form');
 Route::post('/admin/form', [AdminController::class, 'handleForm'])->name('admin.form.submit');
 Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.form');
