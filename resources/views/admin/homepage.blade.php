@@ -151,7 +151,7 @@
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
-                <img src="{{ asset('images/slide' . $i . '_' . $timestamp . '.png') }}" alt="Slide Image"> <!-- ใช้ $timestamp ที่เหมาะสม -->
+                <img src="{{ asset('images/' . $latestFile) }}" alt="Slide Image">
 
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
@@ -164,6 +164,14 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
                     </form>
+                    @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
                 </div>
             </div>
         @endfor

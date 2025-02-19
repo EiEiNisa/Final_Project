@@ -19,14 +19,15 @@ class SlideshowController extends Controller
             // ย้ายไฟล์ไปที่ public/images/
             $request->file('slide')->move($destinationPath, $fileName);
             
-            // ตรวจสอบว่าไฟล์ถูกย้ายสำเร็จหรือไม่
-            if (File::exists($destinationPath . '/' . $fileName)) {
-                return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย! ไฟล์ใหม่: ' . $fileName);
-            } else {
-                return back()->with('error', 'ไม่สามารถอัปโหลดไฟล์ได้');
-            }
+            // ส่งชื่อไฟล์ไปยัง session
+            session()->flash('uploaded_file', $fileName);
+            
+            return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย! ไฟล์ใหม่: ' . $fileName);
         }
+        
+        return back()->with('error', 'กรุณาเลือกไฟล์รูปภาพ');
     }
+    
     
     public function delete($id) {
         // กำหนดชื่อไฟล์ที่ต้องการลบ
