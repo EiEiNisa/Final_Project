@@ -225,23 +225,40 @@
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
         @for ($i = 1; $i <= 6; $i++)
+            @php
+                // ตรวจสอบว่ามีรูปภาพของ slide นี้หรือไม่
+                $slideImage = null;
+                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+                    if (file_exists(public_path("images/slide$i.$ext"))) {
+                        $slideImage = asset("images/slide$i.$ext");
+                        break;
+                    }
+                }
+
+                // ถ้าไม่มีรูป ให้ใช้ default.png
+                if (!$slideImage) {
+                    $slideImage = asset('images/default.png');
+                }
+            @endphp
+
             <div class="mySlides">
-            <img src="{{ $slideImage }}" alt="mySlides">
+                <img src="{{ $slideImage }}" alt="Slide {{ $i }}">
             </div>
         @endfor
-    
+
         <!-- Next/Prev Buttons -->
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
-    
+
     <!-- Dots -->
     <div style="text-align:center">
         @for ($i = 1; $i <= 6; $i++)
             <span class="dot" onclick="currentSlide({{ $i }})"></span>
         @endfor
     </div>
-    
+</div>
+
     <!-- JavaScript for Image Slideshow -->
     <script>
         let slideIndex = 1;
