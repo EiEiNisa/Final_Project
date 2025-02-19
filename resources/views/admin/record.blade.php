@@ -46,44 +46,25 @@
 }
 
 .rectangle-box {
-    max-width: 100%;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    /* จัดเรียงทุกอย่างในแนวตั้ง */
-    align-items: center;
-    /* กึ่งกลางแนวนอน */
-    width: 100%;
-    /* กำหนดให้ box ใช้พื้นที่ทั้งหมด */
-    box-sizing: border-box;
-    /* ให้ padding ไม่ทำให้ขนาดกล่องเกิน */
-}
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin: 20px;
+        overflow-x: auto; /* ทำให้สามารถเลื่อนในแนวนอนได้ */
+    }
 
-.form-group-horizontal {
-    display: flex;
-    flex-wrap: nowrap;
-    /* ป้องกันไม่ให้ช่องค้นหามีการพับแถว */
-    justify-content: space-between;
-    gap: 10px;
-    width: 100%;
-    overflow-x: auto;
-    /* ให้สามารถเลื่อนในแนวนอนได้ */
-    box-sizing: border-box;
-}
+    .form-group-horizontal {
+        display: flex;
+        flex-wrap: nowrap; /* ป้องกันไม่ให้ฟอร์มย่อในแนวนอน */
+        overflow-x: auto; /* ทำให้สามารถเลื่อนในแนวนอนได้ */
+    }
 
-.form-group {
-    flex: 1 1 200px;
-    /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
-    min-width: 150px;
-    /* กำหนดขนาดขั้นต่ำ */
-    max-width: 250px;
-    /* กำหนดขนาดสูงสุด */
-}
-
+    .form-group {
+        min-width: 200px; /* ขนาดขั้นต่ำของแต่ละฟอร์มกลุ่ม */
+        margin-right: 15px; /* เว้นระยะระหว่างฟอร์มกลุ่ม */
+    }
+    
 button.btn-primary {
     flex: 1 1 100%;
     font-size: 14px;
