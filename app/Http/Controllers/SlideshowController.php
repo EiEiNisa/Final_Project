@@ -9,27 +9,20 @@ class SlideshowController extends Controller
 {
     public function update(Request $request, $id) {
         if ($request->hasFile('slide')) {
-            // ดึงนามสกุลไฟล์
             $extension = $request->file('slide')->getClientOriginalExtension();
-            
-            // ตั้งชื่อไฟล์ให้ตรงกับ $id
-            $fileName = 'slide' . $id . '.' . $extension;
-            $destinationPath = public_path('images'); // บันทึกที่ public/images/
-            
-            // ลบไฟล์เก่าออกก่อน (ถ้ามี)
-            $oldFile = glob($destinationPath . '/slide' . $id . '.*'); // หาไฟล์ที่มีชื่อเริ่มต้นด้วย slide{id}.
-            if (!empty($oldFile)) {
-                File::delete($oldFile);
-            }
-            
-            // ย้ายไฟล์ไปที่ public/images/
+            $fileName = 'slide' . $id . '_' . time() . '.' . $extension;
+            $destinationPath = public_path('images');
             $request->file('slide')->move($destinationPath, $fileName);
+            
+            // เก็บชื่อไฟล์ใน session
+            session()->put("slide_$id", $fileName);
             
             return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย! ไฟล์ใหม่: ' . $fileName);
         }
         
         return back()->with('error', 'กรุณาเลือกไฟล์รูปภาพ');
     }
+    
     
     
     public function delete($id) {
