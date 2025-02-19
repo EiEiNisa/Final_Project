@@ -429,6 +429,15 @@ button.btn-primary:hover {
         </form>
     </div>
 
+    <script>document.addEventListener("DOMContentLoaded", function () {
+    var toggler = document.querySelector('.navbar-toggler');
+    toggler.addEventListener('click', function () {
+        var navbar = document.getElementById('navbarNav');
+        navbar.classList.toggle('show');
+    });
+});
+</script>
+
     @php
     use Carbon\Carbon;
     @endphp
