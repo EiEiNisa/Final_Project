@@ -53,7 +53,7 @@ public function show($id)
     
         // ขั้นตอนที่ 2: อัปโหลดไฟล์ภาพ
         if ($request->hasFile('images')) { 
-            $imagePath = $request->file('images')->store('uploads', 'public'); // เก็บไฟล์ใน public/uploads
+            $imagePath = $request->file('images')->store('uploads', 'public');
         } else {
             return redirect()->back()->with('error', 'ไม่พบไฟล์ภาพ');
         }
