@@ -326,7 +326,7 @@ form {
     </div>
 
     <div class="rectangle-box">
-        <form id="Recorddata" action="{{ route('recorddata.store') }}" method="POST">
+        <form id="Recorddata"  action="{{ route('recorddata.store') }}" method="POST">
             @csrf
             <!--ข้อมูลประจำตัว-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
@@ -1043,7 +1043,7 @@ form {
             </div>
 
             <div class="save">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
+                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
                     บันทึก
                 </button>
 
