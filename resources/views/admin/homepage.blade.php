@@ -151,6 +151,10 @@
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
+                @php
+                    // ตรวจสอบว่ามีไฟล์ที่อัปโหลดล่าสุดใน session หรือไม่
+                    $fileName = session('uploaded_file', 'slide' . $i . '.png');
+                @endphp
                 <img src="{{ asset('images/' . $fileName) }}" alt="Slide Image">
 
                 <div class="slide-controls">
@@ -164,9 +168,12 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
                     </form>
-                    @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+                </div>
+            </div>
+        @endfor
+    </div>
+</div>
+
 
 @if(session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>

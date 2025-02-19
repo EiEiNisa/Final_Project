@@ -29,6 +29,7 @@ class SlideshowController extends Controller
     }
     
     
+    
     public function delete($id) {
         // กำหนดชื่อไฟล์ที่ต้องการลบ
         $fileName = 'slide' . $id . '_'; // คุณสามารถกำหนดชื่อไฟล์ตามที่คุณต้องการ
