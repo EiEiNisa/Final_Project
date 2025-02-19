@@ -218,6 +218,8 @@ Route::get('/User/record', [UserRecordController::class, 'showUserData'])->name(
 
 Route::get('/admin/about', [AboutController::class, 'adminIndex'])->name('admin.about');
 
+Route::post('/submit-form', [FormController::class, 'store'])->name('submitform');
+Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 
 
 
