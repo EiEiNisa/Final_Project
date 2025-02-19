@@ -49,7 +49,7 @@ class RecorddataController
     return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata'));
 }
 
-    public function store(Request $request)
+public function store(Request $request)
 {
     $extra_fields = $request->input('extra_fields');  
 
@@ -63,35 +63,33 @@ class RecorddataController
             ];
         }
 
-    $recorddata = Recorddata::firstOrCreate(
-        ['id_card' => $request->input('id_card')],
-        [
-            'prefix' => $request->input('prefix'),
-            'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'housenumber' => $request->input('housenumber'),
-            'birthdate' => $request->input('birthdate'),
-            'age' => (int) $request->input('age'),
-            'blood_group' => $request->input('blood_group'),
-            'weight' => (float) $request->input('weight'),
-            'height' => (float) $request->input('height'),
-            'waistline' => (float) $request->input('waistline'),
-            'bmi' => (float) $request->input('bmi'),
-            'phone' => $request->input('phone'),
-            'idline' => $request->input('idline'),
-            'user_id' => $request->user_id,        
-            ]);
+        $recorddata = Recorddata::firstOrCreate(
+            ['id_card' => $request->input('id_card')],
+            [
+                'prefix' => $request->input('prefix'),
+                'name' => $request->input('name'),
+                'surname' => $request->input('surname'),
+                'housenumber' => $request->input('housenumber'),
+                'birthdate' => $request->input('birthdate'),
+                'age' => (int) $request->input('age'),
+                'blood_group' => $request->input('blood_group'),
+                'weight' => (float) $request->input('weight'),
+                'height' => (float) $request->input('height'),
+                'waistline' => (float) $request->input('waistline'),
+                'bmi' => (float) $request->input('bmi'),
+                'phone' => $request->input('phone'),
+                'idline' => $request->input('idline'),
+                'user_id' => (int) $request->input('user_id'), // แปลงค่า user_id เป็นเลข
+            ]
+        );
 
-    $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
-    $recorddata->save();
-}
-//dd(user_id);
-//dd($request->input('user_id'));
+        $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
+        $recorddata->save();
+        
+        if (!$recorddata) {
+            return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
+        }
 
-//dd($recorddata);
-if (!$recorddata) {
-    return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
-}
         $healthRecord = HealthRecord::create([
             'recorddata_id' => $recorddata->id,
             'sys' => $request->input('sys'),
@@ -101,7 +99,7 @@ if (!$recorddata) {
             'blood_oxygen' => $request->input('blood_oxygen'),
             'blood_level' => $request->input('blood_level'),
         ]);
-        
+
         $healthZone = HealthZone::create([
             'recorddata_id' => $recorddata->id,
             'zone1_normal' => filter_var($request->input('zone1_normal', false), FILTER_VALIDATE_BOOLEAN),
@@ -117,7 +115,7 @@ if (!$recorddata) {
             'zone1_eye' => filter_var($request->input('zone1_eye', false), FILTER_VALIDATE_BOOLEAN),
             'zone1_foot' => filter_var($request->input('zone1_foot', false), FILTER_VALIDATE_BOOLEAN),
         ]);
-        //dd($healthZone);
+
         $healthZone2 = HealthZone2::create([
             'recorddata_id' => $recorddata->id,
             'zone2_normal' => filter_var($request->input('zone2_normal', false), FILTER_VALIDATE_BOOLEAN),
@@ -130,7 +128,7 @@ if (!$recorddata) {
             'zone2_heart' => filter_var($request->input('zone2_heart', false), FILTER_VALIDATE_BOOLEAN),
             'zone2_eye' => filter_var($request->input('zone2_eye', false), FILTER_VALIDATE_BOOLEAN),
         ]);
-        
+
         $disease = Disease::create([
             'recorddata_id' => $recorddata->id,
             'diabetes' => filter_var($request->input('diabetes', false), FILTER_VALIDATE_BOOLEAN),
@@ -141,7 +139,7 @@ if (!$recorddata) {
             'eye' => filter_var($request->input('eye', false), FILTER_VALIDATE_BOOLEAN),
             'other' => filter_var($request->input('other', false), FILTER_VALIDATE_BOOLEAN),
         ]);
-        
+
         $lifestyle = LifestyleHabit::create([
             'recorddata_id' => $recorddata->id,
             'drink' => filter_var($request->input('drink', false),  FILTER_VALIDATE_BOOLEAN),
@@ -154,7 +152,7 @@ if (!$recorddata) {
             'dont_live' => filter_var($request->input('dont_live', false),  FILTER_VALIDATE_BOOLEAN),
             'bored' => filter_var($request->input('bored', false),  FILTER_VALIDATE_BOOLEAN),
         ]);
-        
+
         $hlderlyinformation = ElderlyInformation::create([
             'recorddata_id' => $recorddata->id,
             'help_yourself' => filter_var($request->input('help_yourself', false),  FILTER_VALIDATE_BOOLEAN),
@@ -172,6 +170,7 @@ if (!$recorddata) {
         ]);
 
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
+    }
 }
 
 public function edit($id, Request $request)
