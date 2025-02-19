@@ -61,7 +61,7 @@
     let diseaseChart = null; // ตัวแปรเก็บกราฟโรค
 
     async function fetchDashboardData() {
-        let response = await fetch("{{ secure_url(route('dashboard.data')) }}");
+        let response = await fetch("{{ url('dashboard/data', [], true) }}");
         if (!response.ok) {
             alert("ไม่สามารถดึงข้อมูลได้");
             return;
