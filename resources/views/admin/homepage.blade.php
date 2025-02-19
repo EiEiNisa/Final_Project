@@ -146,16 +146,25 @@
         {{ session('error') }}
     </div>
     @endif
+
     <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
                 @php
-                    // ตรวจสอบว่ามีไฟล์ที่อัปโหลดล่าสุดใน session หรือไม่
-                    $fileName = session('uploaded_file', 'slide' . $i . '.png');
+                    // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
+                    $slideImage = null;
+                    foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+                        if (file_exists(public_path("images/slide$i.$ext"))) {
+                            $slideImage = asset("images/slide$i.$ext");
+                            break;
+                        }
+                    }
+                    $slideImage = $slideImage ?? asset('images/default.png');
                 @endphp
-                <img src="{{ asset('images/' . $fileName) }}" alt="Slide Image">
+                
+                <img src="{{ $slideImage }}" alt="Slide Image">
 
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
@@ -173,6 +182,7 @@
         @endfor
     </div>
 </div>
+
 
     <div class="container">
         <a href="form" class="btn-add">+ เพิ่มบทความ</a>
