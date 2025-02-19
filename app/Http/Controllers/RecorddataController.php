@@ -171,6 +171,7 @@ if (!$recorddata) {
             'society' => filter_var($request->input('society', false),  FILTER_VALIDATE_BOOLEAN),
             'bed_ridden' => filter_var($request->input('bed_ridden', false),  FILTER_VALIDATE_BOOLEAN),
         ]);
+        dd($request->all());
 
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
 }
