@@ -1,22 +1,32 @@
-<IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
+# เปิดใช้งาน CORS สำหรับทุกโดเมน
+<IfModule mod_headers.c>
+    Header Set Access-Control-Allow-Origin "*"
+    Header Set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+    Header Set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
 
+# เปิดใช้งาน mod_rewrite
+<IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Send Requests To Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # ส่งคำขอที่ไม่มีไฟล์จริงไปที่ index.php
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [L]
-
 </IfModule>
+
+# อนุญาตให้เข้าถึงโฟลเดอร์ storage
+<Directory "/var/www/html/storage">
+    Require all granted
+</Directory>
+
+# แก้ไขปัญหา 403 สำหรับไฟล์ static เช่น รูปภาพ, CSS, JS ในโฟลเดอร์ storage
+<FilesMatch "\.(jpg|jpeg|png|gif|css|js|svg|woff|woff2|ttf|otf|eot|mp4|webp|json)$">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+
+# ป้องกันการเข้าถึงไฟล์ที่อาจเป็นอันตราย
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|log|sh|sql)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
