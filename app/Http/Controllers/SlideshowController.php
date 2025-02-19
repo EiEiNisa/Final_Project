@@ -43,23 +43,4 @@ class SlideshowController extends Controller
         return back()->with('error', 'ไม่พบไฟล์ที่ต้องการลบ');
     }
    
-    public function home()
-{
-    $slides = [];
-    for ($i = 1; $i <= 6; $i++) {
-        // ดึงชื่อไฟล์จาก session
-        $fileName = session("slide_$i", "slide$i.png");
-
-        // ตรวจสอบว่ามีไฟล์อยู่จริงไหม
-        if (Storage::exists("public/images/$fileName")) {
-            $slides[$i] = asset("storage/images/$fileName");
-        } else {
-            $slides[$i] = asset("images/default.png"); // ใช้รูปเริ่มต้นถ้าไม่มีไฟล์
-        }
-    }
-
-    return view('home', compact('slides'));
-}
-
-
 }
