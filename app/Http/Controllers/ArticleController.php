@@ -54,7 +54,14 @@ public function show($id)
         // อัพโหลดไฟล์ภาพ
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('uploads', 'public');
+            // ตั้งชื่อไฟล์ให้ไม่ซ้ำกัน
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = 'article_' . time() . '.' . $extension;
+            $destinationPath = public_path('images'); // บันทึกที่ public/images/
+            
+            // ย้ายไฟล์ไปที่ public/images/
+            $request->file('image')->move($destinationPath, $fileName);
+            $imagePath = 'images/' . $fileName; // บันทึกเส้นทางสำหรับบันทึกในฐานข้อมูล
         }
     
         // บันทึกข้อมูลบทความในฐานข้อมูล
@@ -72,6 +79,7 @@ public function show($id)
         // Redirect ไปที่หน้า /admin/homepage, user/homepage หรือ home
         return redirect()->route('admin.homepage')->with('success', $successMessage);
     }
+    
     public function search(Request $request)
     {
         // รับค่า query จากผู้ใช้

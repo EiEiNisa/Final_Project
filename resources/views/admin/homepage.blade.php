@@ -189,11 +189,12 @@
     </div>
 
     <div class="container">
-        <h2 class="text-center mb-4">บทความทั้งหมด</h2>
-        <div class="row">
-            @foreach($articles as $article)
+    <h2 class="text-center mb-4">บทความทั้งหมด</h2>
+    <div class="row">
+        @foreach($articles as $article)
+        <div class="col-md-4 mb-4"> <!-- ใช้ col-md-4 เพื่อแบ่งการ์ดในแต่ละแถว -->
             <div class="card">
-                <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
+                <img src="{{ asset($article->image) }}" alt="{{ $article->title }}" class="card-img-top"> <!-- เปลี่ยนเส้นทางไปยัง public/images -->
                 <div class="card-body">
                     <h5 class="card-title">{{ $article->title }}</h5>
                     <p class="text-muted">โดย {{ $article->author }} - {{ $article->post_date }}</p>
@@ -206,7 +207,9 @@
                     </form>
                 </div>
             </div>
-            @endforeach
         </div>
+        @endforeach
     </div>
+</div>
+
     @endsection
