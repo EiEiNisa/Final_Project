@@ -213,8 +213,10 @@ button.btn-primary:hover {
     .rectangle-box {
         display: flex;
         flex-direction: column;
-        max-height: 400px; /* กำหนดความสูงสูงสุด */
-        overflow-y: auto; /* ให้เลื่อนในแนวตั้งได้ */
+        max-height: 400px;
+        /* กำหนดความสูงสูงสุด */
+        overflow-y: auto;
+        /* ให้เลื่อนในแนวตั้งได้ */
         padding: 15px;
         background: #fff;
         border-radius: 10px;
@@ -223,14 +225,17 @@ button.btn-primary:hover {
 
     .form-group-horizontal {
         display: flex;
-        flex-direction: column; /* จัดให้อยู่ในแนวตั้ง */
-        gap: 10px; /* เพิ่มระยะห่าง */
+        flex-direction: column;
+        /* จัดให้อยู่ในแนวตั้ง */
+        gap: 10px;
+        /* เพิ่มระยะห่าง */
     }
 
     .form-group {
         display: flex;
         flex-direction: column;
-        width: 100%; /* ให้ input ขยายเต็ม div */
+        width: 100%;
+        /* ให้ input ขยายเต็ม div */
         min-width: 200px;
     }
 
@@ -240,15 +245,18 @@ button.btn-primary:hover {
 
     /* ปรับขนาด label และ input */
     .form-group label {
-        font-size: 12px; /* ขนาดฟอนต์เล็กลง */
+        font-size: 12px;
+        /* ขนาดฟอนต์เล็กลง */
     }
 
     .input-group .form-control {
-        padding: 8px 15px; /* เพิ่มการเติมภายใน */
+        padding: 8px 15px;
+        /* เพิ่มการเติมภายใน */
     }
 
     .input-group-text {
-        padding: 8px; /* เพิ่มการเติมภายใน */
+        padding: 8px;
+        /* เพิ่มการเติมภายใน */
     }
 
     .table,
@@ -410,25 +418,26 @@ button.btn-primary:hover {
                 </div>
 
                 <div class="form-group">
-                <label for="diseases">โรคประจำตัว</label>
-                <select id="diseases" class="form-control" name="diseases">
-                    <option value="">เลือกโรคประจำตัว</option>
-                    @php
-                    $diseases = [
-                    'diabetes' => 'เบาหวาน',
-                    'cerebral_artery' => 'หลอดเลือดสมอง',
-                    'kidney' => 'โรคไต',
-                    'blood_pressure' => 'ความดันโลหิตสูง',
-                    'heart' => 'โรคหัวใจ',
-                    'eye' => 'โรคตา',
-                    'other' => 'โรคอื่นๆ'
-                    ];
-                    @endphp
-                    @foreach($diseases as $key => $value)
-                    <option value="{{ $key }}" {{ request('diseases') == $key ? 'selected' : '' }}>{{ $value }}</option>
-                    @endforeach
-                </select>
-            </div>
+                    <label for="diseases">โรคประจำตัว</label>
+                    <select id="diseases" class="form-control" name="diseases">
+                        <option value="">เลือกโรคประจำตัว</option>
+                        @php
+                        $diseases = [
+                        'diabetes' => 'เบาหวาน',
+                        'cerebral_artery' => 'หลอดเลือดสมอง',
+                        'kidney' => 'โรคไต',
+                        'blood_pressure' => 'ความดันโลหิตสูง',
+                        'heart' => 'โรคหัวใจ',
+                        'eye' => 'โรคตา',
+                        'other' => 'โรคอื่นๆ'
+                        ];
+                        @endphp
+                        @foreach($diseases as $key => $value)
+                        <option value="{{ $key }}" {{ request('diseases') == $key ? 'selected' : '' }}>{{ $value }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">ค้นหา</button>
@@ -437,14 +446,15 @@ button.btn-primary:hover {
         </form>
     </div>
 
-    <script>document.addEventListener("DOMContentLoaded", function () {
-    var toggler = document.querySelector('.navbar-toggler');
-    toggler.addEventListener('click', function () {
-        var navbar = document.getElementById('navbarNav');
-        navbar.classList.toggle('show');
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var toggler = document.querySelector('.navbar-toggler');
+        toggler.addEventListener('click', function() {
+            var navbar = document.getElementById('navbarNav');
+            navbar.classList.toggle('show');
+        });
     });
-});
-</script>
+    </script>
 
     @php
     use Carbon\Carbon;
