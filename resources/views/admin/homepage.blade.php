@@ -146,7 +146,7 @@
         {{ session('error') }}
     </div>
     @endif
-    
+
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
@@ -177,7 +177,6 @@
         @endfor
     </div>
 </div>
-
 
 
 <div class="container">

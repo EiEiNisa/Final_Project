@@ -171,7 +171,7 @@ public function store(Request $request)
             'bed_ridden' => filter_var($request->input('bed_ridden', false),  FILTER_VALIDATE_BOOLEAN),
         ]);
 
-        return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('admin.record')->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
 }
 
