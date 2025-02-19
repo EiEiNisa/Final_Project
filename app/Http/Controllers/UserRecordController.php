@@ -31,7 +31,7 @@ class UserRecordController extends Controller
     
         $records = $query->paginate(10);
     
-        return view('user.record', compact('records'));
+        return view('User.record', compact('records'));
         
     }
 // ตัวอย่างการใช้งานใน UserRecordController
