@@ -109,7 +109,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
                         <li>
-                            <a href="/User/editprofile" class="dropdown-item">แก้ไขโปรไฟล์</a>
+                        <a href="{{ $user->role == 'แอดมิน' ? route('admin.editprofile') : route('user.editprofile') }}" class="dropdown-item">แก้ไขโปรไฟล์</a>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="dropdown-item">ออกจากระบบ</button>
