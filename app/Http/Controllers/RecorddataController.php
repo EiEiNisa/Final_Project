@@ -79,10 +79,8 @@ class RecorddataController
             'bmi' => (float) $request->input('bmi'),
             'phone' => $request->input('phone'),
             'idline' => $request->input('idline'),
-'user_id' => $request->user_id,        
-]
-
-    );
+            'user_id' => $request->user_id,        
+            ]);
 
     $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
     $recorddata->save();
