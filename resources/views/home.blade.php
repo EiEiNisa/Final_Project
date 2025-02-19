@@ -229,7 +229,11 @@
                 $slidePath = session("slide_$i", "slide$i.png");
             @endphp
             <div class="mySlides">
-                <img src="{{ asset('images/' . $slidePath) }}" alt="Slide {{ $i }}">
+                <img src="{{ asset('images/' . $slidePath) }}" alt="Slide {{ $i }}" onerror="this.style.display='none';">
+                <!-- แสดงข้อความเมื่อไม่สามารถโหลดรูปได้ -->
+                @if (!file_exists(public_path('images/' . $slidePath)))
+                    <p>ไม่พบรูปภาพสำหรับสไลด์ {{ $i }}</p>
+                @endif
             </div>
         @endfor
 
@@ -245,6 +249,7 @@
         @endfor
     </div>
 </div>
+
 
 <!-- JavaScript for Image Slideshow -->
 <script>
