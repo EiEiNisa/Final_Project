@@ -21,8 +21,8 @@ class ProfileController extends Controller
         //dd(view('admin.editprofile')); // ตรวจสอบว่า view admin.editprofile โหลดได้
         return view('admin.editprofile', compact('user'));
     } else {
-        dd(view('user.editprofile')); // ตรวจสอบว่า view user.editprofile โหลดได้
-        return view('user.editprofile', compact('user'));
+        //dd(view('user.editprofile')); // ตรวจสอบว่า view user.editprofile โหลดได้
+        return view('User.editprofile', compact('user'));
     }
 }
 
