@@ -163,8 +163,8 @@
                     }
                     $slideImage = $slideImage ?? asset('images/default.png');
                 @endphp
-                
-                <img src="{{ $slideImage }}" alt="Slide Image">
+
+                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
 
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">

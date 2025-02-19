@@ -224,16 +224,8 @@
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
         @for ($i = 1; $i <= 6; $i++)
-            @php
-                // ดึงชื่อไฟล์จาก session หรือใช้ชื่อไฟล์ดีฟอลต์
-                $slidePath = session("slide_$i", "slide$i.png");
-            @endphp
             <div class="mySlides">
-                <img src="{{ asset('images/' . $slidePath) }}" alt="Slide {{ $i }}" onerror="this.style.display='none';">
-                <!-- แสดงข้อความเมื่อไม่สามารถโหลดรูปได้ -->
-                @if (!file_exists(public_path('images/' . $slidePath)))
-                    <p>ไม่พบรูปภาพสำหรับสไลด์ {{ $i }}</p>
-                @endif
+                <img src="{{ asset('images/' . session("slide_$i", "slide$i.png")) }}?t={{ time() }}" alt="Slide {{ $i }}">
             </div>
         @endfor
 
@@ -249,6 +241,7 @@
         @endfor
     </div>
 </div>
+
 
 
 <!-- JavaScript for Image Slideshow -->
