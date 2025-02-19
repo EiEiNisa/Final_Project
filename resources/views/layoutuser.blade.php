@@ -138,7 +138,7 @@
                         <a class="nav-link" href="/User/homepage" style="color: white;">หน้าหลัก</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/record" style="color: white;">บันทึกข้อมูล</a>
+                        <a class="nav-link" href="/User/record" style="color: white;">บันทึกข้อมูล</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/User/dashboard" style="color: white;">Dashboard</a>
