@@ -50,12 +50,12 @@ public function show($id)
         'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
     ]);
 
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('images', 'public');
+    if ($request->hasFile('images')) { 
+        $imagePath = $request->file('images')->store('uploads', 'public');
     } else {
         $imagePath = null;
     }
-
+    
     Article::create([
         'title' => $validated['title'],
         'description' => $validated['description'],
@@ -63,6 +63,8 @@ public function show($id)
         'author' => $validated['author'],
         'images' => $imagePath,
     ]);
+    dd($article->images);
+    
 
     return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
 }
