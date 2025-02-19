@@ -135,13 +135,24 @@
 </style>
 
 <div class="container py-5">
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+    
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
                 @php
-                
-                $filePath = 'slides/slide' . $i . '.png'; // ไม่ต้องใส่ 'private/' เนื่องจาก `Storage::exists` จะต้องใช้เส้นทางสัมพัทธ์ที่ถูกต้อง
+                $filePath = 'slides/slide' . $i . '.png'; 
                 @endphp
 
                 @if (Storage::disk('public')->exists($filePath))
