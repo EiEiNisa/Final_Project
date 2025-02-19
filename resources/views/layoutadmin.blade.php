@@ -21,121 +21,121 @@
 
 </head>
 
-    <style>
-    body {
-        background-color: #7DA7D8;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-    }
+<style>
+body {
+    background-color: #7DA7D8;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
 
-    .navbar {
-        background-color: #020364;
-        color: #fff;
-        padding: 10px;
-    }
+.navbar {
+    background-color: #020364;
+    color: #fff;
+    padding: 10px;
+}
 
+.sidebar {
+    width: 200px;
+    background-color: #020364;
+    padding: 30px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.sidebar a {
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.sidebar a:hover {
+    background-color: #6D91C9;
+}
+
+.content {
+    margin-left: 200px;
+    padding: 10px;
+    flex-grow: 1;
+    max-width: 100%;
+    ;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    background-color: #020364;
+    color: #fff;
+    padding: 20px;
+    margin-top: auto;
+    margin-left: 180px;
+}
+
+footer div {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    font-size: 17px;
+}
+
+footer h5 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+.user-dropdown {
+    color: #FEFB18;
+    padding-left: 10px;
+    text-decoration: none;
+}
+
+@media (max-width: 992px) {
     .sidebar {
-        width: 200px;
-        background-color: #020364;
-        padding: 30px;
-        position: fixed;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 100;
+        width: 100%;
+        position: relative;
+        height: auto;
+        text-align: center;
+        padding: 10px 0;
     }
 
     .sidebar a {
-        color: #fff;
-        display: block;
-        text-decoration: none;
-        padding: 15px;
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-
-    .sidebar a:hover {
-        background-color: #6D91C9;
+        display: inline-block;
+        margin: 5px 10px;
     }
 
     .content {
-        margin-left: 200px;
-        padding: 10px;
-        flex-grow: 1;
+        margin-left: 0;
+        padding: 5px;
         max-width: 100%;
-        ;
     }
 
     footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        background-color: #020364;
-        color: #fff;
-        padding: 20px;
-        margin-top: auto;
-        margin-left: 180px;
+        flex-direction: column;
+        margin-left: 0;
+        text-align: center;
     }
-
-    footer div {
-        flex: 1;
-        min-width: 200px;
-        margin: 10px;
-        font-size: 17px;
-    }
-
-    footer h5 {
-        margin-bottom: 20px;
-        font-size: 18px;
-    }
-
-    footer a {
-        color: #fff;
-        text-decoration: none;
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    footer p {
-        margin: 5px 0;
-    }
-
-    .user-dropdown {
-        color: #FEFB18;
-        padding-left: 10px;
-        text-decoration: none;
-    }
-
-    @media (max-width: 992px) {
-        .sidebar {
-            width: 100%;
-            position: relative;
-            height: auto;
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        .sidebar a {
-            display: inline-block;
-            margin: 5px 10px;
-        }
-
-        .content {
-            margin-left: 0;
-            padding: 5px;
-            max-width: 100%;
-        }
-
-        footer {
-            flex-direction: column;
-            margin-left: 0;
-            text-align: center;
-        }
-    }
-    </style>
+}
+</style>
 
 </head>
 
@@ -153,6 +153,8 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
                     <li>
+                        <a href="/admin/editprofile" class="dropdown-item">แก้ไขโปรไฟล์</a>
+                        <a href="/admin/manageuser" class="dropdown-item">จัดการสิทธิ์ผู้ใช้</a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item">ออกจากระบบ</button>
