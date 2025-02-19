@@ -7,23 +7,18 @@ use Illuminate\Support\Facades\Storage;
 
 class SlideshowController extends Controller
 {
-    public function update(Request $request)
-    {
-        // ตรวจสอบว่ามีไฟล์ที่อัปโหลดมาหรือไม่
-        if ($request->hasFile('slides')) {
-            foreach ($request->slides as $id => $slide) {
-                if ($slide) {
-                    $filePath = 'slides/slide' . $id . '.png';
+    
+    public function update(Request $request, $id) {
+        if ($request->hasFile('slide')) {
+            $filePath = 'slides/slide' . $id . '.png';
 
-                    // ลบรูปเก่าก่อน (ถ้ามี)
-                    if (Storage::exists('public/' . $filePath)) {
-                        Storage::delete('public/' . $filePath);
-                    }
-
-                    // อัปโหลดรูปใหม่ไปยัง public/slides
-                    $slide->storeAs('public/slides', 'slide' . $id . '.png');
-                }
+            // ลบรูปเก่าก่อน (ถ้ามี)
+            if (Storage::exists('public/' . $filePath)) {
+                Storage::delete('public/' . $filePath);
             }
+
+            // อัปโหลดรูปใหม่ (ไม่มีการปรับขนาด)
+            $request->file('slide')->storeAs('public/slides', 'slide' . $id . '.png');
 
             return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย!');
         }
@@ -33,11 +28,11 @@ class SlideshowController extends Controller
 
     public function delete($id)
     {
-        $filePath = 'slides/slide' . $id . '.png'; // แก้ไขเส้นทางให้ตรง
+        $filePath = 'public/slides/slide' . $id . '.png';
 
         // ตรวจสอบและลบไฟล์
-        if (Storage::exists('public/' . $filePath)) {
-            Storage::delete('public/' . $filePath);
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
             return back()->with('success', 'ลบสไลด์สำเร็จ');
         }
 

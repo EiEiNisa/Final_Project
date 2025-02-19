@@ -37,7 +37,7 @@ public function show($id)
 }
     public function create()
     {
-        return view('/admin/form'); // ตรวจสอบว่ามีไฟล์ Blade นี้อยู่
+        return view('/admin/form');
     }
     
     public function store(Request $request)
