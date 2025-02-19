@@ -101,4 +101,12 @@ public function recordData()
 {
     return $this->belongsTo(RecordData::class, 'recorddata_id');
 }
+
+public function homepage()
+    {
+        // หากคุณต้องการดึงข้อมูลบทความหรือข้อมูลอื่น ๆ ที่จะแสดงบนหน้า
+        $articles = Article::all(); // หรือเปลี่ยนเป็นเงื่อนไขที่ต้องการ
+
+        return view('admin.homepage', compact('articles')); // เปลี่ยนให้ตรงกับชื่อ view ที่คุณต้องการใช้
+    }
 }

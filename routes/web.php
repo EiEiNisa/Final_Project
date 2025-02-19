@@ -183,7 +183,7 @@ Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.for
 Route::post('/admin/form', [AdminController::class, 'handleForm'])->name('admin.form.submit');
 Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.form');
 
-Route::get('/admin/homepage', [AdminController::class, 'adminhomepage'])->name('admin.homepage');
+
 Route::post('/admin/form-submit', [AdminController::class, 'submitForm'])->name('admin.form.submit');
 
 Route::get('/view', function () {
@@ -219,6 +219,7 @@ Route::get('/User/record', [UserRecordController::class, 'showUserData'])->name(
 Route::get('/admin/about', [AboutController::class, 'adminIndex'])->name('admin.about');
 
 Route::post('/submit-form', [FormController::class, 'store'])->name('submitform');
+Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 
 
