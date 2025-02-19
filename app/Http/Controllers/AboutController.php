@@ -36,7 +36,7 @@ class AboutController extends Controller
             'waist_female_80_plus' => RecordData::where('prefix', ['นาง', 'นางสาว','ด.ญ.'])->where('waistline', '>', 80)->count(),
         ];
     
-        return view('user.about', $data);
+        return view('User.about', $data);
     }
     public function adminIndex() {
         $data = [
