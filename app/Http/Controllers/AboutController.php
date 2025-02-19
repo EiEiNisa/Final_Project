@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\RecordData;
+use App\Models\Recorddata;
 use App\Models\HealthZone;
 use App\Models\Disease;
 use App\Models\ElderlyInformation;
@@ -12,7 +12,7 @@ class AboutController extends Controller
 {
     public function userIndex() {
         $data = [
-            'id_card' => Recorddata::count(),
+            'id_cardCount' => Recorddata::count(),
             'maleCount' => Recorddata::whereIn('prefix', ['นาย', 'ด.ช.'])->count(),
             'femaleCount' => Recorddata::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count(),
             'age_0_6' => Recorddata::whereBetween('age', [0, 6])->count(),
@@ -40,7 +40,7 @@ class AboutController extends Controller
     }
     public function adminIndex() {
         $data = [
-            'id_card' => Recorddata::count(),
+            'id_cardCount' => Recorddata::count(),
             'maleCount' => Recorddata::whereIn('prefix', ['นาย', 'ด.ช.'])->count(),
             'femaleCount' => Recorddata::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count(),
             'age_0_6' => Recorddata::whereBetween('age', [0, 6])->count(),
