@@ -1,4 +1,4 @@
-@extends('layoutadmin')
+@extends('layoutuser')
 
 @section('content')
 <div class="container py-4">
