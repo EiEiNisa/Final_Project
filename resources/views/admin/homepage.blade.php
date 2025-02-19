@@ -174,18 +174,6 @@
     </div>
 </div>
 
-
-@if(session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
-@endif
-
-                </div>
-            </div>
-        @endfor
-    </div>
-</div>
-
-
     <div class="container">
         <a href="form" class="btn-add">+ เพิ่มบทความ</a>
     </div>
