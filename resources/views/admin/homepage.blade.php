@@ -158,7 +158,7 @@
             @endphp
 
             <div class="slide-item">
-                <img src="{{ $latestFile }}" alt="Slide Image">
+                <img src="{{ $latestFile }}" alt="Slide Image" onerror="this.src='{{ asset('images/default.png') }}'">
 
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
@@ -167,18 +167,18 @@
                         <button type="submit" class="btn btn-primary">อัปโหลด</button>
                     </form>
 
-                    @if (count($files) > 0)
-                        <form action="{{ route('slideshow.delete', ['fileName' => basename($files[count($files) - 1])]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
-                        </form>
-                    @endif
+                    <!-- ปุ่มลบจะแสดงเสมอ -->
+                    <form action="{{ route('slideshow.delete', ['fileName' => basename($latestFile)]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
+                    </form>
                 </div>
             </div>
         @endfor
     </div>
 </div>
+
 
 
 
