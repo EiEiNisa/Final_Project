@@ -151,8 +151,14 @@
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
+            @php
+                // หาไฟล์ล่าสุดที่อัปโหลด
+                $files = glob(public_path("images/slide{$i}_*.png"));
+                $latestFile = count($files) > 0 ? asset('images/' . basename($files[count($files) - 1])) : asset('images/default.png');
+            @endphp
+
             <div class="slide-item">
-                <img src="{{ asset('images/slide' . $i . '.png') }}" alt="Slide Image">
+                <img src="{{ $latestFile }}" alt="Slide Image">
 
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
@@ -160,16 +166,20 @@
                         <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                         <button type="submit" class="btn btn-primary">อัปโหลด</button>
                     </form>
-                    <form action="{{ route('slideshow.delete', $i) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
-                    </form>
+
+                    @if (count($files) > 0)
+                        <form action="{{ route('slideshow.delete', ['fileName' => basename($files[count($files) - 1])]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         @endfor
     </div>
 </div>
+
 
 
 <div class="container">

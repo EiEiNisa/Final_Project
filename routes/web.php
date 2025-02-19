@@ -218,6 +218,7 @@ Route::get('/User/record', [UserRecordController::class, 'showUserData'])->name(
 
 Route::get('/admin/about', [AboutController::class, 'adminIndex'])->name('admin.about');
 
+Route::get('/slides/delete/{fileName}', [SlideshowController::class, 'delete'])->name('slides.delete');
 
 
 
