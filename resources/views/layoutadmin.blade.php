@@ -153,8 +153,6 @@ footer p {
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
                     <li>
-                        <a href="/admin/editprofile" class="dropdown-item">แก้ไขโปรไฟล์</a>
-                        <a href="/admin/manageuser" class="dropdown-item">จัดการสิทธิ์ผู้ใช้</a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item">ออกจากระบบ</button>
