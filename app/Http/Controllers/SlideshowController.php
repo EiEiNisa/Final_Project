@@ -53,26 +53,19 @@ class SlideshowController extends Controller
 {
     $slides = [];
     for ($i = 1; $i <= 6; $i++) {
-        $slideImage = null;
+        // ดึงชื่อไฟล์จาก session
+        $fileName = session("slide_$i", "slide$i.png");
 
-        // ตรวจสอบไฟล์ที่อยู่ใน public/images/
-        foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
-            if (file_exists(public_path("images/slide$i.$ext"))) {
-                $slideImage = asset("images/slide$i.$ext");
-                break;
-            }
+        // ตรวจสอบว่ามีไฟล์อยู่จริงไหม
+        if (Storage::exists("public/images/$fileName")) {
+            $slides[$i] = asset("storage/images/$fileName");
+        } else {
+            $slides[$i] = asset("images/default.png"); // ใช้รูปเริ่มต้นถ้าไม่มีไฟล์
         }
-
-        // ถ้าไม่มีรูป ใช้ default.png
-        if (!$slideImage) {
-            $slideImage = asset('images/default.png');
-        }
-
-        // เก็บค่าลง array
-        $slides[$i] = $slideImage;
     }
 
     return view('home', compact('slides'));
 }
+
 
 }
