@@ -12,8 +12,8 @@ class DashboardController extends Controller
 {
     // Fetch the necessary data
     $total = RecordData::count();
-    $female = Recorddata::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count();
-    $male = Recorddata::whereIn('prefix', ['นาย', 'ด.ช.'])->count();
+    $female = RecordData::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count();
+    $male = RecordData::whereIn('prefix', ['นาย', 'ด.ช.'])->count();
 
     // Get disease options for the select filter
     $disease_options = [
@@ -33,9 +33,9 @@ class DashboardController extends Controller
 public function fetchData()
 {
     // ข้อมูลทั้งหมด
-    $total = Recorddata::count();
-    $female = Recorddata::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count();
-    $male = Recorddata::whereIn('prefix', ['นาย', 'ด.ช.'])->count();
+    $total = RecordData::count();
+    $female = RecordData::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count();
+    $male = RecordData::whereIn('prefix', ['นาย', 'ด.ช.'])->count();
 
     // ข้อมูลกลุ่มอายุ
     $age_groups = ['0-6', '7-14', '15-34', '34-59', '60+'];
@@ -43,15 +43,15 @@ public function fetchData()
     $age_labels = [];
     foreach ($age_groups as $group) {
         if ($group == '0-6') {
-            $age_data[] = Recorddata::whereBetween('age', [0, 6])->count();
+            $age_data[] = RecordData::whereBetween('age', [0, 6])->count();
         } elseif ($group == '7-14') {
-            $age_data[] = Recorddata::whereBetween('age', [7, 14])->count();
+            $age_data[] = RecordData::whereBetween('age', [7, 14])->count();
         } elseif ($group == '15-34') {
-            $age_data[] = Recorddata::whereBetween('age', [15, 34])->count();
+            $age_data[] = RecordData::whereBetween('age', [15, 34])->count();
         } elseif ($group == '34-59') {
-            $age_data[] = Recorddata::whereBetween('age', [34, 59])->count();
+            $age_data[] = RecordData::whereBetween('age', [34, 59])->count();
         } else {
-            $age_data[] = Recorddata::where('age', '>=', 60)->count();
+            $age_data[] = RecordData::where('age', '>=', 60)->count();
         }
         $age_labels[] = $group;
     }

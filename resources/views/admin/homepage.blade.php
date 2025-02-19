@@ -139,7 +139,17 @@
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
+                @php
+                
+                $filePath = 'slides/slide' . $i . '.png'; // ไม่ต้องใส่ 'private/' เนื่องจาก `Storage::exists` จะต้องใช้เส้นทางสัมพัทธ์ที่ถูกต้อง
+                @endphp
+
+                @if (Storage::disk('public')->exists($filePath))
                 <img src="{{ asset('storage/slides/slide' . $i . '.png') }}" alt="Slide {{ $i }}">
+                @else
+                    <p>ไม่มีสไลด์ที่อัปโหลด</p>
+                @endif
+
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -156,6 +166,8 @@
         @endfor
     </div>
 </div>
+
+
 
 <div class="container">
     <a href="form" class="btn-add">+ เพิ่มบทความ</a>

@@ -161,8 +161,8 @@ Route::get('/admin/about', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data');
 
-Route::get('/admin/edit-slideshow', [SlideshowController::class, 'edit'])->name('edit-slideshow');
-Route::post('/admin/edit-slideshow/update', [SlideshowController::class, 'updateSlideshow'])->name('admin.updateSlideshow');
+Route::post('/admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
+Route::delete('/admin/slideshow/delete/{id}', [SlideshowController::class, 'delete'])->name('slideshow.delete');
 
 Route::post('/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
 Route::delete('/slideshow/delete/{id}', [SlideshowController::class, 'delete'])->name('slideshow.delete');
