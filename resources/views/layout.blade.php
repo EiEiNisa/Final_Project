@@ -7,81 +7,93 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Permissions-Policy" content="accelerometer=(self), gyroscope=(self), device-orientation=(self)">
     <title>Thung Setthi Community</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        crossorigin="anonymous">
+
+    <!-- Bootstrap JS (ไม่ต้องใช้ integrity) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    </script>
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <style>
-        body {
-            background-color: #7DA7D8;
-        }
+    body {
+        background-color: #7DA7D8;
+    }
 
-        .logo {
-            padding-right: 10px;
-            width: 60px;
-        }
+    .logo {
+        padding-right: 10px;
+        width: 60px;
+    }
 
-        .navbar {
-            background-color: #020364;
-            padding: 15px 40px;
-        }
+    .navbar {
+        background-color: #020364;
+        padding: 15px 40px;
+    }
 
-        .navbar-toggler {
-            border-color: rgba(255, 255, 255, 0.1); /* ปรับกรอบของปุ่ม toggle */
-        }
+    .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.1);
+        /* ปรับกรอบของปุ่ม toggle */
+    }
 
-        .navbar-toggler-icon {
-            background-color: white; /* ปรับสีพื้นหลังของปุ่ม toggle */
-        }
+    .navbar-toggler-icon {
+        background-color: white;
+        /* ปรับสีพื้นหลังของปุ่ม toggle */
+    }
 
+    footer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        height: auto;
+        padding: 40px;
+        background-color: #020364;
+        color: #fff;
+    }
+
+    .no-underline-link {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    @media (min-width: 768px) {
         footer {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: space-between;
-            height: auto;
-            padding: 40px;
-            background-color: #020364;
-            color: #fff;
+            flex-direction: row;
         }
+    }
 
-        .no-underline-link {
-            text-decoration: none;
-            color: #fff;
-        }
+    .footer-col {
+        margin-bottom: 30px;
+    }
 
-        @media (min-width: 768px) {
-            footer {
-                flex-direction: row;
-            }
-        }
+    .footer-col h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
 
-        .footer-col {
-            margin-bottom: 30px;
-        }
+    .footer-col a {
+        color: #fff;
+        text-decoration: none;
+    }
 
-        .footer-col h4 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+    .footer-col a:hover {
+        text-decoration: underline;
+    }
 
-        .footer-col a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .footer-col a:hover {
-            text-decoration: underline;
-        }
-
-        /* ปรับขนาดแผนที่ให้พอดีกับทุกหน้าจอ */
-        footer iframe {
-            width: 100%;
-            height: 300px;
-            max-width: 500px; /* จำกัดขนาดสูงสุดในอุปกรณ์ใหญ่ */
-            margin: 0 auto; /* จัดตำแหน่งให้กลาง */
-            display: block;
-        }
+    /* ปรับขนาดแผนที่ให้พอดีกับทุกหน้าจอ */
+    footer iframe {
+        width: 100%;
+        height: 300px;
+        max-width: 500px;
+        /* จำกัดขนาดสูงสุดในอุปกรณ์ใหญ่ */
+        margin: 0 auto;
+        /* จัดตำแหน่งให้กลาง */
+        display: block;
+    }
     </style>
 </head>
 
@@ -124,19 +136,19 @@
             <h4>ที่อยู่</h4>
             <p>227/521 หมู่ 6 ถนนประชาสโมสร ตำบลในเมือง<br>อำเภอเมือง ขอนแก่น จังหวัดขอนแก่น 40000</p>
             <h4>ช่องทางการติดต่อ</h4>
-            <a href="https://www.facebook.com/profile.php?id=100089961199904">Facebook : จิตอาสา ชุมชน ทุ่งเศรษฐี</a><br>
+            <a href="https://www.facebook.com/profile.php?id=100089961199904">Facebook : จิตอาสา ชุมชน
+                ทุ่งเศรษฐี</a><br>
             <a href="mailto:vlt227.521@gmail.com">Email : vlt227.521@gmail.com</a>
         </div>
         <div class="footer-col">
             <h4>แผนที่</h4>
             <iframe
                 src="https://www.google.com/maps/embed?pb=!4v1732121802730!6m8!1m7!1sXVIYDk14khUq5Us2LVmU-A!2m2!1d16.43429993272521!2d102.8685188069868!3f105.96647009275887!4f11.296777919927024!5f0.7820865974627469"
-                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-+bP+Pb1dOYgr9GpSCW9jiIc9I+qp9wbLw5sxh5bslI79Cay2ymvn6wHs5YdAMmA64" crossorigin="anonymous"></script>
 </body>
 
 </html>
