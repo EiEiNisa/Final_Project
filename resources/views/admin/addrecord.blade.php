@@ -337,7 +337,7 @@ form {
             </div>
 
             <div class="form-group1">
-                <label for="id_card">เลขบัตรประจำตัวประชาชนชนชนชน</label>
+                <label for="id_card">เลขบัตรประจำตัวประชาชน</label>
                 <input type="text" class="form-control" id="id_card" name="id_card" maxlength="13"
                     value="{{ old('id_card') }}" placeholder="กรอกเลขบัตรประจำตัวประชาชน" required>
             </div>
@@ -1041,7 +1041,7 @@ form {
             </div>
 
             <div class="save">
-                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
+                <button type="submit" class="btn btn-success" >
                     บันทึก
                 </button>
 
