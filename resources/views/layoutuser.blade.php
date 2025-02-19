@@ -18,10 +18,11 @@
 <body>
     <style>
     body {
-    background-color: #7DA7D8;
-    font-family: 'Arial', sans-serif;
-    color: white; /* กำหนดให้ตัวหนังสือทั้งหมดเป็นสีขาว */
-}
+        background-color: #7DA7D8;
+        font-family: 'Arial', sans-serif;
+        color: white;
+        /* กำหนดให้ตัวหนังสือทั้งหมดเป็นสีขาว */
+    }
 
 
     .logo {
@@ -67,6 +68,16 @@
         white-space: nowrap;
     }
 
+    .navbar-toggler {
+        border: none;
+        /* ปิดขอบของปุ่ม */
+    }
+
+    .navbar-toggler-icon {
+        background-color: white;
+        /* เปลี่ยนสีของ hamburger icon เป็นสีขาว */
+    }
+
 
     footer {
         display: flex;
@@ -77,61 +88,87 @@
         background-color: #020364;
         color: #fff;
     }
+
+    .navbar .dropdown-menu {
+        background-color: #fff;
+        color: #000;
+        border-radius: 10px;
+        border: none;
+        z-index: 1000;
+        width: 200px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+        padding: 10px 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar .dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .navbar .dropdown-item {
+        padding: 10px 16px;
+        font-size: 14px;
+        color: #333;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .navbar .dropdown-item:hover {
+        background-color: #020364;
+        color: white;
+        border-radius: 5px;
+    }
     </style>
 
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <img class="logo" src="/logo.png" alt="Logo">
-        <a class="navbar-brand" href="/User/homepage" style="color: white;">ชุมชนทุ่งเศรษฐี</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/User/homepage" style="color: white;">หน้าหลัก</a>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <img class="logo" src="/logo.png" alt="Logo">
+            <a class="navbar-brand" href="/User/homepage" style="color: white;">ชุมชนทุ่งเศรษฐี</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/homepage" style="color: white;">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/record" style="color: white;">บันทึกข้อมูล</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/dashboard" style="color: white;">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/about" style="color: white;">ข้อมูลพื้นฐาน</a>
+                    </li>
+                </ul>
+                <li class="nav-item" style="list-style-type: none;">
+                    @if(session('register'))
+                    <div class="dropdown" style="display: inline;">
+                        <button class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <strong>{{ session('register')->username }}</strong>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li>
+                                <a href="/User/editprofile" class="dropdown-item">แก้ไขโปรไฟล์</a>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">ออกจากระบบ</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    @endif
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/User/record" style="color: white;">บันทึกข้อมูล</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/User/dashboard" style="color: white;">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/User/about" style="color: white;">ข้อมูลพื้นฐาน</a>
-                </li>
-            </ul>
-            <li class="nav-item" style="list-style-type: none;">
-                @if(session('register'))
-                <div class="dropdown" style="display: inline;">
-                    <button class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <strong>{{ session('register')->username }}</strong>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                        <li>
-                            <a href="/User/editprofile" class="dropdown-item" >แก้ไขโปรไฟล์</a>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="dropdown-item">ออกจากระบบ</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                @endif
-            </li>
+            </div>
         </div>
-    </div>
-</nav>
-
-<style>
-    .navbar-toggler {
-        border: none; /* ปิดขอบของปุ่ม */
-    }
-
-    .navbar-toggler-icon {
-        background-color: white; /* เปลี่ยนสีของ hamburger icon เป็นสีขาว */
-    }
-</style>
+    </nav>
 
 
     <!-- Content -->

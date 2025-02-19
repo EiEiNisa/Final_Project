@@ -68,4 +68,3 @@ class AboutController extends Controller
     }
     
 }
-// AboutController.php

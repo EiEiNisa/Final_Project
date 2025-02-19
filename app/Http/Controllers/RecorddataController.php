@@ -80,12 +80,15 @@ class RecorddataController
             'phone' => $request->input('phone'),
             'idline' => $request->input('idline'),
             'user_id' => $request->input('user_id'),
+
         ]
     );
 
     $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
     $recorddata->save();
 }
+//dd(user_id);
+dd($request->input('user_id'));
 
 //dd($recorddata);
 if (!$recorddata) {
