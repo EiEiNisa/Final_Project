@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\RecordData;
+use App\Models\Recorddata;
 use App\Models\Disease;
 use Carbon\Carbon;
 class DashboardController extends Controller

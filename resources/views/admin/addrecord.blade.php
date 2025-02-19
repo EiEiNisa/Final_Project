@@ -378,28 +378,33 @@ form {
 
                         if (idCard) {
                             fetch('/search-id_card', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    },
-    body: JSON.stringify({ id_card: idCard })
-})
-.then(response => response.json()) 
-.then(data => {
-    console.log("Response from server:", data); // ✅ ตรวจสอบว่ามีข้อมูลจริง
-    if (data && data.success) {
-        alert('ข้อมูลนี้มีอยู่ในระบบ');
-        if (data.data) {
-            console.log("ข้อมูลจาก API:", data.data); // ✅ Debug ค่าที่ได้
-        }
-    } else {
-        console.log('ไม่พบข้อมูล');
-    }
-})
-.catch(error => {
-    console.error('เกิดข้อผิดพลาด:', error);
-});
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify({
+                                        id_card: idCard
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log("Response from server:",
+                                    data); // ✅ ตรวจสอบว่ามีข้อมูลจริง
+                                    if (data && data.success) {
+                                        alert('ข้อมูลนี้มีอยู่ในระบบ');
+                                        if (data.data) {
+                                            console.log("ข้อมูลจาก API:", data
+                                            .data); // ✅ Debug ค่าที่ได้
+                                        }
+                                    } else {
+                                        console.log('ไม่พบข้อมูล');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('เกิดข้อผิดพลาด:', error);
+                                });
 
                         }
                     });
@@ -501,7 +506,6 @@ form {
                 <input type="number" class="form-control" id="waistline" name="waistline" value="{{ old('waistline') }}"
                     placeholder="กรอกรอบเอว" step="0.1" required>
             </div>
-
 
             <div class="form-group1">
                 <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI</label>
