@@ -77,34 +77,32 @@
     }
     </style>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <img class="logo" src="/logo.png" alt="Logo">
-            <a class="navbar-brand" href="/User/homepage" style="color: #fff; font-size:15px;">ชุมชนทุ่งเศรษฐี</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/homepage" style="color: #fff;">หน้าหลัก</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/record" style="color: #fff;">บันทึกข้อมูล</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/dashboard" style="color: #fff;">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/about" style="color: #fff;">ข้อมูลพื้นฐาน</a>
-                    </li>
-                </ul>
-            </div>
-
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <img class="logo" src="/logo.png" alt="Logo">
+        <a class="navbar-brand" href="/User/homepage">ชุมชนทุ่งเศรษฐี</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/homepage">หน้าหลัก</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/record">บันทึกข้อมูล</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/about">ข้อมูลพื้นฐาน</a>
+                </li>
+            </ul>
             <li class="nav-item" style="list-style-type: none;">
                 @if(session('register'))
                 <div class="dropdown" style="display: inline;">
-                    <button class="nav-link dropdown-toggle"
-                        style="color: #FEFB18; padding-left: 10px; text-decoration: none; display: inline;"
-                        id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <strong>{{ session('register')->username }}</strong>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
@@ -119,10 +117,20 @@
                 </div>
                 @endif
             </li>
-
-
         </div>
-    </nav>
+    </div>
+</nav>
+
+<style>
+    .navbar-toggler {
+        border: none; /* ปิดขอบของปุ่ม */
+    }
+
+    .navbar-toggler-icon {
+        background-color: white; /* เปลี่ยนสีของ hamburger icon เป็นสีขาว */
+    }
+</style>
+
 
     <!-- Content -->
     <div>
