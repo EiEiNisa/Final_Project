@@ -336,7 +336,6 @@ form {
                 </a>
             </div>
 
-
             <div class="form-group1">
                 <label for="id_card">เลขบัตรประจำตัวประชาชน</label>
                 <input type="text" class="form-control" id="id_card" name="id_card" maxlength="13"
@@ -425,7 +424,7 @@ form {
                                                     .getElementById(field.label);
                                                 if (inputElement) {
                                                     inputElement.value = field.value ||
-                                                    ''; // ใส่ค่าจาก extra_fields ใน input
+                                                        ''; // ใส่ค่าจาก extra_fields ใน input
                                                 }
                                             });
                                         }
@@ -591,11 +590,13 @@ form {
                 <label for="{{ $label }}" style="margin-bottom: 5px; text-align: left; color: #020364;">
                     {{ $label }}
                 </label>
-                <input type="text" class="form-control" id="{{ $label }}" name="extra_fields[{{ $label }}]"
-                    value="{{ $value }}" placeholder="กรอก{{ $label }}">
+                <input type="hidden" name="extra_fields[{{ $label }}]" value="{{ $value }}">
+                <input type="text" class="form-control" id="{{ $label }}" name="extra_fields_display[{{ $label }}]"
+                    value="{{ $value }}" placeholder="กรอก{{ $label }}" readonly>
             </div>
             @endif
             @endforeach
+
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
