@@ -42,30 +42,32 @@ public function show($id)
     
     public function store(Request $request)
 {
+    // ขั้นตอนที่ 1: Validate ข้อมูลจาก request
     $validated = $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',
         'post_date' => 'required|date',
         'author' => 'required|string|max:255',
-        'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
+        'images' => 'required|image|mimes:jpeg,png,gif|max:2048', // ตรวจสอบไฟล์ภาพ
     ]);
 
+    // ขั้นตอนที่ 2: อัปโหลดไฟล์ภาพ
     if ($request->hasFile('images')) { 
-        $imagePath = $request->file('images')->store('uploads', 'public');
+        $imagePath = $request->file('images')->store('uploads', 'public'); // เก็บไฟล์ใน public/uploads
     } else {
-        $imagePath = null;
+        $imagePath = null; // ถ้าไม่มีไฟล์ภาพ
     }
     
+    // ขั้นตอนที่ 3: สร้างบทความใหม่ในฐานข้อมูล
     Article::create([
-        'title' => $validated['title'],
+        'title' => $validated['title'], // ใช้ค่าที่ผ่านการ validate
         'description' => $validated['description'],
         'post_date' => $validated['post_date'],
         'author' => $validated['author'],
-        'images' => $imagePath,
+        'images' => $imagePath, // เก็บที่อยู่ของไฟล์ภาพ
     ]);
-    dd($article->images);
-    
 
+    // ขั้นตอนที่ 4: เปลี่ยนเส้นทางไปยังหน้า admin homepage พร้อมกับข้อความสำเร็จ
     return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
 }
 
