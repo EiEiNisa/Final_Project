@@ -174,8 +174,8 @@ footer p {
         <a href="/admin/dashboard">Dashboard</a>
         <a href="/admin/about">ข้อมูลพื้นฐาน</a>
         <a href="form">เพิ่มบทความ</a>
-        <a href="/admin/editprofile">แก้ไขโปรไฟล์</a>
-        <a href="/admin/manageuser" >จัดการสิทธิ์ผู้ใช้</a>
+        <a href="/admin/editprofile" class="dropdown-item">แก้ไขโปรไฟล์</a>
+        <a href="/admin/manageuser" class="dropdown-item">จัดการสิทธิ์ผู้ใช้</a>
     </div>
 
     <!-- Content -->
