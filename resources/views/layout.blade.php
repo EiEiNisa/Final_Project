@@ -15,7 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
 
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
@@ -110,6 +109,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <form class="d-flex" style="padding-right:30px;" action="{{ route('search') }}" method="GET">
+                        <br>
                         <input class="form-control me-2" type="search" placeholder="ค้นหาบทความ..." aria-label="Search"
                             name="query" required>
                         <button class="btn btn-light ms-2" type="submit">ค้นหา</button>
