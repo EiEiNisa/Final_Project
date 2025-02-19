@@ -170,10 +170,12 @@ footer p {
     <div class="sidebar">
         <img class="logo" src="/logo.png" alt="Logo" width="100">
         <a href="/admin/homepage">หน้าหลัก</a>
-        <a href="/admin/record">บันทึกข้อมูลddddddd</a>
+        <a href="/admin/record">บันทึกข้อมูล</a>
         <a href="/admin/dashboard">Dashboard</a>
         <a href="/admin/about">ข้อมูลพื้นฐาน</a>
         <a href="form">เพิ่มบทความ</a>
+        <a href="/admin/editprofile">แก้ไขโปรไฟล์</a>
+        <a href="/admin/manageuser" >จัดการสิทธิ์ผู้ใช้</a>
     </div>
 
     <!-- Content -->
