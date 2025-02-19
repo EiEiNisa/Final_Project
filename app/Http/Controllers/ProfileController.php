@@ -10,20 +10,22 @@ use App\Models\User;
 class ProfileController extends Controller
 {
     public function edit()
-    {
-        $user = session('register'); 
+{
+    $user = session('register'); 
 
-        if (!$user) {
-            return redirect()->route('login.form')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
-        }
-
-        if ($user->role == 'แอดมิน') {
-            return redirect()->route('admin.editprofile')->with('success', 'อัปเดตข้อมูลสำเร็จ');
-        } else {
-            return redirect()->route('user.editprofile')->with('success', 'อัปเดตข้อมูลสำเร็จ');
-        }
-        
+    if (!$user) {
+        return redirect()->route('login.form')->with('error', 'กรุณาเข้าสู่ระบบก่อน');
     }
+
+    // ถ้าผู้ใช้มีบทบาทแอดมิน จะกลับไปยังหน้า admin.editprofile
+    // มิฉะนั้น จะกลับไปยังหน้า user.editprofile
+    if ($user->role == 'แอดมิน') {
+        return view('admin.editprofile', compact('user')); // เปลี่ยนไปแสดงหน้า edit profile
+    } else {
+        return view('user.editprofile', compact('user')); // เปลี่ยนไปแสดงหน้า edit profile
+    }
+}
+
 
     public function update(Request $request)
     {
