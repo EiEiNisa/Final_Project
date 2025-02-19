@@ -61,7 +61,8 @@
     let diseaseChart = null; // ตัวแปรเก็บกราฟโรค
 
     async function fetchDashboardData() {
-        let response = await fetch("http://127.0.0.1:8000/dashboard/data");
+        let response = await fetch("https://thungsetthivhv.pcnone.com/dashboard/data");
+
         if (!response.ok) {
             alert("ไม่สามารถดึงข้อมูลได้");
             return;

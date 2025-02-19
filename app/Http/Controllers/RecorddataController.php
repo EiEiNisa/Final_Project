@@ -174,7 +174,6 @@ public function store(Request $request)
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
 
-
 public function edit($id, Request $request)
 {
     $recorddata = Recorddata::findOrFail($id);
