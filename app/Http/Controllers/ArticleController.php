@@ -41,35 +41,36 @@ public function show($id)
     }
     
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'post_date' => 'required|date',
-            'author' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
-        ]);
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'post_date' => 'required|date',
+        'author' => 'required|string|max:255',
+        'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
+    ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path('image');  // ใช้ public/image
-            $file->move($destinationPath, $fileName);  // ย้ายไฟล์ไปที่ public/images/
-            $imagePath = $request->file('image')->store('uploads', 'public');
-        }
-
-        // บันทึกข้อมูลบทความ
-        Article::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'post_date' => $validated['post_date'],
-            'author' => $validated['author'],
-            'image' => $imagePath,
-        ]);
-
-        return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = public_path('uploads');  // เปลี่ยนเป็น public/uploads
+        $file->move($destinationPath, $fileName);  // ย้ายไฟล์ไปที่ public/uploads/
+        $imagePath = 'uploads/' . $fileName; // เก็บเส้นทางไฟล์ในฐานข้อมูล
     }
+
+    // บันทึกข้อมูลบทความ
+    Article::create([
+        'title' => $validated['title'],
+        'description' => $validated['description'],
+        'post_date' => $validated['post_date'],
+        'author' => $validated['author'],
+        'image' => $imagePath,
+    ]);
+
+    return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
+}
+
     
     public function search(Request $request)
     {

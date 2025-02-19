@@ -191,26 +191,30 @@
     <div class="container">
     <h2 class="text-center mb-4">บทความทั้งหมด</h2>
     <div class="row">
-        @foreach($articles as $article)
-        <div class="col-md-4 mb-4"> <!-- ใช้ col-md-4 เพื่อแบ่งการ์ดในแต่ละแถว -->
-            <div class="card">
-            <img src="{{ asset('uploads/' . $article->image) }}" alt="{{ $article->title }}">
-
-                <div class="card-body">
-                    <h5 class="card-title">{{ $article->title }}</h5>
-                    <p class="text-muted">โดย {{ $article->author }} - {{ $article->post_date }}</p>
-                    <a href="{{ route('admin.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
-                    <form action="{{ route('article.delete', $article->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบบทความนี้?')">ลบ</button>
-                    </form>
+        @if($articles->isEmpty())
+            <div class="col-12 text-center">
+                <p>ยังไม่มีบทความ</p>
+            </div>
+        @else
+            @foreach($articles as $article)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ asset($article->image) }}" alt="{{ $article->title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <p class="text-muted">โดย {{ $article->author }} - {{ $article->post_date }}</p>
+                        <a href="{{ route('admin.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
+                        <form action="{{ route('article.delete', $article->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบบทความนี้?')">ลบ</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 </div>
-
-    @endsection
+@endsection
