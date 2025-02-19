@@ -79,7 +79,7 @@ public function store(Request $request)
                 'bmi' => (float) $request->input('bmi'),
                 'phone' => $request->input('phone'),
                 'idline' => $request->input('idline'),
-'user_id' => intval($request->input('user_id')), // ใช้ intval()
+                'user_id' => intval($request->input('user_id')), // ใช้ intval()
             ]
         );
 
@@ -89,7 +89,7 @@ public function store(Request $request)
         if (!$recorddata) {
             return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
         }
-        $table->unsignedBigInteger('user_id')->nullable(false);
+        //$table->unsignedBigInteger('user_id')->nullable(false);
 
 
         $healthRecord = HealthRecord::create([
