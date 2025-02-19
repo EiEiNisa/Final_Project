@@ -18,10 +18,11 @@ class ProfileController extends Controller
         }
 
         if ($user->role == 'แอดมิน') {
-            return view('admin.editprofile', compact('user'));
+            return redirect()->route('admin.editprofile')->with('success', 'อัปเดตข้อมูลสำเร็จ');
         } else {
-            return view('User.editprofile', compact('user'));
+            return redirect()->route('user.editprofile')->with('success', 'อัปเดตข้อมูลสำเร็จ');
         }
+        
     }
 
     public function update(Request $request)

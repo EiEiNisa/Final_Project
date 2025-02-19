@@ -128,7 +128,6 @@
             <div class="info-box">
                 <h5><strong>ตรวจครั้งที่ {{ $inspection['inspection_number'] }}</strong></h5>
                 <div><strong>วันที่ตรวจ:</strong> {{ $inspection['date'] }}</div>
-                <!--<div><strong>ผู้บันทึกข้อมูล:</strong> {{ $userFullName }}</div>-->
                 </div>
 
             <!-- Health Record -->

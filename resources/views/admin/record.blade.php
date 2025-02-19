@@ -408,7 +408,6 @@ button.btn-primary:hover {
                             aria-label="Search">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="housenumber">บ้านเลขที่</label>
                     <div class="input-group">
@@ -416,7 +415,6 @@ button.btn-primary:hover {
                             placeholder="ค้นหาบ้านเลขที่" aria-label="Search">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="diseases">โรคประจำตัว</label>
                     <select id="diseases" class="form-control" name="diseases">
@@ -438,13 +436,13 @@ button.btn-primary:hover {
                         @endforeach
                     </select>
                 </div>
-
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">ค้นหา</button>
                 </div>
             </div>
         </form>
     </div>
+
 
     <script>
     document.addEventListener("DOMContentLoaded", function() {
