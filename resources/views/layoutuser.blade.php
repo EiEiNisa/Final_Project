@@ -18,9 +18,11 @@
 <body>
     <style>
     body {
-        background-color: #7DA7D8;
-        font-family: 'Arial', sans-serif;
-    }
+    background-color: #7DA7D8;
+    font-family: 'Arial', sans-serif;
+    color: white; /* กำหนดให้ตัวหนังสือทั้งหมดเป็นสีขาว */
+}
+
 
     .logo {
         padding-right: 10px;
