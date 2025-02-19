@@ -220,29 +220,12 @@
     }
 </style>
 
-<!-- Content -->
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
         @for ($i = 1; $i <= 6; $i++)
-            @php
-                // ตรวจสอบว่ามีรูปภาพของ slide นี้หรือไม่
-                $slideImage = null;
-                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
-                    if (file_exists(public_path("images/slide$i.$ext"))) {
-                        $slideImage = asset("images/slide$i.$ext");
-                        break;
-                    }
-                }
-
-                // ถ้าไม่มีรูป ให้ใช้ default.png
-                if (!$slideImage) {
-                    $slideImage = asset('images/default.png');
-                }
-            @endphp
-
             <div class="mySlides">
-                <img src="{{ $slideImage }}" alt="Slide {{ $i }}">
+                <img src="{{ asset('images/' . session("slide_$i", "slide$i.png")) }}?t={{ time() }}" alt="Slide {{ $i }}">
             </div>
         @endfor
 
@@ -259,38 +242,40 @@
     </div>
 </div>
 
-    <!-- JavaScript for Image Slideshow -->
-    <script>
-        let slideIndex = 1;
-        showSlides(slideIndex);
-    
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
+
+
+<!-- JavaScript for Image Slideshow -->
+<script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
         }
-    
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
         }
-    
-        function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("dot");
-            if (n > slides.length) { slideIndex = 1 }
-            if (n < 1) { slideIndex = slides.length }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-        }
-        setInterval(function() {
-            plusSlides(1);
-        }, 3000); // Change slide every 3 seconds
-    </script>
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+    setInterval(function() {
+        plusSlides(1);
+    }, 3000); // Change slide every 3 seconds
+</script>
 
     <!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
