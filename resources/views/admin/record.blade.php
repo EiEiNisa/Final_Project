@@ -210,24 +210,32 @@ button.btn-primary:hover {
         margin-bottom: 10px;
     }
 
+    .rectangle-box {
+        display: flex;
+        flex-direction: column;
+        max-height: 400px; /* กำหนดความสูงสูงสุด */
+        overflow-y: auto; /* ให้เลื่อนในแนวตั้งได้ */
+        padding: 15px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
     .form-group-horizontal {
-        display: flex; /* ใช้ flexbox เพื่อจัดการการจัดเรียง */
-        overflow-x: auto; /* ให้สามารถเลื่อนในแนวนอนได้ */
-        gap: 10px; /* ลดระยะห่างระหว่างช่องค้นหา */
+        display: flex;
+        flex-direction: column; /* จัดให้อยู่ในแนวตั้ง */
+        gap: 10px; /* เพิ่มระยะห่าง */
     }
 
     .form-group {
-        flex: 1 1 auto; /* ช่องค้นหาทุกช่องมีขนาดยืดหยุ่น */
-        min-width: 150px; /* กำหนดขนาดขั้นต่ำ */
-        max-width: 200px; /* กำหนดขนาดสูงสุด */
-        margin-right: 10px; /* ระยะห่างระหว่างช่องค้นหา */
+        display: flex;
+        flex-direction: column;
+        width: 100%; /* ให้ input ขยายเต็ม div */
+        min-width: 200px;
     }
 
-    /* ปรับขนาดปุ่มค้นหา */
-    button.btn-primary {
-        flex: 1 1 100%; /* ให้ปุ่มเต็มความกว้าง */
-        margin-top: 15px; /* เพิ่มระยะห่างด้านบน */
-        padding: 12px 20px; /* เพิ่มการเติมภายใน */
+    .btn-primary {
+        width: 100%;
     }
 
     /* ปรับขนาด label และ input */

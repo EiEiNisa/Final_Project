@@ -47,8 +47,10 @@ class PrintController extends Controller
         ->get();
 
     //$user = $recorddata-> user_id ?? 'ไม่มีข้อมูล';
-    $userFullName = isset($recorddata->user_id) ? $recorddata->user_id->name . ' ' . $recorddata->user_id->surname : 'ไม่มีข้อมูล';
-dd($userFullName);
+    //$userFullName = isset($recorddata->user_id) ? $recorddata->user_id->name . ' ' . $recorddata->user_id->surname : 'ไม่มีข้อมูล';
+    //dd($userFullName);
+
+    
     $inspections = collect();
 
     $inspectionCount = max(
