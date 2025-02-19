@@ -49,9 +49,16 @@ public function show($id)
         'post_date' => 'required|date',
         'author' => 'required',
     ]);
+    // บันทึกข้อมูลบทความในฐานข้อมูล
+Article::create([
+    'title' => $validated['title'],
+    'description' => $validated['description'],
+    'post_date' => $validated['post_date'],
+    'author' => $validated['author'],
+    'image' => basename($imagePath), // เก็บชื่อไฟล์รูปภาพในฐานข้อมูล
+]);
 
-    // อัพโหลดไฟล์ภาพไปที่ public/uploads
-    $imagePath = $request->file('image')->store('uploads', 'public'); // เก็บใน 'uploads'
+    $imagePath = $request->file('image')->store('uploads', 'public'); 
 
     // สร้างบทความใหม่
     $article = new Article();

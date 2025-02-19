@@ -194,7 +194,7 @@
         @foreach($articles as $article)
         <div class="col-md-4 mb-4"> <!-- ใช้ col-md-4 เพื่อแบ่งการ์ดในแต่ละแถว -->
             <div class="card">
-            <img src="{{ asset('uploads/' . $article->image) }}" alt="{{ $article->title }}"> <!-- เปลี่ยนเส้นทางไปยัง public/images -->
+            <img src="{{ asset('uploads/' . $article->image) }}" alt="{{ $article->title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $article->title }}</h5>
                     <p class="text-muted">โดย {{ $article->author }} - {{ $article->post_date }}</p>
