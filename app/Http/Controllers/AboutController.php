@@ -12,7 +12,7 @@ class AboutController extends Controller
 {
     public function userIndex() {
         $data = [
-            'id_cardCount' => Recorddata::count(),
+            '$populationCount' => Recorddata::count(),
             'maleCount' => Recorddata::whereIn('prefix', ['นาย', 'ด.ช.'])->count(),
             'femaleCount' => Recorddata::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count(),
             'age_0_6' => Recorddata::whereBetween('age', [0, 6])->count(),
@@ -40,7 +40,7 @@ class AboutController extends Controller
     }
     public function adminIndex() {
         $data = [
-            'id_cardCount' => Recorddata::count(),
+            '$populationCount' => Recorddata::count(),
             'maleCount' => Recorddata::whereIn('prefix', ['นาย', 'ด.ช.'])->count(),
             'femaleCount' => Recorddata::whereIn('prefix', ['นาง', 'นางสาว', 'ด.ญ.'])->count(),
             'age_0_6' => Recorddata::whereBetween('age', [0, 6])->count(),
