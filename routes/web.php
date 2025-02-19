@@ -197,7 +197,7 @@ Route::get('/home', [ArticleController::class, 'index'])->name('home');
 Route::get('/User/homepage', [HomepageuserController::class, 'homepageuser'])->name('User.homepage');
 Route::get('/User/homepage', [HomepageuserController::class, 'showHomepage'])->name('User.homepage');
 
-Route::get('/User/about', [AboutController::class, 'userIndex'])->name('user.about');
+Route::get('/User/about', [AboutController::class, 'userIndex'])->name('User.about');
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/dashboard/data', [DashboardController::class, 'fetchData'])->name('dashboard.data');
