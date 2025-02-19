@@ -177,7 +177,7 @@ Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.s
 Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('article.delete');
 Route::post('/articles', [ArticleController::class, 'store'])->name('article.store');
 
-Route::get('/form', [ArticleController::class, 'create'])->name('form');
+Route::get('/form', [ArticleController::class, 'create'])->name('admin.form');
 Route::post('/admin/form', [ArticleController::class, 'store'])->name('admin.form.submit');
 Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.form');
 Route::post('/admin/form', [AdminController::class, 'handleForm'])->name('admin.form.submit');

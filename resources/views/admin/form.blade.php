@@ -2,9 +2,9 @@
 
 @section('content')
 @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
 @endif
 
 <div class="container mt-2" style="margin-bottom:50px;">
@@ -22,9 +22,9 @@
                 </div>
 
                 <div class="mb-3">
-    <label for="image" class="form-label">อัพโหลดรูปภาพ</label>
-    <input type="file" class="form-control" id="image" name="images" accept="image/*" required>
-</div>
+                    <label for="image" class="form-label">อัพโหลดรูปภาพ</label>
+                    <input type="file" class="form-control" id="image" name="images" accept="image/*" required>
+                </div>
 
 
                 <div class="mb-3">
@@ -44,7 +44,7 @@
 
                 <button type="submit" class="btn btn-primary">เสร็จสิ้น</button>
             </form>
-            
+
 </div>
 
 @endsection

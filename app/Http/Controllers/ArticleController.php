@@ -53,7 +53,7 @@ public function show($id)
     
         // ขั้นตอนที่ 2: อัปโหลดไฟล์ภาพ
         if ($request->hasFile('images')) { 
-            $imagePath = $request->file('images')->store('uploads', 'public');
+            $imagePath = $request->file('images')->store('uploads', 'public'); // เก็บในโฟลเดอร์ 'public/uploads'
         } else {
             return redirect()->back()->with('error', 'ไม่พบไฟล์ภาพ');
         }
@@ -70,6 +70,7 @@ public function show($id)
         // ขั้นตอนที่ 4: เปลี่ยนเส้นทางไปยังหน้า admin homepage พร้อมกับข้อความสำเร็จ
         return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
     }
+    
     
 
     public function search(Request $request)
