@@ -226,7 +226,7 @@
     <div class="slideshow-container py-3">
         @for ($i = 1; $i <= 6; $i++)
             <div class="mySlides">
-                <img src="{{ asset('storage/slides/slide' . $i . '.png') }}" class="slide-preview" alt="Slide {{ $i }}">
+            <img src="{{ $slideImage }}" alt="mySlides">
             </div>
         @endfor
     
