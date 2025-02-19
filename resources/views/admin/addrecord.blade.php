@@ -388,15 +388,45 @@ form {
                                         id_card: idCard
                                     })
                                 })
-                                .then(response => response.json())
+                                .then(response => response
+                                    .json()) // เปลี่ยนที่นี่เพื่อให้ได้ข้อมูลจาก response
                                 .then(data => {
-                                    console.log("Response from server:",
-                                    data); // ✅ ตรวจสอบว่ามีข้อมูลจริง
-                                    if (data && data.success) {
+                                    console.log("Response from server:", data);
+                                    if (data && data
+                                        .success) { // ตรวจสอบว่า data และ data.success มีค่าหรือไม่
                                         alert('ข้อมูลนี้มีอยู่ในระบบ');
-                                        if (data.data) {
-                                            console.log("ข้อมูลจาก API:", data
-                                            .data); // ✅ Debug ค่าที่ได้
+
+                                        // ดึงข้อมูลและแสดงในฟอร์ม
+                                        if (prefixInput) prefixInput.value = data.data.prefix || '';
+                                        if (nameInput) nameInput.value = data.data.name || '';
+                                        if (surnameInput) surnameInput.value = data.data.surname ||
+                                            '';
+                                        if (housenumberInput) housenumberInput.value = data.data
+                                            .housenumber || '';
+                                        if (birthdateInput) birthdateInput.value = data.data
+                                            .birthdate || '';
+                                        if (ageInput) ageInput.value = calculateAge(data.data
+                                            .birthdate) || '';
+                                        if (bloodgroupInput) bloodgroupInput.value = data.data
+                                            .blood_group || '';
+                                        if (weightInput) weightInput.value = data.data.weight || '';
+                                        if (heightInput) heightInput.value = data.data.height || '';
+                                        if (waistlineInput) waistlineInput.value = data.data
+                                            .waistline || '';
+                                        if (bmiInput) bmiInput.value = data.data.bmi || '';
+                                        if (phoneInput) phoneInput.value = data.data.phone || '';
+                                        if (idlineInput) idlineInput.value = data.data.idline || '';
+
+                                        if (data.data.extra_fields) {
+                                            const extraFields = JSON.parse(data.data.extra_fields);
+                                            extraFields.forEach(field => {
+                                                const inputElement = document
+                                                    .getElementById(field.label);
+                                                if (inputElement) {
+                                                    inputElement.value = field.value ||
+                                                        ''; // ใส่ค่าจาก extra_fields ใน input
+                                                }
+                                            });
                                         }
                                     } else {
                                         console.log('ไม่พบข้อมูล');
@@ -405,7 +435,6 @@ form {
                                 .catch(error => {
                                     console.error('เกิดข้อผิดพลาด:', error);
                                 });
-
                         }
                     });
                 }
@@ -506,6 +535,7 @@ form {
                 <input type="number" class="form-control" id="waistline" name="waistline" value="{{ old('waistline') }}"
                     placeholder="กรอกรอบเอว" step="0.1" required>
             </div>
+
 
             <div class="form-group1">
                 <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI</label>
@@ -1001,8 +1031,8 @@ form {
             <div class="w-100 text-end fw-bold" style="color: #020364;">
                 <div class="d-flex flex-column align-items-end">
                     <label for="user_id">ผู้บันทึกข้อมูล</label>
-                    <select id="user_id" name="user_id" class="form-control w-50" required>
-                    <option value="">เลือกผู้บันทึก</option>
+                    <select id="user_id" name="user_id" class="form-control w-50">
+                        <option value="">เลือกผู้บันทึก</option>
                         @foreach($users->where('role', 'แอดมิน') as $user)
                         <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                             {{ $user->name }} {{ $user->surname }}
