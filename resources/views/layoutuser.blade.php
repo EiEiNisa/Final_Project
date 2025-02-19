@@ -205,7 +205,7 @@
 
         <div>
             <h4>บันทึกข้อมูล</h4>
-            <a class="nav-link" href="/User/recode" style="color: #fff;line-height: 2;">ข้อมูลสุขภาพ</a>
+            <a class="nav-link" href="/User/record" style="color: #fff;line-height: 2;">ข้อมูลสุขภาพ</a>
         </div>
 
     </footer>
