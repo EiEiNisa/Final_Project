@@ -51,8 +51,129 @@ class RecorddataController
 
 public function store(Request $request)
 {
-    dd($request->all());
-}
+    //$extra_fields = $request->input('extra_fields');  
+
+    //if (isset($extra_fields) && is_array($extra_fields)) {
+    //    $formatted_extra_fields = [];
+
+     //   foreach ($extra_fields as $key => $value) {
+     //       $formatted_extra_fields[] = [
+     //           'label' => $key,  
+      //          'value' => $value 
+      ///      ];
+      //  }
+
+        $recorddata = Recorddata::firstOrCreate(
+            ['id_card' => $request->input('id_card')],
+            [
+                'prefix' => $request->input('prefix'),
+                'name' => $request->input('name'),
+                'surname' => $request->input('surname'),
+                'housenumber' => $request->input('housenumber'),
+                'birthdate' => $request->input('birthdate'),
+                'age' => (int) $request->input('age'),
+                'blood_group' => $request->input('blood_group'),
+                'weight' => (float) $request->input('weight'),
+                'height' => (float) $request->input('height'),
+                'waistline' => (float) $request->input('waistline'),
+                'bmi' => (float) $request->input('bmi'),
+                'phone' => $request->input('phone'),
+                'idline' => $request->input('idline'),
+                'user_id' => intval($request->input('user_id')), // ใช้ intval()
+            ]
+        );
+
+        //$recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
+        //$recorddata->save();
+        
+        if (!$recorddata) {
+            return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
+        }
+        //$table->unsignedBigInteger('user_id')->nullable(false);
+
+
+        $healthRecord = HealthRecord::create([
+            'recorddata_id' => $recorddata->id,
+            'sys' => $request->input('sys'),
+            'dia' => $request->input('dia'),
+            'pul' => $request->input('pul'),
+            'body_temp' => $request->input('body_temp'),
+            'blood_oxygen' => $request->input('blood_oxygen'),
+            'blood_level' => $request->input('blood_level'),
+        ]);
+
+        $healthZone = HealthZone::create([
+            'recorddata_id' => $recorddata->id,
+            'zone1_normal' => filter_var($request->input('zone1_normal', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_risk_group' => filter_var($request->input('zone1_risk_group', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_good_control' => filter_var($request->input('zone1_good_control', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_watch_out' => filter_var($request->input('zone1_watch_out', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_danger' => filter_var($request->input('zone1_danger', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_critical' => filter_var($request->input('zone1_critical', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_complications' => filter_var($request->input('zone1_complications', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_heart' => filter_var($request->input('zone1_heart', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_cerebrovascular' => filter_var($request->input('zone1_cerebrovascular', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_kidney' => filter_var($request->input('zone1_kidney', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_eye' => filter_var($request->input('zone1_eye', false), FILTER_VALIDATE_BOOLEAN),
+            'zone1_foot' => filter_var($request->input('zone1_foot', false), FILTER_VALIDATE_BOOLEAN),
+        ]);
+
+        $healthZone2 = HealthZone2::create([
+            'recorddata_id' => $recorddata->id,
+            'zone2_normal' => filter_var($request->input('zone2_normal', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_risk_group' => filter_var($request->input('zone2_risk_group', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_good_control' => filter_var($request->input('zone2_good_control', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_watch_out' => filter_var($request->input('zone2_watch_out', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_danger' => filter_var($request->input('zone2_danger', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_critical' => filter_var($request->input('zone2_critical', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_complications' => filter_var($request->input('zone2_complications', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_heart' => filter_var($request->input('zone2_heart', false), FILTER_VALIDATE_BOOLEAN),
+            'zone2_eye' => filter_var($request->input('zone2_eye', false), FILTER_VALIDATE_BOOLEAN),
+        ]);
+
+        $disease = Disease::create([
+            'recorddata_id' => $recorddata->id,
+            'diabetes' => filter_var($request->input('diabetes', false), FILTER_VALIDATE_BOOLEAN),
+            'cerebral_artery' => filter_var($request->input('cerebral_artery', false), FILTER_VALIDATE_BOOLEAN),
+            'kidney' => filter_var($request->input('kidney', false), FILTER_VALIDATE_BOOLEAN),
+            'blood_pressure' => filter_var($request->input('blood_pressure', false), FILTER_VALIDATE_BOOLEAN),
+            'heart' => filter_var($request->input('heart', false), FILTER_VALIDATE_BOOLEAN),
+            'eye' => filter_var($request->input('eye', false), FILTER_VALIDATE_BOOLEAN),
+            'other' => filter_var($request->input('other', false), FILTER_VALIDATE_BOOLEAN),
+        ]);
+
+        $lifestyle = LifestyleHabit::create([
+            'recorddata_id' => $recorddata->id,
+            'drink' => filter_var($request->input('drink', false),  FILTER_VALIDATE_BOOLEAN),
+            'drink_sometimes' => filter_var($request->input('drink_sometimes', false),  FILTER_VALIDATE_BOOLEAN),
+            'dont_drink' => filter_var($request->input('dont_drink', false),  FILTER_VALIDATE_BOOLEAN),
+            'smoke' => filter_var($request->input('smoke', false),  FILTER_VALIDATE_BOOLEAN),
+            'sometime_smoke' => filter_var($request->input('sometime_smoke', false),  FILTER_VALIDATE_BOOLEAN),
+            'dont_smoke' => filter_var($request->input('dont_smoke', false),  FILTER_VALIDATE_BOOLEAN),
+            'troubled' => filter_var($request->input('troubled', false),  FILTER_VALIDATE_BOOLEAN),
+            'dont_live' => filter_var($request->input('dont_live', false),  FILTER_VALIDATE_BOOLEAN),
+            'bored' => filter_var($request->input('bored', false),  FILTER_VALIDATE_BOOLEAN),
+        ]);
+
+        $hlderlyinformation = ElderlyInformation::create([
+            'recorddata_id' => $recorddata->id,
+            'help_yourself' => filter_var($request->input('help_yourself', false),  FILTER_VALIDATE_BOOLEAN),
+            'can_help' => filter_var($request->input('can_help', false),  FILTER_VALIDATE_BOOLEAN),
+            'cant_help' => filter_var($request->input('cant_help', false),  FILTER_VALIDATE_BOOLEAN),
+            'caregiver' => filter_var($request->input('caregiver', false),  FILTER_VALIDATE_BOOLEAN),
+            'have_caregiver' => filter_var($request->input('have_caregiver', false),  FILTER_VALIDATE_BOOLEAN),
+            'no_caregiver' => filter_var($request->input('no_caregiver', false),  FILTER_VALIDATE_BOOLEAN),
+            'group1' => filter_var($request->input('group1', false),  FILTER_VALIDATE_BOOLEAN),
+            'group2' => filter_var($request->input('group2', false),  FILTER_VALIDATE_BOOLEAN),
+            'group3' => filter_var($request->input('group3', false),  FILTER_VALIDATE_BOOLEAN),
+            'house' => filter_var($request->input('house', false),  FILTER_VALIDATE_BOOLEAN),
+            'society' => filter_var($request->input('society', false),  FILTER_VALIDATE_BOOLEAN),
+            'bed_ridden' => filter_var($request->input('bed_ridden', false),  FILTER_VALIDATE_BOOLEAN),
+        ]);
+
+        return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
+    }
+
 
 public function edit($id, Request $request)
 {
