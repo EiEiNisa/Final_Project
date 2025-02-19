@@ -378,63 +378,29 @@ form {
 
                         if (idCard) {
                             fetch('/search-id_card', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector(
-                                            'meta[name="csrf-token"]').getAttribute('content')
-                                    },
-                                    body: JSON.stringify({
-                                        id_card: idCard
-                                    })
-                                })
-                                .then(response => response
-                                    .json()) // เปลี่ยนที่นี่เพื่อให้ได้ข้อมูลจาก response
-                                .then(data => {
-                                    console.log("Response from server:", data);
-                                    if (data && data
-                                        .success) { // ตรวจสอบว่า data และ data.success มีค่าหรือไม่
-                                        alert('ข้อมูลนี้มีอยู่ในระบบ');
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({ id_card: idCard })
+})
+.then(response => response.json()) 
+.then(data => {
+    console.log("Response from server:", data); // ✅ ตรวจสอบว่ามีข้อมูลจริง
+    if (data && data.success) {
+        alert('ข้อมูลนี้มีอยู่ในระบบ');
+        if (data.data) {
+            console.log("ข้อมูลจาก API:", data.data); // ✅ Debug ค่าที่ได้
+        }
+    } else {
+        console.log('ไม่พบข้อมูล');
+    }
+})
+.catch(error => {
+    console.error('เกิดข้อผิดพลาด:', error);
+});
 
-                                        // ดึงข้อมูลและแสดงในฟอร์ม
-                                        if (prefixInput) prefixInput.value = data.data.prefix || '';
-                                        if (nameInput) nameInput.value = data.data.name || '';
-                                        if (surnameInput) surnameInput.value = data.data.surname ||
-                                            '';
-                                        if (housenumberInput) housenumberInput.value = data.data
-                                            .housenumber || '';
-                                        if (birthdateInput) birthdateInput.value = data.data
-                                            .birthdate || '';
-                                        if (ageInput) ageInput.value = calculateAge(data.data
-                                            .birthdate) || '';
-                                        if (bloodgroupInput) bloodgroupInput.value = data.data
-                                            .blood_group || '';
-                                        if (weightInput) weightInput.value = data.data.weight || '';
-                                        if (heightInput) heightInput.value = data.data.height || '';
-                                        if (waistlineInput) waistlineInput.value = data.data
-                                            .waistline || '';
-                                        if (bmiInput) bmiInput.value = data.data.bmi || '';
-                                        if (phoneInput) phoneInput.value = data.data.phone || '';
-                                        if (idlineInput) idlineInput.value = data.data.idline || '';
-
-                                        if (data.data.extra_fields) {
-                                            const extraFields = JSON.parse(data.data.extra_fields);
-                                            extraFields.forEach(field => {
-                                                const inputElement = document
-                                                    .getElementById(field.label);
-                                                if (inputElement) {
-                                                    inputElement.value = field.value ||
-                                                        ''; // ใส่ค่าจาก extra_fields ใน input
-                                                }
-                                            });
-                                        }
-                                    } else {
-                                        console.log('ไม่พบข้อมูล');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('เกิดข้อผิดพลาด:', error);
-                                });
                         }
                     });
                 }
