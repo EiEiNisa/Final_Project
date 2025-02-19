@@ -23,13 +23,13 @@ class AboutController extends Controller
             'house' => ElderlyInformation::where('house', 1)->count(),
             'society' => ElderlyInformation::where('society', 1)->count(),
             'bed_ridden' => ElderlyInformation::where('bed_ridden', 1)->count(),
-            'diabetesCount' => Disease::whereHas('recordData', function ($query) {
+            'diabetesCount' => Disease::whereHas('recorddata', function ($query) {
                 $query->where('diabetes', 1);
             })->count(),
-            'hypertensionCount' => Disease::whereHas('recordData', function ($query) {
+            'hypertensionCount' => Disease::whereHas('recorddata', function ($query) {
                 $query->where('blood_pressure', 1);
             })->count(),
-            'kidneyDiseaseCount' => Disease::whereHas('recordData', function ($query) {
+            'kidneyDiseaseCount' => Disease::whereHas('recorddata', function ($query) {
                 $query->where('kidney', 1);
             })->count(),
             'waist_male_90_plus' => RecordData::where('prefix', ['นาย', 'ด.ช.'])->where('waistline', '>', 90)->count(),
@@ -51,13 +51,13 @@ class AboutController extends Controller
             'house' => ElderlyInformation::where('house', 1)->count(),
             'society' => ElderlyInformation::where('society', 1)->count(),
             'bed_ridden' => ElderlyInformation::where('bed_ridden', 1)->count(),
-            'diabetesCount' => Disease::whereHas('recordData', function ($query) {
+            'diabetesCount' => Disease::whereHas('recorddata', function ($query) {
                 $query->where('diabetes', 1);
             })->count(),
-            'hypertensionCount' => Disease::whereHas('recordData', function ($query) {
+            'hypertensionCount' => Disease::whereHas('recorddata', function ($query) {
                 $query->where('blood_pressure', 1);
             })->count(),
-            'kidneyDiseaseCount' => Disease::whereHas('recordData', function ($query) {
+            'kidneyDiseaseCount' => Disease::whereHas('recorddata', function ($query) {
                 $query->where('kidney', 1);
             })->count(),
             'waist_male_90_plus' => Recorddata::whereIn('prefix', ['นาย', 'ด.ช.'])->where('waistline', '>', 90)->count(),
@@ -68,3 +68,4 @@ class AboutController extends Controller
     }
     
 }
+// AboutController.php
