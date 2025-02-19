@@ -115,7 +115,7 @@
     </div>
 
     <div class="box">
-        <form action="{{ route('User.updateprofile') }}" method="POST">
+        <form action="{{ route('user.updateprofile') }}" method="POST">
             @csrf
             <label for="name" style="margin-bottom: 5px; text-align: left;">ชื่อ</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $user->name) }}"
