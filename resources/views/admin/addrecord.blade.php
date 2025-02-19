@@ -594,10 +594,8 @@ form {
                 <input type="text" class="form-control" id="{{ $label }}" name="extra_fields_display[{{ $label }}]"
                     value="{{ $value }}" placeholder="กรอก{{ $label }}" readonly>
             </div>
-
             @endif
             @endforeach
-
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
