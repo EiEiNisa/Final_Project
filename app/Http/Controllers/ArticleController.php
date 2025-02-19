@@ -41,45 +41,30 @@ public function show($id)
     }
     
     public function store(Request $request)
-    {
-        // ตรวจสอบข้อมูล
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'post_date' => 'required|date',
-            'author' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
-        ]);
-    
-        // อัพโหลดไฟล์ภาพ
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            // ตั้งชื่อไฟล์ให้ไม่ซ้ำกัน
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileName = 'article_' . time() . '.' . $extension;
-            $destinationPath = public_path('images'); // บันทึกที่ public/images/
-            
-            // ย้ายไฟล์ไปที่ public/images/
-            $request->file('image')->move($destinationPath, $fileName);
-            $imagePath = 'images/' . $fileName; // บันทึกเส้นทางสำหรับบันทึกในฐานข้อมูล
-        }
-    
-        // บันทึกข้อมูลบทความในฐานข้อมูล
-        Article::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'post_date' => $validated['post_date'],
-            'author' => $validated['author'],
-            'image' => $imagePath,
-        ]);
-    
-        // เพิ่มข้อความสำเร็จไปยัง session
-        $successMessage = 'เพิ่มบทความสำเร็จ!';
-    
-        // Redirect ไปที่หน้า /admin/homepage, user/homepage หรือ home
-        return redirect()->route('admin.homepage')->with('success', $successMessage);
-    }
-    
+{
+    $request->validate([
+        'title' => 'required',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+        'description' => 'required',
+        'post_date' => 'required|date',
+        'author' => 'required',
+    ]);
+
+    // อัพโหลดไฟล์ภาพไปที่ public/uploads
+    $imagePath = $request->file('image')->store('uploads', 'public'); // เก็บใน 'uploads'
+
+    // สร้างบทความใหม่
+    $article = new Article();
+    $article->title = $request->input('title');
+    $article->image = $imagePath; // เก็บเส้นทางที่ถูกต้อง
+    $article->description = $request->input('description');
+    $article->post_date = $request->input('post_date');
+    $article->author = $request->input('author');
+    $article->save();
+
+    return redirect()->route('submitform')->with('success', 'บทความถูกบันทึกสำเร็จ');
+}
+
     public function search(Request $request)
     {
         // รับค่า query จากผู้ใช้
