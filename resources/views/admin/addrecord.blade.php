@@ -1001,8 +1001,8 @@ form {
             <div class="w-100 text-end fw-bold" style="color: #020364;">
                 <div class="d-flex flex-column align-items-end">
                     <label for="user_id">ผู้บันทึกข้อมูล</label>
-                    <select id="user_id" name="user_id" class="form-control w-50">
-                        <option value="">เลือกผู้บันทึก</option>
+                    <select id="user_id" name="user_id" class="form-control w-50" required>
+                    <option value="">เลือกผู้บันทึก</option>
                         @foreach($users->where('role', 'แอดมิน') as $user)
                         <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                             {{ $user->name }} {{ $user->surname }}

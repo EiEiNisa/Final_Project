@@ -79,7 +79,7 @@ class RecorddataController
             'bmi' => (float) $request->input('bmi'),
             'phone' => $request->input('phone'),
             'idline' => $request->input('idline'),
-            'user_id' => $request->user_id,
+            'user_id' => $request->input('user_id'),
         ]
     );
 
