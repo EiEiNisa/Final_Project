@@ -18,14 +18,13 @@ class ProfileController extends Controller
     }
 
     if ($user->role == 'แอดมิน') {
-        //dd(view('admin.editprofile')); // ตรวจสอบว่า view admin.editprofile โหลดได้
+        //dd(view('admin.editprofile')); 
         return view('admin.editprofile', compact('user'));
     } else {
-        //dd(view('user.editprofile')); // ตรวจสอบว่า view user.editprofile โหลดได้
+        //dd(view('user.editprofile')); 
         return view('User.editprofile', compact('user'));
     }
 }
-
 
 
     public function update(Request $request)
@@ -58,7 +57,7 @@ class ProfileController extends Controller
         if ($user->role == 'แอดมิน') {
             return redirect()->route('admin.editprofile')->with('success', 'อัปเดตข้อมูลสำเร็จ');
         } else {
-            return redirect()->route('user.editprofile');
+            return redirect()->route('user.editprofile')->with('success', 'อัปเดตข้อมูลสำเร็จ');
         }
         
     }
