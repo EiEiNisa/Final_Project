@@ -10,52 +10,59 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #7DA7D8;
-            font-family: 'Arial', sans-serif;
-        }
+    body {
+        background-color: #7DA7D8;
+        font-family: 'Arial', sans-serif;
+    }
 
-        .logo {
-            padding-right: 10px;
-            width: 60px;
-        }
+    .logo {
+        padding-right: 10px;
+        width: 60px;
+    }
 
-        .navbar {
-            background-color: #020364;
-        }
+    .navbar {
+        background-color: #020364;
+    }
 
-        .navbar-brand, .nav-link {
-            color: #fff !important;
-        }
+    .navbar-brand,
+    .nav-link {
+        color: #fff !important;
+    }
 
-        .navbar-nav .nav-link {
-            margin-right: 15px;
-        }
+    .navbar-nav .nav-link {
+        margin-right: 15px;
+    }
 
-        .navbar-toggler {
-            border: none;
-        }
+    .navbar-toggler {
+        border: none;
+        /* ปิดขอบของปุ่ม */
+    }
 
+    .navbar-toggler-icon {
+        background-color: white;
+        /* เปลี่ยนสีของ hamburger icon เป็นสีขาว */
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 300px;
+        padding: 40px;
+        background-color: #020364;
+        color: #fff;
+    }
+
+    @media (max-width: 576px) {
         .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 300px;
-            padding: 40px;
-            background-color: #020364;
-            color: #fff;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
-        @media (max-width: 576px) {
-            .footer {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .footer div {
-                margin-bottom: 20px;
-            }
+        .footer div {
+            margin-bottom: 20px;
         }
+    }
     </style>
 </head>
 
@@ -65,7 +72,8 @@
         <div class="container-fluid">
             <img class="logo" src="/logo.png" alt="Logo">
             <a class="navbar-brand" href="/User/homepage">ชุมชนทุ่งเศรษฐี</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -86,7 +94,8 @@
                 <li class="nav-item" style="list-style-type: none;">
                     @if(session('register'))
                     <div class="dropdown" style="display: inline;">
-                        <button class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <strong>{{ session('register')->username }}</strong>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
@@ -116,7 +125,8 @@
             <h4>ที่อยู่</h4>
             <p>227/521 หมู่ 6 ถนนประชาสโมสร ตำบลในเมือง<br>อำเภอเมืองขอนแก่น จังหวัดขอนแก่น 40000</p>
             <h4>ช่องทางการติดต่อ</h4>
-            <a href="https://www.facebook.com/profile.php?id=100089961199904" style="color: #fff;">Facebook : จิตอาสา ชุมชม ทุ่งเศรษฐี</a><br>
+            <a href="https://www.facebook.com/profile.php?id=100089961199904" style="color: #fff;">Facebook : จิตอาสา
+                ชุมชม ทุ่งเศรษฐี</a><br>
             <a href="mailto:vlt227.521@gmail.com" style="color: #fff;">Email : vlt227.521@gmail.com</a>
         </div>
 

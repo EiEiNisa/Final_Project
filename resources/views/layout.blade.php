@@ -34,13 +34,11 @@
     }
 
     .navbar-toggler {
-        border-color: rgba(255, 255, 255, 0.1);
-        /* ปรับกรอบของปุ่ม toggle */
+        border: none; /* ปิดขอบของปุ่ม */
     }
 
     .navbar-toggler-icon {
-        background-color: white;
-        /* ปรับสีพื้นหลังของปุ่ม toggle */
+        background-color: white; /* เปลี่ยนสีของ hamburger icon เป็นสีขาว */
     }
 
     footer {
