@@ -50,7 +50,7 @@ class PrintController extends Controller
     //$userFullName = isset($recorddata->user_id) ? $recorddata->user_id->name . ' ' . $recorddata->user_id->surname : 'ไม่มีข้อมูล';
     //dd($userFullName);
 
-    
+
     $inspections = collect();
 
     $inspectionCount = max(
@@ -138,7 +138,7 @@ class PrintController extends Controller
         ]);
     }
 
-    return view('admin.print', compact('recorddata', 'inspections', 'healthRecords','userFullName'));
+    return view('admin.print', compact('recorddata', 'inspections', 'healthRecords'));
 }
 
 private function getHealthZoneData($healthZone)
