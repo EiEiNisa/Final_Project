@@ -586,7 +586,7 @@ form {
             $label = $field['label'] ?? 'ไม่มี label';
             $value = $field['value'] ?? 'ไม่มี value';
             @endphp
-            <div class="form-group1">
+            <div class="form-group1" style="display: none;">
                 <label for="{{ $label }}" style="margin-bottom: 5px; text-align: left; color: #020364;">
                     {{ $label }}
                 </label>
@@ -594,6 +594,7 @@ form {
                 <input type="text" class="form-control" id="{{ $label }}" name="extra_fields_display[{{ $label }}]"
                     value="{{ $value }}" placeholder="กรอก{{ $label }}" readonly>
             </div>
+
             @endif
             @endforeach
 
