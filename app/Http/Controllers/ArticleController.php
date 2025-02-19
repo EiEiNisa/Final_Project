@@ -15,9 +15,9 @@ class ArticleController extends Controller
         if ($page === 'admin/homepage') {
             return view('admin.homepage', compact('articles'));
         }
-        if ($page === 'User/homepage') {
+        if ($page === 'user/homepage') {
             return view('user.homepage', compact('articles'));
-        }        
+        }
 
         return view('home', compact('articles'));
     }
@@ -37,48 +37,50 @@ public function show($id)
 }
     public function create()
     {
-        return view('/admin/form');
+        return view('/admin/form'); // ตรวจสอบว่ามีไฟล์ Blade นี้อยู่
     }
     
     public function store(Request $request)
     {
-        // ขั้นตอนที่ 1: Validate ข้อมูลจาก request
+        // ตรวจสอบข้อมูล
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'post_date' => 'required|date',
             'author' => 'required|string|max:255',
-            'images' => 'required|image|mimes:jpeg,png,gif|max:2048', // ตรวจสอบไฟล์ภาพ
+            'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
         ]);
     
-        // ขั้นตอนที่ 2: อัปโหลดไฟล์ภาพ
-        if ($request->hasFile('images')) { 
-            $imagePath = $request->file('images')->store('uploads', 'public'); // เก็บในโฟลเดอร์ 'public/uploads'
-        } else {
-            return redirect()->back()->with('error', 'ไม่พบไฟล์ภาพ');
+        // อัพโหลดไฟล์ภาพ
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('uploads', 'public');
         }
     
-        // ขั้นตอนที่ 3: สร้างบทความใหม่ในฐานข้อมูล
+        // บันทึกข้อมูลบทความในฐานข้อมูล
         Article::create([
-            'title' => $validated['title'], // ใช้ค่าที่ผ่านการ validate
+            'title' => $validated['title'],
             'description' => $validated['description'],
             'post_date' => $validated['post_date'],
             'author' => $validated['author'],
-            'images' => $imagePath, // เก็บที่อยู่ของไฟล์ภาพ
+            'image' => $imagePath,
         ]);
     
-        // ขั้นตอนที่ 4: เปลี่ยนเส้นทางไปยังหน้า admin homepage พร้อมกับข้อความสำเร็จ
-        return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
+        // เพิ่มข้อความสำเร็จไปยัง session
+        $successMessage = 'เพิ่มบทความสำเร็จ!';
+    
+        // Redirect ไปที่หน้า /admin/homepage, user/homepage หรือ home
+        return redirect()->route('admin.homepage')->with('success', $successMessage);
     }
-    
-    
-
     public function search(Request $request)
     {
+        // รับค่า query จากผู้ใช้
         $query = $request->input('query');
     
+        // ค้นหาบทความที่ชื่อขึ้นต้นด้วยคำที่กรอก
         $articles = Article::where('title', 'like', $query . '%')->get();
     
+        // ส่งข้อมูลผลลัพธ์ไปยังหน้าแสดงผล
         return view('search_results', compact('articles', 'query'));
     }
     
