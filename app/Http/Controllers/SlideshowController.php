@@ -11,18 +11,21 @@ class SlideshowController extends Controller
         if ($request->hasFile('slide')) {
             // ดึงนามสกุลไฟล์
             $extension = $request->file('slide')->getClientOriginalExtension();
-    
+        
             // สร้างชื่อไฟล์ใหม่ให้ไม่ซ้ำกัน (ใช้ timestamp)
             $fileName = 'slide' . $id . '_' . time() . '.' . $extension;
             $destinationPath = public_path('images'); // บันทึกที่ public/images/
-    
+        
             // ย้ายไฟล์ไปที่ public/images/
             $request->file('slide')->move($destinationPath, $fileName);
-    
-            return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย! ไฟล์ใหม่: ' . $fileName);
+            
+            // ตรวจสอบว่าไฟล์ถูกย้ายสำเร็จหรือไม่
+            if (File::exists($destinationPath . '/' . $fileName)) {
+                return back()->with('success', 'อัปโหลดสไลด์เรียบร้อย! ไฟล์ใหม่: ' . $fileName);
+            } else {
+                return back()->with('error', 'ไม่สามารถอัปโหลดไฟล์ได้');
+            }
         }
-    
-        return back()->with('error', 'กรุณาเลือกไฟล์รูปภาพ');
     }
     
     public function delete($id) {

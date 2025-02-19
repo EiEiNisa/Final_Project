@@ -146,13 +146,13 @@
         {{ session('error') }}
     </div>
     @endif
-
     <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
-                <img src="{{ asset('images/slide' . $i . '.png') }}" alt="Slide Image" class="img-fluid">
+                <img src="{{ asset('images/slide' . $i . '_' . $timestamp . '.png') }}" alt="Slide Image"> <!-- ใช้ $timestamp ที่เหมาะสม -->
+
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
                         @csrf
