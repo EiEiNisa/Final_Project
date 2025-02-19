@@ -79,7 +79,7 @@ class RecorddataController
             'bmi' => (float) $request->input('bmi'),
             'phone' => $request->input('phone'),
             'idline' => $request->input('idline'),
-            'user_id' => $request->get('user_id'),
+            'user_id' => (int) $request->input('user_id'),
        
             ]);
 
@@ -171,7 +171,7 @@ if (!$recorddata) {
             'society' => filter_var($request->input('society', false),  FILTER_VALIDATE_BOOLEAN),
             'bed_ridden' => filter_var($request->input('bed_ridden', false),  FILTER_VALIDATE_BOOLEAN),
         ]);
-        dd($request->all());
+        //dd($request->all());
 
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
 }

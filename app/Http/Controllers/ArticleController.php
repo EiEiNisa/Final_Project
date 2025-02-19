@@ -41,33 +41,32 @@ public function show($id)
     }
     
     public function store(Request $request)
-    {
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'post_date' => 'required|date',
+        'author' => 'required|string|max:255',
+        'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
+    ]);
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'post_date' => 'required|date',
-            'author' => 'required|string|max:255',
-            'images' => 'required|images|mimes:jpeg,png,gif|max:2048',
-        ]);
-    
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('images', 'public');
+    } else {
         $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagesPath = $request->file('images')->store('uploads', 'public');
-        }
-    
-        Article::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'post_date' => $validated['post_date'],
-            'author' => $validated['author'],
-            'images' => $imagesPath,
-        ]);
-    
-        $successMessage = 'เพิ่มบทความสำเร็จ!';
-    
-        return redirect()->route('admin.homepage')->with('success', $successMessage);
     }
+
+    Article::create([
+        'title' => $validated['title'],
+        'description' => $validated['description'],
+        'post_date' => $validated['post_date'],
+        'author' => $validated['author'],
+        'images' => $imagePath,
+    ]);
+
+    return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
+}
+
 
     public function search(Request $request)
     {
