@@ -147,19 +147,12 @@
     </div>
     @endif
 
+    <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
-                @php
-                $filePath = 'slides/slide' . $i . '.png'; 
-                @endphp
-
-                @if (Storage::disk('public')->exists($filePath))
-                <img src="{{ asset('storage/slides/slide' . $i . '.png') }}" alt="Slide {{ $i }}">
-                @else
-                    <p>ไม่มีสไลด์ที่อัปโหลด</p>
-                @endif
+                <img src="{{ asset('images/slide' . $i . '.png') }}" alt="Slide Image">
 
                 <div class="slide-controls">
                     <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
