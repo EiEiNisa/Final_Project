@@ -34,11 +34,11 @@
     }
 
     .navbar-toggler {
-        border: none; /* ปิดขอบของปุ่ม */
+        border: none; 
     }
 
     .navbar-toggler-icon {
-        background-color: white; /* เปลี่ยนสีของ hamburger icon เป็นสีขาว */
+        background-color: white; 
     }
 
     footer {
@@ -81,14 +81,11 @@
         text-decoration: underline;
     }
 
-    /* ปรับขนาดแผนที่ให้พอดีกับทุกหน้าจอ */
     footer iframe {
         width: 100%;
         height: 300px;
         max-width: 500px;
-        /* จำกัดขนาดสูงสุดในอุปกรณ์ใหญ่ */
         margin: 0 auto;
-        /* จัดตำแหน่งให้กลาง */
         display: block;
     }
     </style>
