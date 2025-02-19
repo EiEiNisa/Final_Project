@@ -87,7 +87,7 @@ class RecorddataController
     $recorddata->save();
 }
 //dd(user_id);
-dd($request->input('user_id'));
+//dd($request->input('user_id'));
 
 //dd($recorddata);
 if (!$recorddata) {
