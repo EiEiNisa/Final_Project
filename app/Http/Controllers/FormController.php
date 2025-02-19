@@ -29,7 +29,8 @@ class FormController extends Controller
     $article->author = $request->input('author');
     $article->save();
 
-    return redirect()->route('admin.submitform')->with('success', 'บทความถูกบันทึกสำเร็จ');
+    return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
+
 }
 
 }
