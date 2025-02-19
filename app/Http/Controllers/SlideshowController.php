@@ -48,4 +48,31 @@ class SlideshowController extends Controller
     
         return back()->with('error', 'ไม่พบไฟล์ที่ต้องการลบ');
     }
+   
+    public function home()
+{
+    $slides = [];
+    for ($i = 1; $i <= 6; $i++) {
+        $slideImage = null;
+
+        // ตรวจสอบไฟล์ที่อยู่ใน public/images/
+        foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+            if (file_exists(public_path("images/slide$i.$ext"))) {
+                $slideImage = asset("images/slide$i.$ext");
+                break;
+            }
+        }
+
+        // ถ้าไม่มีรูป ใช้ default.png
+        if (!$slideImage) {
+            $slideImage = asset('images/default.png');
+        }
+
+        // เก็บค่าลง array
+        $slides[$i] = $slideImage;
+    }
+
+    return view('home', compact('slides'));
+}
+
 }
