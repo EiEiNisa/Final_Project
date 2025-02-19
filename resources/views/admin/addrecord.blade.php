@@ -1041,7 +1041,7 @@ form {
             </div>
 
             <div class="save">
-                <button type="submit" class="btn btn-success" >
+                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
                     บันทึก
                 </button>
 
