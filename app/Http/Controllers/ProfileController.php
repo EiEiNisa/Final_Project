@@ -54,7 +54,8 @@ class ProfileController extends Controller
         if ($user->role == 'แอดมิน') {
             return redirect()->route('admin.editprofile')->with('success', 'อัปเดตข้อมูลสำเร็จ');
         } else {
-            return redirect()->route('User.editprofile');
+            return redirect()->route('user.editprofile'); // เปลี่ยนเป็นตัวพิมพ์เล็ก
         }
+        
     }
 }

@@ -47,9 +47,9 @@ Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->nam
 Route::get('/User/homepage', [HomepageController::class, 'userHomepage'])->name('user.homepage');
 
 Route::get('/admin/editprofile', [ProfileController::class, 'edit'])->name('admin.editprofile');
-Route::get('/User/editprofile', [ProfileController::class, 'edit'])->name('user.editprofile');
+Route::get('/User/editprofile', [ProfileController::class, 'edit'])->name('user.editprofile'); // เปลี่ยนเป็นตัวพิมพ์เล็ก
 Route::post('/admin/editprofile', [ProfileController::class, 'update'])->name('admin.updateprofile');
-Route::post('/User/editprofile', [ProfileController::class, 'update'])->name('User.updateprofile');
+Route::post('/User/editprofile', [ProfileController::class, 'update'])->name('user.updateprofile'); // เปลี่ยนเป็นตัวพิมพ์เล็ก
 
 Route::post('/search-id_card', [RecorddataController::class, 'searchIdCard']);
 
