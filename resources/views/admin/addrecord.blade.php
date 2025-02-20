@@ -641,13 +641,18 @@ form {
             </div>
 
             @foreach($extra_fields_health_records as $field)
-            <div class="form-group1">
-                <label for="{{ $field }}"
-                    style="margin-bottom: 5px; text-align: left; color: #020364;">{{ ucfirst($field) }}</label>
-                <input type="text" class="form-control" id="{{ $field }}" name="extra_fields[{{ $field }}]"
-                    value="{{ old('extra_fields.' . $field) }}" placeholder="กรอก {{ ucfirst($field) }}">
-            </div>
-            @endforeach
+    <div class="form-group mb-3">
+        <label for="{{ $field }}" class="form-label text-primary">{{ ucfirst($field) }}</label>
+        <input type="text" class="form-control @error('extra_fields.'.$field) is-invalid @enderror"
+               id="{{ $field }}" name="extra_fields[{{ $field }}]"
+               value="{{ old('extra_fields.' . $field) }}" placeholder="กรอก {{ ucfirst($field) }}">
+
+        @error('extra_fields.' . $field)
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+@endforeach
+
 
             <div class="blood-pressure-zone">
                 <h4>Blood Pressure Zone</h4>
