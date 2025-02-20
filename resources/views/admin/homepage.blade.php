@@ -182,7 +182,7 @@
     }
 </style>
 
-ห๊า<div class="container py-5">
+<div class="container py-5">
 
     @if(session('success'))
     <div class="alert alert-success">
