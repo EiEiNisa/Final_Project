@@ -1078,7 +1078,7 @@ form {
                     alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
                 });
                 </script>
-            </div>
+           
 
             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                 data-bs-target="#resetModal">ยกเลิก</button>
