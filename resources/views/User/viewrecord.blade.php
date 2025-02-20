@@ -287,11 +287,6 @@ form {
                 <h4><strong>ข้อมูลประจำตัว</strong></h4>
             </div>
 
-            <div class="form-group1">
-                <label for="id_card" class="form-label">เลขบัตรประจำตัวประชาชน</label>
-                <input type="text" class="form-control" id="id_card" name="id_card"
-                    value="{{ old('id_card', $recorddata->id_card) }}" readonly>
-            </div>
 
             <div class="form-group1">
                 <label for="prefix" class="form-label">คำนำหน้าชื่อ</label>
