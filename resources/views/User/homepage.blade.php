@@ -240,19 +240,20 @@
                 <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
             </div>
         @endfor
+
+        <!-- Next/Prev Buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
 
-    <!-- Next/Prev Buttons -->
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
-    <!-- Dots -->
-    <div style="text-align:center">
-        @for ($i = 1; $i <= 6; $i++)
-            <span class="dot" onclick="currentSlide({{ $i }})"></span>
+<!-- Dots -->
+<div style="text-align:center">
+    @for ($i = 1; $i <= 6; $i++) <span class="dot" onclick="currentSlide({{ $i }})"></span>
         @endfor
-    </div>
 </div>
+</div>
+
 
 
 
