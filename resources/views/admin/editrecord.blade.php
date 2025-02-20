@@ -469,16 +469,16 @@ form {
             </div>
 
             @if ($extra_fields_recorddata)
-            <div class="extra-fields">
-                @foreach ($extra_fields_recorddata as $key => $value)
-                <div class="form-group">
-                    <label for="{{ $key }}">{{ $key }}</label>
-                    <input type="text" name="extra_fields[{{ $key }}]" id="{{ $key }}"
-                        value="{{ old('extra_fields.' . $key, $value) }}" class="form-control">
-                </div>
-                @endforeach
+    <div class="extra-fields">
+        @foreach ($extra_fields_recorddata as $key => $value)
+            <div class="form-group">
+                <label for="{{ $key }}">{{ htmlspecialchars($key) }}</label>
+                <input type="text" name="extra_fields[{{ $key }}]" id="{{ $key }}" value="{{ old('extra_fields.' . $key, is_array($value) ? implode(', ', $value) : htmlspecialchars($value)) }}" class="form-control">
             </div>
-            @endif
+        @endforeach
+    </div>
+@endif
+
 
             <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
 
