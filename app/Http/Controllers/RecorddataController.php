@@ -528,7 +528,8 @@ public function update(Request $request, $id)
     // บันทึกข้อมูลลงฐานข้อมูล
     $data->save();
 
-    return redirect()->route('admin.editrecord')->with('success', 'ข้อมูลถูกบันทึกแล้ว');
+    return back()->with('success', 'ข้อมูลถูกบันทึกแล้ว');
+
 }
 
 
