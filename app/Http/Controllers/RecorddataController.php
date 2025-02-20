@@ -176,6 +176,18 @@ public function store(Request $request)
 
 public function edit($id, Request $request)
 {
+    $extra_fields = $request->input('extra_fields');  
+
+    if (isset($extra_fields) && is_array($extra_fields)) {
+        $formatted_extra_fields = [];
+
+        foreach ($extra_fields as $key => $value) {
+            $formatted_extra_fields[] = [
+                'label' => $key,  
+                'value' => $value 
+            ];
+      }
+
     $recorddata = Recorddata::findOrFail($id);
     $user = User::find($recorddata->user_id);
     
@@ -269,10 +281,9 @@ public function edit($id, Request $request)
         if ($lifestyle->dont_live) $lifestyleshabit[] = 'ไม่อยากมีชีวิตอยู่';
         if ($lifestyle->bored) $lifestyleshabit[] = 'เบื่อ';
     
-        // Return an array with 'id' and 'lifestyleshabit' as a string
         return [
             'id' => $lifestyle->id, 
-            'lifestyleshabit' => implode(' ', $lifestyleshabit) // Join the array into a string
+            'lifestyleshabit' => implode(' ', $lifestyleshabit)
         ];
     });
     
