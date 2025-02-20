@@ -500,6 +500,7 @@ public function update(Request $request, $id)
 
     if (isset($extra_fields) && is_array($extra_fields)) {
         foreach ($existing_extra_fields as $key => $field) {
+            // ใช้ label ในการค้นหา value ที่จะอัปเดต
             if (isset($extra_fields[$field['label']])) {
                 // อัปเดตเฉพาะค่า value
                 $existing_extra_fields[$key]['value'] = $extra_fields[$field['label']];
@@ -508,7 +509,7 @@ public function update(Request $request, $id)
     }
 
     // แปลงกลับเป็น JSON และบันทึกลงในฐานข้อมูล
-    $data->extra_fields = json_encode($existing_extra_fields);
+    $data->extra_fields = json_encode($existing_extra_fields, JSON_UNESCAPED_UNICODE);
 
     // อัปเดตข้อมูลอื่นๆ
     $data->prefix = $request->input('prefix');
@@ -529,7 +530,6 @@ public function update(Request $request, $id)
     $data->save();
 
     return back()->with('success', 'ข้อมูลถูกบันทึกแล้ว');
-
 }
 
 

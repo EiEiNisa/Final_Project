@@ -473,11 +473,13 @@ form {
         @foreach ($extra_fields_recorddata as $key => $value)
             <div class="form-group">
                 <label for="{{ $key }}">{{ htmlspecialchars($value['label'] ?? $key) }}</label>
-                <input type="text" name="extra_fields[{{ $key }}]" id="{{ $key }}" value="{{ old('extra_fields.' . $key, $value['value'] ?? '') }}" class="form-control">
+                <input type="text" name="extra_fields[{{ $value['label'] }}]" id="{{ $key }}" 
+                       value="{{ old('extra_fields.' . $value['label'], $value['value'] ?? '') }}" class="form-control">
             </div>
         @endforeach
     </div>
 @endif
+
 
 
 
