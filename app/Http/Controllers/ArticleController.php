@@ -54,9 +54,9 @@ public function show($id)
     if ($request->hasFile('image')) {
         $file = $request->file('image');
         $fileName = time() . '.' . $file->getClientOriginalExtension();
-        $destinationPath = public_path('uploads');  // เปลี่ยนเป็น public/uploads
-        $file->move($destinationPath, $fileName);  // ย้ายไฟล์ไปที่ public/uploads/
-        $imagePath = 'uploads/' . $fileName; // เก็บเส้นทางไฟล์ในฐานข้อมูล
+        $destinationPath = public_path('image');  // เปลี่ยนเป็น public/image
+        $file->move($destinationPath, $fileName);  // ย้ายไฟล์ไปที่ public/image/
+        $imagePath = 'image/' . $fileName; // เก็บเส้นทางไฟล์ในฐานข้อมูล
     }
 
     // บันทึกข้อมูลบทความ
