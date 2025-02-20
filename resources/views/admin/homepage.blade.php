@@ -182,12 +182,40 @@
     }
 </style>
 
-<div class="container py-5">
+ห๊า<div class="container py-5">
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
-            <img src="{{ asset('images/' . session("slide_$i", "slide$i.png")) }}?t={{ time() }}" alt="Slide {{ $i }}">                    <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
+                @php
+                    // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
+                    $slideImage = null;
+                    foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+                        if (file_exists(public_path("images/slide$i.$ext"))) {
+                            $slideImage = asset("images/slide$i.$ext");
+                            break;
+                        }
+                    }
+                    $slideImage = $slideImage ?? asset('images/default.png');
+                @endphp
+
+                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
+
+                <div class="slide-controls">
+                    <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                         <button type="submit" class="btn btn-primary">อัปโหลด</button>
