@@ -17,28 +17,21 @@ class FormController extends Controller
         'author' => 'required',
     ]);
 
-    // เช็คว่ามีไฟล์ภาพถูกอัปโหลดมาหรือไม่
-    if (!$request->hasFile('image')) {
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+
+        // สร้างชื่อไฟล์ใหม่
+        $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+        // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
+        $imagePath = $image->storeAs('public/images', $fileName); // ใช้ storeAs
+
+        // แปลง path เพื่อใช้ใน Blade
+        $imageUrl = 'storage/images/' . $fileName; // URL ที่จะใช้เรียกไฟล์
+    } else {
         return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
-
-    $image = $request->file('image');
-
-    // เช็คว่าไฟล์อัปโหลดถูกต้อง
-    if (!$image->isValid()) {
-        return redirect()->back()->withErrors(['image' => 'ไฟล์รูปภาพไม่ถูกต้อง'])->withInput();
-    }
-
-    // สร้างชื่อไฟล์ใหม่
-    $fileName = time() . '.' . $image->getClientOriginalExtension();
-
-    // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
-    $imagePath = $image->storeAs('public/images', $fileName); // เส้นทางที่ถูกต้อง
-
-    // แปลง path ให้สามารถเรียกใช้งานผ่าน storage link (ลบ 'public/' ออก)
-    $imagePath = str_replace('public/', 'storage/', $imagePath);
-    //dd($imagePath);
-    // บันทึกข้อมูลบทความลงฐานข้อมูล
+    
     $article = new Article();
     $article->title = $request->input('title');
     $article->image = $imagePath; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
