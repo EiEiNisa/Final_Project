@@ -187,8 +187,7 @@
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
             <div class="slide-item">
-            <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">                <div class="slide-controls">
-                    <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
+            <img src="{{ asset('images/' . session("slide_$i", "slide$i.png")) }}?t={{ time() }}" alt="Slide {{ $i }}">                    <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                         <button type="submit" class="btn btn-primary">อัปโหลด</button>
