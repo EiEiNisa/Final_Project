@@ -7,7 +7,7 @@ use App\Models\Article;
 
 class FormController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request) 
 {
     $request->validate([
         'title' => 'required',
@@ -32,16 +32,22 @@ class FormController extends Controller
     // สร้างชื่อไฟล์ใหม่
     $fileName = time() . '.' . $image->getClientOriginalExtension();
 
+    // กำหนดที่เก็บไฟล์ใน storage
+    $storagePath = storage_path('app/public/images');
+
+    // ลบไฟล์เก่าออกก่อน (ถ้ามี)
+    $oldFilePath = $storagePath . '/' . $fileName; // หาไฟล์ที่มีชื่อเดียวกัน
+    if (File::exists($oldFilePath)) {
+        File::delete($oldFilePath);
+    }
+
     // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
     $imagePath = $image->storeAs('public/images', $fileName);
 
-    // แปลง path ให้สามารถเรียกใช้งานผ่าน storage link (ลบ 'public/' ออก)
-
-    //dd($imagePath);
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
     $article->title = $request->input('title');
-    $article->image = $imagePath; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
+    $article->image = str_replace('public/', 'storage/', $imagePath); // เส้นทางที่ใช้เรียกไฟล์ใน Blade
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
     $article->author = $request->input('author');
@@ -52,5 +58,6 @@ class FormController extends Controller
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
+
 
 }
