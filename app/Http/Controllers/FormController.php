@@ -39,6 +39,8 @@ class FormController extends Controller
 
     // เก็บเส้นทางไฟล์รูปภาพในฐานข้อมูล
     $imagePath = 'images/' . $fileName;
+dd($imagePath);
+
 
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
@@ -54,7 +56,5 @@ class FormController extends Controller
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
-
-
 
 }
