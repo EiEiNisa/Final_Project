@@ -51,17 +51,17 @@ class RecorddataController
 
 public function store(Request $request)
 {
-    //$extra_fields = $request->input('extra_fields');  
+    $extra_fields = $request->input('extra_fields');  
+dd($extra_fields);
+    if (isset($extra_fields) && is_array($extra_fields)) {
+        $formatted_extra_fields = [];
 
-    //if (isset($extra_fields) && is_array($extra_fields)) {
-    //    $formatted_extra_fields = [];
-
-     //   foreach ($extra_fields as $key => $value) {
-     //       $formatted_extra_fields[] = [
-     //           'label' => $key,  
-      //          'value' => $value 
-      ///      ];
-      //  }
+        foreach ($extra_fields as $key => $value) {
+            $formatted_extra_fields[] = [
+               'label' => $key,  
+              'value' => $value 
+          ];
+     }
 
         $recorddata = Recorddata::firstOrCreate(
             ['id_card' => $request->input('id_card')],
@@ -173,6 +173,7 @@ public function store(Request $request)
 
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
+}
 
 public function edit($id, Request $request)
 {
