@@ -938,7 +938,7 @@ form {
                         <div class="form-check">
                             <input type="hidden" name="help_yourself" value="0">
                             <input class="form-check-input" type="checkbox" name="help_yourself" id="help_yourself"
-                                value="1" {{ old('help_yourself') ? 'checked' : '' }}>
+                                value="1" {{ old('help_yourself') ? 'checked' : '' }} readonly>
                             <label class="form-check-label" for="help_yourself">ช่วยเหลือตัวเองได้</label>
                         </div>
                         <div class="form-check">
@@ -961,7 +961,7 @@ form {
                             <input type="hidden" name="caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="caregiver" id="caregiver" value="1"
                                 {{ old('caregiver') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="caregiver">ผู้ดูแล</label>
+                            <label class="form-check-label" for="caregiver" readonly>ผู้ดูแล</label>
                         </div>
                         <div class="form-check">
                             <input type="hidden" name="have_caregiver" value="0">
