@@ -223,10 +223,10 @@ Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 
 // เส้นทางสำหรับแสดงฟอร์ม
-Route::get('/form', [FormController::class, 'create'])->name('admin.form.create');
+Route::get('/admin/form', [FormController::class, 'create'])->name('admin.form.create');
 
 // เส้นทางสำหรับส่งข้อมูลฟอร์ม
-Route::post('/form/submit', [FormController::class, 'store'])->name('admin.form.submit');
+Route::post('/admin/form/submit', [FormController::class, 'store'])->name('admin.form.submit');
 
 
 
