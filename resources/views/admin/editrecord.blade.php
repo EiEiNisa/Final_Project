@@ -624,38 +624,6 @@ form {
                 });
                 </script>
 
-                <div class="custom-pagination mt-3">
-                    @if ($healthRecords->onFirstPage())
-                    <span class="disabled">ย้อนกลับ</span>
-                    @else
-                    <a href="{{ $healthRecords->previousPageUrl() }}">ย้อนกลับ</a>
-                    @endif
-
-                    <span>ทั้งหมด {{ $healthRecords->total() }} รายการ</span>
-
-                    @if ($healthRecords->hasMorePages())
-                    <a href="{{ $healthRecords->nextPageUrl() }}">ถัดไป</a>
-                    @else
-                    <span class="disabled">ถัดไป</span>
-                    @endif
-                </div>
-
-                <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelectorAll(".accordion-button").forEach(button => {
-                        button.addEventListener("click", function() {
-                            let target = document.querySelector(this.getAttribute(
-                                "data-bs-target"));
-                            if (target.classList.contains("show")) {
-                                bootstrap.Collapse.getInstance(target).hide();
-                            } else {
-                                new bootstrap.Collapse(target).show();
-                            }
-                        });
-                    });
-                });
-                </script>
-
             </div>
         </form>
     </div>
