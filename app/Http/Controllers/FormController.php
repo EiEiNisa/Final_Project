@@ -33,7 +33,7 @@ class FormController extends Controller
     $fileName = time() . '.' . $image->getClientOriginalExtension();
 
     // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
-    $imagePath = $image->storeAs('public/images', $fileName);
+    $imagePath = $image->storeAs('public/images', $fileName); // เส้นทางที่ถูกต้อง
 
     // แปลง path ให้สามารถเรียกใช้งานผ่าน storage link (ลบ 'public/' ออก)
     $imagePath = str_replace('public/', 'storage/', $imagePath);
@@ -52,7 +52,6 @@ dd($imagePath);
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
-
 
 
 }
