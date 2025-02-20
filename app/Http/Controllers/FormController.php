@@ -36,7 +36,7 @@ class FormController extends Controller
     $imagePath = $image->storeAs('public/images', $fileName);
 
     // แปลง path ให้สามารถเรียกใช้งานผ่าน storage link (ลบ 'public/' ออก)
-    $imagePath = str_replace('public/', 'storage/', $imagePath);
+
     dd($imagePath);
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
