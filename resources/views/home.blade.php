@@ -41,7 +41,7 @@
 
 .next {
     right: 0;
-    border-radius: 3px 0 0 3px;
+    border-radius: 0px 0 0 0px;
 }
 
 .prev:hover,
