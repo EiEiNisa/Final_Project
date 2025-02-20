@@ -35,12 +35,6 @@ class FormController extends Controller
     // กำหนดที่เก็บไฟล์ใน storage
     $storagePath = storage_path('app/public/images');
 
-    // ลบไฟล์เก่าออกก่อน (ถ้ามี)
-    $oldFilePath = $storagePath . '/' . $fileName; // หาไฟล์ที่มีชื่อเดียวกัน
-    if (File::exists($oldFilePath)) {
-        File::delete($oldFilePath);
-    }
-
     // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
     $imagePath = $image->storeAs('public/images', $fileName);
 
