@@ -39,9 +39,12 @@
     background-color: rgba(242, 246, 227, 0.5);
 }
 
+.prev {
+    left: 10px; /* ระยะห่างจากด้านซ้าย */
+}
+
 .next {
-    right: 0;
-    border-radius: 0px 0 0 0px;
+    right: 10px; /* ระยะห่างจากด้านขวา */
 }
 
 .prev:hover,
