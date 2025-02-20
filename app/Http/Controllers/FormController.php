@@ -11,11 +11,14 @@ class FormController extends Controller
 {
     $request->validate([
         'title' => 'required',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // ขนาดสูงสุด 2 MB
         'description' => 'required',
         'post_date' => 'required|date',
         'author' => 'required',
+    ], [
+        'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB'
     ]);
+    
 
     if ($request->hasFile('image')) {
         $image = $request->file('image');
@@ -28,7 +31,7 @@ class FormController extends Controller
         $image->move($destinationPath, $fileName); // ย้ายไฟล์ไปที่ public/images
 
         // แปลง path เพื่อใช้ใน Blade
-        $imageUrl = 'images/' . $fileName; // URL ที่จะใช้เรียกไฟล์
+        $imageUrl = 'images/' . $fileName; 
     } else {
         return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
