@@ -24,9 +24,6 @@ class FormController extends Controller
 
     $image = $request->file('image');
 
-    // เก็บเส้นทางไฟล์ในฐานข้อมูล (ลบ 'public/' ออก)
-    $article->image = str_replace('public/', 'storage/', $imagePath);
-
     // เช็คว่าไฟล์อัปโหลดถูกต้อง
     if (!$image->isValid()) {
         return redirect()->back()->withErrors(['image' => 'ไฟล์รูปภาพไม่ถูกต้อง'])->withInput();
@@ -34,14 +31,14 @@ class FormController extends Controller
 
     $fileName = time() . '.' . $image->getClientOriginalExtension();
 
-    // ตั้งชื่อไฟล์และย้ายไปที่ public/images
-    if (!$image->move($destinationPath, $fileName)) {
-        return redirect()->back()->withErrors(['image' => 'การอัปโหลดรูปภาพล้มเหลว'])->withInput();
-    }
+    // เก็บไฟล์ไปที่ storage
+    $imagePath = $image->storeAs('public/images', $fileName);
 
-    // เก็บเส้นทางไฟล์รูปภาพในฐานข้อมูล
-    $imagePath = $image->storeAs('public/images', $fileName); // ใช้ storage
-    dd($imagePath);
+    // ลบ 'public/' ออกจาก path เพื่อให้เข้าถึงไฟล์ผ่าน 'storage/images'
+    $imagePath = str_replace('public/', 'storage/', $imagePath);
+
+    // ตรวจสอบค่าของ $imagePath
+    dd($imagePath); // ลองเช็คว่าค่าออกมาถูกต้องไหม
 
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
@@ -57,5 +54,6 @@ class FormController extends Controller
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
+
 
 }
