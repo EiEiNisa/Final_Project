@@ -29,16 +29,14 @@ class FormController extends Controller
         return redirect()->back()->withErrors(['image' => 'ไฟล์รูปภาพไม่ถูกต้อง'])->withInput();
     }
 
+    // สร้างชื่อไฟล์ใหม่
     $fileName = time() . '.' . $image->getClientOriginalExtension();
 
-    // เก็บไฟล์ไปที่ storage
+    // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
     $imagePath = $image->storeAs('public/images', $fileName);
 
-    // ลบ 'public/' ออกจาก path เพื่อให้เข้าถึงไฟล์ผ่าน 'storage/images'
+    // แปลง path ให้สามารถเรียกใช้งานผ่าน storage link (ลบ 'public/' ออก)
     $imagePath = str_replace('public/', 'storage/', $imagePath);
-
-    // ตรวจสอบค่าของ $imagePath
-    dd($imagePath); // ลองเช็คว่าค่าออกมาถูกต้องไหม
 
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
@@ -54,6 +52,5 @@ class FormController extends Controller
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
-
 
 }
