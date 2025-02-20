@@ -51,13 +51,20 @@ public function store(Request $request)
 {
     $extra_fields = $request->input('extra_fields');  
 
+    // ดึงข้อมูลที่มีอยู่
+    $existing_extra_fields = []; // อาจจะใช้สำหรับตรวจสอบในกรณีต้องการข้อมูลเก่า
+    if ($request->has('existing_extra_fields')) {
+        $existing_extra_fields = json_decode($request->input('existing_extra_fields'), true);
+    }
+
     $formatted_extra_fields = [];
 
     if (isset($extra_fields) && is_array($extra_fields)) {
-        foreach ($extra_fields as $key => $value) {
+        // ถ้าใช้ existing_extra_fields ให้ใช้ข้อมูลเก่าเป็นพื้นฐาน
+        foreach ($existing_extra_fields as $field) {
             $formatted_extra_fields[] = [
-                'label' => $key,  
-                'value' => $value 
+                'label' => $field['label'],
+                'value' => isset($extra_fields[$field['label']]) ? $extra_fields[$field['label']] : $field['value']
             ];
         }
     }
@@ -87,9 +94,9 @@ public function store(Request $request)
         return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
     }
 
-    // **บันทึก extra_fields**
     $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
     $recorddata->save();
+
         
         if (!$recorddata) {
             return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
