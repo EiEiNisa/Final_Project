@@ -41,7 +41,7 @@ dd($imagePath);
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
     $article->title = $request->input('title');
-    $article->image = str_replace('public/', 'storage/', $imagePath); // เส้นทางที่ใช้เรียกไฟล์ใน Blade
+    $article->image = str_replace('public/', 'images/', $imagePath); // แปลงเส้นทางให้เหมาะสม
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
     $article->author = $request->input('author');
