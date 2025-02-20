@@ -297,7 +297,7 @@ setInterval(function() {
     <div class="article-slides">
         @foreach($chunk as $article)
         <div class="card">
-        <img src="{{ asset('images/' . $article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+        <img src="{{ $article->image }}" class="card-img-top" alt="{{ $article->title }}">
         <div class="card-body">
                 <h5 class="card-title">{{ $article->title }}</h5>
                 <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
