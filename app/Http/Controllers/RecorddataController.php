@@ -24,7 +24,7 @@ class RecorddataController
         return view('admin.record', compact('recorddata', 'disease'));
     }
     
-    public function create()
+    public function create() 
 {
     $users = User::where('role', 'แอดมิน')->get();
     if ($users->isEmpty()) {
@@ -32,13 +32,9 @@ class RecorddataController
     }
 
     $recorddata = Recorddata::first(); 
-    $columns_recorddata = Schema::getColumnListing('recorddata');
-    $exclude_columns_recorddata = [
-        'id', 'user_id', 'id_card', 'prefix', 'name', 'surname', 'housenumber', 'birthdate',
-        'age', 'blood_group', 'weight', 'height', 'bmi', 'waistline', 'phone', 'idline', 'created_at', 'updated_at', 'file_name',
-        'file_path'
-    ];
-    $extra_fields_recorddata = array_diff($columns_recorddata, $exclude_columns_recorddata);
+
+    // ดึง extra_fields จากฐานข้อมูล
+    $extra_fields_recorddata = $recorddata ? json_decode($recorddata->extra_fields, true) : [];
 
     $columns_health_records = Schema::getColumnListing('health_records');
     $exclude_columns_health_records = [
@@ -49,45 +45,50 @@ class RecorddataController
     return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata'));
 }
 
+
 public function store(Request $request)
 {
     $extra_fields = $request->input('extra_fields');  
-    
-    if (isset($extra_fields) && is_array($extra_fields)) {
-        $formatted_extra_fields = [];
 
+    $formatted_extra_fields = [];
+
+    if (isset($extra_fields) && is_array($extra_fields)) {
         foreach ($extra_fields as $key => $value) {
             $formatted_extra_fields[] = [
-               'label' => $key,  
-              'value' => $value 
-          ];
-     }
+                'label' => $key,  
+                'value' => $value 
+            ];
+        }
+    }
 
-     dd($request->all());
+    // บันทึกข้อมูลหลัก
+    $recorddata = Recorddata::firstOrCreate(
+        ['id_card' => $request->input('id_card')],
+        [
+            'prefix' => $request->input('prefix'),
+            'name' => $request->input('name'),
+            'surname' => $request->input('surname'),
+            'housenumber' => $request->input('housenumber'),
+            'birthdate' => $request->input('birthdate'),
+            'age' => (int) $request->input('age'),
+            'blood_group' => $request->input('blood_group'),
+            'weight' => (float) $request->input('weight'),
+            'height' => (float) $request->input('height'),
+            'waistline' => (float) $request->input('waistline'),
+            'bmi' => (float) $request->input('bmi'),
+            'phone' => $request->input('phone'),
+            'idline' => $request->input('idline'),
+            'user_id' => intval($request->input('user_id')),
+        ]
+    );
 
-        $recorddata = Recorddata::firstOrCreate(
-            ['id_card' => $request->input('id_card')],
-            [
-                'prefix' => $request->input('prefix'),
-                'name' => $request->input('name'),
-                'surname' => $request->input('surname'),
-                'housenumber' => $request->input('housenumber'),
-                'birthdate' => $request->input('birthdate'),
-                'age' => (int) $request->input('age'),
-                'blood_group' => $request->input('blood_group'),
-                'weight' => (float) $request->input('weight'),
-                'height' => (float) $request->input('height'),
-                'waistline' => (float) $request->input('waistline'),
-                'bmi' => (float) $request->input('bmi'),
-                'phone' => $request->input('phone'),
-                'idline' => $request->input('idline'),
-                'user_id' => intval($request->input('user_id')), // ใช้ intval()
-            ]
-        );
-        //dd($request->input('user_id'));
+    if (!$recorddata) {
+        return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
+    }
 
-        //$recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
-        //$recorddata->save();
+    // **บันทึก extra_fields**
+    $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
+    $recorddata->save();
         
         if (!$recorddata) {
             return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
