@@ -69,16 +69,17 @@ body {
 }
 
 footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            background-color: #020364;
-            color: #fff;
-            padding: 20px;
-            margin-top: auto;
-            margin-left: 150px;
-        }
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    background-color: #020364;
+    color: #fff;
+    padding: 20px;
+    width: 100%; 
+    margin-top: auto;
+    margin-left: 0; 
+}
 
 footer div {
     flex: 1;
@@ -88,7 +89,7 @@ footer div {
 }
 
 footer h5 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 18px;
 }
 

@@ -580,11 +580,11 @@ form {
             @foreach($extra_fields_recorddata as $field)
             <div class="form-group mb-3">
                 <label for="{{ $field['value'] }}"
-                    class="form-label text-white">{{ ucfirst($field['label']) }}</label>
+                    class="form-label" style="color: #020364;">{{ ucfirst($field['label']) }}</label>
                 <input type="text" class="form-control @error('extra_fields.'.$field['value']) is-invalid @enderror"
                     id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
                     value="{{ old('extra_fields.' . $field['value']) }}"
-                    placeholder="กรอก {{ ucfirst($field['label']) }}">
+                    placeholder="กรอก{{ ucfirst($field['label']) }}">
 
                 @error('extra_fields.' . $field['value'])
                 <div class="invalid-feedback">{{ $message }}</div>
