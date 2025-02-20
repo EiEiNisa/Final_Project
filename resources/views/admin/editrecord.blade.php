@@ -468,6 +468,15 @@ form {
                     value="{{ old('idline', $recorddata->idline) }}">
             </div>
 
+            @foreach($extra_fields_health_records as $field)
+            <div class="form-group1">
+                <label for="{{ $field }}"
+                    style="margin-bottom: 5px; text-align: left; color: #020364;">{{ ucfirst($field) }}</label>
+                <input type="text" class="form-control" id="{{ $field }}" name="extra_fields[{{ $field }}]"
+                    value="{{ old('extra_fields.' . $field) }}" placeholder="กรอก {{ ucfirst($field) }}">
+            </div>
+            @endforeach
+
             <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
 
             <!--ข้อมูลทั่วไป-->
