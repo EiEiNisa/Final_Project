@@ -37,7 +37,7 @@ class FormController extends Controller
 
     // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
     $imagePath = $image->storeAs('public/images', $fileName);
-
+dd($imagePath);
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
     $article->title = $request->input('title');
