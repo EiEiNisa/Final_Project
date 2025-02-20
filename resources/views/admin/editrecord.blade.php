@@ -563,34 +563,30 @@ form {
                                     name="health_zone2{{ $index }}"
                                     value="{{ isset($zones2[$index]) ? implode(' ', $zones2[$index]) : '' }}" readonly>
                             </div>
+                            @if(isset($lifestylesHabit[$index]))
+                    <div class="form-group1">
+                        <label for="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}">พฤติกรรม-สุขภาพจิต</label>
+                        <input type="text" class="form-control" id="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}"
+                            name="lifestyleshabit[{{ $lifestylesHabit[$index]['id'] }}]"
+                            value="{{ $lifestylesHabit[$index]['lifestyleshabit'] ?? '' }}" readonly>
+                    </div>
+                @endif
 
+                @if(isset($elderlyInfo[$index]))
+                    <div class="form-group1">
+                        <label for="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}">ข้อมูลผู้สูงอายุ</label>
+                        <input type="text" class="form-control" id="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}"
+                            name="elderlyhabit[{{ $elderlyInfo[$index]['id'] }}]" value="{{ $elderlyInfo[$index]['lifestyleshabit'] }}"
+                            readonly>
+                    </div>
+                @endif
 
-                            @foreach ($diseaseNames as $disease)
-                            <div class="form-group1">
-                                <label for="disease_{{ $disease['id'] }}">โรคประจำตัว</label>
-                                <input type="text" class="form-control" id="disease_{{ $disease['id'] }}"
-                                    name="diseaseNames[]" value="{{ $disease['names'] }}" readonly>
-                            </div>
-                            @endforeach
+                <div class="form-group">
+                    <label for="user_id">ผู้บันทึกข้อมูล</label>
+                    <input type="text" class="form-control" id="user_id" name="user_id"
+                        value="{{ isset($user) ? $user->name . ' ' . $user->surname : 'ไม่พบผู้ใช้' }}" readonly>
+                </div>
 
-
-                            @foreach ($lifestylesHabit as $lifestyle)
-                            <div class="form-group1">
-                                <label for="lifestyleshabit_{{ $lifestyle['id'] }}">พฤติกรรม-สุขภาพจิต</label>
-                                <input type="text" class="form-control" id="lifestyleshabit_{{ $lifestyle['id'] }}"
-                                    name="lifestyleshabit[{{ $lifestyle['id'] }}]"
-                                    value="{{ $lifestyle['lifestyleshabit'] ?? '' }}" readonly>
-                            </div>
-                            @endforeach
-
-                            @foreach ($elderlyInfo as $info)
-                            <div class="form-group1">
-                                <label for="elderlyhabit_{{ $info['id'] }}">ข้อมูลผู้สูงอายุ</label>
-                                <input type="text" class="form-control" id="elderlyhabit_{{ $info['id'] }}"
-                                    name="elderlyhabit[{{ $info['id'] }}]" value="{{ $info['lifestyleshabit'] }}"
-                                    readonly>
-                            </div>
-                            @endforeach
 
                             <div class="form-group">
                                 <label for="user_id">ผู้บันทึกข้อมูล</label>
