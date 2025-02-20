@@ -481,9 +481,6 @@ form {
             </div>
             @endif
 
-
-
-
             <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
 
             <!--ข้อมูลทั่วไป-->
@@ -626,6 +623,27 @@ form {
                     });
                 });
                 </script>
+
+@if(count($healthRecords) >= 10)
+    <div class="mt-3">
+        <a href="{{ route('admin.nextPage', ['currentPage' => 2]) }}" class="btn btn-primary">ถัดไป</a>
+    </div>
+@endif
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".accordion-button").forEach(button => {
+            button.addEventListener("click", function() {
+                let target = document.querySelector(this.getAttribute("data-bs-target"));
+                if (target.classList.contains("show")) {
+                    bootstrap.Collapse.getInstance(target).hide();
+                } else {
+                    new bootstrap.Collapse(target).show();
+                }
+            });
+        });
+    });
+</script>
 
             </div>
         </form>
