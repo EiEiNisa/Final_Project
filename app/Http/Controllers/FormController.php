@@ -24,23 +24,24 @@ class FormController extends Controller
 
     $image = $request->file('image');
 
+    // เก็บเส้นทางไฟล์ในฐานข้อมูล (ลบ 'public/' ออก)
+    $article->image = str_replace('public/', 'storage/', $imagePath);
+
     // เช็คว่าไฟล์อัปโหลดถูกต้อง
     if (!$image->isValid()) {
         return redirect()->back()->withErrors(['image' => 'ไฟล์รูปภาพไม่ถูกต้อง'])->withInput();
     }
 
-    // ตั้งชื่อไฟล์และย้ายไปที่ public/images
     $fileName = time() . '.' . $image->getClientOriginalExtension();
-    $destinationPath = public_path('images');
 
+    // ตั้งชื่อไฟล์และย้ายไปที่ public/images
     if (!$image->move($destinationPath, $fileName)) {
         return redirect()->back()->withErrors(['image' => 'การอัปโหลดรูปภาพล้มเหลว'])->withInput();
     }
 
     // เก็บเส้นทางไฟล์รูปภาพในฐานข้อมูล
-    $imagePath = 'images/' . $fileName;
-dd($imagePath);
-
+    $imagePath = $image->storeAs('public/images', $fileName); // ใช้ storage
+    dd($imagePath);
 
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
