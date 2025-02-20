@@ -24,7 +24,7 @@ use App\Http\Controllers\UserRecordController;
 use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\UserArticleController;
 use App\Http\Controllers\GuestArticleController;
-
+use App\Http\Controllers\FormController;
 Route::get('/', function () {
     return view('home');
 });
@@ -222,6 +222,11 @@ Route::post('/submit-form', [FormController::class, 'store'])->name('submitform'
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 
+// เส้นทางสำหรับแสดงฟอร์ม
+Route::get('/form', [FormController::class, 'create'])->name('admin.form.create');
+
+// เส้นทางสำหรับส่งข้อมูลฟอร์ม
+Route::post('/form/submit', [FormController::class, 'store'])->name('admin.form.submit');
 
 
 
