@@ -49,6 +49,10 @@ class RecorddataController
 
 public function store(Request $request)
 {
+    if (!$request->has('user_id') || $request->input('user_id') == '') {
+        return redirect()->back()->with('error', 'กรุณาเลือกผู้บันทึกข้อมูล');
+    }
+    
     $extra_fields = $request->input('extra_fields');  
 
     // ดึงข้อมูลที่มีอยู่
