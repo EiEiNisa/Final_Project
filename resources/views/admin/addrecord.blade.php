@@ -579,8 +579,8 @@ form {
             @if(!empty($extra_fields_recorddata))
             @foreach($extra_fields_recorddata as $field)
             <div class="form-group mb-3">
-                <label for="{{ $field['value'] }}"
-                    class="form-label" style="color: #020364;">{{ ucfirst($field['label']) }}</label>
+                <label for="{{ $field['value'] }}" class="form-label"
+                    style="color: #020364;">{{ ucfirst($field['label']) }}</label>
                 <input type="text" class="form-control @error('extra_fields.'.$field['value']) is-invalid @enderror"
                     id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
                     value="{{ old('extra_fields.' . $field['value']) }}"
@@ -1017,17 +1017,12 @@ form {
 
             <div class="w-100 text-end fw-bold" style="color: #020364;">
                 <div class="d-flex flex-column align-items-end">
-                    <label for="user_id">ผู้บันทึกข้อมูล</label>
-                    <select id="user_id" name="user_id" class="form-control w-50">
-                        <option value="">เลือกผู้บันทึก</option>
-                        @foreach($users->where('role', 'แอดมิน') as $user)
-                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                            {{ $user->name }} {{ $user->surname }}
-                        </option>
-                        @endforeach
-                    </select>
+                    <label for="user_name">ผู้บันทึกข้อมูล</label>
+                    <input type="text" class="form-control" id="user_name" name="user_name"
+                        value="{{ old('user_name') }}" placeholder="กรอกชื่อผู้บันทึกข้อมูล" required>
                 </div>
             </div>
+
 
             <div class="save">
                 <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">

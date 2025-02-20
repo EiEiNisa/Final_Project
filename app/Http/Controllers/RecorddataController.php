@@ -76,7 +76,33 @@ if ($userId === null) {
         }
     }
 
-    // บันทึกข้อมูลหลัก
+
+    $recorddata = Recorddata::where('id_card', $request->input('id_card'))->first();
+if ($recorddata) {
+    // อัปเดต user_id ถ้ามีเรคคอร์ดอยู่แล้ว
+    $recorddata->user_id = $userId;
+    $recorddata->save();
+} else {
+    // สร้างเรคคอร์ดใหม่
+    $recorddata = Recorddata::create([
+        'id_card' => $request->input('id_card'),
+        'prefix' => $request->input('prefix'),
+        'name' => $request->input('name'),
+        'surname' => $request->input('surname'),
+        'housenumber' => $request->input('housenumber'),
+        'birthdate' => $request->input('birthdate'),
+        'age' => (int) $request->input('age'),
+        'blood_group' => $request->input('blood_group'),
+        'weight' => (float) $request->input('weight'),
+        'height' => (float) $request->input('height'),
+        'waistline' => (float) $request->input('waistline'),
+        'bmi' => (float) $request->input('bmi'),
+        'phone' => $request->input('phone'),
+        'idline' => $request->input('idline'),
+        'user_id' => $userId,
+    ]);
+}
+
     $recorddata = Recorddata::firstOrCreate(
         ['id_card' => $request->input('id_card')],
         [
@@ -93,7 +119,7 @@ if ($userId === null) {
             'bmi' => (float) $request->input('bmi'),
             'phone' => $request->input('phone'),
             'idline' => $request->input('idline'),
-            'user_id' => $userId,
+            'user_name' => $request->input('user_name'),
         ]
     );
 
