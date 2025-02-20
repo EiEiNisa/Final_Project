@@ -39,7 +39,10 @@
     background-color: rgba(242, 246, 227, 0.5);
 }
 
-
+.next {
+    right: 0;
+    border-radius: 0px 0 0 0px;
+}
 
 .prev:hover,
 .next:hover {
@@ -229,29 +232,18 @@
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @for ($i = 1; $i <= 6; $i++)
-            @php
-                // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
-                $slideImage = null;
-                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
-                    if (file_exists(public_path("images/slide$i.$ext"))) {
-                        $slideImage = asset("images/slide$i.$ext");
-                        break;
-                    }
-                }
-                $slideImage = $slideImage ?? asset('images/default.png');
-            @endphp
-            
-            <div class="mySlides">
-                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
-            </div>
-        @endfor
+        @for ($i = 1; $i <= 6; $i++) @php // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่ $slideImage=null; foreach (['png', 'jpg'
+            , 'jpeg' , 'webp' ] as $ext) { if (file_exists(public_path("images/slide$i.$ext"))) {
+            $slideImage=asset("images/slide$i.$ext"); break; } } $slideImage=$slideImage ?? asset('images/default.png');
+            @endphp <div class="mySlides">
+            <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
     </div>
-
-    <!-- Next/Prev Buttons -->
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    @endfor
 </div>
+
+<!-- Next/Prev Buttons -->
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
 
 
 <!-- Dots -->
@@ -309,8 +301,8 @@ setInterval(function() {
     <div class="article-slides">
         @foreach($chunk as $article)
         <div class="card">
-        <img src="{{ $article->image }}" class="card-img-top" alt="{{ $article->title }}">
-        <div class="card-body">
+            <img src="{{ $article->image }}" class="card-img-top" alt="{{ $article->title }}">
+            <div class="card-body">
                 <h5 class="card-title">{{ $article->title }}</h5>
                 <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
                 <p class="text-muted">ผู้เขียน: {{ $article->author }}</p>

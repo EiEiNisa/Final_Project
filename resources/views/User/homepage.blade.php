@@ -224,15 +224,27 @@
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
         @for ($i = 1; $i <= 6; $i++)
+            @php
+                // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
+                $slideImage = null;
+                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+                    if (file_exists(public_path("images/slide$i.$ext"))) {
+                        $slideImage = asset("images/slide$i.$ext");
+                        break;
+                    }
+                }
+                $slideImage = $slideImage ?? asset('images/default.png');
+            @endphp
+            
             <div class="mySlides">
-                <img src="{{ asset('images/' . session("slide_$i", "slide$i.png")) }}?t={{ time() }}" alt="Slide {{ $i }}">
+                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
             </div>
         @endfor
-
-        <!-- Next/Prev Buttons -->
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
+
+    <!-- Next/Prev Buttons -->
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
     <!-- Dots -->
     <div style="text-align:center">
