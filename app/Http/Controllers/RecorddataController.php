@@ -176,17 +176,6 @@ public function store(Request $request)
 
 public function edit($id, Request $request)
 {
-    $extra_fields = $request->input('extra_fields');  
-
-    if (isset($extra_fields) && is_array($extra_fields)) {
-        $formatted_extra_fields = [];
-
-        foreach ($extra_fields as $key => $value) {
-            $formatted_extra_fields[] = [
-                'label' => $key,  
-                'value' => $value 
-            ];
-      }
 
     $recorddata = Recorddata::findOrFail($id);
     $user = User::find($recorddata->user_id);
@@ -319,7 +308,7 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
         'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 
     ));
-}}
+}
 
 public function view($id, Request $request)
 {
@@ -486,7 +475,21 @@ public function searchByDate(Request $request)
 
 public function update(Request $request, $id)
 {
+
     $data = Recorddata::findOrFail($id);
+
+    $extra_fields = $request->input('extra_fields');  
+
+    if (isset($extra_fields) && is_array($extra_fields)) {
+        $formatted_extra_fields = [];
+
+        foreach ($extra_fields as $key => $value) {
+            $formatted_extra_fields[] = [
+                'label' => $key,  
+                'value' => $value 
+            ];
+      }
+    }
 
     $data->prefix = $request->input('prefix');
     $data->name = $request->input('name');
