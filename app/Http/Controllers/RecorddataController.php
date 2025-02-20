@@ -52,7 +52,7 @@ class RecorddataController
 public function store(Request $request)
 {
     $extra_fields = $request->input('extra_fields');  
-    dd($user_id);
+    
     if (isset($extra_fields) && is_array($extra_fields)) {
         $formatted_extra_fields = [];
 
@@ -82,6 +82,7 @@ public function store(Request $request)
                 'user_id' => intval($request->input('user_id')), // ใช้ intval()
             ]
         );
+        dd($request->input('user_id'));
 
         //$recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
         //$recorddata->save();
