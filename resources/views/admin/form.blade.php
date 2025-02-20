@@ -1,13 +1,21 @@
 @extends('layoutadmin')
 
 @section('content')
-@if(session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif
 
 <div class="container mt-2" style="margin-bottom:50px;">
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    
     <!-- Button to go back to the main page -->
     <a href="/admin/homepage" class="btn btn-secondary mb-4">
         < กลับสู่หน้าหลัก </a>
