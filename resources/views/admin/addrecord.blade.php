@@ -576,26 +576,24 @@ form {
                     placeholder="กรอกไอดีไลน์" required>
             </div>
 
-            @php
-            $extra_fields = json_decode($recorddata->extra_fields, true) ?: []; // แปลง JSON string เป็น array
-            @endphp
+            @if(!empty($extra_fields_recorddata))
+            @foreach($extra_fields_recorddata as $field)
+            <div class="form-group mb-3">
+                <label for="{{ $field['value'] }}"
+                    class="form-label text-white">{{ ucfirst($field['label']) }}</label>
+                <input type="text" class="form-control @error('extra_fields.'.$field['value']) is-invalid @enderror"
+                    id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
+                    value="{{ old('extra_fields.' . $field['value']) }}"
+                    placeholder="กรอก {{ ucfirst($field['label']) }}">
 
-            @foreach($extra_fields as $field)
-            @if(is_array($field) && isset($field['label'], $field['value']))
-            @php
-            $label = $field['label'] ?? 'ไม่มี label';
-            $value = $field['value'] ?? 'ไม่มี value';
-            @endphp
-            <div class="form-group1" style="display: none;">
-                <label for="{{ $label }}" style="margin-bottom: 5px; text-align: left; color: #020364;">
-                    {{ $label }}
-                </label>
-                <input type="hidden" name="extra_fields[{{ $label }}]" value="{{ $value }}">
-                <input type="text" class="form-control" id="{{ $label }}" name="extra_fields_display[{{ $label }}]"
-                    value="{{ $value }}" placeholder="กรอก{{ $label }}" readonly>
+                @error('extra_fields.' . $field['value'])
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
-            @endif
             @endforeach
+            @else
+            <p class="text-danger">ไม่มีข้อมูล extra fields</p>
+            @endif
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
@@ -639,28 +637,6 @@ form {
                 <input type="number" class="form-control" id="blood_level" name="blood_level"
                     value="{{ old('blood_level') }}" placeholder="กรอกระดับน้ำตาลในเลือด" required>
             </div>
-
-            
-
-
-            @if(!empty($extra_fields_recorddata))
-    @foreach($extra_fields_recorddata as $field)
-        <div class="form-group mb-3">
-            <label for="{{ $field['value'] }}" class="form-label text-primary">{{ ucfirst($field['label']) }}</label>
-            <input type="text" class="form-control @error('extra_fields.'.$field['value']) is-invalid @enderror"
-                   id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
-                   value="{{ old('extra_fields.' . $field['value']) }}" placeholder="กรอก {{ ucfirst($field['label']) }}">
-
-            @error('extra_fields.' . $field['value'])
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-    @endforeach
-@else
-    <p class="text-danger">ไม่มีข้อมูล extra fields</p>
-@endif
-
-
 
             <div class="blood-pressure-zone">
                 <h4>Blood Pressure Zone</h4>
