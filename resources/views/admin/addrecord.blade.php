@@ -870,7 +870,7 @@ form {
                 <div style="color: #020364; font-size: 15px; font-weight: bold;">
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="drink" value="0">
-                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1" 
+                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1"
                             {{ old('drink') ? 'checked' : '' }}>
                         <label class="form-check-label" for="drink">ดื่ม</label>
                     </div>
@@ -889,7 +889,7 @@ form {
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="smoke" value="0">
-                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1" 
+                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1"
                             {{ old('smoke') ? 'checked' : '' }}>
                         <label class="form-check-label" for="smoke">สูบ</label>
                     </div>
@@ -1074,10 +1074,10 @@ form {
                     const saveModal = new bootstrap.Modal(document.getElementById('saveModal'));
                     saveModal.hide();
 
-                    // แสดงข้อความยืนยัน (ถ้าต้องการ)
-                    alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
+                    // ไม่ต้องแสดง alert
                 });
                 </script>
+
 
 
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -1116,8 +1116,8 @@ form {
                     alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
 
                     setTimeout(function() {
-                        window.location.href = '/admin/record'; 
-                    }, 2000); 
+                        window.location.href = '/admin/record';
+                    }, 2000);
                 });
                 </script>
         </form>
