@@ -36,6 +36,7 @@ class RecorddataController
     // ดึง extra_fields จากฐานข้อมูล
     $extra_fields_recorddata = $recorddata ? json_decode($recorddata->extra_fields, true) : [];
 
+
     $columns_health_records = Schema::getColumnListing('health_records');
     $exclude_columns_health_records = [
         'id', 'recorddata_id', 'sys', 'dia', 'pul', 'body_temp', 'blood_oxygen', 'blood_level', 'created_at', 'updated_at'

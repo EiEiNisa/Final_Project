@@ -640,23 +640,26 @@ form {
                     value="{{ old('blood_level') }}" placeholder="กรอกระดับน้ำตาลในเลือด" required>
             </div>
 
-            @php
-            dd($extra_fields_health_records);
-            @endphp
+            
 
 
-            @foreach($extra_fields_health_records as $field)
-            <div class="form-group mb-3">
-                <label for="{{ $field }}" class="form-label text-primary">{{ ucfirst($field) }}</label>
-                <input type="text" class="form-control @error('extra_fields.'.$field) is-invalid @enderror"
-                    id="{{ $field }}" name="extra_fields[{{ $field }}]" value="{{ old('extra_fields.' . $field) }}"
-                    placeholder="กรอก {{ ucfirst($field) }}">
+            @if(!empty($extra_fields_recorddata))
+    @foreach($extra_fields_recorddata as $field)
+        <div class="form-group mb-3">
+            <label for="{{ $field['value'] }}" class="form-label text-primary">{{ ucfirst($field['label']) }}</label>
+            <input type="text" class="form-control @error('extra_fields.'.$field['value']) is-invalid @enderror"
+                   id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
+                   value="{{ old('extra_fields.' . $field['value']) }}" placeholder="กรอก {{ ucfirst($field['label']) }}">
 
-                @error('extra_fields.' . $field)
+            @error('extra_fields.' . $field['value'])
                 <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            @endforeach
+            @enderror
+        </div>
+    @endforeach
+@else
+    <p class="text-danger">ไม่มีข้อมูล extra fields</p>
+@endif
+
 
 
             <div class="blood-pressure-zone">
