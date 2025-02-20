@@ -24,7 +24,7 @@ class SlideshowController extends Controller
         
         // ย้ายไฟล์ไปที่ public/images/
         $request->file('slide')->move($destinationPath, $fileName);
-        dd($request);
+        //dd($request);
         // อัปเดตชื่อไฟล์ใน session
         session()->put("slide_$id", $fileName);
         
