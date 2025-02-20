@@ -69,16 +69,16 @@ body {
 }
 
 footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    background-color: #020364;
-    color: #fff;
-    padding: 20px;
-    margin-top: auto;
-    margin-left: 180px;
-}
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            background-color: #020364;
+            color: #fff;
+            padding: 20px;
+            margin-top: auto;
+            margin-left: -150px;
+        }
 
 footer div {
     flex: 1;
