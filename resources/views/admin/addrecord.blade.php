@@ -326,7 +326,7 @@ form {
     </div>
 
     <div class="rectangle-box">
-        <form id="Recorddata"  action="{{ route('recorddata.store') }}" method="POST">
+        <form id="Recorddata" action="{{ route('recorddata.store') }}" method="POST">
             @csrf
             <!--ข้อมูลประจำตัว-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
@@ -640,18 +640,23 @@ form {
                     value="{{ old('blood_level') }}" placeholder="กรอกระดับน้ำตาลในเลือด" required>
             </div>
 
-            @foreach($extra_fields_health_records as $field)
-    <div class="form-group mb-3">
-        <label for="{{ $field }}" class="form-label text-primary">{{ ucfirst($field) }}</label>
-        <input type="text" class="form-control @error('extra_fields.'.$field) is-invalid @enderror"
-               id="{{ $field }}" name="extra_fields[{{ $field }}]"
-               value="{{ old('extra_fields.' . $field) }}" placeholder="กรอก {{ ucfirst($field) }}">
+            @php
+            dd($extra_fields_health_records);
+            @endphp
 
-        @error('extra_fields.' . $field)
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-@endforeach
+
+            @foreach($extra_fields_health_records as $field)
+            <div class="form-group mb-3">
+                <label for="{{ $field }}" class="form-label text-primary">{{ ucfirst($field) }}</label>
+                <input type="text" class="form-control @error('extra_fields.'.$field) is-invalid @enderror"
+                    id="{{ $field }}" name="extra_fields[{{ $field }}]" value="{{ old('extra_fields.' . $field) }}"
+                    placeholder="กรอก {{ ucfirst($field) }}">
+
+                @error('extra_fields.' . $field)
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            @endforeach
 
 
             <div class="blood-pressure-zone">
@@ -875,7 +880,7 @@ form {
                 <div style="color: #020364; font-size: 15px; font-weight: bold;">
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="drink" value="0">
-                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1" 
+                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1"
                             {{ old('drink') ? 'checked' : '' }}>
                         <label class="form-check-label" for="drink">ดื่มแอลกอฮอล์</label>
                     </div>
@@ -894,7 +899,7 @@ form {
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="smoke" value="0">
-                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1" 
+                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1"
                             {{ old('smoke') ? 'checked' : '' }}>
                         <label class="form-check-label" for="smoke">สูบบุหรี่</label>
                     </div>
@@ -981,7 +986,7 @@ form {
                             <label class="form-check-label" for="no_caregiver">ไม่มีผู้ดูแล</label>
                         </div>
                     </div>
-                   
+
                     <!-- กลุ่ม -->
                     <div class="form-check-container">
                         <div class="form-check">
@@ -1080,14 +1085,14 @@ form {
                     .addEventListener(
                         'click',
                         function() {
-                            
+
                             document
                                 .querySelector(
                                     'form'
                                 )
-                                .submit(); 
+                                .submit();
 
-                            
+
                             const
                                 saveModal =
                                 new bootstrap
@@ -1100,7 +1105,7 @@ form {
                             saveModal
                                 .hide();
 
-                            
+
                             alert
                                 (
                                     'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
