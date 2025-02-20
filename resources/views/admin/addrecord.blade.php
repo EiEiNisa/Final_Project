@@ -326,7 +326,7 @@ form {
     </div>
 
     <div class="rectangle-box">
-        <form id="Recorddata" action="{{ route('recorddata.store') }}" method="POST">
+        <form id="Recorddata"  action="{{ route('recorddata.store') }}" method="POST">
             @csrf
             <!--ข้อมูลประจำตัว-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
@@ -870,40 +870,40 @@ form {
                 <div style="color: #020364; font-size: 15px; font-weight: bold;">
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="drink" value="0">
-                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1"
+                        <input class="form-check-input" type="checkbox" name="drink" id="drink" value="1" 
                             {{ old('drink') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="drink">ดื่ม</label>
+                        <label class="form-check-label" for="drink">ดื่มแอลกอฮอล์</label>
                     </div>
 
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="drink_sometimes" value="0">
                         <input class="form-check-input" type="checkbox" name="drink_sometimes" id="drink_sometimes"
                             value="1" {{ old('drink_sometimes') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="drink_sometimes">ดื่มบ้างบางครั้ง</label>
+                        <label class="form-check-label" for="drink_sometimes">ดื่มแอกอฮอล์บ้างบางครั้ง</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="dont_drink" value="0">
                         <input class="form-check-input" type="checkbox" name="dont_drink" id="dont_drink" value="1"
                             {{ old('dont_drink') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="dont_drink">ไม่ดื่ม</label>
+                        <label class="form-check-label" for="dont_drink">ไม่ดื่มแอลกอฮอล์</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="smoke" value="0">
-                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1"
+                        <input class="form-check-input" type="checkbox" name="smoke" id="smoke" value="1" 
                             {{ old('smoke') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="smoke">สูบ</label>
+                        <label class="form-check-label" for="smoke">สูบบุหรี่</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="sometime_smoke" value="0">
                         <input class="form-check-input" type="checkbox" name="sometime_smoke" id="sometime_smoke"
                             value="1" {{ old('sometime_smoke') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="sometime_smoke">สูบบางครั้ง</label>
+                        <label class="form-check-label" for="sometime_smoke">สูบบุหรี่บางครั้ง</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="dont_smoke" value="0">
                         <input class="form-check-input" type="checkbox" name="dont_smoke" id="dont_smoke" value="1"
                             {{ old('dont_smoke') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="dont_smoke">ไม่สูบ</label>
+                        <label class="form-check-label" for="dont_smoke">ไม่สูบบุหรี่</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="troubled" value="0">
@@ -938,8 +938,8 @@ form {
                         <div class="form-check">
                             <input type="hidden" name="help_yourself" value="0">
                             <input class="form-check-input" type="checkbox" name="help_yourself" id="help_yourself"
-                                value="1" {{ old('help_yourself') ? 'checked' : '' }} disabled>
-                            <label class="form-check-label" for="help_yourself">ช่วยเหลือตัวเองได้</label>
+                                value="1" {{ old('help_yourself') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="help_yourself" disabled>ช่วยเหลือตัวเองได้</label>
                         </div>
                         <div class="form-check">
                             <input type="hidden" name="can_help" value="0">
@@ -973,10 +973,10 @@ form {
                             <input type="hidden" name="no_caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="no_caregiver" id="no_caregiver"
                                 value="1" {{ old('no_caregiver') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="no_caregiver">ไม่มี</label>
+                            <label class="form-check-label" for="no_caregiver">ไม่มีผู้ดูแล</label>
                         </div>
                     </div>
-
+                   
                     <!-- กลุ่ม -->
                     <div class="form-check-container">
                         <div class="form-check">
@@ -1041,7 +1041,7 @@ form {
             </div>
 
             <div class="save">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
+                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
                     บันทึก
                 </button>
 
@@ -1050,7 +1050,9 @@ form {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="saveModalLabel">ยืนยันการบันทึกข้อมูล</h5>
+                                <h5 class="modal-title" id="saveModalLabel">
+                                    ยืนยันการบันทึกข้อมูล
+                                </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -1059,19 +1061,47 @@ form {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                                <button type="button" class="btn btn-success" id="confirmSave">บันทึกข้อมูล</button>
+                                <button type="submit" class="btn btn-success" id="confirmSave">บันทึกข้อมูล</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <script>
-                document.getElementById('confirmSave').addEventListener('click', function() {
-                    // บันทึกข้อมูลในฟอร์ม
-                    document.querySelector('form').submit(); // ส่งฟอร์มไปที่เซิร์ฟเวอร์
-                });
-                </script>
+                document
+                    .getElementById(
+                        'confirmSave'
+                    )
+                    .addEventListener(
+                        'click',
+                        function() {
+                            
+                            document
+                                .querySelector(
+                                    'form'
+                                )
+                                .submit(); 
 
+                            
+                            const
+                                saveModal =
+                                new bootstrap
+                                .Modal(
+                                    document
+                                    .getElementById(
+                                        'saveModal'
+                                    )
+                                );
+                            saveModal
+                                .hide();
+
+                            
+                            alert
+                                (
+                                    'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
+                        }
+                    );
+                </script>
 
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#resetModal">ยกเลิก</button>
@@ -1100,18 +1130,49 @@ form {
                 </div>
 
                 <script>
-                document.getElementById('confirmSave').addEventListener('click', function() {
-                    document.querySelector('form').submit();
+                document
+                    .getElementById(
+                        'confirmReset'
+                    )
+                    .addEventListener(
+                        'click',
+                        function() {
+                            const
+                                form =
+                                document
+                                .getElementById(
+                                    'Recorddata'
+                                );
+                            if (
+                                form) {
+                                form
+                                    .reset(); // รีเซ็ตข้อมูลฟอร์ม
+                            }
 
-                    const saveModal = new bootstrap.Modal(document.getElementById('saveModal'));
-                    saveModal.hide();
+                            // ปิด Modal ก่อน
+                            const
+                                resetModal =
+                                new bootstrap
+                                .Modal(
+                                    document
+                                    .getElementById(
+                                        'resetModal'
+                                    )
+                                );
+                            resetModal
+                                .hide();
 
-                    alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
-
-                    setTimeout(function() {
-                        window.location.href = '/admin/record';
-                    }, 2000);
-                });
+                            // ใช้ setTimeout เพื่อให้การแสดง alert เกิดขึ้นหลังจากการทำงานหลัก
+                            setTimeout
+                                (function() {
+                                        alert
+                                            (
+                                                'ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว');
+                                    },
+                                    0
+                                ); // การใช้ 0 จะทำให้ alert แสดงหลังจากการรีเซ็ตและปิด Modal ทันที
+                        }
+                    );
                 </script>
         </form>
     </div>
