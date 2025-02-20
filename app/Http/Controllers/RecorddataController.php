@@ -50,15 +50,14 @@ class RecorddataController
 public function store(Request $request)
 {
     $userId = $request->input('user_id');
-    dd($userId);
-if ($userId === null) {
-    return redirect()->back()->with('error', 'กรุณาเลือกผู้บันทึกข้อมูล');
-}
+    //dd($userId);
+    if ($userId === null) {
+        return redirect()->back()->with('error', 'กรุณาเลือกผู้บันทึกข้อมูล');
+    }
 
-$extra_fields = $request->input('extra_fields');  
+    $extra_fields = $request->input('extra_fields');  
 
-    // ดึงข้อมูลที่มีอยู่
-    $existing_extra_fields = []; // อาจจะใช้สำหรับตรวจสอบในกรณีต้องการข้อมูลเก่า
+    $existing_extra_fields = []; 
     if ($request->has('existing_extra_fields')) {
         $existing_extra_fields = json_decode($request->input('existing_extra_fields'), true);
     }
@@ -78,12 +77,10 @@ $extra_fields = $request->input('extra_fields');
 
 
     $recorddata = Recorddata::where('id_card', $request->input('id_card'))->first();
-if ($recorddata) {
-    // อัปเดต user_id ถ้ามีเรคคอร์ดอยู่แล้ว
-    $recorddata->user_id = $userId;
-    $recorddata->save();
-} else {
-    // สร้างเรคคอร์ดใหม่
+    if ($recorddata) {
+        $recorddata->user_id = $userId;
+        $recorddata->save();
+    } else {
     $recorddata = Recorddata::create([
         'id_card' => $request->input('id_card'),
         'prefix' => $request->input('prefix'),
