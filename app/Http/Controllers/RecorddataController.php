@@ -49,10 +49,12 @@ class RecorddataController
 
 public function store(Request $request)
 {
-    if (!$request->has('user_id') || $request->input('user_id') == '') {
-        return redirect()->back()->with('error', 'กรุณาเลือกผู้บันทึกข้อมูล');
-    }
-    
+    $userId = $request->input('user_id');
+if ($userId === null) {
+    return redirect()->back()->with('error', 'กรุณาเลือกผู้บันทึกข้อมูล');
+}
+
+
     $extra_fields = $request->input('extra_fields');  
 
     // ดึงข้อมูลที่มีอยู่
@@ -90,7 +92,7 @@ public function store(Request $request)
             'bmi' => (float) $request->input('bmi'),
             'phone' => $request->input('phone'),
             'idline' => $request->input('idline'),
-            'user_id' => intval($request->input('user_id')),
+            'user_id' => $userId,
         ]
     );
 
