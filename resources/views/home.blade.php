@@ -233,8 +233,8 @@
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
         @for ($i = 1; $i <= 6; $i++) <div class="mySlides">
-        <p>{{ asset('images/' . session("slide_$i", "slide$i.png")) }}?t={{ time() }}</p>
-        </div>
+            <img src="{{ asset('images/' . session("slide_$i", "slide$i.png")) }}?t={{ time() }}" alt="Slide {{ $i }}">
+    </div>
     @endfor
 
     <!-- Next/Prev Buttons -->
