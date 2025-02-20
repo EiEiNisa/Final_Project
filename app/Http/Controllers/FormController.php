@@ -25,13 +25,13 @@ class FormController extends Controller
 
         // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
         $imagePath = $image->storeAs('public/images', $fileName); // ใช้ storeAs
-
+dd($imagePath);
         // แปลง path เพื่อใช้ใน Blade
         $imageUrl = 'storage/images/' . $fileName; // URL ที่จะใช้เรียกไฟล์
     } else {
         return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
-    
+
     $article = new Article();
     $article->title = $request->input('title');
     $article->image = $imagePath; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
