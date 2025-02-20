@@ -26,7 +26,7 @@
             <!-- Form for posting -->
 
             <form action="{{ route('admin.form.submit') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+    @csrf
                 <div class="mb-3">
                     <label for="title" class="form-label">ชื่อเรื่อง</label>
                     <input type="text" class="form-control" id="title" name="title" required>
@@ -54,7 +54,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">เสร็จสิ้น</button>
-            </form>
+                </form>
 
 </div>
 

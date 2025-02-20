@@ -184,7 +184,7 @@ Route::post('/admin/form', [AdminController::class, 'handleForm'])->name('admin.
 Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.form');
 
 
-Route::post('/admin/form-submit', [AdminController::class, 'submitForm'])->name('admin.form.submit');
+//Route::post('/admin/form-submit', [AdminController::class, 'submitForm'])->name('admin.form.submit');
 
 Route::get('/view', function () {
     return view('view');
@@ -225,6 +225,7 @@ Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin
 
 // เส้นทางสำหรับส่งข้อมูลฟอร์ม
 Route::post('/admin/form/submit', [FormController::class, 'store'])->name('admin.form.submit');
+
 
 
 
