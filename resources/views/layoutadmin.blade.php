@@ -77,7 +77,7 @@ footer {
             color: #fff;
             padding: 20px;
             margin-top: auto;
-            margin-left: -150px;
+            margin-left: 150px;
         }
 
 footer div {
