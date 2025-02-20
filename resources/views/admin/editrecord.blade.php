@@ -472,12 +472,13 @@ form {
     <div class="extra-fields">
         @foreach ($extra_fields_recorddata as $key => $value)
             <div class="form-group">
-                <label for="{{ $key }}">{{ htmlspecialchars($key) }}</label>
-                <input type="text" name="extra_fields[{{ $key }}]" id="{{ $key }}" value="{{ old('extra_fields.' . $key, is_array($value) ? implode(', ', $value) : htmlspecialchars($value)) }}" class="form-control">
+                <label for="{{ $key }}">{{ htmlspecialchars($value['label'] ?? $key) }}</label>
+                <input type="text" name="extra_fields[{{ $key }}]" id="{{ $key }}" value="{{ old('extra_fields.' . $key, $value['value'] ?? '') }}" class="form-control">
             </div>
         @endforeach
     </div>
 @endif
+
 
 
             <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
