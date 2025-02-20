@@ -223,7 +223,7 @@ Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin
 
 
 // เส้นทางสำหรับส่งข้อมูลฟอร์ม
-Route::post('/admin/form', [FormController::class, 'store'])->name('admin.form.submit');
+Route::post('/admin/form/submit', [FormController::class, 'store'])->name('admin.form.submit');
 
 
 
