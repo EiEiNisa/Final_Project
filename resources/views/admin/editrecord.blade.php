@@ -490,9 +490,9 @@ form {
                     </h2>
 
                     <div id="collapse{{ $index }}" class="accordion-collapse collapse"
-                        aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
+                        aria-labelledby="heading{{ $index }}">
 
+                        <div class="accordion-body">
                             <div class="form-group">
                                 <label for="sys{{ $index }}">ความดัน SYS</label>
                                 <input type="text" class="form-control" id="sys{{ $index }}" name="sys[{{ $index }}]"
