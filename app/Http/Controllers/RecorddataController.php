@@ -186,12 +186,16 @@ public function edit($id, Request $request)
     $user = User::find($recorddata->user_id);
     
     $searchDate = $request->input('search_date');
-    $healthRecordsQuery = HealthRecord::where('recorddata_id', $id);
-
+        
     if ($searchDate) {
         $searchDate = \Carbon\Carbon::createFromFormat('Y-m-d', $searchDate)->toDateString();
         $healthRecordsQuery->whereDate('created_at', $searchDate);
     }
+
+
+    $healthRecordsQuery = HealthRecord::where('recorddata_id', $id);
+
+    $extra_fields_recorddata = $recorddata->extra_fields ? json_decode($recorddata->extra_fields, true) : null;
 
     $healthRecords = $healthRecordsQuery->orderBy('created_at', 'desc')->get();
     if ($healthRecords->isEmpty()) {
@@ -311,7 +315,7 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
 
     return view('admin.editrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 'extra_fields_recorddata', 
     ));
 }
 

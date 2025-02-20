@@ -468,23 +468,16 @@ form {
                     value="{{ old('idline', $recorddata->idline) }}">
             </div>
 
-            @if(!empty($extra_fields_recorddata))
-            @foreach($extra_fields_recorddata as $field)
-            <div class="form-group mb-3">
-                <label for="{{ $field['value'] }}"
-                    class="form-label" style="color: #020364;">{{ ucfirst($field['label']) }}</label>
-                <input type="text" class="form-control @error('extra_fields.'.$field['value']) is-invalid @enderror"
-                    id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
-                    value="{{ old('extra_fields.' . $field['value']) }}"
-                    placeholder="กรอก{{ ucfirst($field['label']) }}">
-
-                @error('extra_fields.' . $field['value'])
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            @if ($extra_fields_recorddata)
+            <div class="extra-fields">
+                @foreach ($extra_fields_recorddata as $key => $value)
+                <div class="form-group">
+                    <label for="{{ $key }}">{{ $key }}</label>
+                    <input type="text" name="extra_fields[{{ $key }}]" id="{{ $key }}"
+                        value="{{ old('extra_fields.' . $key, $value) }}" class="form-control">
+                </div>
+                @endforeach
             </div>
-            @endforeach
-            @else
-            <p class="text-danger">ไม่มีข้อมูล extra fields</p>
             @endif
 
             <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
