@@ -1069,14 +1069,9 @@ form {
                 document.getElementById('confirmSave').addEventListener('click', function() {
                     // บันทึกข้อมูลในฟอร์ม
                     document.querySelector('form').submit(); // ส่งฟอร์มไปที่เซิร์ฟเวอร์
-
-                    // ปิด Modal
-                    const saveModal = new bootstrap.Modal(document.getElementById('saveModal'));
-                    saveModal.hide();
-
-                    // ไม่ต้องแสดง alert
                 });
                 </script>
+
 
 
 
