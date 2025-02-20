@@ -23,18 +23,19 @@ class FormController extends Controller
         // สร้างชื่อไฟล์ใหม่
         $fileName = time() . '.' . $image->getClientOriginalExtension();
 
-        // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
-        $imagePath = $image->storeAs('public/images', $fileName); // ใช้ storeAs
-dd($imagePath);
+        // จัดเก็บไฟล์ไว้ที่ public/images
+        $destinationPath = public_path('images'); // กำหนดที่เก็บไฟล์
+        $image->move($destinationPath, $fileName); // ย้ายไฟล์ไปที่ public/images
+
         // แปลง path เพื่อใช้ใน Blade
-        $imageUrl = 'storage/images/' . $fileName; // URL ที่จะใช้เรียกไฟล์
+        $imageUrl = 'images/' . $fileName; // URL ที่จะใช้เรียกไฟล์
     } else {
         return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
 
     $article = new Article();
     $article->title = $request->input('title');
-    $article->image = $imagePath; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
+    $article->image = $imageUrl; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
     $article->author = $request->input('author');
@@ -45,6 +46,7 @@ dd($imagePath);
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
+
 
 
 }
