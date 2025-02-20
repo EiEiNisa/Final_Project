@@ -249,8 +249,6 @@
 </div>
 </div>
 
-
-
 <!-- JavaScript for Image Slideshow -->
 <script>
 let slideIndex = 1;
@@ -299,8 +297,8 @@ setInterval(function() {
     <div class="article-slides">
         @foreach($chunk as $article)
         <div class="card">
-            <img src="{{ asset('storage/' . $article->image) }}" class="card-img-top" alt="{{ $article->title }}">
-            <div class="card-body">
+        <img src="{{ asset('images/' . $article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+        <div class="card-body">
                 <h5 class="card-title">{{ $article->title }}</h5>
                 <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
                 <p class="text-muted">ผู้เขียน: {{ $article->author }}</p>
