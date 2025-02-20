@@ -254,9 +254,6 @@
 </div>
 </div>
 
-
-
-
 <!-- JavaScript for Image Slideshow -->
 <script>
     let slideIndex = 1;
@@ -287,7 +284,7 @@
     }
     setInterval(function() {
         plusSlides(1);
-    }, 3000); // Change slide every 3 seconds
+    }, 3000); 
 </script>
 
     <!-- Article Slideshow -->

@@ -16,7 +16,7 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm border-light rounded">
                         @if ($article->image)
-                            <img src="{{ asset('storage/' . $article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+                        <img src="{{ $article->image }}" class="card-img-top" alt="{{ $article->title }}">
                         @else
                             <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="No Image">
                         @endif
