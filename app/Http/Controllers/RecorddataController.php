@@ -319,7 +319,7 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
         'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 
     ));
-}
+}}
 
 public function view($id, Request $request)
 {
