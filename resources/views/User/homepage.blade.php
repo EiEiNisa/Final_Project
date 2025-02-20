@@ -225,7 +225,6 @@
     <div class="slideshow-container py-3">
         @for ($i = 1; $i <= 6; $i++)
             @php
-                // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
                 $slideImage = null;
                 foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
                     if (file_exists(public_path("images/slide$i.$ext"))) {
