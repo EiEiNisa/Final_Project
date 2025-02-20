@@ -287,7 +287,6 @@ form {
                 <h4><strong>ข้อมูลประจำตัว</strong></h4>
             </div>
 
-
             <div class="form-group1">
                 <label for="prefix" class="form-label">คำนำหน้าชื่อ</label>
                 <select class="form-control" id="prefix" name="prefix" required disabled>

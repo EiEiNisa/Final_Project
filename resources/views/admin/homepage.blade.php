@@ -148,20 +148,19 @@
     @endif
 
     <div class="container py-5">
-    <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
-    <div class="slide-container">
-        @for ($i = 1; $i <= 6; $i++)
-            <div class="slide-item">
+        <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
+        <div class="slide-container">
+            @for ($i = 1; $i <= 6; $i++) <div class="slide-item">
                 @php
-                    // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
-                    $slideImage = null;
-                    foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
-                        if (file_exists(public_path("images/slide$i.$ext"))) {
-                            $slideImage = asset("images/slide$i.$ext");
-                            break;
-                        }
-                    }
-                    $slideImage = $slideImage ?? asset('images/default.png');
+                // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
+                $slideImage = null;
+                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+                if (file_exists(public_path("images/slide$i.$ext"))) {
+                $slideImage = asset("images/slide$i.$ext");
+                break;
+                }
+                }
+                $slideImage = $slideImage ?? asset('images/default.png');
                 @endphp
 
                 <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
@@ -175,47 +174,86 @@
                     <form action="{{ route('slideshow.delete', $i) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
+                        <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
                     </form>
                 </div>
-            </div>
+        </div>
         @endfor
     </div>
 </div>
 
 
-    <div class="container">
-        <a href="form" class="btn-add">+ เพิ่มบทความ</a>
-    </div>
+<div class="container">
+    <a href="form" class="btn-add">+ เพิ่มบทความ</a>
+</div>
 
-    <div class="container">
-    <h2 class="text-center mb-4">บทความทั้งหมด</h2>
-    <div class="row">
-        @if($articles->isEmpty())
-            <div class="col-12 text-center">
-                <p>ยังไม่มีบทความ</p>
+<!-- Article Slideshow -->
+<div class="article-slideshow-container py-3">
+    @php
+    $chunkedArticles = $articles->chunk(5); // Group articles in chunks of 5
+    @endphp
+
+    @foreach($chunkedArticles as $chunk)
+    <div class="article-slides">
+        @foreach($chunk as $article)
+        <div class="card">
+            <img src="{{ asset($article->image) }}" alt="Article Image">
+            <div class="card-body">
+                <h5 class="card-title">{{ $article->title }}</h5>
+                <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
+                <p class="text-muted">ผู้เขียน: {{ $article->author }}</p>
+                <p class="text-muted">วันที่: {{ $article->post_date }}</p>
+                <a href="{{ route('guest.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
+                <form action="{{ route('article.delete', $article->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบบทความนี้?')">ลบ</button>
+                </form>
             </div>
-        @else
-            @foreach($articles as $article)
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                <img src="{{ asset($article->image) }}" alt="Article Image" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $article->title }}</h5>
-                        <p class="text-muted">โดย {{ $article->author }} - {{ $article->post_date }}</p>
-                        <a href="{{ route('admin.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
-                        <form action="{{ route('article.delete', $article->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบบทความนี้?')">ลบ</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        @endif
+        </div>
+        @endforeach
     </div>
+    @endforeach
+    <!-- Next/Prev Buttons for Article Slideshow -->
+    <a class="prev" onclick="plusArticleSlides(-1)">ย้อนกลับ</a>
+    <a class="next" onclick="plusArticleSlides(1)">ถัดไป</a>
+</div>
+
+<!-- JavaScript for Article Slideshow -->
+<script>
+let articleSlideIndex = 1;
+showArticleSlides(articleSlideIndex);
+
+function plusArticleSlides(n) {
+    showArticleSlides(articleSlideIndex += n);
+}
+
+function currentArticleSlide(n) {
+    showArticleSlides(articleSlideIndex = n);
+}
+
+function showArticleSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName("article-slides");
+    let dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {
+        articleSlideIndex = 1
+    }
+    if (n < 1) {
+        articleSlideIndex = slides.length
+    }
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[articleSlideIndex - 1].style.display = "flex";
+    dots[articleSlideIndex - 1].className += " active";
+}
+</script>
 </div>
 
 @endsection
