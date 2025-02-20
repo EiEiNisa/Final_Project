@@ -52,7 +52,7 @@ class FormController extends Controller
         return redirect()->back()->withErrors(['database' => 'การบันทึกบทความล้มเหลว'])->withInput();
     }
 
-    return redirect()->route('admin.form.submit')->with('success', 'บทความถูกบันทึกสำเร็จ');
+    return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
 
 
