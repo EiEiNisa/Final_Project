@@ -32,16 +32,16 @@ class FormController extends Controller
     // สร้างชื่อไฟล์ใหม่
     $fileName = time() . '.' . $image->getClientOriginalExtension();
 
-    // กำหนดที่เก็บไฟล์ใน storage
-    $storagePath = storage_path('app/public/images');
-
     // จัดเก็บไฟล์ไว้ที่ storage/app/public/images
     $imagePath = $image->storeAs('public/images', $fileName);
-dd($imagePath);
+
+    // แปลง path ให้สามารถเรียกใช้งานผ่าน storage link (ลบ 'public/' ออก)
+    $imagePath = str_replace('public/', 'storage/', $imagePath);
+
     // บันทึกข้อมูลบทความลงฐานข้อมูล
     $article = new Article();
     $article->title = $request->input('title');
-    $article->image = str_replace('public/', 'images/', $imagePath); // แปลงเส้นทางให้เหมาะสม
+    $article->image = $imagePath; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
     $article->author = $request->input('author');
@@ -52,6 +52,7 @@ dd($imagePath);
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
+
 
 
 }
