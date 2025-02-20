@@ -442,7 +442,7 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
 
     return view('User.viewrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 'extra_fields_health_records', 
     ));
 }
 
@@ -479,6 +479,7 @@ public function update(Request $request, $id)
     $data = Recorddata::findOrFail($id);
 
     $extra_fields = $request->input('extra_fields');  
+    dd($extra_fields);
 
     if (isset($extra_fields) && is_array($extra_fields)) {
         $formatted_extra_fields = [];
