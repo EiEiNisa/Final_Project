@@ -17,16 +17,16 @@ class FormController extends Controller
         'author' => 'required',
     ]);
 
-    // อัปโหลดไฟล์ภาพไปยัง public/image
-    $image = $request->file('image');
+    // อัปโหลดไฟล์ภาพไปยัง public/images
+    $image = $request->file('images');
     $fileName = time() . '.' . $image->getClientOriginalExtension();
-    $destinationPath = public_path('image');
+    $destinationPath = public_path('images');
 
     if (!$image->move($destinationPath, $fileName)) {
-        return redirect()->back()->withErrors(['image' => 'การอัปโหลดรูปภาพล้มเหลว'])->withInput();
+        return redirect()->back()->withErrors(['images' => 'การอัปโหลดรูปภาพล้มเหลว'])->withInput();
     }
 
-    $imagePath = 'image/' . $fileName;
+    $imagePath = 'images/' . $fileName;
 
     // สร้างบทความใหม่
     $article = new Article();
