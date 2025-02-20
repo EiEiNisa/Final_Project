@@ -353,7 +353,7 @@ button.btn-primary:hover {
                                 @csrf
                                 <div class="mb-3">
                                     <label for="excelFile" class="form-label fw-bold">เลือกไฟล์ Excel
-                                        ที่ต้องการนำเข้า</label>
+                                        ที่ต้องการนำเข้า (.csv) </label>
                                     <input type="file" class="form-control" id="excelFile" name="file"
                                         accept=".xlsx, .xls, .csv" required>
                                 </div>
