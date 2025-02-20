@@ -63,6 +63,8 @@ public function store(Request $request)
           ];
      }
 
+     dd($request->all());
+
         $recorddata = Recorddata::firstOrCreate(
             ['id_card' => $request->input('id_card')],
             [
