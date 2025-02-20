@@ -52,7 +52,7 @@ class RecorddataController
 public function store(Request $request)
 {
     $extra_fields = $request->input('extra_fields');  
-    //dd($extra_fields);
+    dd($user_id);
     if (isset($extra_fields) && is_array($extra_fields)) {
         $formatted_extra_fields = [];
 
