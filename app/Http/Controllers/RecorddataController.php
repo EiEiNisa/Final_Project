@@ -55,8 +55,7 @@ if ($userId === null) {
     return redirect()->back()->with('error', 'กรุณาเลือกผู้บันทึกข้อมูล');
 }
 
-
-    $extra_fields = $request->input('extra_fields');  
+$extra_fields = $request->input('extra_fields');  
 
     // ดึงข้อมูลที่มีอยู่
     $existing_extra_fields = []; // อาจจะใช้สำหรับตรวจสอบในกรณีต้องการข้อมูลเก่า
@@ -71,6 +70,7 @@ if ($userId === null) {
         foreach ($existing_extra_fields as $field) {
             $formatted_extra_fields[] = [
                 'label' => $field['label'],
+                // ใช้ค่าที่ผู้ใช้กรอก หรือถ้าไม่มีให้ใช้ค่าที่มีอยู่เดิม
                 'value' => isset($extra_fields[$field['label']]) ? $extra_fields[$field['label']] : $field['value']
             ];
         }
