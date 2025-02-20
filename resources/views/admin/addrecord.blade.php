@@ -961,7 +961,7 @@ form {
                             <input type="hidden" name="caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="caregiver" id="caregiver" value="1"
                                 {{ old('caregiver') ? 'checked' : '' }} disabled>
-                            <label class="form-check-label" for="caregiver" >ผู้ดูแล</label>
+                            <label class="form-check-label" for="caregiver">ผู้ดูแล</label>
                         </div>
                         <div class="form-check">
                             <input type="hidden" name="have_caregiver" value="0">
@@ -1078,77 +1078,48 @@ form {
                     alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
                 });
                 </script>
-           
 
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                data-bs-target="#resetModal">ยกเลิก</button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="resetModalLabel">
-                                ยืนยันการยกเลิก
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            คุณต้องการยกเลิกข้อมูลทั้งหมดใช่หรือไม่?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ไม่</button>
-                            <button type="button" class="btn btn-danger" id="confirmReset">ยกเลิกข้อมูล</button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                    data-bs-target="#resetModal">ยกเลิก</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="resetModalLabel">
+                                    ยืนยันการยกเลิก
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                คุณต้องการยกเลิกข้อมูลทั้งหมดใช่หรือไม่?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ไม่</button>
+                                <button type="button" class="btn btn-danger" id="confirmReset">ยกเลิกข้อมูล</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <script>
-            document
-                .getElementById(
-                    'confirmReset'
-                )
-                .addEventListener(
-                    'click',
-                    function() {
-                        const
-                            form =
-                            document
-                            .getElementById(
-                                'Recorddata'
-                            );
-                        if (
-                            form) {
-                            form
-                                .reset(); // รีเซ็ตข้อมูลฟอร์ม
-                        }
+                <script>
+                document.getElementById('confirmSave').addEventListener('click', function() {
+                    document.querySelector('form').submit();
 
-                        // ปิด Modal ก่อน
-                        const
-                            resetModal =
-                            new bootstrap
-                            .Modal(
-                                document
-                                .getElementById(
-                                    'resetModal'
-                                )
-                            );
-                        resetModal
-                            .hide();
+                    const saveModal = new bootstrap.Modal(document.getElementById('saveModal'));
+                    saveModal.hide();
 
-                        // ใช้ setTimeout เพื่อให้การแสดง alert เกิดขึ้นหลังจากการทำงานหลัก
-                        setTimeout
-                            (function() {
-                                    alert
-                                        (
-                                            'ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว');
-                                },
-                                0
-                            ); // การใช้ 0 จะทำให้ alert แสดงหลังจากการรีเซ็ตและปิด Modal ทันที
-                    }
-                );
-            </script>
+                    alert('ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
+
+                    setTimeout(function() {
+                        window.location.href = '/admin/record'; 
+                    }, 2000); 
+                });
+                </script>
         </form>
     </div>
 </div>
