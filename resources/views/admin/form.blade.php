@@ -9,13 +9,16 @@
         {{ session('success') }}
     </div>
     @endif
-    @if(session('error'))
+    @if ($errors->any())
     <div class="alert alert-danger">
-        {{ session('error') }}
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
-    @endif
+@endif
 
-    
     <!-- Button to go back to the main page -->
     <a href="/admin/homepage" class="btn btn-secondary mb-4">
         < กลับสู่หน้าหลัก </a>
@@ -31,8 +34,8 @@
 
                 <div class="mb-3">
                     <label for="image" class="form-label">อัพโหลดรูปภาพ</label>
-                    <input type="file" class="form-control" id="image" name="images" accept="image/*" required>
-                </div>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    </div>
 
 
                 <div class="mb-3">
