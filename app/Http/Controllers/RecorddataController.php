@@ -482,25 +482,28 @@ public function searchByDate(Request $request)
 }
 
 
-public function update(Request $request, $id)
+public function update(Request $request, $id) 
 {
-
     $data = Recorddata::findOrFail($id);
-
+    
+    // ดึงค่า extra_fields ที่มีอยู่
+    $existing_extra_fields = json_decode($data->extra_fields, true);
+    
     $extra_fields = $request->input('extra_fields');  
-    //dd($extra_fields);
 
     if (isset($extra_fields) && is_array($extra_fields)) {
-        $formatted_extra_fields = [];
-
-        foreach ($extra_fields as $key => $value) {
-            $formatted_extra_fields[] = [
-                'label' => $key,  
-                'value' => $value 
-            ];
-      }
+        foreach ($existing_extra_fields as $key => $field) {
+            if (isset($extra_fields[$field['label']])) {
+                // อัปเดตเฉพาะค่า value
+                $existing_extra_fields[$key]['value'] = $extra_fields[$field['label']];
+            }
+        }
     }
 
+    // แปลงกลับเป็น JSON และบันทึกลงในฐานข้อมูล
+    $data->extra_fields = json_encode($existing_extra_fields);
+
+    // อัปเดตข้อมูลอื่นๆ
     $data->prefix = $request->input('prefix');
     $data->name = $request->input('name');
     $data->surname = $request->input('surname');
@@ -514,11 +517,11 @@ public function update(Request $request, $id)
     $data->bmi = (float) $request->input('bmi');
     $data->phone = $request->input('phone');
     $data->idline = $request->input('idline');
-    
+
+    // บันทึกข้อมูลลงฐานข้อมูล
     $data->save();
 
-
-    return redirect()->route('recorddata.index')->with('success', 'ข้อมูลถูกบันทึกแล้ว');
+    return redirect()->route('admin.editrecord')->with('success', 'ข้อมูลถูกบันทึกแล้ว');
 }
 
 
