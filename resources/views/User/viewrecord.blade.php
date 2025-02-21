@@ -401,18 +401,7 @@ form {
                     value="{{ old('idline', $recorddata->idline) }}" readonly>
             </div>
 
-            @if ($extra_fields_recorddata)
-            <div class="extra-fields">
-                @foreach ($extra_fields_recorddata as $key => $value)
-                <div class="form-group">
-                    <label for="{{ $key }}">{{ htmlspecialchars($value['label'] ?? $key) }}</label>
-                    <input type="text" name="extra_fields[{{ $value['label'] }}]" id="{{ $key }}"
-                        value="{{ old('extra_fields.' . $value['label'], $value['value'] ?? '') }}"
-                        class="form-control">
-                </div>
-                @endforeach
-            </div>
-            @endif
+            
             
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
