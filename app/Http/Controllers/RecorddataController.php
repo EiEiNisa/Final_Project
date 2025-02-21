@@ -71,31 +71,6 @@ public function store(Request $request)
         }
     }
 
-
-    $recorddata = Recorddata::where('id_card', $request->input('id_card'))->first();
-    if ($recorddata) {
-        $recorddata->user_id = $userId;
-        $recorddata->save();
-    } else {
-    $recorddata = Recorddata::create([
-        'id_card' => $request->input('id_card'),
-        'prefix' => $request->input('prefix'),
-        'name' => $request->input('name'),
-        'surname' => $request->input('surname'),
-        'housenumber' => $request->input('housenumber'),
-        'birthdate' => $request->input('birthdate'),
-        'age' => (int) $request->input('age'),
-        'blood_group' => $request->input('blood_group'),
-        'weight' => (float) $request->input('weight'),
-        'height' => (float) $request->input('height'),
-        'waistline' => (float) $request->input('waistline'),
-        'bmi' => (float) $request->input('bmi'),
-        'phone' => $request->input('phone'),
-        'idline' => $request->input('idline'),
-        'user_name' => $request->input('user_name'),
-    ]);
-}
-
     $recorddata = Recorddata::firstOrCreate(
         ['id_card' => $request->input('id_card')],
         [
