@@ -654,12 +654,26 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)->first();
     if (!$elderlyInfos) return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
 
+    // Define $zones and $zones2
+    $zones = [
+        'zone1_normal' => ['value' => $healthZone->zone1_normal ?? 0, 'label' => '≤ 120/80 mmHg'],
+        'zone1_risk_group' => ['value' => $healthZone->zone1_risk_group ?? 0, 'label' => '120/80 - 139/89 mmHg'],
+        // Add more zones as needed
+    ];
+
+    $zones2 = [
+        'zone2_normal' => ['value' => $healthZone2->zone2_normal ?? 0, 'label' => '≥ 180/110 mmHg'],
+        'zone2_risk_group' => ['value' => $healthZone2->zone2_risk_group ?? 0, 'label' => '100-125 mg/dl'],
+        // Add more zones as needed
+    ];
+
     // ส่งข้อมูลไปยังหน้า view
     return view('admin.editrecord_general_information', compact(
         'recorddata', 'healthRecord', 'healthZone', 'healthZone2',
-        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_id'
+        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_id', 'zones', 'zones2'
     ));
 }
+
 
 
 public function update_general_information(Request $request, $recorddata_id = null, $checkup_id = null) 
