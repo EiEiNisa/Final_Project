@@ -658,13 +658,30 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     $zones = [
         'zone1_normal' => ['value' => $healthZone->zone1_normal ?? 0, 'label' => '≤ 120/80 mmHg'],
         'zone1_risk_group' => ['value' => $healthZone->zone1_risk_group ?? 0, 'label' => '120/80 - 139/89 mmHg'],
-        // Add more zones as needed
+        'zone1_good_control' => ['value' => $healthZone->zone1_good_control ?? 0, 'label' => '< 139/89 mmHg'],
+        'zone1_watch_out' => ['value' => $healthZone->zone1_watch_out ?? 0, 'label' => '140/90 - 159/99 mmHg'],
+        'zone1_danger' => ['value' => $healthZone->zone1_danger ?? 0, 'label' => '160/100 - 179/109 mmHg'],
+        'zone1_critical' => ['value' => $healthZone->zone1_critical ?? 0, 'label' => '≥ 180/110 mmHg'],
+        'zone1_complications' => ['value' => $healthZone->zone1_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
+        'zone1_heart' => ['value' => $healthZone->zone1_heart ?? 0, 'label' => 'โรคหัวใจ'],
+        'zone1_cerebrovascular' => ['value' => $healthZone->zone1_cerebrovascular ?? 0, 'label' => 'โรคหลอดเลือดสมอง'],
+        'zone1_kidney' => ['value' => $healthZone->zone1_kidney ?? 0, 'label' => 'โรคไต'],
+        'zone1_eye' => ['value' => $healthZone->zone1_eye ?? 0, 'label' => 'โรคตา'],
     ];
+    
 
     $zones2 = [
         'zone2_normal' => ['value' => $healthZone2->zone2_normal ?? 0, 'label' => '≥ 180/110 mmHg'],
         'zone2_risk_group' => ['value' => $healthZone2->zone2_risk_group ?? 0, 'label' => '100-125 mg/dl'],
-        // Add more zones as needed
+        'zone2_good_control' => ['value' => $healthZone2->zone2_good_control ?? 0, 'label' => '125 mg/dl'],
+        'zone2_watch_out' => ['value' => $healthZone2->zone2_watch_out ?? 0, 'label' => '126-154 mg/dl HbA1c < 7'],
+        'zone2_danger' => ['value' => $healthZone2->zone2_danger ?? 0, 'label' => '155-182 mg/dl HbA1c 7-7.9'],
+        'zone2_critical' => ['value' => $healthZone2->zone2_critical ?? 0, 'label' => '≥ 183 mg/dl HbA1c 8%'],
+        'zone2_complications' => ['value' => $healthZone2->zone2_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
+        'zone2_heart' => ['value' => $healthZone2->zone2_heart ?? 0, 'label' => 'โรคหัวใจ'],
+        'zone2_cerebrovascular' => ['value' => $healthZone2->zone2_cerebrovascular ?? 0, 'label' => 'โรคหลอดเลือดสมอง'],
+        'zone2_kidney' => ['value' => $healthZone2->zone2_kidney ?? 0, 'label' => 'โรคไต'],
+        'zone2_eye' => ['value' => $healthZone2->zone2_eye ?? 0, 'label' => 'โรคตา'],
     ];
 
     // ส่งข้อมูลไปยังหน้า view
