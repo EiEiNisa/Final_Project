@@ -207,7 +207,7 @@ Route::get('/User/recode/search', [UserRecordController::class, 'search'])->name
 Route::get('/User/recode', [UserRecordController::class, 'showRecords'])->name('recorddata.show');
 
 Route::get('/guest/article/{id}', [GuestArticleController::class, 'show'])->name('guest.article'); 
-Route::get('/User/article/{id}', [UserArticleController::class, 'show'])->name('user.article');
+Route::get('/User/article/{id}', [UserArticleController::class, 'show'])->name('User.article');
 Route::get('/admin/article/{id}', [AdminArticleController::class, 'show'])->name('admin.article');
 
 Route::get('/search', [ArticleController::class, 'search'])->name('search');

@@ -302,7 +302,7 @@
                             <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
                             <p class="text-muted">ผู้เขียน: {{ $article->author }}</p>
                             <p class="text-muted">วันที่: {{ $article->post_date }}</p>
-                            <a href="{{ route('guest.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
+                            <a href="{{ route('User.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
                         </div>
                     </div>
                 @endforeach
