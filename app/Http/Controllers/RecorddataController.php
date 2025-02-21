@@ -370,20 +370,21 @@ public function view($id, Request $request)
     //dd($zones);    
 
     // Filter healthZones2 by the current recorddata_id
-    $healthZones2 = HealthZone2::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
-    $zones2 = $healthZones2->map(function ($zone2) {
-        $zoneData2 = [];
-        if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
-        if ($zone2->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
-        if ($zone2->zone2_good_control == 1) $zoneData2[] = 'คุมได้ดี';
-        if ($zone2->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
-        if ($zone2->zone2_danger == 1) $zoneData2[] = 'อันตราย';
-        if ($zone2->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
-        if ($zone2->zone2_complications == 1) $zoneData2[] = 'โรคแทรกซ้อน';
-        if ($zone2->zone2_heart == 1) $zoneData2[] = 'หัวใจ';
-        if ($zone2->zone2_eye == 1) $zoneData2[] = 'ตา'; 
-        return $zoneData2;
-    });
+    if ($healthZones->isNotEmpty()) {
+        $zones = $healthZones->map(function ($zone) {
+            $zoneData = [];
+            if ($zone->zone1_normal == 1) $zoneData[] = 'ปกติ';
+            if ($zone->zone1_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
+            if ($zone->zone1_good_control == 1) $zoneData[] = 'ควบคุมดี';
+            if ($zone->zone1_watch_out == 1) $zoneData[] = 'เฝ้าระวัง';
+            if ($zone->zone1_danger == 1) $zoneData[] = 'อันตราย';
+            if ($zone->zone1_critical == 1) $zoneData[] = 'วิกฤต';
+            if ($zone->zone1_complications == 1) $zoneData[] = 'มีภาวะแทรกซ้อน';
+            return $zoneData;
+        });
+    } else {
+        $zones = [];
+    }
     //dd($zones2); 
 
     $diseases = Disease::where('recorddata_id', $recorddata->id)
@@ -457,7 +458,7 @@ public function view($id, Request $request)
 
     return view('User.viewrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', // เปลี่ยนจาก user เป็น userName
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName',  // เปลี่ยนจาก user เป็น userName
     ));
 }
 
