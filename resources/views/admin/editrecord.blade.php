@@ -585,11 +585,11 @@ form {
                             @endif
 
                             <div class="form-group">
-    <label for="user_name">ผู้บันทึกข้อมูล</label>
-    <input type="text" class="form-control" id="user_name" name="user_name"
-        value="{{ old('user_name', $recorddata->user_name) }}" 
-        {{ $recorddata->user_name ? 'readonly' : '' }}>
-</div>
+                                <label for="user_name">ผู้บันทึกข้อมูล</label>
+                                <input type="text" class="form-control" id="user_name" name="user_name"
+                                    value="{{ old('user_name', $recorddata->user_name) }}"
+                                    {{ $recorddata->user_name ? 'readonly' : '' }}>
+                            </div>
 
                             <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
                                 class="btn btn-secondary" id="#editBtn">

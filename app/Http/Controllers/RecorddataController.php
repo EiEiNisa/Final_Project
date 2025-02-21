@@ -371,20 +371,20 @@ public function view($id, Request $request)
 
     // Filter healthZones2 by the current recorddata_id
     if ($healthZones->isNotEmpty()) {
-        $zones = $healthZones->map(function ($zone) {
-            $zoneData = [];
-            if ($zone->zone1_normal == 1) $zoneData[] = 'ปกติ';
-            if ($zone->zone1_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
-            if ($zone->zone1_good_control == 1) $zoneData[] = 'ควบคุมดี';
-            if ($zone->zone1_watch_out == 1) $zoneData[] = 'เฝ้าระวัง';
-            if ($zone->zone1_danger == 1) $zoneData[] = 'อันตราย';
-            if ($zone->zone1_critical == 1) $zoneData[] = 'วิกฤต';
-            if ($zone->zone1_complications == 1) $zoneData[] = 'มีภาวะแทรกซ้อน';
-            return $zoneData;
-        });
-    } else {
-        $zones = [];
-    }
+    $zones = $healthZones->map(function ($zone) {
+        $zoneData = [];
+        if ($zone->zone2_normal == 1) $zoneData[] = 'ปกติ';
+        if ($zone->zone2_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
+        if ($zone->zone2_good_control == 1) $zoneData[] = 'ควบคุมดี';
+        if ($zone->zone2_watch_out == 1) $zoneData[] = 'เฝ้าระวัง';
+        if ($zone->zone2_danger == 1) $zoneData[] = 'อันตราย';
+        if ($zone->zone2_critical == 1) $zoneData[] = 'วิกฤต';
+        if ($zone->zone2_complications == 1) $zoneData[] = 'มีภาวะแทรกซ้อน';
+        return $zoneData;
+    });
+} else {
+    $zones = [];
+}
     //dd($zones2); 
 
     $diseases = Disease::where('recorddata_id', $recorddata->id)
@@ -458,7 +458,7 @@ public function view($id, Request $request)
 
     return view('User.viewrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName',  // เปลี่ยนจาก user เป็น userName
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', // เปลี่ยนจาก user เป็น userName
     ));
 }
 
@@ -1019,9 +1019,35 @@ public function edit_form_general_information()
     $excludeColumnsHealthRecord = ['recorddata_id', 'created_at', 'updated_at', 'file_name', 'file_path', 'id'];
     $filteredHealthRecordColumns = array_diff($healthRecordColumns, $excludeColumnsHealthRecord);
 
+    $zones = [
+        'zone1_normal' => ['value' => 0, 'label' => '≤ 120/80 mmHg'],
+        'zone1_risk_group' => ['value' => 0, 'label' => '120/80 - 139/89 mmHg'],
+        'zone1_good_control' => ['value' => 0, 'label' => '< 139/89 mmHg'],
+        'zone1_watch_out' => ['value' => 0, 'label' => '140/90 - 159/99 mmHg'],
+        'zone1_danger' => ['value' => 0, 'label' => '160/100 - 179/109 mmHg'],
+        'zone1_critical' => ['value' => 0, 'label' => '≥ 180/110 mmHg'],
+        'zone1_complications' => ['value' => 0, 'label' => 'โรคแทรกซ้อน'],
+        'zone1_heart' => ['value' => 0, 'label' => 'หัวใจ'],
+        'zone1_cerebrovascular' => ['value' => 0, 'label' => 'สมอง'],
+        'zone1_kidney' => ['value' => 0, 'label' => 'ไต'],
+        'zone1_eye' => ['value' => 0, 'label' => 'ตา'],
+    ];
+
+    $zones2 = [
+        'zone2_normal' => ['value' => 0, 'label' => '≥ 180/110 mmHg'],
+        'zone2_risk_group' => ['value' => 0, 'label' => '100-125 mg/dl'],
+        'zone2_good_control' => ['value' => 0, 'label' => '125 mg/dl'],
+        'zone2_watch_out' => ['value' => 0, 'label' => '126-154 mg/dl HbA1c < 7'],
+        'zone2_danger' => ['value' => 0, 'label' => '155-182 mg/dl HbA1c 7-7.9'],
+        'zone2_critical' => ['value' => 0, 'label' => '≥ 183 mg/dl HbA1c 8%'],
+        'zone2_complications' => ['value' => 0, 'label' => 'โรคแทรกซ้อน'],
+        'zone2_heart' => ['value' => 0, 'label' => 'หัวใจ'],
+        'zone2_eye' => ['value' => 0, 'label' => 'ตา'],
+    ];
+
     // ส่งค่ากลับไปยัง View
     return view('admin.edit_form_general_information', compact(
-        'filteredHealthRecordColumns', 
+        'filteredHealthRecordColumns', 'zone2' , 'zone1'
     ));
 }
 
