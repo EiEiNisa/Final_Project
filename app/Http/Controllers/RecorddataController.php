@@ -630,130 +630,34 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
-    if (!$recorddata->user_id) {
-        return back()->with('error', 'ไม่พบ user_id');
-    }
-    //dd($checkup_id);
-    //$checkup = Checkup::findOrFail($checkup_id);
-    $userList = User::where('role', 'แอดมิน')->get();
-    $users = User::where('id', $recorddata->user_id)->first();
-
-    if (!$users) {
-        return back()->with('error', 'ไม่พบข้อมูลผู้ใช้');
+    // ตรวจสอบว่ามี user_name หรือไม่
+    if (!$recorddata->user_name) {
+        return back()->with('error', 'ไม่พบชื่อผู้บันทึก กรุณาแก้ไขข้อมูล');
     }
 
+    // ค้นหาข้อมูลที่เกี่ยวข้อง
     $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)->first();
-//dd($healthRecord);
+    if (!$healthRecord) return back()->with('error', 'ไม่พบข้อมูล healthRecord');
 
-if (!$healthRecord) {
-    return back()->with('error', 'ไม่พบข้อมูล healthRecord');
-}
+    $healthZone = HealthZone::where('recorddata_id', $recorddata_id)->first();
+    if (!$healthZone) return back()->with('error', 'ไม่พบข้อมูล health_zone');
 
-    // ค้นหา healthZone ตาม recorddata_id
-    $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                    ->first();
-                    //dd($healthZone);
-    if ($healthZone) {
-        $zones = [
-            'zone1_normal' => ['value' => $healthZone->zone1_normal, 'label' => 'ปกติ'],
-            'zone1_risk_group' => ['value' => $healthZone->zone1_risk_group, 'label' => 'กลุ่มเสี่ยง'],
-            'zone1_good_control' => ['value' => $healthZone->zone1_good_control, 'label' => 'คุมได้ดี'],
-            'zone1_watch_out' => ['value' => $healthZone->zone1_watch_out, 'label' => 'เฝ้าระวัง'],
-            'zone1_danger' => ['value' => $healthZone->zone1_danger, 'label' => 'อันตราย'],
-            'zone1_critical' => ['value' => $healthZone->zone1_critical, 'label' => 'วิกฤต'],
-            'zone1_complications' => ['value' => $healthZone->zone1_complications, 'label' => 'โรคแทรกซ้อน'],
-            'zone1_heart' => ['value' => $healthZone->zone1_heart, 'label' => 'หัวใจ'],
-            'zone1_cerebrovascular' => ['value' => $healthZone->zone1_cerebrovascular, 'label' => 'หลอดเลือดสมอง'],
-            'zone1_kidney' => ['value' => $healthZone->zone1_kidney, 'label' => 'ไต'],
-            'zone1_eye' => ['value' => $healthZone->zone1_eye, 'label' => 'ตา'],
-            'zone1_foot' => ['value' => $healthZone->zone1_foot, 'label' => 'เท้า']
-        ];
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล health_zone');
-    }
+    $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)->first();
+    if (!$healthZone2) return back()->with('error', 'ไม่พบข้อมูล health_zone2');
 
-    // ค้นหา healthZone2 ตาม recorddata_id
-    $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                    ->first();
-    if ($healthZone2) {
-        $zones2 = [
-            'zone2_normal' => ['value' => $healthZone2->zone2_normal, 'label' => 'ปกติ'],
-            'zone2_risk_group' => ['value' => $healthZone2->zone2_risk_group, 'label' => 'กลุ่มเสี่ยง'],
-            'zone2_good_control' => ['value' => $healthZone2->zone2_good_control, 'label' => 'คุมได้ดี'],
-            'zone2_watch_out' => ['value' => $healthZone2->zone2_watch_out, 'label' => 'เฝ้าระวัง'],
-            'zone2_danger' => ['value' => $healthZone2->zone2_danger, 'label' => 'อันตราย'],
-            'zone2_critical' => ['value' => $healthZone2->zone2_critical, 'label' => 'วิกฤต'],
-            'zone2_complications' => ['value' => $healthZone2->zone2_complications, 'label' => 'โรคแทรกซ้อน'],
-            'zone2_heart' => ['value' => $healthZone2->zone2_heart, 'label' => 'หัวใจ'],
-            'zone2_eye' => ['value' => $healthZone2->zone2_eye, 'label' => 'ตา'],
-        ];
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล health_zone2');
-    }
+    $diseases = Disease::where('recorddata_id', $recorddata_id)->first();
+    if (!$diseases) return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
 
-    // ค้นหา diseases ตาม recorddata_id
-    $diseases = Disease::where('recorddata_id', $recorddata_id)
-                ->first();
+    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)->first();
+    if (!$lifestyles) return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
 
-    if ($diseases) {
-        $diseases = [
-            'diabetes' => $diseases->diabetes,
-            'cerebral_artery' => $diseases->cerebral_artery,
-            'kidney' => $diseases->kidney,
-            'blood_pressure' => $diseases->blood_pressure,
-            'heart' => $diseases->heart,
-            'eye' => $diseases->eye,
-            'other' => $diseases->other,
-        ];
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
-    }
-
-    // ค้นหา lifestyles ตาม recorddata_id
-    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                    ->first();
-    if ($lifestyles) {
-        $lifestyles = [
-            'drink' => $lifestyles->drink,
-            'drink_sometimes' => $lifestyles->drink_sometimes,
-            'dont_drink' => $lifestyles->dont_drink,
-            'smoke' => $lifestyles->smoke,
-            'sometime_smoke' => $lifestyles->sometime_smoke,
-            'dont_smoke' => $lifestyles->dont_smoke,
-            'troubled' => $lifestyles->troubled,
-            'dont_live' => $lifestyles->dont_live,
-            'bored' => $lifestyles->bored,
-        ];
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
-    }
-
-    // ค้นหา elderlyInfos ตาม recorddata_id
-    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                        ->first();
-    if ($elderlyInfos) {
-        $elderlyInfos = [
-            'help_yourself' => $elderlyInfos->help_yourself,
-            'can_help' => $elderlyInfos->can_help,
-            'cant_help' => $elderlyInfos->cant_help,
-            'caregiver' => $elderlyInfos->caregiver,
-            'have_caregiver' => $elderlyInfos->have_caregiver,
-            'no_caregiver' => $elderlyInfos->no_caregiver,
-            'group1' => $elderlyInfos->group1,
-            'group2' => $elderlyInfos->group2,
-            'group3' => $elderlyInfos->group3,
-            'house' => $elderlyInfos->house,
-            'society' => $elderlyInfos->society,
-            'bed_ridden' => $elderlyInfos->bed_ridden,
-        ];
-    } else {
-        return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
-    }
+    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)->first();
+    if (!$elderlyInfos) return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
 
     // ส่งข้อมูลไปยังหน้า view
     return view('admin.editrecord_general_information', compact(
-        'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'zones', 'zones2', 
-        'diseases', 'lifestyles', 'elderlyInfos', 'users' ,'checkup_id' , 'userList'
+        'recorddata', 'healthRecord', 'healthZone', 'healthZone2',
+        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_id'
     ));
 }
 
