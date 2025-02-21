@@ -373,13 +373,13 @@ public function view($id, Request $request)
     if ($healthZones2->isNotEmpty()) {
     $zones2 = $healthZones2->map(function ($zone2) {
         $zoneData = [];
-        if ($zone->zone2_normal == 1) $zoneData2[] = 'ปกติ';
-        if ($zone->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
-        if ($zone->zone2_good_control == 1) $zoneData2[] = 'ควบคุมดี';
-        if ($zone->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
-        if ($zone->zone2_danger == 1) $zoneData2[] = 'อันตราย';
-        if ($zone->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
-        if ($zone->zone2_complications == 1) $zoneData2[] = 'มีภาวะแทรกซ้อน';
+        if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
+        if ($zone2->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
+        if ($zone2->zone2_good_control == 1) $zoneData2[] = 'ควบคุมดี';
+        if ($zone2->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
+        if ($zone2->zone2_danger == 1) $zoneData2[] = 'อันตราย';
+        if ($zone2->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
+        if ($zone2->zone2_complications == 1) $zoneData2[] = 'มีภาวะแทรกซ้อน';
         return $zoneData2;
     });
     } else {
