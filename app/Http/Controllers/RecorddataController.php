@@ -371,16 +371,16 @@ public function view($id, Request $request)
 
     // Filter healthZones2 by the current recorddata_id
     if ($healthZones->isNotEmpty()) {
-    $zones2 = $healthZones->map(function ($zone) {
+    $zones2 = $healthZones->map(function ($zone2) {
         $zoneData = [];
-        if ($zone->zone2_normal == 1) $zoneData[] = 'ปกติ';
-        if ($zone->zone2_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
-        if ($zone->zone2_good_control == 1) $zoneData[] = 'ควบคุมดี';
-        if ($zone->zone2_watch_out == 1) $zoneData[] = 'เฝ้าระวัง';
-        if ($zone->zone2_danger == 1) $zoneData[] = 'อันตราย';
-        if ($zone->zone2_critical == 1) $zoneData[] = 'วิกฤต';
-        if ($zone->zone2_complications == 1) $zoneData[] = 'มีภาวะแทรกซ้อน';
-        return $zoneData;
+        if ($zone->zone2_normal == 1) $zoneData2[] = 'ปกติ';
+        if ($zone->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
+        if ($zone->zone2_good_control == 1) $zoneData2[] = 'ควบคุมดี';
+        if ($zone->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
+        if ($zone->zone2_danger == 1) $zoneData2[] = 'อันตราย';
+        if ($zone->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
+        if ($zone->zone2_complications == 1) $zoneData2[] = 'มีภาวะแทรกซ้อน';
+        return $zoneData2;
     });
 } else {
     $zones2 = [];
