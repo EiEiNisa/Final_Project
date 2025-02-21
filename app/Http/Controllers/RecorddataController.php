@@ -49,6 +49,7 @@ class RecorddataController
 
 public function store(Request $request)
 {
+    dd($request);
 
     $extra_fields = $request->input('extra_fields');  
 
