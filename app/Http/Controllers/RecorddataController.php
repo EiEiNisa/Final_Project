@@ -371,21 +371,17 @@ public function view($id, Request $request)
 
     // Filter healthZones2 by the current recorddata_id
     $healthZones2 = HealthZone2::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
-    $zones2 = $healthZones2->map(function ($zone2) {
-        $zoneData = [];
-        if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
-        if ($zone2->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
-        if ($zone2->zone2_good_control == 1) $zoneData2[] = 'ควบคุมดี';
-        if ($zone2->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
-        if ($zone2->zone2_danger == 1) $zoneData2[] = 'อันตราย';
-        if ($zone2->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
-        if ($zone2->zone2_complications == 1) $zoneData2[] = 'มีภาวะแทรกซ้อน';
-        return $zoneData2;
-    });
-    } else {
-        $zones2 = [];
-    }
-        //dd($zones2); 
+$zones2 = $healthZones2->map(function ($zone2) {
+    $zoneData2 = [];
+    if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
+    if ($zone2->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
+    if ($zone2->zone2_good_control == 1) $zoneData2[] = 'ควบคุมดี';
+    if ($zone2->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
+    if ($zone2->zone2_danger == 1) $zoneData2[] = 'อันตราย';
+    if ($zone2->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
+    if ($zone2->zone2_complications == 1) $zoneData2[] = 'มีภาวะแทรกซ้อน';
+    return $zoneData2;
+});
 
     $diseases = Disease::where('recorddata_id', $recorddata->id)
         ->orderBy('created_at', 'desc')
