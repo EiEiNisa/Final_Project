@@ -279,7 +279,7 @@ form {
 <div class="container">
 
     <div class="title">
-        <h4><strong>แก้ไขข้อมูล</strong></h4>
+        <h4><strong>ดูข้อมูล</strong></h4>
         <a href="/User/record" class="btn btn-success">กลับไปยังหน้าบันทึกข้อมูล</a>
     </div>
 

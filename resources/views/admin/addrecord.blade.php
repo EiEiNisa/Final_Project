@@ -585,14 +585,10 @@ form {
                     id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
                     value="{{ old('extra_fields.' . $field['value']) }}"
                     placeholder="กรอก{{ ucfirst($field['label']) }}">
-
-                @error('extra_fields.' . $field['value'])
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
             </div>
             @endforeach
             @else
-            <p class="text-danger">ไม่มีข้อมูล extra fields</p>
+            <p class="text-danger"></p>
             @endif
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">

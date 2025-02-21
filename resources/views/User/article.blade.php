@@ -1,4 +1,4 @@
-@extends('layoutuser') {{-- ใช้ layout สำหรับ user --}}
+@extends('layoutuser') 
 
 @section('content')
 <style>
