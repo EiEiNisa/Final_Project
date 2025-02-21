@@ -523,10 +523,11 @@ form {
                             @endforeach
 
                             <div class="form-group">
-                                <label for="user_id">ผู้บันทึกข้อมูล</label>
-                                <input type="text" class="form-control" id="user_id" name="user_id"
-                                    value="{{ $user->name }} {{ $user->surname }}" readonly>
-                            </div>
+    <label for="user_name">ผู้บันทึกข้อมูล</label>
+    <input type="text" class="form-control" id="user_name" name="user_name"
+        value="{{ old('user_name', $recorddata->user_name) }}" 
+        {{ $recorddata->user_name ? 'readonly' : '' }}>
+</div>
 
                         </div>
                     </div>
