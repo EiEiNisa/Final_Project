@@ -370,7 +370,7 @@ public function view($id, Request $request)
     //dd($zones);    
 
     // Filter healthZones2 by the current recorddata_id
-    if ($healthZones2->isNotEmpty()) {
+    $healthZones2 = HealthZone2::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
     $zones2 = $healthZones2->map(function ($zone2) {
         $zoneData = [];
         if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
