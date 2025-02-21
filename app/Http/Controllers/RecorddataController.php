@@ -91,7 +91,7 @@ public function store(Request $request)
         'bmi' => (float) $request->input('bmi'),
         'phone' => $request->input('phone'),
         'idline' => $request->input('idline'),
-        'user_id' => $userId,
+        'user_name' => $request->input('user_name'),
     ]);
 }
 
@@ -801,7 +801,7 @@ public function update_general_information(Request $request, $recorddata_id = nu
         $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
 
                                     ->first();
-//dd($healthRecord);
+        //dd($healthRecord);
         if (!$healthRecord) {
             return back()->with('error', 'ไม่พบข้อมูล healthRecords');
         }
