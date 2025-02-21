@@ -371,7 +371,7 @@ public function view($id, Request $request)
 
     // Filter healthZones2 by the current recorddata_id
     if ($healthZones->isNotEmpty()) {
-    $zones = $healthZones->map(function ($zone) {
+    $zones2 = $healthZones->map(function ($zone) {
         $zoneData = [];
         if ($zone->zone2_normal == 1) $zoneData[] = 'ปกติ';
         if ($zone->zone2_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
@@ -383,7 +383,7 @@ public function view($id, Request $request)
         return $zoneData;
     });
 } else {
-    $zones = [];
+    $zones2 = [];
 }
     //dd($zones2); 
 
