@@ -484,7 +484,7 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
 
     return view('User.viewrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 'extra_fields_health_records', 
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' ,
     ));
 }
 
