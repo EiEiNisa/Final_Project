@@ -49,7 +49,7 @@ class RecorddataController
 
 public function store(Request $request)
 {
-    dd($request);
+    //dd($request);
 
     $extra_fields = $request->input('extra_fields');  
 
@@ -551,7 +551,7 @@ public function update(Request $request, $id)
     $data->bmi = (float) $request->input('bmi');
     $data->phone = $request->input('phone');
     $data->idline = $request->input('idline');
-
+    $data->user_name = $request->input('user_name');
     // บันทึกข้อมูลลงฐานข้อมูล
     $data->save();
 
