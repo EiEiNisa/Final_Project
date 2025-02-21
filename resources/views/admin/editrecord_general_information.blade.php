@@ -762,18 +762,7 @@ form {
                 </div>
             </div>
             
-            <div class="form-group">
-    <label for="user_id">ผู้บันทึกข้อมูล</label>
-    <select class="form-control" id="user_id" name="user_id">
-        <option value="">เลือกผู้บันทึกข้อมูล</option>
-        @foreach ($userList as $userItem)
-            <option value="{{ $userItem->id }}" 
-                {{ isset($user) && $user->id == $userItem->id ? 'selected' : '' }}>
-                {{ $userItem->name }} {{ $userItem->surname }}
-            </option>
-        @endforeach
-    </select>
-</div>
+
 
 
 
