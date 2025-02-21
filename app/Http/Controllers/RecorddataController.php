@@ -370,8 +370,8 @@ public function view($id, Request $request)
     //dd($zones);    
 
     // Filter healthZones2 by the current recorddata_id
-    if ($healthZones->isNotEmpty()) {
-    $zones2 = $healthZones->map(function ($zone2) {
+    if ($healthZones2->isNotEmpty()) {
+    $zones2 = $healthZones2->map(function ($zone2) {
         $zoneData = [];
         if ($zone->zone2_normal == 1) $zoneData2[] = 'ปกติ';
         if ($zone->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
@@ -382,10 +382,10 @@ public function view($id, Request $request)
         if ($zone->zone2_complications == 1) $zoneData2[] = 'มีภาวะแทรกซ้อน';
         return $zoneData2;
     });
-} else {
-    $zones2 = [];
-}
-    //dd($zones2); 
+    } else {
+        $zones2 = [];
+    }
+        //dd($zones2); 
 
     $diseases = Disease::where('recorddata_id', $recorddata->id)
         ->orderBy('created_at', 'desc')
