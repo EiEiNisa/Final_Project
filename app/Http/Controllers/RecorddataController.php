@@ -1047,7 +1047,7 @@ public function edit_form_general_information()
 
     // ส่งค่ากลับไปยัง View
     return view('admin.edit_form_general_information', compact(
-        'filteredHealthRecordColumns', 'zone2' , 'zone1'
+        'filteredHealthRecordColumns', 'zones2' , 'zones'
     ));
 }
 
