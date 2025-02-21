@@ -243,18 +243,24 @@ form {
         font-size: 12px;
     }
 
-    .form-group, .form-group1 {
-        flex-direction: column; /* ถ้าหน้าจอเล็กลง จะจัดเรียงในแนวตั้ง */
+    .form-group,
+    .form-group1 {
+        flex-direction: column;
+        /* ถ้าหน้าจอเล็กลง จะจัดเรียงในแนวตั้ง */
         align-items: flex-start;
     }
 
-    .form-group label, .form-group1 label {
+    .form-group label,
+    .form-group1 label {
         margin-right: 0;
-        margin-bottom: 5px; /* ระยะห่างระหว่าง label และ input/select */
+        margin-bottom: 5px;
+        /* ระยะห่างระหว่าง label และ input/select */
     }
 
-    .form-group .form-control, .form-group1 .form-control {
-        width: 100%; /* ทำให้ input/select ขยายเต็มความกว้าง */
+    .form-group .form-control,
+    .form-group1 .form-control {
+        width: 100%;
+        /* ทำให้ input/select ขยายเต็มความกว้าง */
     }
 
 
@@ -268,7 +274,6 @@ form {
         height: 30px;
     }
 }
-
 </style>
 
 <div class="container">
@@ -401,8 +406,8 @@ form {
                     value="{{ old('idline', $recorddata->idline) }}" readonly>
             </div>
 
-            
-            
+
+
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
@@ -523,11 +528,11 @@ form {
                             @endforeach
 
                             <div class="form-group">
-    <label for="user_name">ผู้บันทึกข้อมูล</label>
-    <input type="text" class="form-control" id="user_name" name="user_name"
-        value="{{ old('user_name', $recorddata->user_name) }}" 
-        {{ $recorddata->user_name ? 'readonly' : '' }}>
-</div>
+                                <label for="user_name">ผู้บันทึกข้อมูล</label>
+                                <input type="text" class="form-control" id="user_name" name="user_name"
+                                    value="{{ old('user_name', $recorddata->user_name) }}"
+                                    {{ $recorddata->user_name ? 'readonly' : '' }}>
+                            </div>
 
                         </div>
                     </div>

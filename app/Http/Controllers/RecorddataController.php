@@ -330,8 +330,10 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
 public function view($id, Request $request)
 {
     $recorddata = Recorddata::findOrFail($id);
-    $user = User::find($recorddata->user_id);
     
+    // ดึงชื่อผู้ใช้จากตาราง recorddata แทนการค้นหา User
+    $userName = $recorddata->user_name; // ใช้ user_name จาก recorddata
+
     $searchDate = $request->input('search_date');
     $healthRecordsQuery = HealthRecord::where('recorddata_id', $id);
 
@@ -385,10 +387,6 @@ public function view($id, Request $request)
     //dd($zones2); 
 
     $diseases = Disease::where('recorddata_id', $recorddata->id)
-    ->orderBy('created_at', 'desc')
-    ->get();
-
-    $diseases = Disease::where('recorddata_id', $recorddata->id)
         ->orderBy('created_at', 'desc')
         ->get();
 
@@ -436,32 +434,33 @@ public function view($id, Request $request)
         ->orderBy('created_at', 'desc')
         ->get();
 
-$elderlyInfo = $elderlyInfos->map(function ($info) { 
-    $elderly = [];
-    if ($info->help_yourself) $elderly[] = 'ช่วยเหลือตัวเองได้';
-    if ($info->can_help) $elderly[] = 'ได้';
-    if ($info->cant_help) $elderly[] = 'ไม่ได้';
-    if ($info->caregiver) $elderly[] = 'ผู้ดูแล';
-    if ($info->have_caregiver) $elderly[] = 'มีผู้ดูแล';
-    if ($info->no_caregiver) $elderly[] = 'ไม่มี';
-    if ($info->group1) $elderly[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
-    if ($info->group2) $elderly[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
-    if ($info->group3) $elderly[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
-    if ($info->house) $elderly[] = 'ติดบ้าน';
-    if ($info->society) $elderly[] = 'ติดสังคม';
-    if ($info->bed_ridden) $elderly[] = 'ติดเตียง';
+    $elderlyInfo = $elderlyInfos->map(function ($info) { 
+        $elderly = [];
+        if ($info->help_yourself) $elderly[] = 'ช่วยเหลือตัวเองได้';
+        if ($info->can_help) $elderly[] = 'ได้';
+        if ($info->cant_help) $elderly[] = 'ไม่ได้';
+        if ($info->caregiver) $elderly[] = 'ผู้ดูแล';
+        if ($info->have_caregiver) $elderly[] = 'มีผู้ดูแล';
+        if ($info->no_caregiver) $elderly[] = 'ไม่มี';
+        if ($info->group1) $elderly[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
+        if ($info->group2) $elderly[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
+        if ($info->group3) $elderly[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
+        if ($info->house) $elderly[] = 'ติดบ้าน';
+        if ($info->society) $elderly[] = 'ติดสังคม';
+        if ($info->bed_ridden) $elderly[] = 'ติดเตียง';
 
-    return [
-        'id' => $info->id, 
-        'lifestyleshabit' => implode(' ', $elderly)
-    ];
-});
+        return [
+            'id' => $info->id, 
+            'lifestyleshabit' => implode(' ', $elderly)
+        ];
+    });
 
     return view('User.viewrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' ,
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', // เปลี่ยนจาก user เป็น userName
     ));
 }
+
 
 
 public function searchByDate(Request $request)
