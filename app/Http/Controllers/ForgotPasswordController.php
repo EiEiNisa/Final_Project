@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
+use App\Models\User;
 
 class ForgotPasswordController extends Controller
 {
@@ -21,7 +22,7 @@ class ForgotPasswordController extends Controller
     ]);
 
     // ค้นหาผู้ใช้ตามอีเมล
-    $user = User::where('email', $request->email)->first();
+    $user = Users::where('email', $request->email)->first();
 
     // สร้าง Token ใหม่
     $token = Str::random(60);
