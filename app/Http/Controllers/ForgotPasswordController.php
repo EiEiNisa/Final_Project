@@ -30,7 +30,7 @@ class ForgotPasswordController extends Controller
     $token = Str::random(60);
 
     // บันทึก Token ลงในตาราง password_resets
-    DB::table('password_resets')->updateOrInsert(
+    DB::table('password_reset_tokens')->updateOrInsert(
         ['email' => $user->email],
         [
             'email' => $user->email,
