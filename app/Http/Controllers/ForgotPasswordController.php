@@ -22,7 +22,7 @@ class ForgotPasswordController extends Controller
     ]);
 
     // ค้นหาผู้ใช้ตามอีเมล
-    $user = Users::where('email', $request->email)->first();
+    $user = User::where('email', $request->email)->first();
 
     // สร้าง Token ใหม่
     $token = Str::random(60);
