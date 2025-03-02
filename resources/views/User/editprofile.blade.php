@@ -1,4 +1,4 @@
-@extends('')
+@extends('layoutuser')
 
 @section('content')
 <style>

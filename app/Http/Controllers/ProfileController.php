@@ -18,10 +18,10 @@ class ProfileController extends Controller
     }
 
     if ($user->role == 'แอดมิน') {
-        dd('admin.editprofile exists:', view()->exists('admin.editprofile')); 
+        //dd('admin.editprofile exists:', view()->exists('admin.editprofile')); 
         return view('admin.editprofile', compact('user'));
     } else {
-        dd('User.editprofile exists:', view()->exists('User.editprofile'), base_path('resources/views/User/editprofile.blade.php'));
+        //dd('User.editprofile exists:', view()->exists('User.editprofile'), base_path('resources/views/User/editprofile.blade.php'));
         return view('User.editprofile', compact('user'));
     }
 }
