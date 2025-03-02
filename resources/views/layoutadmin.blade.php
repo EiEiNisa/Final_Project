@@ -27,7 +27,7 @@
     /* Sidebar */
     .sidebar {
         width: 80px; /* ขยายความกว้างเริ่มต้น */
-        background-color: #2E6EB5; /* สีใหม่ที่สว่างขึ้น */
+        background-color: #020364; /* สีใหม่ที่สว่างขึ้น */
         padding: 10px;
         position: fixed;
         height: 100vh;
@@ -42,7 +42,7 @@
 
     .sidebar:hover {
         width: 200px; /* ขยาย Sidebar */
-        background-color: #3C82D3; /* สีสว่างขึ้นเมื่อ Hover */
+        background-color: #020364; /* สีสว่างขึ้นเมื่อ Hover */
     }
 
     .sidebar .menu {
@@ -108,7 +108,7 @@
     }
 
     .sidebar a:hover {
-        background-color: #468FC8;
+        background-color: #020364;
     }
 
     /* กล่องข้อมูลผู้ใช้และปุ่มออกจากระบบ */
