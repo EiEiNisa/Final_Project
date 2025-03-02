@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('captcha', 'App\Rules\Captcha@validate');
+        Carbon::setLocale('th');
     }
 }
