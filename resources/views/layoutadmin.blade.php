@@ -18,17 +18,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
-            body {
-        background-color: #5A7CA6; /* เปลี่ยนสีพื้นหลังใหม่ */
+    body {
+        background-color: #F5F5F5; /* เปลี่ยนสีพื้นหลัง Content เป็นขาวสะอาด */
         display: flex;
         margin: 0;
     }
 
     /* Sidebar */
     .sidebar {
-        width: 60px; /* ปรับให้เล็กลง */
-        background-color: #021C3D; /* เปลี่ยนสี */
-        padding: 8px;
+        width: 60px; /* ปรับให้แคบลง */
+        background-color: #4A90E2; /* เปลี่ยนเป็นสีฟ้าสว่าง */
+        padding: 10px;
         position: fixed;
         height: 100vh;
         top: 0;
@@ -42,6 +42,7 @@
 
     .sidebar:hover {
         width: 180px; /* ขยาย Sidebar */
+        background-color: #2E78C2; /* เปลี่ยนสีเมื่อ Hover */
     }
 
     .sidebar .menu {
@@ -54,13 +55,21 @@
         display: none;
     }
 
+    /* โลโก้ให้อยู่ตรงกลาง */
+    .sidebar .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
     .sidebar img.logo {
-        width: 40px; /* ลดขนาดโลโก้ */
+        width: 45px; /* ลดขนาดโลโก้ */
         transition: width 0.3s ease;
     }
 
     .sidebar:hover img.logo {
-        width: 80px; /* ขยายโลโก้ */
+        width: 85px; /* ขยายโลโก้ */
     }
 
     /* ปุ่มเมนู */
@@ -69,7 +78,7 @@
         display: flex;
         align-items: center;
         text-decoration: none;
-        padding: 10px;
+        padding: 8px;
         font-size: 14px; /* ลดขนาดฟอนต์ */
         border-radius: 5px;
         margin-bottom: 5px;
@@ -97,7 +106,7 @@
     }
 
     .sidebar a:hover {
-        background-color: #4671A5;
+        background-color: #2E78C2;
     }
 
     /* กล่องข้อมูลผู้ใช้และปุ่มออกจากระบบ */
@@ -114,8 +123,8 @@
     }
 
     .sidebar .account {
-        background-color: #2C3E50;
-        color: #FFC107;
+        background-color: #3B5998;
+        color: #FFD700; /* สีทองอ่อน */
     }
 
     .sidebar .account i,
@@ -138,7 +147,7 @@
     }
 
     .logout-btn {
-        background-color: #C0392B;
+        background-color: #D9534F;
         color: white;
         cursor: pointer;
         border: none;
@@ -146,7 +155,7 @@
     }
 
     .logout-btn:hover {
-        background-color: #A93226;
+        background-color: #C9302C;
     }
 
     /* Content */
@@ -162,6 +171,7 @@
         margin-left: 180px;
         width: calc(100% - 180px);
     }
+
     </style>
 </head>
 
