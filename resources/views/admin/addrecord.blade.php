@@ -1033,133 +1033,92 @@ form {
                 </div>
             </div>
 
-            <div class="save">
-                <!-- ปุ่มบันทึก -->
-                <button type="button" class="btn btn-success" id="checkForm" disabled>บันทึก</button>
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const checkFormButton = document.getElementById("checkForm");
+                const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
+                const confirmSaveButton = document.getElementById("confirmSave");
+                const resetModal = new bootstrap.Modal(document.getElementById("resetModal"));
+                const confirmResetButton = document.getElementById("confirmReset");
+                const form = document.getElementById("Recorddata");
 
-                <!-- Modal ยืนยันการบันทึก -->
-                <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="saveModalLabel">ยืนยันการบันทึกข้อมูล</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                คุณยินยอมให้เก็บข้อมูลนี้หรือไม่
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                                <button type="button" class="btn btn-success" id="confirmSave">บันทึกข้อมูล</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                const requiredInputs = form.querySelectorAll(
+                    "input[required], textarea[required], select[required]");
 
-                <!-- ปุ่มยกเลิก -->
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                    data-bs-target="#resetModal">ยกเลิก</button>
+                // ตรวจสอบ checkbox กลุ่มต่างๆ
+                const checkboxesZone1 = document.querySelectorAll(
+                    'div.blood-pressure-zone input[type="checkbox"]');
+                const checkboxesZone2 = document.querySelectorAll(
+                    'div.blood-pressure-zone2 input[type="checkbox"]');
+                const checkboxesLifestyle = document.querySelectorAll('div.behavior input[type="checkbox"]');
+                const checkboxesElderly = document.querySelectorAll(
+                    'div.elderly_information input[type="checkbox"]');
 
-                <!-- Modal ยกเลิก -->
-                <div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="resetModalLabel">ยืนยันการยกเลิก</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                คุณต้องการยกเลิกข้อมูลทั้งหมดใช่หรือไม่?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ไม่</button>
-                                <button type="button" class="btn btn-danger" id="confirmReset">ยกเลิกข้อมูล</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+                function checkFormValidity() {
+                    let isValid = true;
 
-        <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const checkFormButton = document.getElementById("checkForm");
-            const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
-            const confirmSaveButton = document.getElementById("confirmSave");
-            const form = document.getElementById("Recorddata");
-            const requiredInputs = form.querySelectorAll(
-                "input[required], textarea[required], select[required]");
+                    // ตรวจสอบ input ที่เป็น required
+                    requiredInputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.classList.add("is-invalid");
+                        } else {
+                            input.classList.remove("is-invalid");
+                        }
+                    });
 
-            // ตรวจสอบ checkbox กลุ่มต่างๆ
-            const checkboxesZone1 = document.querySelectorAll('div.blood-pressure-zone input[type="checkbox"]');
-            const checkboxesZone2 = document.querySelectorAll(
-            'div.blood-pressure-zone2 input[type="checkbox"]');
-            const checkboxesLifestyle = document.querySelectorAll('div.behavior input[type="checkbox"]');
-            const checkboxesElderly = document.querySelectorAll(
-                'div.elderly_information input[type="checkbox"]');
+                    // ฟังก์ชันตรวจสอบว่า checkbox ในแต่ละกลุ่มถูกเลือกหรือไม่
+                    function isCheckboxChecked(checkboxGroup) {
+                        return Array.from(checkboxGroup).some(checkbox => checkbox.checked);
+                    }
 
-            function checkFormValidity() {
-                let isValid = true;
+                    let isZone1Checked = isCheckboxChecked(checkboxesZone1);
+                    let isZone2Checked = isCheckboxChecked(checkboxesZone2);
+                    let isLifestyleChecked = isCheckboxChecked(checkboxesLifestyle);
+                    let isElderlyChecked = isCheckboxChecked(checkboxesElderly);
 
-                // ตรวจสอบ input ที่เป็น required
+                    // ต้องมี checkbox อย่างน้อย 1 ตัวในทุกกลุ่มที่กำหนด
+                    let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
+                        isElderlyChecked;
+
+                    // ปิดปุ่มถ้ากรอกไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
+                    checkFormButton.disabled = !(isValid && isCheckboxValid);
+                }
+
+                // ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
                 requiredInputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        isValid = false;
-                        input.classList.add("is-invalid");
-                    } else {
-                        input.classList.remove("is-invalid");
+                    input.addEventListener("input", checkFormValidity);
+                    input.addEventListener("change", checkFormValidity);
+                });
+
+                [...checkboxesZone1, ...checkboxesZone2, ...checkboxesLifestyle, ...checkboxesElderly].forEach(
+                    checkbox => {
+                        checkbox.addEventListener("change", checkFormValidity);
+                    });
+
+                // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
+                checkFormButton.addEventListener("click", function() {
+                    if (!checkFormButton.disabled) {
+                        saveModal.show();
                     }
                 });
 
-                // ฟังก์ชันตรวจสอบว่า checkbox ในแต่ละกลุ่มถูกเลือกหรือไม่
-                function isCheckboxChecked(checkboxGroup) {
-                    return Array.from(checkboxGroup).some(checkbox => checkbox.checked);
-                }
-
-                let isZone1Checked = isCheckboxChecked(checkboxesZone1);
-                let isZone2Checked = isCheckboxChecked(checkboxesZone2);
-                let isLifestyleChecked = isCheckboxChecked(checkboxesLifestyle);
-                let isElderlyChecked = isCheckboxChecked(checkboxesElderly);
-
-                // ต้องมี checkbox อย่างน้อย 1 ตัวในทุกกลุ่มที่กำหนด
-                let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
-                isElderlyChecked;
-
-                // ปิดปุ่มถ้ากรอกไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
-                checkFormButton.disabled = !(isValid && isCheckboxValid);
-            }
-
-            // ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
-            requiredInputs.forEach(input => {
-                input.addEventListener("input", checkFormValidity);
-                input.addEventListener("change", checkFormValidity);
-            });
-
-            [...checkboxesZone1, ...checkboxesZone2, ...checkboxesLifestyle, ...checkboxesElderly].forEach(
-                checkbox => {
-                    checkbox.addEventListener("change", checkFormValidity);
+                // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
+                confirmSaveButton.addEventListener("click", function() {
+                    form.submit();
                 });
 
-            // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
-            checkFormButton.addEventListener("click", function() {
-                if (!checkFormButton.disabled) {
-                    saveModal.show();
-                }
-            });
+                // ฟังก์ชันรีเซ็ตข้อมูลเมื่อกดยกเลิก
+                confirmResetButton.addEventListener("click", function() {
+                    form.reset(); // รีเซ็ตค่าทั้งหมดในฟอร์ม
+                    checkFormValidity(); // อัปเดตปุ่มบันทึก
+                    resetModal.hide(); // ปิด Modal หลังจากกดยกเลิก
+                });
 
-            // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
-            confirmSaveButton.addEventListener("click", function() {
-                form.submit();
+                // ตรวจสอบตอนโหลดหน้าเว็บ
+                checkFormValidity();
             });
-
-            // ตรวจสอบตอนโหลดหน้าเว็บ
-            checkFormValidity();
-        });
-        </script>
+            </script>
 
     </div>
 </div>
