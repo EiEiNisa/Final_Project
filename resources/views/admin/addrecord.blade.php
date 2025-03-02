@@ -1110,23 +1110,11 @@ form {
                     });
 
                     confirmSaveButton.addEventListener("click", function() {
-                        // เช็คว่า Token หมดอายุหรือไม่
-                        fetch("{{ route('check.auth') }}")
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.authenticated) {
-                                    form.submit(); // ส่งฟอร์มไปที่ Controller
-                                } else {
-                                    alert("Session หมดอายุ กรุณาเข้าสู่ระบบใหม่");
-                                    window.location.href = "/login"; // Redirect ไปที่หน้า Login
-                                }
-                            })
-                            .catch(() => {
-                                alert("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
-                            });
+                        form.submit(); // ส่งฟอร์มไปที่ Controller
                     });
                 });
                 </script>
+
 
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#resetModal">ยกเลิก</button>
