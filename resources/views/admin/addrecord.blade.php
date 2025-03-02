@@ -1037,27 +1037,7 @@ form {
 
             <div class="save">
                 <!-- ปุ่มบันทึก -->
-                <button type="button" class="btn btn-success" id="checkForm">บันทึก</button>
-
-                <!-- Modal เตือนให้กรอกข้อมูลให้ครบ -->
-                <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="warningModalLabel">แจ้งเตือน</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                กรุณากรอกข้อมูลให้ครบทุกช่องก่อนบันทึก!
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ตกลง</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-success" id="checkForm" disabled>บันทึก</button>
 
                 <!-- Modal ยืนยันการบันทึก -->
                 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel"
@@ -1080,54 +1060,17 @@ form {
                     </div>
                 </div>
 
-                <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const checkFormButton = document.getElementById("checkForm");
-                    const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
-                    const warningModal = new bootstrap.Modal(document.getElementById("warningModal"));
-                    const confirmSaveButton = document.getElementById("confirmSave");
-                    const form = document.querySelector("form");
-                    const requiredInputs = form.querySelectorAll("input[required]");
-
-                    checkFormButton.addEventListener("click", function() {
-                        let isValid = true;
-
-                        requiredInputs.forEach(input => {
-                            if (!input.value.trim()) {
-                                isValid = false;
-                                input.classList.add("is-invalid"); // ใส่กรอบแดงถ้าไม่กรอก
-                            } else {
-                                input.classList.remove(
-                                "is-invalid"); // เอากรอบแดงออกถ้ากรอกแล้ว
-                            }
-                        });
-
-                        if (isValid) {
-                            saveModal.show(); // ถ้ากรอกครบให้แสดง Modal ยืนยัน
-                        } else {
-                            warningModal.show(); // ถ้ายังไม่กรอกครบให้แสดง Modal เตือน
-                        }
-                    });
-
-                    confirmSaveButton.addEventListener("click", function() {
-                        form.submit(); // ส่งฟอร์มไปที่ Controller
-                    });
-                });
-                </script>
-
-
+                <!-- ปุ่มยกเลิก -->
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#resetModal">ยกเลิก</button>
 
-                <!-- Modal -->
+                <!-- Modal ยกเลิก -->
                 <div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="resetModalLabel">
-                                    ยืนยันการยกเลิก
-                                </h5>
+                                <h5 class="modal-title" id="resetModalLabel">ยืนยันการยกเลิก</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -1143,52 +1086,63 @@ form {
                 </div>
 
                 <script>
-                document
-                    .getElementById(
-                        'confirmReset'
-                    )
-                    .addEventListener(
-                        'click',
-                        function() {
-                            const
-                                form =
-                                document
-                                .getElementById(
-                                    'Recorddata'
-                                );
-                            if (
-                                form) {
-                                form
-                                    .reset(); // รีเซ็ตข้อมูลฟอร์ม
+                document.addEventListener("DOMContentLoaded", function() {
+                    const checkFormButton = document.getElementById("checkForm");
+                    const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
+                    const confirmSaveButton = document.getElementById("confirmSave");
+                    const form = document.querySelector("form");
+                    const requiredInputs = form.querySelectorAll("input[required]");
+
+                    // ฟังก์ชันเช็คว่ากรอกครบหรือยัง
+                    function checkFormValidity() {
+                        let isValid = true;
+
+                        requiredInputs.forEach(input => {
+                            if (!input.value.trim()) {
+                                isValid = false;
+                                input.classList.add("is-invalid"); // ใส่กรอบแดงถ้าไม่กรอก
+                            } else {
+                                input.classList.remove("is-invalid"); // เอากรอบแดงออกถ้ากรอกแล้ว
                             }
+                        });
 
-                            // ปิด Modal ก่อน
-                            const
-                                resetModal =
-                                new bootstrap
-                                .Modal(
-                                    document
-                                    .getElementById(
-                                        'resetModal'
-                                    )
-                                );
-                            resetModal
-                                .hide();
+                        checkFormButton.disabled = !isValid; // ปิดปุ่มถ้ากรอกไม่ครบ
+                    }
 
-                            // ใช้ setTimeout เพื่อให้การแสดง alert เกิดขึ้นหลังจากการทำงานหลัก
-                            setTimeout
-                                (function() {
-                                        alert
-                                            (
-                                                'ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว');
-                                    },
-                                    0
-                                ); // การใช้ 0 จะทำให้ alert แสดงหลังจากการรีเซ็ตและปิด Modal ทันที
-                        }
-                    );
+                    // ตรวจสอบทุกครั้งที่พิมพ์ค่าใน input
+                    requiredInputs.forEach(input => {
+                        input.addEventListener("input", checkFormValidity);
+                    });
+
+                    // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
+                    checkFormButton.addEventListener("click", function() {
+                        saveModal.show();
+                    });
+
+                    // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
+                    confirmSaveButton.addEventListener("click", function() {
+                        form.submit();
+                    });
+
+                    // รีเซ็ตฟอร์มเมื่อกดยกเลิก
+                    document.getElementById("confirmReset").addEventListener("click", function() {
+                        form.reset();
+                        checkFormValidity(); // เช็คฟอร์มใหม่
+                        document.querySelectorAll("input").forEach(input => input.classList.remove(
+                            "is-invalid"));
+                        const resetModal = bootstrap.Modal.getInstance(document.getElementById(
+                            "resetModal"));
+                        resetModal.hide();
+                        setTimeout(() => alert("ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว"), 0);
+                    });
+
+                    // เรียกใช้งานครั้งแรกเมื่อโหลดหน้าเว็บ
+                    checkFormValidity();
+                });
                 </script>
+
+            </div>
         </form>
     </div>
-</div>
 </div>
 @endsection
