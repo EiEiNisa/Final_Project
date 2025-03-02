@@ -18,11 +18,16 @@ use Carbon\Carbon;
 class RecorddataController
 {
     public function index()
-    {
-        $recorddata = Recorddata::orderBy('id', 'desc')->paginate(10);
-        $disease = Disease::all();
-        return view('admin.record', compact('recorddata', 'disease'));
-    }
+{
+    $recorddata = Recorddata::orderBy('id', 'desc')->paginate(10);
+    $disease = Disease::all();
+    
+    // เช็กว่ามี Pagination ทำงานถูกต้องหรือไม่
+    dd($recorddata->toArray());
+
+    return view('admin.record', compact('recorddata', 'disease'));
+}
+
     
     public function create() 
 {
