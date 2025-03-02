@@ -24,29 +24,36 @@
             margin: 0;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 70px; /* เริ่มต้นแสดงแค่ Icon */
-            background-color: #020364;
-            padding: 10px;
-            position: fixed;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            transition: width 0.3s ease; /* เพิ่มเอฟเฟกต์ขยาย */
-        }
+            /* Sidebar */
+    .sidebar {
+        width: 70px; /* เริ่มต้นแสดงแค่ Icon */
+        background-color: #020364;
+        padding: 10px;
+        position: fixed;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        transition: width 0.3s ease; /* เพิ่มเอฟเฟกต์ขยาย */
+        overflow: hidden; /* ซ่อน scrollbar */
+    }
 
-        /* เมื่อเอาเมาส์ไปชี้ที่ Sidebar ให้ขยายออก */
-        .sidebar:hover {
-            width: 200px; /* ขยาย Sidebar */
-        }
+    /* เมื่อเอาเมาส์ไปชี้ที่ Sidebar ให้ขยายออก */
+    .sidebar:hover {
+        width: 200px; /* ขยาย Sidebar */
+    }
 
-        .sidebar .menu {
-            flex-grow: 1;
-        }
+    .sidebar .menu {
+        flex-grow: 1;
+        overflow-y: auto; /* ให้เมนูสามารถเลื่อนขึ้นลงได้ */
+        scrollbar-width: none; /* ซ่อน scrollbar (Firefox) */
+    }
+
+    .sidebar .menu::-webkit-scrollbar {
+        display: none; /* ซ่อน scrollbar (Chrome, Safari) */
+    }
+
 
         .sidebar img.logo {
             display: block;
