@@ -473,7 +473,7 @@ button.btn-primary:hover {
             <tbody>
                 @foreach($recorddata as $key => $data)
                 <tr>
-                    <td><strong>{{ ($recorddata->total() - $loop->index) }}</strong></td>
+                <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>
                     </td>
                     <td><strong>{{ $data['id_card'] }}</strong></td>
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
