@@ -458,7 +458,7 @@ form {
 
             <div class="form-group1">
                 <label for="prefix">คำนำหน้าชื่อ</label>
-                <select class="form-control" id="prefix" name="prefix">
+                <select class="form-control" id="prefix" name="prefix" required>
                     <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
                     </option>
                     <option value="ด.ช.">ด.ช.</option>
@@ -529,7 +529,6 @@ form {
                     <option value="AB" {{ old('blood_group') == 'AB' ? 'selected' : '' }}>AB</option>
                     <option value="O" {{ old('blood_group') == 'O' ? 'selected' : '' }}>O</option>
                 </select>
-
             </div>
 
             <div class="form-group1">
@@ -608,7 +607,6 @@ form {
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
-
             </div>
 
             <div class="form-group">
@@ -1084,65 +1082,65 @@ form {
                         </div>
                     </div>
                 </div>
-
-                <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const checkFormButton = document.getElementById("checkForm");
-                    const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
-                    const confirmSaveButton = document.getElementById("confirmSave");
-                    const form = document.querySelector("form");
-                    const requiredInputs = form.querySelectorAll("input[required]");
-
-                    // ฟังก์ชันเช็คว่ากรอกครบหรือยัง
-                    function checkFormValidity() {
-                        let isValid = true;
-
-                        requiredInputs.forEach(input => {
-                            if (!input.value.trim()) {
-                                isValid = false;
-                                input.classList.add("is-invalid"); // ใส่กรอบแดงถ้าไม่กรอก
-                            } else {
-                                input.classList.remove("is-invalid"); // เอากรอบแดงออกถ้ากรอกแล้ว
-                            }
-                        });
-
-                        checkFormButton.disabled = !isValid; // ปิดปุ่มถ้ากรอกไม่ครบ
-                    }
-
-                    // ตรวจสอบทุกครั้งที่พิมพ์ค่าใน input
-                    requiredInputs.forEach(input => {
-                        input.addEventListener("input", checkFormValidity);
-                    });
-
-                    // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
-                    checkFormButton.addEventListener("click", function() {
-                        saveModal.show();
-                    });
-
-                    // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
-                    confirmSaveButton.addEventListener("click", function() {
-                        form.submit();
-                    });
-
-                    // รีเซ็ตฟอร์มเมื่อกดยกเลิก
-                    document.getElementById("confirmReset").addEventListener("click", function() {
-                        form.reset();
-                        checkFormValidity(); // เช็คฟอร์มใหม่
-                        document.querySelectorAll("input").forEach(input => input.classList.remove(
-                            "is-invalid"));
-                        const resetModal = bootstrap.Modal.getInstance(document.getElementById(
-                            "resetModal"));
-                        resetModal.hide();
-                        setTimeout(() => alert("ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว"), 0);
-                    });
-
-                    // เรียกใช้งานครั้งแรกเมื่อโหลดหน้าเว็บ
-                    checkFormValidity();
-                });
-                </script>
-
             </div>
         </form>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const checkFormButton = document.getElementById("checkForm");
+            const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
+            const confirmSaveButton = document.getElementById("confirmSave");
+            const form = document.querySelector("form");
+            const requiredInputs = form.querySelectorAll("input[required]");
+
+            // ฟังก์ชันเช็คว่ากรอกครบหรือยัง
+            function checkFormValidity() {
+                let isValid = true;
+
+                requiredInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add("is-invalid"); // ใส่กรอบแดงถ้าไม่กรอก
+                    } else {
+                        input.classList.remove("is-invalid"); // เอากรอบแดงออกถ้ากรอกแล้ว
+                    }
+                });
+
+                checkFormButton.disabled = !isValid; // ปิดปุ่มถ้ากรอกไม่ครบ
+            }
+
+            // ตรวจสอบทุกครั้งที่พิมพ์ค่าใน input
+            requiredInputs.forEach(input => {
+                input.addEventListener("input", checkFormValidity);
+            });
+
+            // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
+            checkFormButton.addEventListener("click", function() {
+                saveModal.show();
+            });
+
+            // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
+            confirmSaveButton.addEventListener("click", function() {
+                form.submit();
+            });
+
+            // รีเซ็ตฟอร์มเมื่อกดยกเลิก
+            document.getElementById("confirmReset").addEventListener("click", function() {
+                form.reset();
+                checkFormValidity(); // เช็คฟอร์มใหม่
+                document.querySelectorAll("input").forEach(input => input.classList.remove(
+                    "is-invalid"));
+                const resetModal = bootstrap.Modal.getInstance(document.getElementById(
+                    "resetModal"));
+                resetModal.hide();
+                setTimeout(() => alert("ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว"), 0);
+            });
+
+            // เรียกใช้งานครั้งแรกเมื่อโหลดหน้าเว็บ
+            checkFormValidity();
+        });
+        </script>
+
     </div>
 </div>
 @endsection
