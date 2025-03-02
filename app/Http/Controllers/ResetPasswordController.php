@@ -16,7 +16,6 @@ class ResetPasswordController extends Controller
     ]);
 }
 
-
     public function reset(Request $request)
     {
         $request->validate([

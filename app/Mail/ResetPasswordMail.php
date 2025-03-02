@@ -17,14 +17,15 @@ class ResetPasswordMail extends Mailable
     }
 
     public function build()
-    {
-        $resetUrl = url('reset-password?token=' . $this->token . '&email=' . urlencode($this->user->email));
+{
+    $resetUrl = url('reset-password?token=' . $this->token . '&email=' . urlencode($this->user->email));
 
-        return $this->subject('การรีเซ็ตรหัสผ่าน')
-                    ->view('resetpassword_link')  // ใช้ view ที่คุณสร้าง
-                    ->with([
-                        'userName' => $this->user->name,
-                        'resetUrl' => $resetUrl,
-                    ]);
-    }
+    return $this->subject('การรีเซ็ตรหัสผ่าน')
+                ->view('resetpassword_link')
+                ->with([
+                    'userName' => $this->user->name,
+                    'resetUrl' => $resetUrl,
+                ]);
+}
+
 }
