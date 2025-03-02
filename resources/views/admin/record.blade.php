@@ -126,7 +126,7 @@ button.btn-primary:hover {
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #b0b3b8; /* เทาหม่น */
+    background-color: #5a5d61; /* เทาเข้ม */
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -135,25 +135,24 @@ button.btn-primary:hover {
 }
 
 .custom-pagination a:hover {
-    background-color: #a0a3a8; /* เทาเข้มขึ้นเล็กน้อย */
+    background-color: #4d5054; /* เทาเข้มขึ้นเมื่อ hover */
     transform: translateY(-2px);
 }
 
 .custom-pagination .active {
-    background-color: #6c757d; /* เทาเข้ม */
+    background-color: #343a40; /* เทาดำ */
     font-weight: bold;
 }
 
 .custom-pagination .disabled {
-    background-color: #d6d8db; /* เทาอ่อน */
+    background-color: #bcbec2; /* เทาหม่นอ่อน */
     color: #6c757d;
     cursor: not-allowed;
 }
 
 .custom-pagination .disabled:hover {
-    background-color: #d6d8db; /* ไม่เปลี่ยนสีเมื่อ hover */
+    background-color: #bcbec2; /* ไม่เปลี่ยนสีเมื่อ hover */
 }
-
 
 .modal-header {
     padding: 15px;
