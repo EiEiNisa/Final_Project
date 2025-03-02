@@ -5,37 +5,31 @@ namespace App\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Mail\Mailable;
 
 class ResetPasswordMail extends Mailable
 {
-    public function showResetForm(Request $request)
+    public $user;
+    public $token;
+
+    public function __construct($user, $token)
     {
-        // แสดงฟอร์มให้กรอกรหัสผ่านใหม่
-        return view('reset-password', ['token' => $request->token]);
+        $this->user = $user;
+        $this->token = $token;
     }
 
-    public function reset(Request $request)
+    public function build()
     {
-        // รีเซ็ตรหัสผ่านใหม่
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
+        // ลิงก์ไปยังหน้า reset-password พร้อม Token
+        $resetUrl = url('reset-password?token=' . $this->token . '&email=' . urlencode($this->user->email));
 
-        // ทำการรีเซ็ตรหัสผ่าน
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->forceFill([
-                    'password' => bcrypt($password),
-                ])->save();
-            }
-        );
-
-        if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('status', 'รหัสผ่านของคุณได้ถูกรีเซ็ตรหัสแล้ว!');
-        }
-
-        return back()->withErrors(['email' => 'ไม่สามารถรีเซ็ตรหัสผ่านได้']);
+        dd($resetUrl);
+        
+        return $this->subject('การรีเซ็ตรหัสผ่าน')
+                    ->view('resetpassword_link') // ใช้ View ที่สร้างเอง
+                    ->with([
+                        'userName' => $this->user->name,
+                        'resetUrl' => $resetUrl,
+                    ]);
     }
 }
