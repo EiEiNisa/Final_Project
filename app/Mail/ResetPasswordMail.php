@@ -3,23 +3,28 @@
 namespace App\Mail;
 
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Password;
 
 class ResetPasswordMail extends Mailable
 {
     public $user;
+    public $token;
 
-    public function __construct($user)
+    public function __construct($user, $token)
     {
         $this->user = $user;
+        $this->token = $token;
     }
 
     public function build()
     {
+        $resetUrl = url('reset-password?token=' . $this->token . '&email=' . urlencode($this->user->email));
+
         return $this->subject('การรีเซ็ตรหัสผ่าน')
                     ->view('resetpassword_link')  // ใช้ view ที่คุณสร้าง
                     ->with([
                         'userName' => $this->user->name,
-                        'resetUrl' => url('password/reset/'.$this->user->email), // แทนที่ด้วยลิงก์รีเซ็ตรหัสผ่านที่ถูกต้อง
+                        'resetUrl' => $resetUrl,
                     ]);
     }
 }
