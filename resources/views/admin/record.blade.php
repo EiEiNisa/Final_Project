@@ -2,9 +2,6 @@
 
 @section('content')
 <style>
-body {
-    overflow: hidden;
-}
 
 .title {
     color: #020364;
@@ -55,8 +52,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 20px;
-    overflow-x: auto;
-    /* ทำให้สามารถเลื่อนในแนวนอนได้ */
+    overflow: hidden;
 }
 
 .form-group-horizontal {
@@ -189,9 +185,6 @@ button.btn-primary:hover {
 }
 
 @media (max-width: 768px) {
-    body {
-        overflow: auto;
-    }
 
     .title {
         font-size: 12px;
