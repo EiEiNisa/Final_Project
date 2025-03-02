@@ -1036,18 +1036,38 @@ form {
 
 
             <div class="save">
-                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
+                <!-- ปุ่มบันทึก -->
+                <button type="button" class="btn btn-success" id="checkForm">
                     บันทึก
                 </button>
 
+                <!-- Modal เตือนให้กรอกข้อมูลให้ครบ -->
+                <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="warningModalLabel">แจ้งเตือน</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                กรุณากรอกข้อมูลให้ครบทุกช่องก่อนบันทึก!
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ตกลง</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal ยืนยันการบันทึก -->
                 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="saveModalLabel">
-                                    ยืนยันการบันทึกข้อมูล
-                                </h5>
+                                <h5 class="modal-title" id="saveModalLabel">ยืนยันการบันทึกข้อมูล</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -1056,47 +1076,46 @@ form {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                                <button type="submit" class="btn btn-success" id="confirmSave">บันทึกข้อมูล</button>
+                                <button type="button" class="btn btn-success" id="confirmSave">บันทึกข้อมูล</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <script>
-                document
-                    .getElementById(
-                        'confirmSave'
-                    )
-                    .addEventListener(
-                        'click',
-                        function() {
+                document.addEventListener("DOMContentLoaded", function() {
+                    const checkFormButton = document.getElementById("checkForm");
+                    const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
+                    const warningModal = new bootstrap.Modal(document.getElementById("warningModal"));
+                    const confirmSaveButton = document.getElementById("confirmSave");
+                    const form = document.querySelector("form");
+                    const requiredInputs = form.querySelectorAll("input[required]");
 
-                            document
-                                .querySelector(
-                                    'form'
-                                )
-                                .submit();
+                    checkFormButton.addEventListener("click", function() {
+                        let isValid = true;
+                        requiredInputs.forEach(input => {
+                            if (!input.value.trim()) {
+                                isValid = false;
+                                input.classList.add("is-invalid"); // ใส่กรอบแดงถ้าไม่กรอก
+                            } else {
+                                input.classList.remove(
+                                "is-invalid"); // เอากรอบแดงออกถ้ากรอกแล้ว
+                            }
+                        });
 
-
-                            const
-                                saveModal =
-                                new bootstrap
-                                .Modal(
-                                    document
-                                    .getElementById(
-                                        'saveModal'
-                                    )
-                                );
-                            saveModal
-                                .hide();
-
-
-                            alert
-                                (
-                                    'ข้อมูลถูกบันทึกเรียบร้อยแล้ว');
+                        if (isValid) {
+                            saveModal.show(); // ถ้ากรอกครบให้แสดง Modal ยืนยัน
+                        } else {
+                            warningModal.show(); // ถ้ายังไม่กรอกครบให้แสดง Modal เตือน
                         }
-                    );
+                    });
+
+                    confirmSaveButton.addEventListener("click", function() {
+                        form.submit(); // ส่งฟอร์ม
+                    });
+                });
                 </script>
+
 
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#resetModal">ยกเลิก</button>
