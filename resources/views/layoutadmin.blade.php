@@ -34,7 +34,7 @@
             left: 0;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            overflow-y: auto; /* ทำให้ Sidebar เลื่อนได้ */
         }
 
         .sidebar .menu {
@@ -49,14 +49,19 @@
 
         .sidebar a {
             color: #ffffff;
-            display: block;
+            display: flex;
+            align-items: center; /* จัดให้ไอคอนกับข้อความอยู่ในแนวเดียวกัน */
             text-decoration: none;
             padding: 12px;
             font-size: 18px;
             border-radius: 6px;
             margin-bottom: 10px;
-            text-align: center;
+            text-align: left; /* ตัวหนังสือชิดซ้าย */
             transition: background-color 0.3s ease;
+        }
+
+        .sidebar a i {
+            margin-right: 10px; /* เพิ่มระยะห่างระหว่างไอคอนกับข้อความ */
         }
 
         .sidebar a:hover {
@@ -64,7 +69,9 @@
         }
 
         .sidebar .account {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* ชิดซ้าย */
             font-size: 16px;
             margin-top: 20px;
             padding: 10px;
@@ -73,12 +80,17 @@
             color: #FEFB18;
         }
 
+        .sidebar .account i {
+            margin-right: 10px;
+        }
+
         .logout-btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* ชิดซ้าย */
             width: 100%;
             background-color: #dc3545;
             color: white;
-            text-align: center;
             padding: 12px;
             font-size: 18px;
             border-radius: 6px;
@@ -86,6 +98,10 @@
             margin-top: 15px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+        }
+
+        .logout-btn i {
+            margin-right: 10px;
         }
 
         .logout-btn:hover {
@@ -124,6 +140,11 @@
         </div>
     </div>
 
+    <!-- Content -->
+    <div>
+        @yield('content')
+    </div>
+    
 </body>
 
 </html>
