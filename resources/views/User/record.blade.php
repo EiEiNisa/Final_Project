@@ -27,7 +27,8 @@
 
 .table th {
     background-color: #020364;
-    color: #fff !important; /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
+    color: #fff !important;
+    /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
     text-align: center;
 }
 
@@ -45,24 +46,29 @@
 }
 
 .rectangle-box {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        margin: 20px;
-        overflow-x: auto; /* ทำให้สามารถเลื่อนในแนวนอนได้ */
-    }
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    overflow-x: auto;
+    /* ทำให้สามารถเลื่อนในแนวนอนได้ */
+}
 
-    .form-group-horizontal {
-        display: flex;
-        flex-wrap: nowrap; /* ป้องกันไม่ให้ฟอร์มย่อในแนวนอน */
-        overflow-x: auto; /* ทำให้สามารถเลื่อนในแนวนอนได้ */
-    }
+.form-group-horizontal {
+    display: flex;
+    flex-wrap: nowrap;
+    /* ป้องกันไม่ให้ฟอร์มย่อในแนวนอน */
+    overflow-x: auto;
+    /* ทำให้สามารถเลื่อนในแนวนอนได้ */
+}
 
-    .form-group {
-        min-width: 200px; /* ขนาดขั้นต่ำของแต่ละฟอร์มกลุ่ม */
-        margin-right: 15px; /* เว้นระยะระหว่างฟอร์มกลุ่ม */
-    }
+.form-group {
+    min-width: 200px;
+    /* ขนาดขั้นต่ำของแต่ละฟอร์มกลุ่ม */
+    margin-right: 15px;
+    /* เว้นระยะระหว่างฟอร์มกลุ่ม */
+}
 
 button.btn-primary {
     flex: 1 1 100%;
@@ -350,25 +356,26 @@ button.btn-primary:hover {
                 </div>
 
                 <div class="form-group">
-                <label for="diseases">โรคประจำตัว</label>
-                <select id="diseases" class="form-control" name="diseases">
-                    <option value="">เลือกโรคประจำตัว</option>
-                    @php
-                    $diseases = [
-                    'diabetes' => 'เบาหวาน',
-                    'cerebral_artery' => 'หลอดเลือดสมอง',
-                    'kidney' => 'โรคไต',
-                    'blood_pressure' => 'ความดันโลหิตสูง',
-                    'heart' => 'โรคหัวใจ',
-                    'eye' => 'โรคตา',
-                    'other' => 'โรคอื่นๆ'
-                    ];
-                    @endphp
-                    @foreach($diseases as $key => $value)
-                    <option value="{{ $key }}" {{ request('diseases') == $key ? 'selected' : '' }}>{{ $value }}</option>
-                    @endforeach
-                </select>
-            </div>
+                    <label for="diseases">โรคประจำตัว</label>
+                    <select id="diseases" class="form-control" name="diseases">
+                        <option value="">เลือกโรคประจำตัว</option>
+                        @php
+                        $diseases = [
+                        'diabetes' => 'เบาหวาน',
+                        'cerebral_artery' => 'หลอดเลือดสมอง',
+                        'kidney' => 'โรคไต',
+                        'blood_pressure' => 'ความดันโลหิตสูง',
+                        'heart' => 'โรคหัวใจ',
+                        'eye' => 'โรคตา',
+                        'other' => 'โรคอื่นๆ'
+                        ];
+                        @endphp
+                        @foreach($diseases as $key => $value)
+                        <option value="{{ $key }}" {{ request('diseases') == $key ? 'selected' : '' }}>{{ $value }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">ค้นหา</button>
                 </div>
@@ -397,7 +404,7 @@ button.btn-primary:hover {
             <tbody>
                 @foreach($recorddata as $key => $data)
                 <tr>
-                <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>                    </td>
+                    <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
                     <td><strong>{{ $data['housenumber'] }}</strong></td>
                     <td><strong>{{ Carbon::parse($data['birthdate'])->format('d/m/Y') }}</strong></td>
