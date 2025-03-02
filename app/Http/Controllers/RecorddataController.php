@@ -173,20 +173,20 @@ public function store(Request $request)
             'bored' => filter_var($request->input('bored', false),  FILTER_VALIDATE_BOOLEAN),
         ]);
 
-        $hlderlyinformation = ElderlyInformation::create([
+        $elderlyInformation = ElderlyInformation::create([
             'recorddata_id' => $recorddata->id,
-            'help_yourself' => filter_var($request->input('help_yourself', false),  FILTER_VALIDATE_BOOLEAN),
-            'can_help' => filter_var($request->input('can_help', false),  FILTER_VALIDATE_BOOLEAN),
-            'cant_help' => filter_var($request->input('cant_help', false),  FILTER_VALIDATE_BOOLEAN),
-            'caregiver' => filter_var($request->input('caregiver', false),  FILTER_VALIDATE_BOOLEAN),
-            'have_caregiver' => filter_var($request->input('have_caregiver', false),  FILTER_VALIDATE_BOOLEAN),
-            'no_caregiver' => filter_var($request->input('no_caregiver', false),  FILTER_VALIDATE_BOOLEAN),
-            'group1' => filter_var($request->input('group1', false),  FILTER_VALIDATE_BOOLEAN),
-            'group2' => filter_var($request->input('group2', false),  FILTER_VALIDATE_BOOLEAN),
-            'group3' => filter_var($request->input('group3', false),  FILTER_VALIDATE_BOOLEAN),
-            'house' => filter_var($request->input('house', false),  FILTER_VALIDATE_BOOLEAN),
-            'society' => filter_var($request->input('society', false),  FILTER_VALIDATE_BOOLEAN),
-            'bed_ridden' => filter_var($request->input('bed_ridden', false),  FILTER_VALIDATE_BOOLEAN),
+            'help_yourself' => $request->has('help_yourself'),
+            'can_help' => $request->has('can_help'),
+            'cant_help' => $request->has('cant_help'),
+            'caregiver' => $request->has('caregiver'),
+            'have_caregiver' => $request->has('have_caregiver'),
+            'no_caregiver' => $request->has('no_caregiver'),
+            'group1' => $request->has('group1'),
+            'group2' => $request->has('group2'),
+            'group3' => $request->has('group3'),
+            'house' => $request->has('house'),
+            'society' => $request->has('society'),
+            'bed_ridden' => $request->has('bed_ridden'),
         ]);
 
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');

@@ -554,7 +554,7 @@ form {
             <div class="form-group1">
                 <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI</label>
                 <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi') }}"
-                    placeholder="กรอกดัชนีมวล BMI" step="0.1" required>
+                    placeholder="กรอกดัชนีมวล BMI" step="0.1" readonly>
             </div>
 
             <script>
@@ -927,72 +927,60 @@ form {
             <!--ข้อมูลผู้สูงอายุ-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ</h4>
-
             </div>
+
             <div class="elderly_information">
                 <div class="elderly-checkbox-container" style="color: #020364; font-size: 15px; font-weight: bold;">
-                    <!-- ช่วยเหลือตัวเอง -->
                     <div class="form-check-container">
                         <div class="form-check">
-                            <input type="hidden" name="help_yourself" value="0">
                             <input class="form-check-input" type="checkbox" name="help_yourself" id="help_yourself"
                                 value="1" {{ old('help_yourself') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="help_yourself" disabled>ช่วยเหลือตัวเองได้</label>
+                            <label class="form-check-label" for="help_yourself">ช่วยเหลือตัวเองได้</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="can_help" value="0">
                             <input class="form-check-input" type="checkbox" name="can_help" id="can_help" value="1"
                                 {{ old('can_help') ? 'checked' : '' }}>
                             <label class="form-check-label" for="can_help">ได้</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="cant_help" value="0">
                             <input class="form-check-input" type="checkbox" name="cant_help" id="cant_help" value="1"
                                 {{ old('cant_help') ? 'checked' : '' }}>
                             <label class="form-check-label" for="cant_help">ไม่ได้</label>
                         </div>
                     </div>
 
-                    <!-- ผู้ดูแล -->
                     <div class="form-check-container">
                         <div class="form-check">
-                            <input type="hidden" name="caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="caregiver" id="caregiver" value="1"
                                 {{ old('caregiver') ? 'checked' : '' }} disabled>
                             <label class="form-check-label" for="caregiver">ผู้ดูแล</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="have_caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="have_caregiver" id="have_caregiver"
                                 value="1" {{ old('have_caregiver') ? 'checked' : '' }}>
                             <label class="form-check-label" for="have_caregiver">มีผู้ดูแล</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="no_caregiver" value="0">
                             <input class="form-check-input" type="checkbox" name="no_caregiver" id="no_caregiver"
                                 value="1" {{ old('no_caregiver') ? 'checked' : '' }}>
                             <label class="form-check-label" for="no_caregiver">ไม่มีผู้ดูแล</label>
                         </div>
                     </div>
 
-                    <!-- กลุ่ม -->
                     <div class="form-check-container">
                         <div class="form-check">
-                            <input type="hidden" name="group1" value="0">
                             <input class="form-check-input" type="checkbox" name="group1" id="group1" value="1"
                                 {{ old('group1') ? 'checked' : '' }}>
                             <label class="form-check-label" for="group1">กลุ่มที่ 1
                                 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="group2" value="0">
                             <input class="form-check-input" type="checkbox" name="group2" id="group2" value="1"
                                 {{ old('group2') ? 'checked' : '' }}>
                             <label class="form-check-label" for="group2">กลุ่มที่ 2
                                 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="group3" value="0">
                             <input class="form-check-input" type="checkbox" name="group3" id="group3" value="1"
                                 {{ old('group3') ? 'checked' : '' }}>
                             <label class="form-check-label" for="group3">กลุ่มที่ 3
@@ -1000,25 +988,21 @@ form {
                         </div>
                     </div>
 
-                    <!-- สถานะ -->
                     <div class="form-check-container">
                         <div class="form-check">
-                            <input type="hidden" name="house" value="0">
                             <input class="form-check-input" type="checkbox" name="house" id="house" value="1"
                                 {{ old('house') ? 'checked' : '' }}>
                             <label class="form-check-label" for="house">ติดบ้าน</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="society" value="0">
                             <input class="form-check-input" type="checkbox" name="society" id="society" value="1"
                                 {{ old('society') ? 'checked' : '' }}>
                             <label class="form-check-label" for="society">ติดสังคม</label>
                         </div>
                         <div class="form-check">
-                            <input type="hidden" name="bed-ridden" value="0">
-                            <input class="form-check-input" type="checkbox" name="bed-ridden" id="bed-ridden" value="1"
-                                {{ old('bed-ridden') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="bed-ridden">ติดเตียง</label>
+                            <input class="form-check-input" type="checkbox" name="bed_ridden" id="bed_ridden" value="1"
+                                {{ old('bed_ridden') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="bed_ridden">ติดเตียง</label>
                         </div>
                     </div>
                 </div>
@@ -1084,6 +1068,7 @@ form {
                 </div>
             </div>
         </form>
+
         <script>
         document.addEventListener("DOMContentLoaded", function() {
             const checkFormButton = document.getElementById("checkForm");
