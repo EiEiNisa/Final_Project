@@ -397,8 +397,7 @@ button.btn-primary:hover {
             <tbody>
                 @foreach($recorddata as $key => $data)
                 <tr>
-                    <td><strong>{{ $recorddata->total() - (($recorddata->currentPage() - 1) * $recorddata->perPage()) - $loop->iteration + 1 }}</strong>
-                    </td>
+                <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>                    </td>
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
                     <td><strong>{{ $data['housenumber'] }}</strong></td>
                     <td><strong>{{ Carbon::parse($data['birthdate'])->format('d/m/Y') }}</strong></td>
