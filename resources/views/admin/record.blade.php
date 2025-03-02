@@ -565,104 +565,37 @@ button.btn-primary:hover {
             </tbody>
         </table>
 
-        <div class="flex flex-col items-center">
-            <!-- Pagination Component -->
-            <div class="flex items-center gap-1">
-                <button
-                    class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed focus:shadow-none text-sm rounded-md py-2 px-4 bg-transparent border-transparent text-stone-800 hover:bg-stone-800/5 hover:border-stone-800/5 shadow-none hover:shadow-none">
-                    <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg" color="currentColor" class="mr-1.5 h-4 w-4 stroke-2">
-                        <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        </path>
-                    </svg>
-                    Previous
-                </button>
-                <button
-                    class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-stone-800 hover:bg-stone-800/5 hover:border-stone-800/5 shadow-none hover:shadow-none">
-                    1
-                </button>
-                <button
-                    class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md shadow-sm hover:shadow-md bg-stone-800 border-stone-800 text-stone-50 hover:bg-stone-700 hover:border-stone-700">
-                    2
-                </button>
-                <button
-                    class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-stone-800 hover:bg-stone-800/5 hover:border-stone-800/5 shadow-none hover:shadow-none">
-                    3
-                </button>
-                <button
-                    class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-stone-800 hover:bg-stone-800/5 hover:border-stone-800/5 shadow-none hover:shadow-none">
-                    4
-                </button>
-                <button
-                    class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent border-transparent text-stone-800 hover:bg-stone-800/5 hover:border-stone-800/5 shadow-none hover:shadow-none">
-                    5
-                </button>
-                <button
-                    class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed focus:shadow-none text-sm rounded-md py-2 px-4 bg-transparent border-transparent text-stone-800 hover:bg-stone-800/5 hover:border-stone-800/5 shadow-none hover:shadow-none">
-                    Next
-                    <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg" color="currentColor" class="ml-1.5 h-4 w-4 stroke-2">
-                        <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        </path>
-                    </svg>
-                </button>
-            </div>
+        <div class="custom-pagination mt-3 flex items-center gap-2">
+            {{-- ปุ่มย้อนกลับ --}}
+            @if ($recorddata->onFirstPage())
+            <span class="disabled text-gray-400 px-3 py-2 border rounded-md cursor-not-allowed">ย้อนกลับ</span>
+            @else
+            <a href="{{ $recorddata->previousPageUrl() }}"
+                class="px-3 py-2 border rounded-md hover:bg-gray-200">ย้อนกลับ</a>
+            @endif
 
-            <!-- Centered Note -->
-            <p class="text-center mt-4 text-sm text-gray-700">
-                Inspired by
-                <a href="https://www.creative-tim.com/david-ui/docs/html/pagination"
-                    class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-                    David UI
-                </a>
-                Framework
-            </p>
+            {{-- แสดงหมายเลขหน้า --}}
+            @foreach ($recorddata->links()->elements as $element)
+            @if (is_array($element))
+            @foreach ($element as $page => $url)
+            @if ($page == $recorddata->currentPage())
+            <span class="bg-blue-500 text-white px-3 py-2 border rounded-md">{{ $page }}</span>
+            @else
+            <a href="{{ $url }}" class="px-3 py-2 border rounded-md hover:bg-gray-200">{{ $page }}</a>
+            @endif
+            @endforeach
+            @endif
+            @endforeach
+
+            {{-- ปุ่มถัดไป --}}
+            @if ($recorddata->hasMorePages())
+            <a href="{{ $recorddata->nextPageUrl() }}" class="px-3 py-2 border rounded-md hover:bg-gray-200">ถัดไป</a>
+            @else
+            <span class="disabled text-gray-400 px-3 py-2 border rounded-md cursor-not-allowed">ถัดไป</span>
+            @endif
         </div>
+
         <br>
     </div>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let currentPage = 1; // ตั้งค่าหน้าเริ่มต้น
-        const totalPages = 5; // จำนวนหน้าทั้งหมด
-        const buttons = document.querySelectorAll(".pagination-btn");
-        const contentContainer = document.getElementById("content"); // ส่วนที่เปลี่ยนเนื้อหา
-
-        function changePage(newPage) {
-            if (newPage < 1 || newPage > totalPages) return;
-            currentPage = newPage;
-
-            // อัปเดตสไตล์ของปุ่ม
-            buttons.forEach((btn) => {
-                if (!isNaN(btn.innerText)) {
-                    btn.classList.remove("bg-stone-800", "text-stone-50", "shadow-sm");
-                    btn.classList.add("bg-transparent", "text-stone-800");
-                    if (parseInt(btn.innerText) === currentPage) {
-                        btn.classList.add("bg-stone-800", "text-stone-50", "shadow-sm");
-                        btn.classList.remove("bg-transparent", "text-stone-800");
-                    }
-                }
-            });
-
-            // อัปเดตเนื้อหาตามหน้าที่เลือก
-            contentContainer.innerHTML = `<p class="text-lg font-bold">เนื้อหาของหน้า ${currentPage}</p>`;
-        }
-
-        buttons.forEach((btn) => {
-            btn.addEventListener("click", function() {
-                if (btn.innerText === "Previous") {
-                    changePage(currentPage - 1);
-                } else if (btn.innerText === "Next") {
-                    changePage(currentPage + 1);
-                } else if (!isNaN(btn.innerText)) {
-                    changePage(parseInt(btn.innerText));
-                }
-            });
-        });
-
-        changePage(1); // โหลดหน้าแรก
-    });
-    </script>
-
 </div>
-
 @endsection
