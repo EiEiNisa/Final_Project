@@ -388,13 +388,12 @@ form {
                                         id_card: idCard
                                     })
                                 })
-                                .then(response => response
-                                    .json()) // เปลี่ยนที่นี่เพื่อให้ได้ข้อมูลจาก response
+                                .then(response => response.json())
                                 .then(data => {
                                     console.log("Response from server:", data);
-                                    if (data && data
-                                        .success) { // ตรวจสอบว่า data และ data.success มีค่าหรือไม่
-                                        alert('ข้อมูลนี้มีอยู่ในระบบ');
+                                    if (data && data.success) {
+                                        // แสดง Modal แทน alert
+                                        $('#infoModal').modal('show'); // แสดง Modal
 
                                         // ดึงข้อมูลและแสดงในฟอร์ม
                                         if (prefixInput) prefixInput.value = data.data.prefix || '';
@@ -423,8 +422,7 @@ form {
                                                 const inputElement = document
                                                     .getElementById(field.label);
                                                 if (inputElement) {
-                                                    inputElement.value = field.value ||
-                                                        ''; // ใส่ค่าจาก extra_fields ใน input
+                                                    inputElement.value = field.value || '';
                                                 }
                                             });
                                         }
@@ -440,6 +438,26 @@ form {
                 }
             });
             </script>
+
+            <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="infoModalLabel">ข้อมูลในระบบ</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ข้อมูลนี้มีอยู่ในระบบ
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group1">
                 <label for="prefix">คำนำหน้าชื่อ</label>
