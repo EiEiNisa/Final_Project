@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Permissions-Policy" content="accelerometer=(self)">
     <title>Thung Setthi Community</title>
 
     <!-- Bootstrap CSS -->
@@ -14,204 +12,118 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Bootstrap JS (รวม Popper.js ในตัว) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-</head>
+    <style>
+        body {
+            background-color: #7DA7D8;
+            display: flex;
+            margin: 0;
+        }
 
-<style>
-body {
-    background-color: #7DA7D8;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-}
+        .sidebar {
+            width: 220px;
+            background-color: #020364;
+            padding: 15px;
+            position: fixed;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-.navbar {
-    background-color: #020364;
-    color: #fff;
-    padding: 10px;
-}
+        .sidebar .menu {
+            flex-grow: 1;
+        }
 
-.sidebar {
-    width: 200px;
-    background-color: #020364;
-    padding: 15px;
-    position: fixed;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 100;
-}
+        .sidebar img.logo {
+            display: block;
+            margin: 0 auto 20px;
+            width: 120px;
+        }
 
-.sidebar a {
-    color: #fff;
-    display: block;
-    text-decoration: none;
-    padding: 15px;
-    font-size: 20px;
-    margin-bottom: 15px;
-}
+        .sidebar a {
+            color: #ffffff;
+            display: block;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
 
-.sidebar a:hover {
-    background-color: #6D91C9;
-}
+        .sidebar a:hover {
+            background-color: #6D91C9;
+        }
 
-.content {
-    margin-left: 200px;
-    padding: 10px;
-    flex-grow: 1;
-    max-width: 100%;
-    ;
-}
+        .sidebar .account {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #343a40;
+            border-radius: 6px;
+            color: #FEFB18;
+        }
 
-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    background-color: #020364;
-    color: #fff;
-    padding: 20px;
-    width: 100%; 
-    margin-top: auto;
-    margin-left: 0; 
-}
+        .logout-btn {
+            display: block;
+            width: 100%;
+            background-color: #dc3545;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 6px;
+            border: none;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-footer div {
-    flex: 1;
-    min-width: 200px;
-    margin: 10px;
-    font-size: 17px;
-}
-
-footer h5 {
-    margin-bottom: 10px;
-    font-size: 18px;
-}
-
-footer a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    margin-bottom: 10px;
-}
-
-footer p {
-    margin: 5px 0;
-}
-
-.user-dropdown {
-    color: #FEFB18;
-    padding-left: 10px;
-    text-decoration: none;
-}
-
-@media (max-width: 992px) {
-    .sidebar {
-        width: 100%;
-        position: relative;
-        height: auto;
-        text-align: center;
-        padding: 10px 0;
-    }
-
-    .sidebar a {
-        display: inline-block;
-        margin: 5px 10px;
-    }
-
-    .content {
-        margin-left: 0;
-        padding: 5px;
-        max-width: 100%;
-    }
-
-    footer {
-        flex-direction: column;
-        margin-left: 0;
-        text-align: center;
-    }
-}
-</style>
-
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/admin/homepage">ชุมชนทุ่งเศรษฐี</a>
-            @if(session('register'))
-            <div class="dropdown">
-                <button class="btn btn-outline-light dropdown-toggle user-dropdown" type="button" id="userDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <strong>{{ session('register')->username }}</strong>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="dropdown-item">ออกจากระบบ</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-            @endif
-        </div>
-    </nav>
-
     <!-- Sidebar -->
     <div class="sidebar">
-        <img class="logo" src="/logo.png" alt="Logo" width="100">
-        <a href="/admin/homepage">หน้าหลัก</a>
-        <a href="/admin/record">บันทึกข้อมูล</a>
-        <a href="/admin/dashboard">Dashboard</a>
-        <a href="/admin/about">ข้อมูลพื้นฐาน</a>
-        <a href="form">เพิ่มบทความ</a>
-        <a href="/admin/editprofile">แก้ไขโปรไฟล์</a>
-        <a href="/admin/manageuser">จัดการสิทธิ์ผู้ใช้</a>
+        <div class="menu">
+            <img class="logo" src="/logo.png" alt="Logo">
+            <a href="/admin/homepage"><i class="fas fa-home"></i> หน้าหลัก</a>
+            <a href="/admin/form"><i class="fas fa-plus-circle"></i> เพิ่มบทความ</a>
+            <a href="/admin/addslide"><i class="fas fa-images"></i> เพิ่มสไลด์</a>
+            <a href="/admin/about"><i class="fas fa-info-circle"></i> ข้อมูลพื้นฐาน</a>
+            <a href="/admin/addrecord"><i class="fas fa-database"></i> เพิ่มข้อมูลใหม่</a>
+            <a href="/admin/dashboard"><i class="fas fa-chart-bar"></i> แดชบอร์ด</a>
+            <a href="/admin/editprofile"><i class="fas fa-user-edit"></i> แก้ไขโปรไฟล์</a>
+            <a href="/admin/manageuser"><i class="fas fa-user-shield"></i> จัดการสิทธิ์</a>
+        </div>
+
+        <!-- แสดงชื่อผู้ใช้งาน + ปุ่มออกจากระบบ -->
+        <div>
+            <div class="account">
+                <i class="fas fa-user"></i> {{ session('register')->username ?? 'Guest' }}
+            </div>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+                </button>
+            </form>
+        </div>
     </div>
 
-    <!-- Content -->
-    <div class="content">
-        @yield('content')
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div>
-            <h5>ที่อยู่</h5>
-            <p>227/521 หมู่ 6 ถนนประชาสโมสร ตำบลในเมือง<br>อำเภอเมืองขอนแก่น จังหวัดขอนแก่น 40000</p>
-        </div>
-        <div>
-            <h5>ช่องทางการติดต่อ</h5>
-            <a href="https://www.facebook.com/profile.php?id=100089961199904">Facebook : จิตอาสา ชุมชน ทุ่งเศรษฐี</a>
-            <a href="mailto:vlt227.521@gmail.com">Email : vlt227.521@gmail.com</a>
-        </div>
-
-        <div>
-            <h5>หน้าหลัก</h5>
-            <a href="/admin/homepage">ข่าวกิจกรรม</a>
-            <a href="/admin/form">เพิ่มบทความ</a>
-        </div>
-        <div>
-            <h5>Dashboard</h5>
-            <a href="/admin/dashboard">สถิติกราฟข้อมูล</a>
-            <h5>เกี่ยวกับเรา</h5>
-            <a href="/admin/about">ข้อมูลพื้นฐานชุมชนทุ่งเศรษฐี</a>
-        </div>
-
-        <div>
-            <h5>บันทึกข้อมูล</h5>
-            <a href="/admin/record">ข้อมูลสุขภาพ</a>
-            <a href="/admin/addrecord">เพิ่มข้อมูลใหม่</a>
-        </div>
-    </footer>
 </body>
 
 </html>
