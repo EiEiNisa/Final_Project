@@ -23,7 +23,7 @@ class RecorddataController
     $disease = Disease::all();
     
     // เช็กว่ามี Pagination ทำงานถูกต้องหรือไม่
-    dd($recorddata->toArray());
+    //dd($recorddata->toArray());
 
     return view('admin.record', compact('recorddata', 'disease'));
 }
