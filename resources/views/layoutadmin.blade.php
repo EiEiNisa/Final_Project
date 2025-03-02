@@ -18,148 +18,150 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
-        body {
-            background-color: #7DA7D8;
-            display: flex;
-            margin: 0;
-        }
+            body {
+        background-color: #5A7CA6; /* เปลี่ยนสีพื้นหลังใหม่ */
+        display: flex;
+        margin: 0;
+    }
 
-            /* Sidebar */
+    /* Sidebar */
     .sidebar {
-        width: 70px; /* เริ่มต้นแสดงแค่ Icon */
-        background-color: #020364;
-        padding: 10px;
+        width: 60px; /* ปรับให้เล็กลง */
+        background-color: #021C3D; /* เปลี่ยนสี */
+        padding: 8px;
         position: fixed;
         height: 100vh;
         top: 0;
         left: 0;
         display: flex;
         flex-direction: column;
-        transition: width 0.3s ease; /* เพิ่มเอฟเฟกต์ขยาย */
-        overflow: hidden; /* ซ่อน scrollbar */
+        transition: width 0.3s ease;
+        overflow: hidden;
+        align-items: center;
     }
 
-    /* เมื่อเอาเมาส์ไปชี้ที่ Sidebar ให้ขยายออก */
     .sidebar:hover {
-        width: 200px; /* ขยาย Sidebar */
+        width: 180px; /* ขยาย Sidebar */
     }
 
     .sidebar .menu {
         flex-grow: 1;
-        overflow-y: auto; /* ให้เมนูสามารถเลื่อนขึ้นลงได้ */
-        scrollbar-width: none; /* ซ่อน scrollbar (Firefox) */
+        overflow-y: auto;
+        scrollbar-width: none;
     }
 
     .sidebar .menu::-webkit-scrollbar {
-        display: none; /* ซ่อน scrollbar (Chrome, Safari) */
+        display: none;
     }
 
+    .sidebar img.logo {
+        width: 40px; /* ลดขนาดโลโก้ */
+        transition: width 0.3s ease;
+    }
 
-        .sidebar img.logo {
-            display: block;
-            margin: 0 auto 15px;
-            width: 50px; /* ลดขนาดโลโก้ให้พอดี */
-            transition: width 0.3s ease;
-        }
+    .sidebar:hover img.logo {
+        width: 80px; /* ขยายโลโก้ */
+    }
 
-        .sidebar:hover img.logo {
-            width: 100px; /* ขยายโลโก้เมื่อ hover */
-        }
+    /* ปุ่มเมนู */
+    .sidebar a {
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px;
+        font-size: 14px; /* ลดขนาดฟอนต์ */
+        border-radius: 5px;
+        margin-bottom: 5px;
+        text-align: left;
+        transition: background-color 0.3s ease, padding 0.3s ease;
+        white-space: nowrap;
+    }
 
-        /* ปุ่มเมนู */
-        .sidebar a {
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            text-align: left;
-            transition: background-color 0.3s ease, padding 0.3s ease;
-            white-space: nowrap; /* ป้องกันตัวหนังสือขึ้นบรรทัดใหม่ */
-        }
+    .sidebar a i {
+        font-size: 18px; /* ลดขนาดไอคอน */
+        width: 24px;
+        text-align: center;
+        transition: margin-right 0.3s ease;
+    }
 
-        .sidebar a i {
-            font-size: 20px;
-            width: 30px; /* กำหนดขนาดไอคอน */
-            text-align: center;
-            transition: margin-right 0.3s ease;
-        }
+    .sidebar a span {
+        display: none;
+        transition: opacity 0.3s ease;
+    }
 
-        /* ตอน Sidebar ไม่ขยาย ให้ซ่อนข้อความ */
-        .sidebar a span {
-            display: none;
-            transition: opacity 0.3s ease;
-        }
+    .sidebar:hover a span {
+        display: inline;
+        opacity: 1;
+        margin-left: 8px;
+    }
 
-        /* เมื่อ Hover ที่ Sidebar ให้แสดงข้อความ */
-        .sidebar:hover a span {
-            display: inline;
-            opacity: 1;
-            margin-left: 10px;
-        }
+    .sidebar a:hover {
+        background-color: #4671A5;
+    }
 
-        .sidebar a:hover {
-            background-color: #6D91C9;
-        }
+    /* กล่องข้อมูลผู้ใช้และปุ่มออกจากระบบ */
+    .sidebar .account,
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        font-size: 12px; /* ลดขนาดตัวอักษร */
+        padding: 8px;
+        border-radius: 5px;
+        text-align: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
 
-        /* กล่องข้อมูลผู้ใช้ */
-        .sidebar .account {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            margin-top: 15px;
-            padding: 8px;
-            background-color: #343a40;
-            border-radius: 6px;
-            color: #FEFB18;
-            white-space: nowrap;
-        }
+    .sidebar .account {
+        background-color: #2C3E50;
+        color: #FFC107;
+    }
 
-        .sidebar .account i {
-            margin-right: 8px;
-        }
+    .sidebar .account i,
+    .logout-btn i {
+        font-size: 16px; /* ลดขนาดไอคอน */
+        margin-right: 0;
+    }
 
-        .logout-btn {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            background-color: #dc3545;
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 6px;
-            border: none;
-            margin-top: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            white-space: nowrap;
-        }
+    .sidebar .account span,
+    .logout-btn span {
+        display: none;
+        transition: opacity 0.3s ease;
+    }
 
-        .logout-btn i {
-            margin-right: 8px;
-        }
+    .sidebar:hover .account span,
+    .sidebar:hover .logout-btn span {
+        display: inline;
+        opacity: 1;
+        margin-left: 8px;
+    }
 
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
+    .logout-btn {
+        background-color: #C0392B;
+        color: white;
+        cursor: pointer;
+        border: none;
+        margin-top: 10px;
+    }
 
-        /* Content */
-        .content {
-            margin-left: 70px; /* ขยับเนื้อหาไปทางขวา */
-            padding: 20px;
-            flex-grow: 1;
-            width: calc(100% - 70px);
-            transition: margin-left 0.3s ease, width 0.3s ease;
-        }
+    .logout-btn:hover {
+        background-color: #A93226;
+    }
 
-        /* ขยาย Content เมื่อ Sidebar Hover */
-        .sidebar:hover ~ .content {
-            margin-left: 200px;
-            width: calc(100% - 200px);
-        }
+    /* Content */
+    .content {
+        margin-left: 60px;
+        padding: 20px;
+        flex-grow: 1;
+        width: calc(100% - 60px);
+        transition: margin-left 0.3s ease, width 0.3s ease;
+    }
+
+    .sidebar:hover ~ .content {
+        margin-left: 180px;
+        width: calc(100% - 180px);
+    }
     </style>
 </head>
 
