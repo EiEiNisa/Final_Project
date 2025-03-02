@@ -1084,39 +1084,56 @@ form {
                 </div>
             </div>
         </form>
-
         <script>
         document.addEventListener("DOMContentLoaded", function() {
             const checkFormButton = document.getElementById("checkForm");
             const saveModal = new bootstrap.Modal(document.getElementById("saveModal"));
             const confirmSaveButton = document.getElementById("confirmSave");
-            const form = document.querySelector("form");
-            const requiredInputs = form.querySelectorAll("input[required]");
+            const form = document.getElementById("Recorddata");
+            const requiredInputs = form.querySelectorAll(
+                "input[required], textarea[required], select[required]");
+            const checkboxes = document.querySelectorAll('.blood-pressure-zone input[type="checkbox"]');
 
-            // ฟังก์ชันเช็คว่ากรอกครบหรือยัง
             function checkFormValidity() {
                 let isValid = true;
 
+                // ตรวจสอบ input ที่ required
                 requiredInputs.forEach(input => {
                     if (!input.value.trim()) {
                         isValid = false;
-                        input.classList.add("is-invalid"); // ใส่กรอบแดงถ้าไม่กรอก
+                        input.classList.add("is-invalid");
                     } else {
-                        input.classList.remove("is-invalid"); // เอากรอบแดงออกถ้ากรอกแล้ว
+                        input.classList.remove("is-invalid");
                     }
                 });
 
-                checkFormButton.disabled = !isValid; // ปิดปุ่มถ้ากรอกไม่ครบ
+                // ตรวจสอบว่า checkbox ใน blood-pressure-zone มีการเลือกหรือไม่
+                let isCheckboxChecked = false;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        isCheckboxChecked = true;
+                    }
+                });
+
+                // ปิดปุ่มถ้า input ไม่ครบ หรือไม่มี checkbox ถูกเลือก
+                checkFormButton.disabled = !(isValid && isCheckboxChecked);
             }
 
-            // ตรวจสอบทุกครั้งที่พิมพ์ค่าใน input
+            // ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
             requiredInputs.forEach(input => {
                 input.addEventListener("input", checkFormValidity);
+                input.addEventListener("change", checkFormValidity);
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", checkFormValidity);
             });
 
             // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
             checkFormButton.addEventListener("click", function() {
-                saveModal.show();
+                if (!checkFormButton.disabled) {
+                    saveModal.show();
+                }
             });
 
             // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
@@ -1124,19 +1141,7 @@ form {
                 form.submit();
             });
 
-            // รีเซ็ตฟอร์มเมื่อกดยกเลิก
-            document.getElementById("confirmReset").addEventListener("click", function() {
-                form.reset();
-                checkFormValidity(); // เช็คฟอร์มใหม่
-                document.querySelectorAll("input").forEach(input => input.classList.remove(
-                    "is-invalid"));
-                const resetModal = bootstrap.Modal.getInstance(document.getElementById(
-                    "resetModal"));
-                resetModal.hide();
-                setTimeout(() => alert("ข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว"), 0);
-            });
-
-            // เรียกใช้งานครั้งแรกเมื่อโหลดหน้าเว็บ
+            // ตรวจสอบตอนโหลดหน้าเว็บ
             checkFormValidity();
         });
         </script>
