@@ -574,25 +574,46 @@ button.btn-primary:hover {
                 class="px-3 py-2 border rounded-md hover:bg-gray-200">ย้อนกลับ</a>
             @endif
 
-            {{-- แสดงหมายเลขหน้า --}}
-            @foreach ($recorddata->links()->elements as $element)
-            @if (is_array($element))
-            @foreach ($element as $page => $url)
-            @if ($page == $recorddata->currentPage())
-            <span class="bg-blue-500 text-white px-3 py-2 border rounded-md">{{ $page }}</span>
-            @else
-            <a href="{{ $url }}" class="px-3 py-2 border rounded-md hover:bg-gray-200">{{ $page }}</a>
-            @endif
-            @endforeach
-            @endif
-            @endforeach
+            {{-- แสดงหมายเลขหน้าแบบกระชับ --}}
+            @php
+            $totalPages = $recorddata->lastPage();
+            $currentPage = $recorddata->currentPage();
+            $sidePages = 2; // จำนวนหน้าที่แสดงรอบๆ หน้าปัจจุบัน
+            @endphp
 
-            {{-- ปุ่มถัดไป --}}
-            @if ($recorddata->hasMorePages())
-            <a href="{{ $recorddata->nextPageUrl() }}" class="px-3 py-2 border rounded-md hover:bg-gray-200">ถัดไป</a>
-            @else
-            <span class="disabled text-gray-400 px-3 py-2 border rounded-md cursor-not-allowed">ถัดไป</span>
+            {{-- หน้าแรก --}}
+            @if ($currentPage > 1 + $sidePages)
+            <a href="{{ $recorddata->url(1) }}" class="px-3 py-2 border rounded-md hover:bg-gray-200">1</a>
+            @if ($currentPage > 2 + $sidePages)
+            <span class="px-2">...</span>
             @endif
+            @endif
+
+            {{-- แสดงหน้ารอบๆ ปัจจุบัน --}}
+            @for ($page = max(1, $currentPage - $sidePages); $page <= min($totalPages, $currentPage + $sidePages);
+                $page++) @if ($page==$currentPage) <span class="bg-blue-500 text-white px-3 py-2 border rounded-md">
+                {{ $page }}</span>
+                @else
+                <a href="{{ $recorddata->url($page) }}"
+                    class="px-3 py-2 border rounded-md hover:bg-gray-200">{{ $page }}</a>
+                @endif
+                @endfor
+
+                {{-- หน้าสุดท้าย --}}
+                @if ($currentPage < $totalPages - $sidePages) @if ($currentPage < $totalPages - $sidePages - 1) <span
+                    class="px-2">...</span>
+                    @endif
+                    <a href="{{ $recorddata->url($totalPages) }}"
+                        class="px-3 py-2 border rounded-md hover:bg-gray-200">{{ $totalPages }}</a>
+                    @endif
+
+                    {{-- ปุ่มถัดไป --}}
+                    @if ($recorddata->hasMorePages())
+                    <a href="{{ $recorddata->nextPageUrl() }}"
+                        class="px-3 py-2 border rounded-md hover:bg-gray-200">ถัดไป</a>
+                    @else
+                    <span class="disabled text-gray-400 px-3 py-2 border rounded-md cursor-not-allowed">ถัดไป</span>
+                    @endif
         </div>
 
         <br>
