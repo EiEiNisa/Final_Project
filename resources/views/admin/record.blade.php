@@ -620,4 +620,41 @@ button.btn-primary:hover {
         </div>
         <br>
     </div>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let currentPage = 1; // ตั้งค่าหน้าเริ่มต้น
+    const buttons = document.querySelectorAll("button");
+    
+    function updatePagination() {
+      buttons.forEach((btn) => {
+        if (!isNaN(btn.innerText)) {
+          btn.classList.remove("bg-stone-800", "text-stone-50", "shadow-sm");
+          btn.classList.add("bg-transparent", "text-stone-800");
+          if (parseInt(btn.innerText) === currentPage) {
+            btn.classList.add("bg-stone-800", "text-stone-50", "shadow-sm");
+            btn.classList.remove("bg-transparent", "text-stone-800");
+          }
+        }
+      });
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", function () {
+        if (btn.innerText === "Previous" && currentPage > 1) {
+          currentPage--;
+        } else if (btn.innerText === "Next" && currentPage < 5) {
+          currentPage++;
+        } else if (!isNaN(btn.innerText)) {
+          currentPage = parseInt(btn.innerText);
+        }
+        updatePagination();
+      });
+    });
+
+    updatePagination(); // เรียกใช้งานตอนโหลดหน้า
+  });
+</script>
+
+                    </div>
+
     @endsection
