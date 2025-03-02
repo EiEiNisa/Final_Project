@@ -23,8 +23,8 @@ class ResetPasswordMail extends Mailable
         // ลิงก์ไปยังหน้า reset-password พร้อม Token
         $resetUrl = url('reset-password?token=' . $this->token . '&email=' . urlencode($this->user->email));
 
-        dd($resetUrl);
-        
+        //dd($resetUrl);
+
         return $this->subject('การรีเซ็ตรหัสผ่าน')
                     ->view('resetpassword_link') // ใช้ View ที่สร้างเอง
                     ->with([
