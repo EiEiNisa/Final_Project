@@ -125,7 +125,7 @@
     }
 
     .sidebar .account {
-        background-color: #4A90E2;
+        background-color: #fff;
         color: #FFD700;
     }
 
@@ -167,7 +167,7 @@
         flex-grow: 1;
         width: calc(100% - 80px);
         transition: margin-left 0.3s ease, width 0.3s ease;
-        background-color: #F5F5F5; /* เปลี่ยนสีพื้นหลัง Content */
+        background-color: #7DA7D8; /* เปลี่ยนสีพื้นหลัง Content */
     }
 
     .sidebar:hover ~ .content {
