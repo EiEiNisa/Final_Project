@@ -230,7 +230,7 @@ tr:hover {
         <table>
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>ลำดับที่</th>
                     <th>อีเมล</th>
                     <th>ชื่อ</th>
                     <th>นามสกุล</th>

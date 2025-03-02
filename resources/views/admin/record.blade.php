@@ -126,7 +126,8 @@ button.btn-primary:hover {
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #5a5d61; /* เทาเข้ม */
+    background-color: #5a5d61;
+    /* เทาเข้ม */
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -135,23 +136,27 @@ button.btn-primary:hover {
 }
 
 .custom-pagination a:hover {
-    background-color: #4d5054; /* เทาเข้มขึ้นเมื่อ hover */
+    background-color: #4d5054;
+    /* เทาเข้มขึ้นเมื่อ hover */
     transform: translateY(-2px);
 }
 
 .custom-pagination .active {
-    background-color: #343a40; /* เทาดำ */
+    background-color: #343a40;
+    /* เทาดำ */
     font-weight: bold;
 }
 
 .custom-pagination .disabled {
-    background-color: #bcbec2; /* เทาหม่นอ่อน */
+    background-color: #bcbec2;
+    /* เทาหม่นอ่อน */
     color: #6c757d;
     cursor: not-allowed;
 }
 
 .custom-pagination .disabled:hover {
-    background-color: #bcbec2; /* ไม่เปลี่ยนสีเมื่อ hover */
+    background-color: #bcbec2;
+    /* ไม่เปลี่ยนสีเมื่อ hover */
 }
 
 .modal-header {
@@ -468,7 +473,7 @@ button.btn-primary:hover {
             <tbody>
                 @foreach($recorddata as $key => $data)
                 <tr>
-                    <td><strong>{{ $recorddata->total() - (($recorddata->currentPage() - 1) * $recorddata->perPage()) - $loop->iteration + 1 }}</strong>
+                    <td><strong>{{ ($recorddata->total() - $loop->index) }}</strong></td>
                     </td>
                     <td><strong>{{ $data['id_card'] }}</strong></td>
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
