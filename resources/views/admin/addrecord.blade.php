@@ -1094,16 +1094,18 @@ form {
             const requiredInputs = form.querySelectorAll(
                 "input[required], textarea[required], select[required]");
 
-            // กลุ่ม checkbox ที่ต้องตรวจสอบแยกกัน
-            const checkboxesZone1 = document.querySelectorAll('.blood-pressure-zone1 input[type="checkbox"]');
-            const checkboxesZone2 = document.querySelectorAll('.blood-pressure-zone2 input[type="checkbox"]');
-            const checkboxesLifestyle = document.querySelectorAll('.lifestyle input[type="checkbox"]');
-            const checkboxesElderly = document.querySelectorAll('.elderlyinformation input[type="checkbox"]');
+            // ตรวจสอบ checkbox กลุ่มต่างๆ
+            const checkboxesZone1 = document.querySelectorAll('div.blood-pressure-zone input[type="checkbox"]');
+            const checkboxesZone2 = document.querySelectorAll(
+            'div.blood-pressure-zone2 input[type="checkbox"]');
+            const checkboxesLifestyle = document.querySelectorAll('div.behavior input[type="checkbox"]');
+            const checkboxesElderly = document.querySelectorAll(
+                'div.elderly_information input[type="checkbox"]');
 
             function checkFormValidity() {
                 let isValid = true;
 
-                // ตรวจสอบ input ที่ required
+                // ตรวจสอบ input ที่เป็น required
                 requiredInputs.forEach(input => {
                     if (!input.value.trim()) {
                         isValid = false;
@@ -1113,7 +1115,7 @@ form {
                     }
                 });
 
-                // ฟังก์ชันตรวจสอบว่า checkbox กลุ่มนั้นๆ มีการเลือกอย่างน้อย 1 ค่า
+                // ฟังก์ชันตรวจสอบว่า checkbox ในแต่ละกลุ่มถูกเลือกหรือไม่
                 function isCheckboxChecked(checkboxGroup) {
                     return Array.from(checkboxGroup).some(checkbox => checkbox.checked);
                 }
@@ -1123,11 +1125,11 @@ form {
                 let isLifestyleChecked = isCheckboxChecked(checkboxesLifestyle);
                 let isElderlyChecked = isCheckboxChecked(checkboxesElderly);
 
-                // ตรวจสอบว่าทุกกลุ่มมีอย่างน้อย 1 ค่า
+                // ต้องมี checkbox อย่างน้อย 1 ตัวในทุกกลุ่มที่กำหนด
                 let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
                 isElderlyChecked;
 
-                // ปิดปุ่มถ้า input ไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
+                // ปิดปุ่มถ้ากรอกไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
                 checkFormButton.disabled = !(isValid && isCheckboxValid);
             }
 
