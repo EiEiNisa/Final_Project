@@ -19,7 +19,7 @@
 
     <style>
     body {
-        background-color: #F5F5F5; /* เปลี่ยนสีพื้นหลัง Content เป็นขาวสะอาด */
+        background-color: #7DA7D8; 
         display: flex;
         margin: 0;
     }
@@ -27,7 +27,7 @@
     /* Sidebar */
     .sidebar {
         width: 60px; /* ปรับให้แคบลง */
-        background-color: #4A90E2; /* เปลี่ยนเป็นสีฟ้าสว่าง */
+        background-color: #020364; /* เปลี่ยนเป็นสีฟ้าสว่าง */
         padding: 10px;
         position: fixed;
         height: 100vh;
@@ -42,7 +42,7 @@
 
     .sidebar:hover {
         width: 180px; /* ขยาย Sidebar */
-        background-color: #2E78C2; /* เปลี่ยนสีเมื่อ Hover */
+        background-color:#020364; /* เปลี่ยนสีเมื่อ Hover */
     }
 
     .sidebar .menu {
@@ -181,6 +181,7 @@
     <div class="sidebar">
         <div class="menu">
             <img class="logo" src="/logo.png" alt="Logo">
+            <br>
             <a href="/admin/homepage"><i class="fas fa-home"></i> <span>หน้าหลัก</span></a>
             <a href="/admin/form"><i class="fas fa-plus-circle"></i> <span>เพิ่มบทความ</span></a>
             <a href="/admin/addslide"><i class="fas fa-images"></i> <span>เพิ่มสไลด์</span></a>
