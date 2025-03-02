@@ -19,15 +19,15 @@
 
     <style>
     body {
-        background-color: #7DA7D8; 
+        background-color: #7DA7D8;
         display: flex;
         margin: 0;
     }
 
     /* Sidebar */
     .sidebar {
-        width: 60px; /* ปรับให้แคบลง */
-        background-color: #020364; /* เปลี่ยนเป็นสีฟ้าสว่าง */
+        width: 80px; /* ขยายความกว้างเริ่มต้น */
+        background-color: #2E6EB5; /* สีใหม่ที่สว่างขึ้น */
         padding: 10px;
         position: fixed;
         height: 100vh;
@@ -41,8 +41,8 @@
     }
 
     .sidebar:hover {
-        width: 180px; /* ขยาย Sidebar */
-        background-color:#020364; /* เปลี่ยนสีเมื่อ Hover */
+        width: 200px; /* ขยาย Sidebar */
+        background-color: #3C82D3; /* สีสว่างขึ้นเมื่อ Hover */
     }
 
     .sidebar .menu {
@@ -58,18 +58,20 @@
     /* โลโก้ให้อยู่ตรงกลาง */
     .sidebar .logo-container {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
         margin-bottom: 15px;
     }
 
     .sidebar img.logo {
-        width: 45px; /* ลดขนาดโลโก้ */
+        width: 50px;
         transition: width 0.3s ease;
+        margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
     }
 
     .sidebar:hover img.logo {
-        width: 85px; /* ขยายโลโก้ */
+        width: 90px;
     }
 
     /* ปุ่มเมนู */
@@ -78,18 +80,18 @@
         display: flex;
         align-items: center;
         text-decoration: none;
-        padding: 8px;
-        font-size: 14px; /* ลดขนาดฟอนต์ */
+        padding: 10px;
+        font-size: 15px;
         border-radius: 5px;
-        margin-bottom: 5px;
+        margin-bottom: 6px;
         text-align: left;
         transition: background-color 0.3s ease, padding 0.3s ease;
         white-space: nowrap;
     }
 
     .sidebar a i {
-        font-size: 18px; /* ลดขนาดไอคอน */
-        width: 24px;
+        font-size: 20px;
+        width: 28px;
         text-align: center;
         transition: margin-right 0.3s ease;
     }
@@ -102,11 +104,11 @@
     .sidebar:hover a span {
         display: inline;
         opacity: 1;
-        margin-left: 8px;
+        margin-left: 10px;
     }
 
     .sidebar a:hover {
-        background-color: #2E78C2;
+        background-color: #468FC8;
     }
 
     /* กล่องข้อมูลผู้ใช้และปุ่มออกจากระบบ */
@@ -114,7 +116,7 @@
     .logout-btn {
         display: flex;
         align-items: center;
-        font-size: 12px; /* ลดขนาดตัวอักษร */
+        font-size: 14px;
         padding: 8px;
         border-radius: 5px;
         text-align: center;
@@ -123,13 +125,13 @@
     }
 
     .sidebar .account {
-        background-color: #3B5998;
-        color: #FFD700; /* สีทองอ่อน */
+        background-color: #4A90E2;
+        color: #FFD700;
     }
 
     .sidebar .account i,
     .logout-btn i {
-        font-size: 16px; /* ลดขนาดไอคอน */
+        font-size: 18px;
         margin-right: 0;
     }
 
@@ -143,7 +145,7 @@
     .sidebar:hover .logout-btn span {
         display: inline;
         opacity: 1;
-        margin-left: 8px;
+        margin-left: 10px;
     }
 
     .logout-btn {
@@ -160,16 +162,58 @@
 
     /* Content */
     .content {
-        margin-left: 60px;
+        margin-left: 80px;
         padding: 20px;
         flex-grow: 1;
-        width: calc(100% - 60px);
+        width: calc(100% - 80px);
         transition: margin-left 0.3s ease, width 0.3s ease;
+        background-color: #F5F5F5; /* เปลี่ยนสีพื้นหลัง Content */
     }
 
     .sidebar:hover ~ .content {
-        margin-left: 180px;
-        width: calc(100% - 180px);
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 60px;
+        }
+
+        .sidebar:hover {
+            width: 160px;
+        }
+
+        .content {
+            margin-left: 60px;
+            width: calc(100% - 60px);
+        }
+
+        .sidebar:hover ~ .content {
+            margin-left: 160px;
+            width: calc(100% - 160px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sidebar {
+            width: 50px;
+        }
+
+        .sidebar:hover {
+            width: 140px;
+        }
+
+        .content {
+            margin-left: 50px;
+            width: calc(100% - 50px);
+        }
+
+        .sidebar:hover ~ .content {
+            margin-left: 140px;
+            width: calc(100% - 140px);
+        }
     }
 
     </style>
@@ -181,7 +225,6 @@
     <div class="sidebar">
         <div class="menu">
             <img class="logo" src="/logo.png" alt="Logo">
-            <br>
             <a href="/admin/homepage"><i class="fas fa-home"></i> <span>หน้าหลัก</span></a>
             <a href="/admin/form"><i class="fas fa-plus-circle"></i> <span>เพิ่มบทความ</span></a>
             <a href="/admin/addslide"><i class="fas fa-images"></i> <span>เพิ่มสไลด์</span></a>
