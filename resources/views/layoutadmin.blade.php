@@ -124,10 +124,11 @@
         white-space: nowrap;
     }
 
-    .sidebar .account {
-        background-color: #fff;
-        color: #FFD700;
-    }
+    .sidebar .account { 
+    background-color: #4CAF50; /* เขียวสดใส */
+    color: #FFFFFF; /* ตัวหนังสือสีขาว */
+}
+
 
     .sidebar .account i,
     .logout-btn i {
