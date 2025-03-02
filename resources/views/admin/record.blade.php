@@ -2,6 +2,10 @@
 
 @section('content')
 <style>
+body {
+    overflow: hidden;
+}
+
 .title {
     color: #020364;
     padding: 20px;
@@ -185,6 +189,10 @@ button.btn-primary:hover {
 }
 
 @media (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+
     .title {
         font-size: 12px;
         flex-direction: column;
@@ -473,7 +481,7 @@ button.btn-primary:hover {
             <tbody>
                 @foreach($recorddata as $key => $data)
                 <tr>
-                <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>
+                    <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>
                     </td>
                     <td><strong>{{ $data['id_card'] }}</strong></td>
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
