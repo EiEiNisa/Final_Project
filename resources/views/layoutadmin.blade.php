@@ -25,16 +25,16 @@
         }
 
         .sidebar {
-            width: 220px;
+            width: 180px; /* ลดขนาด Sidebar */
             background-color: #020364;
-            padding: 15px;
+            padding: 10px;
             position: fixed;
             height: 100vh;
             top: 0;
             left: 0;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* ทำให้ Sidebar เลื่อนได้ */
+            overflow-y: auto; /* ให้ Sidebar เลื่อนได้ */
         }
 
         .sidebar .menu {
@@ -43,8 +43,8 @@
 
         .sidebar img.logo {
             display: block;
-            margin: 0 auto 20px;
-            width: 120px;
+            margin: 0 auto 15px;
+            width: 100px;
         }
 
         .sidebar a {
@@ -52,16 +52,16 @@
             display: flex;
             align-items: center; /* จัดให้ไอคอนกับข้อความอยู่ในแนวเดียวกัน */
             text-decoration: none;
-            padding: 12px;
-            font-size: 18px;
+            padding: 10px;
+            font-size: 16px; /* ลดขนาดตัวอักษร */
             border-radius: 6px;
-            margin-bottom: 10px;
-            text-align: left; /* ตัวหนังสือชิดซ้าย */
+            margin-bottom: 8px;
+            text-align: left;
             transition: background-color 0.3s ease;
         }
 
         .sidebar a i {
-            margin-right: 10px; /* เพิ่มระยะห่างระหว่างไอคอนกับข้อความ */
+            margin-right: 8px;
         }
 
         .sidebar a:hover {
@@ -71,41 +71,47 @@
         .sidebar .account {
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* ชิดซ้าย */
-            font-size: 16px;
-            margin-top: 20px;
-            padding: 10px;
+            font-size: 14px;
+            margin-top: 15px;
+            padding: 8px;
             background-color: #343a40;
             border-radius: 6px;
             color: #FEFB18;
         }
 
         .sidebar .account i {
-            margin-right: 10px;
+            margin-right: 8px;
         }
 
         .logout-btn {
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* ชิดซ้าย */
             width: 100%;
             background-color: #dc3545;
             color: white;
-            padding: 12px;
-            font-size: 18px;
+            padding: 10px;
+            font-size: 16px;
             border-radius: 6px;
             border: none;
-            margin-top: 15px;
+            margin-top: 10px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         .logout-btn i {
-            margin-right: 10px;
+            margin-right: 8px;
         }
 
         .logout-btn:hover {
             background-color: #c82333;
+        }
+
+        /* Content Area */
+        .content {
+            margin-left: 180px; /* ดัน Content ออกไปทางขวา */
+            padding: 20px;
+            flex-grow: 1;
+            width: calc(100% - 180px); /* ทำให้ Content ไม่โดน Sidebar บัง */
         }
     </style>
 </head>
@@ -141,10 +147,10 @@
     </div>
 
     <!-- Content -->
-    <div>
+    <div class="content">
         @yield('content')
     </div>
-    
+
 </body>
 
 </html>
