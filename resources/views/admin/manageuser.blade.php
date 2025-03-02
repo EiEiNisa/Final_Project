@@ -102,38 +102,45 @@ tr:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
-    padding: 10px;
+    gap: 12px;
+    padding: 12px;
     font-size: 16px;
 }
 
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #28a745;
-    /* ปรับสีพื้นหลังเป็นสีเขียว */
-    color: white;
+    background-color: #5a5d61;
+    /* เทาเข้ม */
+    color: #ffffff;
     border: none;
     border-radius: 6px;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .custom-pagination a:hover {
-    background-color: #218838;
-    /* สีเขียวเข้มเมื่อ hover */
+    background-color: #4d5054;
+    /* เทาเข้มขึ้นเมื่อ hover */
+    transform: translateY(-2px);
+}
+
+.custom-pagination .active {
+    background-color: #343a40;
+    /* เทาดำ */
+    font-weight: bold;
 }
 
 .custom-pagination .disabled {
-    background-color: #f8d7da;
-    /* สีจางเมื่อปุ่ม disabled */
-    color: #721c24;
-    /* สีตัวอักษรที่ชัดเจน */
+    background-color: #bcbec2;
+    /* เทาหม่นอ่อน */
+    color: #6c757d;
     cursor: not-allowed;
 }
 
 .custom-pagination .disabled:hover {
-    background-color: #f8d7da;
+    background-color: #bcbec2;
+    /* ไม่เปลี่ยนสีเมื่อ hover */
 }
 
 .btn-cancel {
@@ -326,22 +333,56 @@ tr:hover {
             </script>
         </table>
 
-        <div class="custom-pagination mt-3">
-            @if ($users->onFirstPage())
-            <span class="disabled">ย้อนกลับ</span>
+        <div class="custom-pagination mt-3 flex items-center gap-2">
+            {{-- ปุ่มย้อนกลับ --}}
+            @if ($recorddata->onFirstPage())
+            <span class="disabled text-gray-400 px-3 py-2 border rounded-md cursor-not-allowed">ย้อนกลับ</span>
             @else
-            <a href="{{ $users->previousPageUrl() }}">ย้อนกลับ</a>
+            <a href="{{ $recorddata->previousPageUrl() }}"
+                class="px-3 py-2 border rounded-md hover:bg-gray-200">ย้อนกลับ</a>
             @endif
 
-            <span>ทั้งหมด {{ $users->total() }} รายการ</span>
+            {{-- แสดงหมายเลขหน้าแบบกระชับ --}}
+            @php
+            $totalPages = $recorddata->lastPage();
+            $currentPage = $recorddata->currentPage();
+            $sidePages = 2; // จำนวนหน้าที่แสดงรอบๆ หน้าปัจจุบัน
+            @endphp
 
-            @if ($users->hasMorePages())
-            <a href="{{ $users->nextPageUrl() }}">ถัดไป</a>
-            @else
-            <span class="disabled">ถัดไป</span>
+            {{-- หน้าแรก --}}
+            @if ($currentPage > 1 + $sidePages)
+            <a href="{{ $recorddata->url(1) }}" class="px-3 py-2 border rounded-md hover:bg-gray-200">1</a>
+            @if ($currentPage > 2 + $sidePages)
+            <span class="px-2">...</span>
             @endif
+            @endif
+
+            {{-- แสดงหน้ารอบๆ ปัจจุบัน --}}
+            @for ($page = max(1, $currentPage - $sidePages); $page <= min($totalPages, $currentPage + $sidePages);
+                $page++) @if ($page==$currentPage) <span class="bg-blue-500 text-white px-3 py-2 border rounded-md">
+                {{ $page }}</span>
+                @else
+                <a href="{{ $recorddata->url($page) }}"
+                    class="px-3 py-2 border rounded-md hover:bg-gray-200">{{ $page }}</a>
+                @endif
+                @endfor
+
+                {{-- หน้าสุดท้าย --}}
+                @if ($currentPage < $totalPages - $sidePages) @if ($currentPage < $totalPages - $sidePages - 1) <span
+                    class="px-2">...</span>
+                    @endif
+                    <a href="{{ $recorddata->url($totalPages) }}"
+                        class="px-3 py-2 border rounded-md hover:bg-gray-200">{{ $totalPages }}</a>
+                    @endif
+
+                    {{-- ปุ่มถัดไป --}}
+                    @if ($recorddata->hasMorePages())
+                    <a href="{{ $recorddata->nextPageUrl() }}"
+                        class="px-3 py-2 border rounded-md hover:bg-gray-200">ถัดไป</a>
+                    @else
+                    <span class="disabled text-gray-400 px-3 py-2 border rounded-md cursor-not-allowed">ถัดไป</span>
+                    @endif
         </div>
-    </div>
 </div>
 <br>
 @endsection
