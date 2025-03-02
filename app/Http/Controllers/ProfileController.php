@@ -21,8 +21,10 @@ class ProfileController extends Controller
         //dd(view('admin.editprofile')); 
         return view('admin.editprofile', compact('user'));
     } else {
-        //dd(view('user.editprofile')); 
-        return view('User.editprofile', compact('user'));
+        if (!view()->exists('User.editprofile')) {
+            abort(404, "View User.editprofile not found.");
+        }
+        return view('User.editprofile', compact('user'));        
     }
 }
 
