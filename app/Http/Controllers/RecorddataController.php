@@ -19,7 +19,7 @@ class RecorddataController
 {
     public function index()
     {
-        $recorddata = Recorddata::orderBy('id', 'desc')->paginate(20);
+        $recorddata = Recorddata::orderBy('id', 'desc')->paginate(10);
         $disease = Disease::all();
         return view('admin.record', compact('recorddata', 'disease'));
     }
