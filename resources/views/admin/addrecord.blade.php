@@ -108,6 +108,23 @@ form {
     margin: 10px;
 }
 
+.blood-pressure-zone2 {
+    background-color: #f0f0f0;
+    color: #020364;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.blood-pressure-zone2 label {
+    font-size: 14px;
+}
+
+.blood-pressure-zone2 {
+    margin: 10px;
+}
+
 .section-title {
     color: #020364;
     padding-bottom: 10px;
@@ -734,7 +751,7 @@ form {
             </div>
 
             <!-- Blood Pressure Zone 2 -->
-            <div class="blood-pressure-zone">
+            <div class="blood-pressure-zone2">
                 <h4>Blood Pressure Zone</h4>
                 <div class="circle-container">
                     <div>
@@ -1077,7 +1094,7 @@ form {
             const requiredInputs = form.querySelectorAll(
                 "input[required], textarea[required], select[required]");
 
-            // ✅ ใช้คลาสที่แยกกันชัดเจนสำหรับ Blood Pressure Zone 1 และ 2
+            // กลุ่ม checkbox ที่ต้องตรวจสอบแยกกัน
             const checkboxesZone1 = document.querySelectorAll('.blood-pressure-zone1 input[type="checkbox"]');
             const checkboxesZone2 = document.querySelectorAll('.blood-pressure-zone2 input[type="checkbox"]');
             const checkboxesLifestyle = document.querySelectorAll('.lifestyle input[type="checkbox"]');
@@ -1086,7 +1103,7 @@ form {
             function checkFormValidity() {
                 let isValid = true;
 
-                // ✅ ตรวจสอบ input ที่เป็น required
+                // ตรวจสอบ input ที่ required
                 requiredInputs.forEach(input => {
                     if (!input.value.trim()) {
                         isValid = false;
@@ -1096,7 +1113,7 @@ form {
                     }
                 });
 
-                // ✅ ฟังก์ชันตรวจสอบว่า checkbox ในกลุ่มนั้นๆ ถูกเลือกหรือไม่
+                // ฟังก์ชันตรวจสอบว่า checkbox กลุ่มนั้นๆ มีการเลือกอย่างน้อย 1 ค่า
                 function isCheckboxChecked(checkboxGroup) {
                     return Array.from(checkboxGroup).some(checkbox => checkbox.checked);
                 }
@@ -1106,39 +1123,38 @@ form {
                 let isLifestyleChecked = isCheckboxChecked(checkboxesLifestyle);
                 let isElderlyChecked = isCheckboxChecked(checkboxesElderly);
 
-                // ✅ ต้องเลือก checkbox อย่างน้อย 1 ตัวในแต่ละกลุ่ม
+                // ตรวจสอบว่าทุกกลุ่มมีอย่างน้อย 1 ค่า
                 let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
                 isElderlyChecked;
 
-                // ✅ ปิดปุ่มถ้ากรอกไม่ครบ หรือ checkbox ไม่ครบ
+                // ปิดปุ่มถ้า input ไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
                 checkFormButton.disabled = !(isValid && isCheckboxValid);
             }
 
-            // ✅ ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
+            // ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
             requiredInputs.forEach(input => {
                 input.addEventListener("input", checkFormValidity);
                 input.addEventListener("change", checkFormValidity);
             });
 
-            // ✅ ตรวจสอบเมื่อมีการคลิก checkbox
             [...checkboxesZone1, ...checkboxesZone2, ...checkboxesLifestyle, ...checkboxesElderly].forEach(
                 checkbox => {
                     checkbox.addEventListener("change", checkFormValidity);
                 });
 
-            // ✅ เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
+            // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
             checkFormButton.addEventListener("click", function() {
                 if (!checkFormButton.disabled) {
                     saveModal.show();
                 }
             });
 
-            // ✅ เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
+            // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
             confirmSaveButton.addEventListener("click", function() {
                 form.submit();
             });
 
-            // ✅ ตรวจสอบตอนโหลดหน้าเว็บ
+            // ตรวจสอบตอนโหลดหน้าเว็บ
             checkFormValidity();
         });
         </script>
