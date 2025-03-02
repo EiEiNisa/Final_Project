@@ -476,7 +476,8 @@ button.btn-primary:hover {
                     <td><strong>{{ $data['id_card'] }}</strong></td>
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
                     <td><strong>{{ $data['housenumber'] }}</strong></td>
-                    <td><strong>{{ Carbon::parse($data['birthdate'])->format('d/m/Y') }}</strong></td>
+                    <td><strong>{{ Carbon::parse($data['birthdate'])->translatedFormat('d F') }} {{ Carbon::parse($data['birthdate'])->year + 543 }}
+                    </strong></td>
                     <td><strong>{{ $data['age'] }}</strong></td>
                     <td><strong>{{ $data['phone'] }}</strong></td>
                     <td><strong>
