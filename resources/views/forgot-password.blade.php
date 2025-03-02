@@ -122,6 +122,27 @@
         font-size: 12px;
     }
 }
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid #fff;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 </style>
 
 @if (session('status'))
@@ -143,13 +164,31 @@
 </div>
 
 <div class="box">
-    <form action="{{ route('password.email') }}" method="POST">
+    <form id="resetForm" action="{{ route('password.email') }}" method="POST">
         @csrf
         <label for="email" style="margin-bottom: 5px; text-align: left;">อีเมล</label>
         <input type="text" class="form-control" id="email" name="email" placeholder="อีเมล" required>
         <br>
-        <button type="submit">ส่งลิงค์รีเซ็ตรหัสผ่าน</button>
+        <button type="submit" id="submitBtn">
+            <span id="btnText">ส่งลิงค์รีเซ็ตรหัสผ่าน</span>
+            <span id="btnSpinner" class="spinner" style="display: none;"></span>
+        </button>
     </form>
 </div>
+
+<script>
+document.getElementById("resetForm").addEventListener("submit", function() {
+    let btn = document.getElementById("submitBtn");
+    let btnText = document.getElementById("btnText");
+    let btnSpinner = document.getElementById("btnSpinner");
+
+    // เปลี่ยนข้อความเป็น "กำลังส่ง..."
+    btnText.textContent = "กำลังส่ง...";
+    btnSpinner.style.display = "inline-block";
+
+    // ปิดการใช้งานปุ่มเพื่อป้องกันการกดซ้ำ
+    btn.disabled = true;
+});
+</script>
 
 @endsection
