@@ -621,40 +621,48 @@ button.btn-primary:hover {
         <br>
     </div>
     <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    let currentPage = 1; // ตั้งค่าหน้าเริ่มต้น
-    const buttons = document.querySelectorAll("button");
-    
-    function updatePagination() {
-      buttons.forEach((btn) => {
-        if (!isNaN(btn.innerText)) {
-          btn.classList.remove("bg-stone-800", "text-stone-50", "shadow-sm");
-          btn.classList.add("bg-transparent", "text-stone-800");
-          if (parseInt(btn.innerText) === currentPage) {
-            btn.classList.add("bg-stone-800", "text-stone-50", "shadow-sm");
-            btn.classList.remove("bg-transparent", "text-stone-800");
-          }
-        }
-      });
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        let currentPage = 1; // ตั้งค่าหน้าเริ่มต้น
+        const totalPages = 5; // จำนวนหน้าทั้งหมด
+        const buttons = document.querySelectorAll(".pagination-btn");
+        const contentContainer = document.getElementById("content"); // ส่วนที่เปลี่ยนเนื้อหา
 
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", function () {
-        if (btn.innerText === "Previous" && currentPage > 1) {
-          currentPage--;
-        } else if (btn.innerText === "Next" && currentPage < 5) {
-          currentPage++;
-        } else if (!isNaN(btn.innerText)) {
-          currentPage = parseInt(btn.innerText);
+        function changePage(newPage) {
+            if (newPage < 1 || newPage > totalPages) return;
+            currentPage = newPage;
+
+            // อัปเดตสไตล์ของปุ่ม
+            buttons.forEach((btn) => {
+                if (!isNaN(btn.innerText)) {
+                    btn.classList.remove("bg-stone-800", "text-stone-50", "shadow-sm");
+                    btn.classList.add("bg-transparent", "text-stone-800");
+                    if (parseInt(btn.innerText) === currentPage) {
+                        btn.classList.add("bg-stone-800", "text-stone-50", "shadow-sm");
+                        btn.classList.remove("bg-transparent", "text-stone-800");
+                    }
+                }
+            });
+
+            // อัปเดตเนื้อหาตามหน้าที่เลือก
+            contentContainer.innerHTML = `<p class="text-lg font-bold">เนื้อหาของหน้า ${currentPage}</p>`;
         }
-        updatePagination();
-      });
+
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", function() {
+                if (btn.innerText === "Previous") {
+                    changePage(currentPage - 1);
+                } else if (btn.innerText === "Next") {
+                    changePage(currentPage + 1);
+                } else if (!isNaN(btn.innerText)) {
+                    changePage(parseInt(btn.innerText));
+                }
+            });
+        });
+
+        changePage(1); // โหลดหน้าแรก
     });
+    </script>
 
-    updatePagination(); // เรียกใช้งานตอนโหลดหน้า
-  });
-</script>
+</div>
 
-                    </div>
-
-    @endsection
+@endsection
