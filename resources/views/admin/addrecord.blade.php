@@ -1016,7 +1016,6 @@ form {
                 </div>
             </div>
 
-
             <div class="save">
                 <!-- ปุ่มบันทึก -->
                 <button type="button" class="btn btn-success" id="checkForm" disabled>บันทึก</button>
@@ -1077,7 +1076,12 @@ form {
             const form = document.getElementById("Recorddata");
             const requiredInputs = form.querySelectorAll(
                 "input[required], textarea[required], select[required]");
-            const checkboxes = document.querySelectorAll('.blood-pressure-zone input[type="checkbox"]');
+
+            // กลุ่ม checkbox ที่ต้องตรวจสอบแยกกัน
+            const checkboxesZone1 = document.querySelectorAll('.blood-pressure-zone1 input[type="checkbox"]');
+            const checkboxesZone2 = document.querySelectorAll('.blood-pressure-zone2 input[type="checkbox"]');
+            const checkboxesLifestyle = document.querySelectorAll('.lifestyle input[type="checkbox"]');
+            const checkboxesElderly = document.querySelectorAll('.elderlyinformation input[type="checkbox"]');
 
             function checkFormValidity() {
                 let isValid = true;
@@ -1092,16 +1096,22 @@ form {
                     }
                 });
 
-                // ตรวจสอบว่า checkbox ใน blood-pressure-zone มีการเลือกหรือไม่
-                let isCheckboxChecked = false;
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        isCheckboxChecked = true;
-                    }
-                });
+                // ฟังก์ชันตรวจสอบว่า checkbox กลุ่มนั้นๆ มีการเลือกอย่างน้อย 1 ค่า
+                function isCheckboxChecked(checkboxGroup) {
+                    return Array.from(checkboxGroup).some(checkbox => checkbox.checked);
+                }
 
-                // ปิดปุ่มถ้า input ไม่ครบ หรือไม่มี checkbox ถูกเลือก
-                checkFormButton.disabled = !(isValid && isCheckboxChecked);
+                let isZone1Checked = isCheckboxChecked(checkboxesZone1);
+                let isZone2Checked = isCheckboxChecked(checkboxesZone2);
+                let isLifestyleChecked = isCheckboxChecked(checkboxesLifestyle);
+                let isElderlyChecked = isCheckboxChecked(checkboxesElderly);
+
+                // ตรวจสอบว่าทุกกลุ่มมีอย่างน้อย 1 ค่า
+                let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
+                isElderlyChecked;
+
+                // ปิดปุ่มถ้า input ไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
+                checkFormButton.disabled = !(isValid && isCheckboxValid);
             }
 
             // ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
@@ -1110,9 +1120,10 @@ form {
                 input.addEventListener("change", checkFormValidity);
             });
 
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", checkFormValidity);
-            });
+            [...checkboxesZone1, ...checkboxesZone2, ...checkboxesLifestyle, ...checkboxesElderly].forEach(
+                checkbox => {
+                    checkbox.addEventListener("change", checkFormValidity);
+                });
 
             // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
             checkFormButton.addEventListener("click", function() {
