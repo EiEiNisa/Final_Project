@@ -4,210 +4,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Thung Setthi Community</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS (และ Popper.js สำหรับบางฟังก์ชัน) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
 
-<body>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
     body {
         background-color: #7DA7D8;
-        font-family: 'Arial', sans-serif;
-        color: white;
-        /* กำหนดให้ตัวหนังสือทั้งหมดเป็นสีขาว */
-    }
-
-
-    .logo {
-        padding-right: 10px;
-        width: 60px;
-    }
-
-    .navbar {
-        background-color: #020364;
-        padding: 15px 100px;
-        width: 100%;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        z-index: 999;
-        position: relative;
+        margin: 0;
     }
 
-    .navbar .dropdown {
-        position: relative;
-    }
-
-    .navbar .dropdown-menu {
-        position: absolute;
-        top: 100%;
+    /* Sidebar */
+    .sidebar {
+        width: 80px;
+        /* ขยายความกว้างเริ่มต้น */
+        background-color: #020364;
+        /* สีใหม่ที่สว่างขึ้น */
+        padding: 10px;
+        position: fixed;
+        height: 100vh;
+        top: 0;
         left: 0;
-        background-color: #fff;
-        color: #000;
-        border: none;
-        z-index: 1000;
-        width: 180px;
-        max-width: 100%;
-        max-height: 150px;
-        overflow-y: auto;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+        transition: width 0.3s ease;
+        overflow: hidden;
+        align-items: center;
     }
 
-    .navbar .dropdown-item {
-        padding: 8px 16px;
-        font-size: 14px;
+    .sidebar:hover {
+        width: 200px;
+        /* ขยาย Sidebar */
+        background-color: #020364;
+        /* สีสว่างขึ้นเมื่อ Hover */
+    }
+
+    .sidebar .menu {
+        flex-grow: 1;
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+
+    .sidebar .menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* โลโก้ให้อยู่ตรงกลาง */
+    .sidebar .logo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .sidebar img.logo {
+        width: 50px;
+        transition: width 0.3s ease;
+        margin-bottom: 10px;
+        /* เพิ่มระยะห่างด้านล่าง */
+    }
+
+    .sidebar:hover img.logo {
+        width: 90px;
+    }
+
+    /* ปุ่มเมนู */
+    .sidebar a {
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px;
+        font-size: 15px;
+        border-radius: 5px;
+        margin-bottom: 6px;
+        text-align: left;
+        transition: background-color 0.3s ease, padding 0.3s ease;
         white-space: nowrap;
     }
 
-    .navbar-toggler {
-        border: none;
-        /* ปิดขอบของปุ่ม */
+    .sidebar a i {
+        font-size: 20px;
+        width: 28px;
+        text-align: center;
+        transition: margin-right 0.3s ease;
     }
 
-    .navbar-toggler-icon {
-        background-color: white;
-        /* เปลี่ยนสีของ hamburger icon เป็นสีขาว */
+    .sidebar a span {
+        display: none;
+        transition: opacity 0.3s ease;
     }
 
-
-    footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 300px;
-        padding: 40px;
-        background-color: #020364;
-        color: #fff;
-    }
-
-    .navbar .dropdown-menu {
-        background-color: #fff;
-        color: #000;
-        border-radius: 10px;
-        border: none;
-        z-index: 1000;
-        width: 200px;
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-        padding: 10px 0;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(10px);
-        transition: all 0.3s ease-in-out;
-    }
-
-    .navbar .dropdown:hover .dropdown-menu {
+    .sidebar:hover a span {
+        display: inline;
         opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
+        margin-left: 10px;
     }
 
-    .navbar .dropdown-item {
-        padding: 10px 16px;
-        font-size: 14px;
-        color: #333;
-        transition: background-color 0.2s ease, color 0.2s ease;
-    }
-
-    .navbar .dropdown-item:hover {
+    .sidebar a:hover {
         background-color: #020364;
-        color: white;
+    }
+
+    /* กล่องข้อมูลผู้ใช้และปุ่มออกจากระบบ */
+    .sidebar .account,
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        padding: 8px;
         border-radius: 5px;
+        text-align: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+
+    .sidebar .account {
+        background-color: #4CAF50;
+        /* เขียวสดใส */
+        color: #FFFFFF;
+        /* ตัวหนังสือสีขาว */
+    }
+
+
+    .sidebar .account i,
+    .logout-btn i {
+        font-size: 18px;
+        margin-right: 0;
+    }
+
+    .sidebar .account span,
+    .logout-btn span {
+        display: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar:hover .account span,
+    .sidebar:hover .logout-btn span {
+        display: inline;
+        opacity: 1;
+        margin-left: 10px;
+    }
+
+    .logout-btn {
+        background-color: #D9534F;
+        color: white;
+        cursor: pointer;
+        border: none;
+        margin-top: 10px;
+    }
+
+    .logout-btn:hover {
+        background-color: #C9302C;
+    }
+
+    /* Content */
+    .content {
+        margin-left: 80px;
+        padding: 20px;
+        flex-grow: 1;
+        width: calc(100% - 80px);
+        transition: margin-left 0.3s ease, width 0.3s ease;
+        background-color: #7DA7D8;
+        /* เปลี่ยนสีพื้นหลัง Content */
+    }
+
+    .sidebar:hover~.content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 60px;
+        }
+
+        .sidebar:hover {
+            width: 160px;
+        }
+
+        .content {
+            margin-left: 60px;
+            width: calc(100% - 60px);
+        }
+
+        .sidebar:hover~.content {
+            margin-left: 160px;
+            width: calc(100% - 160px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sidebar {
+            width: 50px;
+        }
+
+        .sidebar:hover {
+            width: 140px;
+        }
+
+        .content {
+            margin-left: 50px;
+            width: calc(100% - 50px);
+        }
+
+        .sidebar:hover~.content {
+            margin-left: 140px;
+            width: calc(100% - 140px);
+        }
     }
     </style>
+</head>
 
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="menu">
             <img class="logo" src="/logo.png" alt="Logo">
-            <a class="navbar-brand" href="/User/homepage" style="color: white;">ชุมชนทุ่งเศรษฐี</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/homepage" style="color: white;">หน้าหลัก</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/record" style="color: white;">บันทึกข้อมูล</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/dashboard" style="color: white;">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/User/about" style="color: white;">ข้อมูลพื้นฐาน</a>
-                    </li>
-                </ul>
-                <li class="nav-item" style="list-style-type: none;">
-                    @if(session('register'))
-                    <div class="dropdown" style="display: inline;">
-                        <button class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <strong>{{ session('register')->username }}</strong>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li>
-                                <a href="/User/editprofile" class="dropdown-item">แก้ไขโปรไฟล์</a>
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item">ออกจากระบบ</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                    @endif
-                </li>
-            </div>
+            <a href="/admin/homepage"><i class="fas fa-home"></i> <span>หน้าหลัก</span></a>
+            <a href="/admin/record"><i class="fas fa-folder"></i> <span>บันทึกข้อมูล</span></a>
+            <a href="/admin/dashboard"><i class="fas fa-chart-bar"></i> <span>แดชบอร์ด</span></a>
+            <a href="/admin/about"><i class="fas fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span></a>
+            <a href="/admin/editprofile"><i class="fas fa-user-edit"></i> <span>แก้ไขโปรไฟล์</span></a>
         </div>
-    </nav>
+
+        <div>
+            <div class="account">
+                <i class="fas fa-user"></i> <span>{{ session('register')->username ?? 'Guest' }}</span>
+            </div>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> <span>ออกจากระบบ</span>
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- Content -->
-    <div>
+    <div class="content">
         @yield('content')
     </div>
 
-    <!-- Footer -->
-    <footer style="display: flex; flex-direction: row">
-        <div style="margin-left: 30px; color: #fff; line-height: 2;">
-            <h4>ที่อยู่</h4>
-            <p style="margin-left: 30px;">227/521 หมู่ 6 ถนนประชาสโมสร ตำบลในเมือง<br>อำเภอเมืองขอนแก่น จังหวัดขอนแก่น
-                40000</p>
-            <h4>ช่องทางการติดต่อ</h4>
-            <a href="https://www.facebook.com/profile.php?id=100089961199904"
-                style="color: #fff; margin-left: 30px;">Facebook : จิตอาสา ชุมชม
-                ทุ่งเศรษฐี</a><br>
-            <a href="mailto:vlt227.521@gmail.com" style="color: #fff; margin-left: 30px;">Email :
-                vlt227.521@gmail.com</a>
-        </div>
-
-        <div>
-            <h4>หน้าหลัก</h4>
-            <a class="nav-link" href="/User/homepage" style="color: #fff;line-height: 2;">ข่าวกิจกรรม</a>
-            <br>
-            <h4>Dashboard</h4>
-            <a class="nav-link" href="/User/dashboard" style="color: #fff;line-height: 2;">สถิติกราฟข้อมูล</a>
-        </div>
-
-        <div>
-            <h4>เกี่ยวกับเรา</h4>
-            <a class="nav-link" href="/User/about" style="color: #fff;line-height: 2;">ข้อมูลพื้นฐานชุมชนทุ่งเศรษฐี</a>
-        </div>
-
-        <div>
-            <h4>บันทึกข้อมูล</h4>
-            <a class="nav-link" href="/User/record" style="color: #fff;line-height: 2;">ข้อมูลสุขภาพ</a>
-        </div>
-
-    </footer>
 </body>
 
 </html>

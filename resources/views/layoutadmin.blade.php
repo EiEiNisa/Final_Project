@@ -26,8 +26,10 @@
 
     /* Sidebar */
     .sidebar {
-        width: 80px; /* ขยายความกว้างเริ่มต้น */
-        background-color: #020364; /* สีใหม่ที่สว่างขึ้น */
+        width: 80px;
+        /* ขยายความกว้างเริ่มต้น */
+        background-color: #020364;
+        /* สีใหม่ที่สว่างขึ้น */
         padding: 10px;
         position: fixed;
         height: 100vh;
@@ -41,8 +43,10 @@
     }
 
     .sidebar:hover {
-        width: 200px; /* ขยาย Sidebar */
-        background-color: #020364; /* สีสว่างขึ้นเมื่อ Hover */
+        width: 200px;
+        /* ขยาย Sidebar */
+        background-color: #020364;
+        /* สีสว่างขึ้นเมื่อ Hover */
     }
 
     .sidebar .menu {
@@ -67,7 +71,8 @@
     .sidebar img.logo {
         width: 50px;
         transition: width 0.3s ease;
-        margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
+        margin-bottom: 10px;
+        /* เพิ่มระยะห่างด้านล่าง */
     }
 
     .sidebar:hover img.logo {
@@ -124,10 +129,12 @@
         white-space: nowrap;
     }
 
-    .sidebar .account { 
-    background-color: #4CAF50; /* เขียวสดใส */
-    color: #FFFFFF; /* ตัวหนังสือสีขาว */
-}
+    .sidebar .account {
+        background-color: #4CAF50;
+        /* เขียวสดใส */
+        color: #FFFFFF;
+        /* ตัวหนังสือสีขาว */
+    }
 
 
     .sidebar .account i,
@@ -168,10 +175,11 @@
         flex-grow: 1;
         width: calc(100% - 80px);
         transition: margin-left 0.3s ease, width 0.3s ease;
-        background-color: #7DA7D8; /* เปลี่ยนสีพื้นหลัง Content */
+        background-color: #7DA7D8;
+        /* เปลี่ยนสีพื้นหลัง Content */
     }
 
-    .sidebar:hover ~ .content {
+    .sidebar:hover~.content {
         margin-left: 200px;
         width: calc(100% - 200px);
     }
@@ -191,7 +199,7 @@
             width: calc(100% - 60px);
         }
 
-        .sidebar:hover ~ .content {
+        .sidebar:hover~.content {
             margin-left: 160px;
             width: calc(100% - 160px);
         }
@@ -211,12 +219,11 @@
             width: calc(100% - 50px);
         }
 
-        .sidebar:hover ~ .content {
+        .sidebar:hover~.content {
             margin-left: 140px;
             width: calc(100% - 140px);
         }
     }
-
     </style>
 </head>
 
@@ -229,10 +236,10 @@
             <a href="/admin/homepage"><i class="fas fa-home"></i> <span>หน้าหลัก</span></a>
             <a href="/admin/form"><i class="fas fa-plus-circle"></i> <span>เพิ่มบทความ</span></a>
             <a href="/admin/addslide"><i class="fas fa-images"></i> <span>เพิ่มสไลด์</span></a>
-            <a href="/admin/about"><i class="fas fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span></a>
+            <a href="/admin/record"><i class="fas fa-folder"></i> <span>บันทึกข้อมูล</span></a>
             <a href="/admin/addrecord"><i class="fas fa-database"></i> <span>เพิ่มข้อมูลใหม่</span></a>
-            <a href="/admin/record"><i class="fas fa-folder"></i> <span>บันทึกข้อมูล</span></a> <!-- เพิ่มปุ่ม -->
             <a href="/admin/dashboard"><i class="fas fa-chart-bar"></i> <span>แดชบอร์ด</span></a>
+            <a href="/admin/about"><i class="fas fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span></a>
             <a href="/admin/editprofile"><i class="fas fa-user-edit"></i> <span>แก้ไขโปรไฟล์</span></a>
             <a href="/admin/manageuser"><i class="fas fa-user-shield"></i> <span>จัดการสิทธิ์</span></a>
         </div>
