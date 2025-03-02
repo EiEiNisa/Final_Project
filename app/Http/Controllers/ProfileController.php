@@ -22,7 +22,7 @@ class ProfileController extends Controller
         return view('admin.editprofile', compact('user'));
     } else {
         //dd(view('user.editprofile')); 
-        return view('User.editprofile', compact('user'));
+        return view('user.editprofile', compact('user'));
     }
 }
 
