@@ -26,7 +26,7 @@
     width: 100%;
     padding: 20px;
     border-radius: 5px;
-    background-color: #6D91C9;
+    background-color: #9B88C7;
     display: flex;
     justify-content: center;
     align-items: center;
