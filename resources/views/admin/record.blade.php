@@ -57,7 +57,7 @@
 .form-group-horizontal {
     display: flex;
     flex-wrap: nowrap;
-    overflow-x: auto;
+    overflow: hidden;
 }
 
 .form-group {
