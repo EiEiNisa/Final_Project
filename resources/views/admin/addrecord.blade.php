@@ -1037,9 +1037,7 @@ form {
 
             <div class="save">
                 <!-- ปุ่มบันทึก -->
-                <button type="button" class="btn btn-success" id="checkForm">
-                    บันทึก
-                </button>
+                <button type="button" class="btn btn-success" id="checkForm">บันทึก</button>
 
                 <!-- Modal เตือนให้กรอกข้อมูลให้ครบ -->
                 <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel"
@@ -1093,6 +1091,7 @@ form {
 
                     checkFormButton.addEventListener("click", function() {
                         let isValid = true;
+
                         requiredInputs.forEach(input => {
                             if (!input.value.trim()) {
                                 isValid = false;
@@ -1111,11 +1110,23 @@ form {
                     });
 
                     confirmSaveButton.addEventListener("click", function() {
-                        form.submit(); // ส่งฟอร์ม
+                        // เช็คว่า Token หมดอายุหรือไม่
+                        fetch("{{ route('check.auth') }}")
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.authenticated) {
+                                    form.submit(); // ส่งฟอร์มไปที่ Controller
+                                } else {
+                                    alert("Session หมดอายุ กรุณาเข้าสู่ระบบใหม่");
+                                    window.location.href = "/login"; // Redirect ไปที่หน้า Login
+                                }
+                            })
+                            .catch(() => {
+                                alert("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+                            });
                     });
                 });
                 </script>
-
 
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#resetModal">ยกเลิก</button>
