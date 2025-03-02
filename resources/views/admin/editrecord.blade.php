@@ -498,7 +498,8 @@ form {
 
                             <span class="checkup-title">ตรวจครั้งที่ {{ count($healthRecords) - $index }}</span>
                             <span
-                                class="checkup-date">{{ \Carbon\Carbon::parse($healthRecord->created_at)->format('d-m-Y') }}</span>
+                                class="checkup-date">{{ \Carbon\Carbon::parse($healthRecord->created_at)->translatedFormat('d F') }}/{{ \Carbon\Carbon::parse($healthRecord->created_at)->year + 543 }}
+                                </span>
                         </button>
                     </h2>
 
