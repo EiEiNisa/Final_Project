@@ -9,9 +9,13 @@ use Illuminate\Validation\ValidationException;
 class ResetPasswordController extends Controller
 {
     public function showResetForm(Request $request)
-    {
-        return view('reset-password', ['token' => $request->token]);
-    }
+{
+    return view('reset-password', [
+        'token' => $request->query('token'),
+        'email' => $request->query('email')
+    ]);
+}
+
 
     public function reset(Request $request)
     {
