@@ -1077,7 +1077,7 @@ form {
             const requiredInputs = form.querySelectorAll(
                 "input[required], textarea[required], select[required]");
 
-            // กลุ่ม checkbox ที่ต้องตรวจสอบแยกกัน
+            // ✅ ใช้คลาสที่แยกกันชัดเจนสำหรับ Blood Pressure Zone 1 และ 2
             const checkboxesZone1 = document.querySelectorAll('.blood-pressure-zone1 input[type="checkbox"]');
             const checkboxesZone2 = document.querySelectorAll('.blood-pressure-zone2 input[type="checkbox"]');
             const checkboxesLifestyle = document.querySelectorAll('.lifestyle input[type="checkbox"]');
@@ -1086,7 +1086,7 @@ form {
             function checkFormValidity() {
                 let isValid = true;
 
-                // ตรวจสอบ input ที่ required
+                // ✅ ตรวจสอบ input ที่เป็น required
                 requiredInputs.forEach(input => {
                     if (!input.value.trim()) {
                         isValid = false;
@@ -1096,7 +1096,7 @@ form {
                     }
                 });
 
-                // ฟังก์ชันตรวจสอบว่า checkbox กลุ่มนั้นๆ มีการเลือกอย่างน้อย 1 ค่า
+                // ✅ ฟังก์ชันตรวจสอบว่า checkbox ในกลุ่มนั้นๆ ถูกเลือกหรือไม่
                 function isCheckboxChecked(checkboxGroup) {
                     return Array.from(checkboxGroup).some(checkbox => checkbox.checked);
                 }
@@ -1106,38 +1106,39 @@ form {
                 let isLifestyleChecked = isCheckboxChecked(checkboxesLifestyle);
                 let isElderlyChecked = isCheckboxChecked(checkboxesElderly);
 
-                // ตรวจสอบว่าทุกกลุ่มมีอย่างน้อย 1 ค่า
+                // ✅ ต้องเลือก checkbox อย่างน้อย 1 ตัวในแต่ละกลุ่ม
                 let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
                 isElderlyChecked;
 
-                // ปิดปุ่มถ้า input ไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
+                // ✅ ปิดปุ่มถ้ากรอกไม่ครบ หรือ checkbox ไม่ครบ
                 checkFormButton.disabled = !(isValid && isCheckboxValid);
             }
 
-            // ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
+            // ✅ ตรวจสอบเมื่อมีการพิมพ์ หรือเปลี่ยนค่า
             requiredInputs.forEach(input => {
                 input.addEventListener("input", checkFormValidity);
                 input.addEventListener("change", checkFormValidity);
             });
 
+            // ✅ ตรวจสอบเมื่อมีการคลิก checkbox
             [...checkboxesZone1, ...checkboxesZone2, ...checkboxesLifestyle, ...checkboxesElderly].forEach(
                 checkbox => {
                     checkbox.addEventListener("change", checkFormValidity);
                 });
 
-            // เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
+            // ✅ เมื่อกด "บันทึก" ให้แสดง Modal ยืนยัน
             checkFormButton.addEventListener("click", function() {
                 if (!checkFormButton.disabled) {
                     saveModal.show();
                 }
             });
 
-            // เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
+            // ✅ เมื่อกด "บันทึกข้อมูล" ใน Modal ให้ส่งฟอร์ม
             confirmSaveButton.addEventListener("click", function() {
                 form.submit();
             });
 
-            // ตรวจสอบตอนโหลดหน้าเว็บ
+            // ✅ ตรวจสอบตอนโหลดหน้าเว็บ
             checkFormValidity();
         });
         </script>
