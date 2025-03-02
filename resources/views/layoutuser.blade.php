@@ -237,9 +237,7 @@
             <a href="/User/record"><i class="fas fa-folder"></i> <span>บันทึกข้อมูล</span></a>
             <a href="/User/dashboard"><i class="fas fa-chart-bar"></i> <span>แดชบอร์ด</span></a>
             <a href="/User/about"><i class="fas fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span></a>
-            <a href="{{ route('user.editprofile') }}">
-                <i class="fas fa-user-edit"></i> <span>แก้ไขโปรไฟล์</span>
-            </a>
+            <a href="/User/editprofile"><i class="fas fa-user-edit"></i> <span>แก้ไขโปรไฟล์</span></a>
         </div>
 
         <div>
