@@ -364,7 +364,7 @@ form {
     </div>
     @endif
 
-    <div class="header">
+    <div class="card-header">
         <h4><strong>HEALTH CARD</strong></h4>
         <a href="/admin/record" type="button" class="btn btn-secondary">กลับ</a>
         <hr>

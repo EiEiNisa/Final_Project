@@ -26,6 +26,7 @@
         display: flex;
         margin: 0;
         font-family: 'Poppins';
+        font-size: 16px;
     }
 
     /* Sidebar */

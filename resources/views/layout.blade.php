@@ -20,8 +20,12 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@300;400;600&family=Sarabun:wght@300;400;600&display=swap');
+
     body {
         background-color: #7DA7D8;
+        font-family: 'Poppins';
+        font-size: 16px;
     }
 
     .logo {
@@ -35,11 +39,11 @@
     }
 
     .navbar-toggler {
-        border: none; 
+        border: none;
     }
 
     .navbar-toggler-icon {
-        background-color: white; 
+        background-color: white;
     }
 
     footer {
