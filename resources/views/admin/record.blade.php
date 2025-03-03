@@ -475,6 +475,16 @@ button.btn-primary:hover {
             <tbody>
                 @foreach($recorddata as $key => $data)
                 <tr>
+                    <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>
+                    </td>
+                    <td><strong>{{ $data['id_card'] }}</strong></td>
+                    <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
+                    <td><strong>{{ $data['housenumber'] }}</strong></td>
+                    <td><strong>{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('d') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('F') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->year + 543 }}
+                        </strong>
+                    </td>
+                    <td><strong>{{ $data['age'] }}</strong></td>
+                    <td><strong>{{ $data['phone'] }}</strong></td>
                     <td><strong>
                             @if($data->diseases)
                             @php
@@ -493,9 +503,9 @@ button.btn-primary:hover {
                             ->map(fn($key) => $diseaseLabels[$key])
                             ->implode("\n");
 
-                            // ตรวจสอบถ้าเลือก 'other' และมีค่าใน other_text
+                            // ถ้าเลือก 'other' และมีค่า other_text ให้แสดงแค่ other_text
                             if ($data->diseases->other && !empty($data->diseases->other_text)) {
-                            $selectedDiseases .= "\n" . 'อื่นๆ: ' . $data->diseases->other_text;
+                            $selectedDiseases .= "\n" . $data->diseases->other_text;
                             }
                             @endphp
                             {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
@@ -503,64 +513,69 @@ button.btn-primary:hover {
                             -
                             @endif
                         </strong></td>
+                    <td>
 
-                    <a href="{{ route('recorddata.update', $data->id) }}" type="button" class="btn btn-primary btn-sm">
-                        <i class="fas fa-edit me-1"></i>
-                    </a>
+                        <a href="{{ route('recorddata.update', $data->id) }}" type="button"
+                            class="btn btn-primary btn-sm">
+                            <i class="fas fa-edit me-1"></i>
+                        </a>
 
-                    <form id="deleteForm{{ $data->id }}" action="{{ route('recorddata.destroy', ['id' => $data->id]) }}"
-                        method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-danger btn-sm delete-button" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal{{ $data->id }}" data-id="{{ $data->id }}">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </form>
+                        <form id="deleteForm{{ $data->id }}"
+                            action="{{ route('recorddata.destroy', ['id' => $data->id]) }}" method="POST"
+                            style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger btn-sm delete-button" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal{{ $data->id }}" data-id="{{ $data->id }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
 
-                    <div class="modal fade" id="deleteModal{{ $data->id }}" tabindex="-1"
-                        aria-labelledby="deleteModalLabel{{ $data->id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel{{ $data->id }}" style="color:#000;">
-                                        ยืนยันการลบ</h5>
-                                    <button type="button" class="btn btn-light rounded-circle shadow-sm close-btn"
-                                        data-bs-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                        <div class="modal fade" id="deleteModal{{ $data->id }}" tabindex="-1"
+                            aria-labelledby="deleteModalLabel{{ $data->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel{{ $data->id }}"
+                                            style="color:#000;">
+                                            ยืนยันการลบ</h5>
+                                        <button type="button" class="btn btn-light rounded-circle shadow-sm close-btn"
+                                            data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
 
-                                </div>
-                                <div class="modal-body" style="color:#000;">
-                                    คุณต้องการลบข้อมูลนี้ใช่หรือไม่?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ไม่</button>
-                                    <button type="button" class="btn btn-danger confirmDelete"
-                                        data-form-id="deleteForm{{ $data->id }}">ยืนยันการลบ</button>
+                                    </div>
+                                    <div class="modal-body" style="color:#000;">
+                                        คุณต้องการลบข้อมูลนี้ใช่หรือไม่?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">ไม่</button>
+                                        <button type="button" class="btn btn-danger confirmDelete"
+                                            data-form-id="deleteForm{{ $data->id }}">ยืนยันการลบ</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <script>
-                    // เมื่อกดปุ่ม "ยืนยันการลบ"
-                    document.querySelectorAll('.confirmDelete').forEach(button => {
-                        button.addEventListener('click', function() {
-                            var formId = this.getAttribute(
-                                'data-form-id'); // ดึง ID ของฟอร์มที่ต้องการส่ง
-                            var form = document.getElementById(formId); // หาฟอร์มที่มี ID นี้
-                            console.log('Submitting form with ID: ' +
-                                formId); // เช็คว่า ID ของฟอร์มถูกดึงมาไหม
-                            form.submit(); // ส่งฟอร์ม
+                        <script>
+                        // เมื่อกดปุ่ม "ยืนยันการลบ"
+                        document.querySelectorAll('.confirmDelete').forEach(button => {
+                            button.addEventListener('click', function() {
+                                var formId = this.getAttribute(
+                                    'data-form-id'); // ดึง ID ของฟอร์มที่ต้องการส่ง
+                                var form = document.getElementById(formId); // หาฟอร์มที่มี ID นี้
+                                console.log('Submitting form with ID: ' +
+                                    formId); // เช็คว่า ID ของฟอร์มถูกดึงมาไหม
+                                form.submit(); // ส่งฟอร์ม
+                            });
                         });
-                    });
-                    </script>
+                        </script>
 
-                    <a href="{{ route('admin.print', ['id' => $data->id]) }}" target="_blank"
-                        class="btn btn-warning btn-sm">
-                        <i class="fa-solid fa-print"></i>
-                    </a>
+                        <a href="{{ route('admin.print', ['id' => $data->id]) }}" target="_blank"
+                            class="btn btn-warning btn-sm">
+                            <i class="fa-solid fa-print"></i>
+                        </a>
 
                     </td>
                 </tr>
