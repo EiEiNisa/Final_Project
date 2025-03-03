@@ -16,10 +16,10 @@
 }
 
 .card-header {
-    background: linear-gradient(135deg, #4A90E2, #020364); /* ไล่สีให้ดูทันสมัย */
+    background-color:  #020364;
     color: #ffffff;
     padding: 20px;
-    border-radius: 8px 8px 0 0;
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
