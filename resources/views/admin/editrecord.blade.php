@@ -597,32 +597,32 @@ form {
                         aria-labelledby="heading{{ $index }}">
 
                         <div class="accordion-body">
-                            <div class="form-group">
+                            <div class="form-group3">
                                 <label for="sys{{ $index }}">ความดัน SYS</label>
                                 <input type="text" class="form-control" id="sys{{ $index }}" name="sys[{{ $index }}]"
                                     value="{{ old('sys.' . $index, $healthRecord->sys ?? '') }}" readonly>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group3">
                                 <label for="dia{{ $index }}">ความดัน DIA</label>
                                 <input type="text" class="form-control" id="dia{{ $index }}" name="dia[{{ $index }}]"
                                     value="{{ old('dia.' . $index, $healthRecord->dia ?? '') }}" readonly>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group3">
                                 <label for="pul{{ $index }}">ชีพจร</label>
                                 <input type="text" class="form-control" id="pul{{ $index }}" name="pul[{{ $index }}]"
                                     value="{{ old('pul.' . $index, $healthRecord->pul ?? '') }}" readonly>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group3">
                                 <label for="body_temp{{ $index }}">อุณหภูมิร่างกาย</label>
                                 <input type="text" class="form-control" id="body_temp{{ $index }}"
                                     name="body_temp[{{ $index }}]"
                                     value="{{ old('body_temp.' . $index, $healthRecord->body_temp ?? '') }}" readonly>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group3">
                                 <label for="blood_oxygen{{ $index }}">ออกซิเจนในเลือด</label>
                                 <input type="text" class="form-control" id="blood_oxygen{{ $index }}"
                                     name="blood_oxygen[{{ $index }}]"
@@ -630,7 +630,7 @@ form {
                                     readonly>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group3">
                                 <label for="blood_level{{ $index }}">ระดับน้ำตาลในเลือด</label>
                                 <input type="text" class="form-control" id="blood_level{{ $index }}"
                                     name="blood_level[{{ $index }}]"
