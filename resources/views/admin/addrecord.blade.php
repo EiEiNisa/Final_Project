@@ -882,7 +882,7 @@ form {
                         <label class="form-check-label" for="other">อื่น ๆ</label>
                     </div>
 
-                    <div id="otherInputContainer" style="display: none; margin-top: 10px;">
+                    <div id="otherInputContainer" style="display: none; margin-top: 10px; width:20%;">
                         <input type="text" class="form-control" name="other_text" id="other_text"
                             placeholder="กรุณาระบุ">
                     </div>
@@ -1132,7 +1132,7 @@ form {
             // ตรวจสอบ checkbox กลุ่มต่างๆ
             const checkboxesZone1 = document.querySelectorAll('div.blood-pressure-zone input[type="checkbox"]');
             const checkboxesZone2 = document.querySelectorAll(
-                'div.blood-pressure-zone2 input[type="checkbox"]');
+            'div.blood-pressure-zone2 input[type="checkbox"]');
             const checkboxesLifestyle = document.querySelectorAll('div.behavior input[type="checkbox"]');
             const checkboxesElderly = document.querySelectorAll(
                 'div.elderly_information input[type="checkbox"]');
@@ -1140,13 +1140,10 @@ form {
             function checkFormValidity() {
                 let isValid = true;
 
-                // ตรวจสอบ input ที่เป็น required
+                // ตรวจสอบ input ที่เป็น required แต่ **ไม่ต้องเพิ่มกรอบสีแดง**
                 requiredInputs.forEach(input => {
                     if (!input.value.trim()) {
                         isValid = false;
-                        input.classList.add("is-invalid");
-                    } else {
-                        input.classList.remove("is-invalid");
                     }
                 });
 
@@ -1162,7 +1159,7 @@ form {
 
                 // ต้องมี checkbox อย่างน้อย 1 ตัวในทุกกลุ่มที่กำหนด
                 let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
-                    isElderlyChecked;
+                isElderlyChecked;
 
                 // ปิดปุ่มถ้ากรอกไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
                 checkFormButton.disabled = !(isValid && isCheckboxValid);
