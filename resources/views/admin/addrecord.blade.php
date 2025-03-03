@@ -366,9 +366,10 @@ form {
     </div>
     @endif
 
-    <div class="card-header">
+    <div class="header">
         <h4><strong>HEALTH CARD</strong></h4>
         <a href="/admin/record" type="button" class="btn btn-secondary">กลับ</a>
+        <hr>
     </div>
 
     <div class="card-body">
