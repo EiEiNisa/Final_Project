@@ -20,10 +20,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@300;400;600&family=Sarabun:wght@300;400;600&display=swap');
+
     body {
         background-color: #7DA7D8;
         display: flex;
         margin: 0;
+        font-family: 'Poppins';
     }
 
     /* Sidebar */

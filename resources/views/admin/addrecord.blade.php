@@ -16,10 +16,8 @@
 }
 
 .card-header {
-    background-color: #2E518B;
-    color: #ffffff;
+    color: #020364;
     padding: 20px;
-    border-radius: 12px 12px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;

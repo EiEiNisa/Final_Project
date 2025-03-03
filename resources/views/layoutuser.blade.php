@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thung Setthi Community</title>
     <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -19,10 +19,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@300;400;600&family=Sarabun:wght@300;400;600&display=swap');
+
     body {
         background-color: #7DA7D8;
         display: flex;
         margin: 0;
+        font-family: 'Poppins';
     }
 
     /* Sidebar */
