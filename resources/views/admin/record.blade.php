@@ -123,7 +123,7 @@ button.btn-primary:hover {
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #28C940;  /* เขียวสด */
+    background-color: #198754;  /* เขียว Bootstrap btn-success */
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -133,27 +133,28 @@ button.btn-primary:hover {
 
 /* เมื่อ hover */
 .custom-pagination a:hover {
-    background-color: #22B537; /* เขียวสดขึ้น */
+    background-color: #157347; /* เขียวเข้มขึ้นเล็กน้อย */
     transform: translateY(-2px);
 }
 
 /* ปุ่มที่ถูกเลือก (active) */
 .custom-pagination .active {
-    background-color: #1E9E30; /* เขียวเข้มสด */
+    background-color: #146c43; /* เขียวเข้ม Bootstrap */
     font-weight: bold;
 }
 
 /* ปุ่มที่ไม่สามารถกดได้ (disabled) */
 .custom-pagination .disabled {
-    background-color: #A0E69B; /* เขียวอ่อนสด */
+    background-color: #A3D9A5; /* เขียวอ่อนแบบซอฟต์ */
     color: #5C9A5A;
     cursor: not-allowed;
 }
 
 /* ป้องกันสีเปลี่ยนเมื่อ hover */
 .custom-pagination .disabled:hover {
-    background-color: #A0E69B;
+    background-color: #A3D9A5;
 }
+
 
 .modal-header {
     padding: 15px;
