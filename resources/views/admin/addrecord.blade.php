@@ -90,7 +90,6 @@ form {
     color: #020364;
 }
 
-
 .blood-pressure-zone {
     background-color: #f0f0f0;
     color: #020364;
@@ -354,7 +353,7 @@ form {
             </div>
 
             <div class="form-group1">
-                <label for="id_card">เลขบัตรประจำตัวประชาชน</label>
+                <label for="id_card">เลขบัตรประจำตัวประชาชน <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="id_card" name="id_card" maxlength="13"
                     value="{{ old('id_card') }}" placeholder="กรอกเลขบัตรประจำตัวประชาชน" required>
             </div>
@@ -474,7 +473,7 @@ form {
             </div>
 
             <div class="form-group1">
-                <label for="prefix">คำนำหน้าชื่อ</label>
+                <label for="prefix">คำนำหน้าชื่อ <span style="color: red;">*</span></label>
                 <select class="form-control" id="prefix" name="prefix" required>
                     <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
                     </option>
@@ -487,31 +486,31 @@ form {
             </div>
 
             <div class="form-group1">
-                <label for="name">ชื่อ</label>
+                <label for="name">ชื่อ <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
                     placeholder="กรอกชื่อ" required>
             </div>
 
             <div class="form-group1">
-                <label for="surname">นามสกุล</label>
+                <label for="surname">นามสกุล <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="surname" name="surname" value="{{ old('surname') }}"
                     placeholder="กรอกนามสกุล" required>
             </div>
 
             <div class="form-group1">
-                <label for="housenumber">บ้านเลขที่</label>
+                <label for="housenumber">บ้านเลขที่ <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="housenumber" name="housenumber"
                     value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่" required>
             </div>
 
             <div class="form-group1">
-                <label for="birthdate">วัน / เดือน / ปีเกิด</label>
+                <label for="birthdate">วัน / เดือน / ปีเกิด <span style="color: red;">*</span></label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
                     placeholder="วัน/เดือน/ปีเกิด" required>
             </div>
 
             <div class="form-group1">
-                <label for="age">อายุ</label>
+                <label for="age">อายุ <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="age" name="age" value="{{ old('age') }}"
                     placeholder="กรอกอายุ" readonly>
             </div>
@@ -537,7 +536,7 @@ form {
             </script>
 
             <div class="form-group1">
-                <label for="blood_group">กรุ๊ปเลือด</label>
+                <label for="blood_group">กรุ๊ปเลือด <span style="color: red;">*</span></label>
                 <select name="blood_group" id="blood_group" class="form-control" required>
                     <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>กรุณาเลือกกรุ๊ปเลือด
                     </option>
@@ -549,27 +548,30 @@ form {
             </div>
 
             <div class="form-group1">
-                <label for="weight" style="margin-bottom: 5px; text-align: left; color: #020364;">น้ำหนัก</label>
+                <label for="weight" style="margin-bottom: 5px; text-align: left; color: #020364;">น้ำหนัก <span
+                        style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="weight" name="weight" value="{{ old('weight') }}"
                     placeholder="กรอกน้ำหนัก" step="0.1" required>
             </div>
 
             <div class="form-group1">
-                <label for="height" style="margin-bottom: 5px; text-align: left; color: #020364;">ส่วนสูง</label>
+                <label for="height" style="margin-bottom: 5px; text-align: left; color: #020364;">ส่วนสูง <span
+                        style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="height" name="height" value="{{ old('height') }}"
                     placeholder="กรอกส่วนสูง" step="0.1" required>
             </div>
 
             <div class="form-group1">
                 <label for="waistline" style="margin-bottom: 5px; text-align: left; color: #020364;">รอบเอว
-                    (ซม.)</label>
+                    (ซม.) <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="waistline" name="waistline" value="{{ old('waistline') }}"
                     placeholder="กรอกรอบเอว" step="0.1" required>
             </div>
 
 
             <div class="form-group1">
-                <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI</label>
+                <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI <span
+                        style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi') }}"
                     placeholder="กรอกดัชนีมวล BMI" step="0.1" readonly>
             </div>
@@ -596,13 +598,15 @@ form {
 
 
             <div class="form-group1">
-                <label for="phone" style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์</label>
+                <label for="phone" style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์ <span
+                        style="color: red;">*</span></label>
                 <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value="{{ old('phone') }}"
                     placeholder="กรอกหมายเลขโทรศัพท์" required>
             </div>
 
             <div class="form-group1">
-                <label for="idline" style="margin-bottom: 5px; text-align: left; color: #020364;">ID Line</label>
+                <label for="idline" style="margin-bottom: 5px; text-align: left; color: #020364;">ID Line <span
+                        style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="idline" name="idline" value="{{ old('idline') }}"
                     placeholder="กรอกไอดีไลน์" required>
             </div>
@@ -628,44 +632,48 @@ form {
 
             <div class="form-group">
                 <label for="sys" style="margin-bottom: 5px; text-align: left; color: #020364;">SYS
-                    (mmHg)</label>
+                    (mmHg) <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="sys" name="sys" value="{{ old('sys') }}"
                     placeholder="กรอกค่าSYS" required>
             </div>
 
             <div class="form-group">
-                <label for="dia" style="margin-bottom: 5px; text-align: left; color: #020364;">DIA (mmHg)
+                <label for="dia" style="margin-bottom: 5px; text-align: left; color: #020364;">DIA (mmHg) <span
+                        style="color: red;">*</span>
                 </label>
                 <input type="number" class="form-control" id="dia" name="dia" value="{{ old('dia') }}"
                     placeholder="กรอกDIA" required>
             </div>
             <div class="form-group">
-                <label for="pul" style="margin-bottom: 5px; text-align: left; color: #020364;">PUL (min)</label>
+                <label for="pul" style="margin-bottom: 5px; text-align: left; color: #020364;">PUL (min) <span
+                        style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="pul" name="pul" value="{{ old('pul') }}"
                     placeholder="กรอกPUL" required>
             </div>
             <div class="form-group">
-                <label for="body_temp"
-                    style="margin-bottom: 5px; text-align: left; color: #020364;">อุณหภูมิร่างกาย</label>
+                <label for="body_temp" style="margin-bottom: 5px; text-align: left; color: #020364;">อุณหภูมิร่างกาย
+                    <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="body_temp" name="body_temp" value="{{ old('body_temp') }}"
                     placeholder="กรอกค่าอุณหภูมิร่างกาย" required>
             </div>
             <div class="form-group">
                 <label for="blood_oxygen"
-                    style="margin-bottom: 5px; text-align: left; color: #020364;">ความเข้มข้นของออกซิเจนในเลือด
+                    style="margin-bottom: 5px; text-align: left; color: #020364;">ความเข้มข้นของออกซิเจนในเลือด <span
+                        style="color: red;">*</span>
                 </label>
                 <input type="number" class="form-control" id="blood_oxygen" name="blood_oxygen"
                     value="{{ old('blood_oxygen') }}" placeholder="กรอกความเข้มข้นของออกซิเจนในเลือด" required>
             </div>
             <div class="form-group">
                 <label for="blood_level"
-                    style="margin-bottom: 5px; text-align: left; color: #020364;">ระดับน้ำตาลในเลือด</label>
+                    style="margin-bottom: 5px; text-align: left; color: #020364;">ระดับน้ำตาลในเลือด <span
+                        style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="blood_level" name="blood_level"
                     value="{{ old('blood_level') }}" placeholder="กรอกระดับน้ำตาลในเลือด" required>
             </div>
 
             <div class="blood-pressure-zone">
-                <h4>Blood Pressure Zone</h4>
+                <h4>Blood Pressure Zone <span style="color: red;">*</span></h4>
                 <div class="circle-container">
                     <div>
                         <div class="circle" style="background-color: #FFFFFF;"></div>
@@ -752,7 +760,7 @@ form {
 
             <!-- Blood Pressure Zone 2 -->
             <div class="blood-pressure-zone2">
-                <h4>Blood Pressure Zone</h4>
+                <h4>Blood Pressure Zone <span style="color: red;">*</span></h4>
                 <div class="circle-container">
                     <div>
                         <div class="circle" style="background-color: #FFFFFF;"></div>
@@ -870,15 +878,39 @@ form {
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="other" value="0">
                         <input class="form-check-input" type="checkbox" name="other" id="other" value="1"
-                            {{ old('other') ? 'checked' : '' }}>
+                            {{ old('other') ? 'checked' : '' }} onchange="toggleOtherInput()">
                         <label class="form-check-label" for="other">อื่น ๆ</label>
                     </div>
+
+                    <div id="otherInputContainer" style="display: none; margin-top: 10px;">
+                        <input type="text" class="form-control" name="other_text" id="other_text"
+                            placeholder="กรุณาระบุ">
+                    </div>
+
+                    <script>
+                    function toggleOtherInput() {
+                        var checkbox = document.getElementById("other");
+                        var inputContainer = document.getElementById("otherInputContainer");
+
+                        if (checkbox.checked) {
+                            inputContainer.style.display = "block";
+                        } else {
+                            inputContainer.style.display = "none";
+                        }
+                    }
+
+                    window.onload = function() {
+                        toggleOtherInput();
+                    }
+                    </script>
+
                 </div>
             </div>
 
             <!--พฤติกรรม-สุขภาพจิต-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
-                <h4 class="fw-bold m-0" style="color:#020364;">พฤติกรรม-สุขภาพจิต</h4>
+                <h4 class="fw-bold m-0" style="color:#020364;">พฤติกรรม-สุขภาพจิต <span style="color: red;">*</span>
+                </h4>
 
             </div>
             <div class="behavior">
@@ -943,7 +975,7 @@ form {
 
             <!--ข้อมูลผู้สูงอายุ-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
-                <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ</h4>
+                <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ <span style="color: red;">*</span></h4>
             </div>
 
             <div class="elderly_information">
@@ -1027,7 +1059,7 @@ form {
 
             <div class="w-100 text-end fw-bold" style="color: #020364;">
                 <div class="d-flex flex-column align-items-end">
-                    <label for="user_name">ผู้บันทึกข้อมูล</label>
+                    <label for="user_name">ผู้บันทึกข้อมูล <span style="color: red;">*</span></label>
                     <input type="text" class="form-control" id="user_name" name="user_name"
                         value="{{ old('user_name') }}" placeholder="กรอกชื่อผู้บันทึกข้อมูล" required>
                 </div>
@@ -1100,7 +1132,7 @@ form {
             // ตรวจสอบ checkbox กลุ่มต่างๆ
             const checkboxesZone1 = document.querySelectorAll('div.blood-pressure-zone input[type="checkbox"]');
             const checkboxesZone2 = document.querySelectorAll(
-            'div.blood-pressure-zone2 input[type="checkbox"]');
+                'div.blood-pressure-zone2 input[type="checkbox"]');
             const checkboxesLifestyle = document.querySelectorAll('div.behavior input[type="checkbox"]');
             const checkboxesElderly = document.querySelectorAll(
                 'div.elderly_information input[type="checkbox"]');
@@ -1130,7 +1162,7 @@ form {
 
                 // ต้องมี checkbox อย่างน้อย 1 ตัวในทุกกลุ่มที่กำหนด
                 let isCheckboxValid = isZone1Checked && isZone2Checked && isLifestyleChecked &&
-                isElderlyChecked;
+                    isElderlyChecked;
 
                 // ปิดปุ่มถ้ากรอกไม่ครบ หรือไม่มี checkbox ถูกเลือกในทุกกลุ่ม
                 checkFormButton.disabled = !(isValid && isCheckboxValid);
