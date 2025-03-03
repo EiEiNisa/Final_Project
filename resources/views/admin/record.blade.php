@@ -122,7 +122,7 @@ button.btn-primary:hover {
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #D3D3D3;  /* เทาอ่อน */
+    background-color: #A0A5AA;  /* เทากลางค่อนไปทางอ่อน */
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -131,25 +131,24 @@ button.btn-primary:hover {
 }
 
 .custom-pagination a:hover {
-    background-color: #B0B0B0; /* เทาเข้มนิดหน่อยเมื่อ hover */
+    background-color: #6C757D; /* เทาเข้ม secondary */
     transform: translateY(-2px);
 }
 
 .custom-pagination .active {
-    background-color: #A0A0A0; /* เทากลาง */
+    background-color: #80858A; /* เทากลางเข้ม */
     font-weight: bold;
 }
 
 .custom-pagination .disabled {
-    background-color: #E0E0E0; /* เทาหม่นอ่อน */
+    background-color: #C0C5CA; /* เทาหม่นอ่อนขึ้น */
     color: #8A8A8A;
     cursor: not-allowed;
 }
 
 .custom-pagination .disabled:hover {
-    background-color: #E0E0E0; /* ไม่เปลี่ยนสีเมื่อ hover */
+    background-color: #C0C5CA; /* ไม่เปลี่ยนสีเมื่อ hover */
 }
-
 
 .modal-header {
     padding: 15px;
