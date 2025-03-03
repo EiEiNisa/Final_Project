@@ -34,7 +34,7 @@
 /* ปุ่มกลับ */
 .card-header .btn-back {
     background: rgba(255, 255, 255, 0.3);
-    color: white;
+    color: #000;
     padding: 8px 16px;
     border-radius: 8px;
     text-decoration: none;
@@ -52,10 +52,9 @@
     bottom: -2px; /* ขีดอยู่ด้านล่าง */
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 4px;
     background-color: #020364; /* สีของเส้น */
 }
-
 
 .card-body {
     padding: 20px;
