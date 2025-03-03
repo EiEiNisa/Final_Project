@@ -20,6 +20,7 @@ class Disease extends Model
         'heart',
         'eye',
         'other',
+        'other_text',
     ];
 
     public function recorddata()

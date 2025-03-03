@@ -158,6 +158,7 @@ public function store(Request $request)
             'heart' => filter_var($request->input('heart', false), FILTER_VALIDATE_BOOLEAN),
             'eye' => filter_var($request->input('eye', false), FILTER_VALIDATE_BOOLEAN),
             'other' => filter_var($request->input('other', false), FILTER_VALIDATE_BOOLEAN),
+            'other_text' => $request->input('other') ? $request->input('other_text', null) : null, 
         ]);
 
         $lifestyle = LifestyleHabit::create([
