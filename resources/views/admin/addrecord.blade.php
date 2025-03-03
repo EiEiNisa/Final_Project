@@ -21,14 +21,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative; /* ใช้สำหรับขีดด้านล่าง */
 }
 
+/* ข้อความ h4 */
 .card-header h4 {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
 }
 
+/* ปุ่มกลับ */
 .card-header .btn-back {
     background: rgba(255, 255, 255, 0.3);
     color: white;
@@ -41,6 +44,18 @@
 .card-header .btn-back:hover {
     background: rgba(255, 255, 255, 0.5);
 }
+
+/* ขีดเส้นใต้ */
+.card-header::after {
+    content: "";
+    position: absolute;
+    bottom: -2px; /* ขีดอยู่ด้านล่าง */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #020364; /* สีของเส้น */
+}
+
 
 .card-body {
     padding: 20px;
@@ -364,11 +379,11 @@ form {
     </div>
     @endif
 
-    <div class="card-header">
-        <h4><strong>HEALTH CARD</strong></h4>
-        <a href="/admin/record" type="button" class="btn btn-secondary">กลับ</a>
-        <hr>
-    </div>
+    <div class="card-header"> 
+    <h4><strong>HEALTH CARD</strong></h4>
+    <a href="/admin/record" class="btn btn-secondary btn-back">กลับ</a>
+</div>
+
 
     <div class="card-body">
         <form id="Recorddata" action="{{ route('recorddata.store') }}" method="POST">

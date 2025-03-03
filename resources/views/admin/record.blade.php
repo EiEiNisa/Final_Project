@@ -119,10 +119,11 @@ button.btn-primary:hover {
     font-size: 16px;
 }
 
+/* สีปุ่มปกติ */
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #A0A5AA;  /* เทากลางค่อนไปทางอ่อน */
+    background-color: #5C8EB0;  /* ฟ้าอมเทากลาง */
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -130,24 +131,28 @@ button.btn-primary:hover {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* เมื่อ hover */
 .custom-pagination a:hover {
-    background-color: #6C757D; /* เทาเข้ม secondary */
+    background-color: #4A7798; /* ฟ้าเข้มขึ้น */
     transform: translateY(-2px);
 }
 
+/* ปุ่มที่ถูกเลือก (active) */
 .custom-pagination .active {
-    background-color: #80858A; /* เทากลางเข้ม */
+    background-color: #3A678A; /* น้ำเงินเข้มขึ้น */
     font-weight: bold;
 }
 
+/* ปุ่มที่ไม่สามารถกดได้ (disabled) */
 .custom-pagination .disabled {
-    background-color: #C0C5CA; /* เทาหม่นอ่อนขึ้น */
-    color: #8A8A8A;
+    background-color: #A0BED1; /* ฟ้าอ่อนแบบ soft */
+    color: #6C7C8C;
     cursor: not-allowed;
 }
 
+/* ป้องกันสีเปลี่ยนเมื่อ hover */
 .custom-pagination .disabled:hover {
-    background-color: #C0C5CA; /* ไม่เปลี่ยนสีเมื่อ hover */
+    background-color: #A0BED1;
 }
 
 .modal-header {
@@ -471,7 +476,7 @@ button.btn-primary:hover {
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
                     <td><strong>{{ $data['housenumber'] }}</strong></td>
                     <td><strong>{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('d') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('F') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->year + 543 }}
-                    </strong>
+                        </strong>
                     </td>
                     <td><strong>{{ $data['age'] }}</strong></td>
                     <td><strong>{{ $data['phone'] }}</strong></td>

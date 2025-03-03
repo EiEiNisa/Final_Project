@@ -25,7 +25,7 @@
     body {
         background-color: #7DA7D8;
         font-family: 'Poppins';
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .logo {
