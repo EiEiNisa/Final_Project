@@ -16,10 +16,10 @@
 }
 
 .card-header {
-    background-color:  #020364;
+    background-color: #2E518B;
     color: #ffffff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 12px 12px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -58,7 +58,7 @@
 }
 
 .btn-edit:hover {
-    background-color: #357ABD;
+    background-color: #1C3F7C;
 }
 
 form {
