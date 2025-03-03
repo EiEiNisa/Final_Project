@@ -3,49 +3,61 @@
 @section('content')
 <style>
 .head {
-    background-color: #f8f9fa; /* สีพื้นหลังอ่อนๆ */
-    color: #020364; /* สีตัวหนังสือ */
-    padding: 20px;
+    background: linear-gradient(135deg, #4A90E2, #020364); /* ไล่สีให้ดูทันสมัย */
+    color: #ffffff; /* สีตัวอักษรขาว */
+    padding: 20px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 8px; /* มุมโค้งมน */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงาเบาๆ */
+    border-radius: 12px; /* มุมโค้งมนให้ดูนุ่มนวล */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* เงาให้ดูมีมิติ */
     margin-bottom: 20px;
 }
 
 .head h4 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     margin: 0;
+    letter-spacing: 1px;
 }
 
 .head a {
     font-size: 16px;
-    padding: 8px 16px;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.2); /* ปุ่มโปร่งใส */
+    border: none;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
 }
 
+.head a:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* เปลี่ยนสีตอน hover */
+}
+
+.rectangle-box {
+    margin-bottom: 50px;
+    width: 100%;
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ให้เงาดูมีมิติ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
 
 .title {
     color: #020364;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 20px;
-    padding-top: 30px;
-}
-
-.rectangle-box {
-    margin-bottom: 50px;
-    width: 100%;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 20px 30px;
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom: 2px solid #E0E0E0;
 }
 
 form {
@@ -352,6 +364,7 @@ form {
         {{ session('error') }}
     </div>
     @endif
+
     <div class="head">
         <h4><strong>HEALTH CARD</strong></h4>
         <a href="/admin/record" type="button" class="btn btn-secondary">กลับ</a>
