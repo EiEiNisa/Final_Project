@@ -505,7 +505,7 @@ button.btn-primary:hover {
 
                             // ถ้าเลือก 'other' และมีค่า other_text ให้แสดงแค่ other_text
                             if ($data->diseases->other && !empty($data->diseases->other_text)) {
-                            $selectedDiseases .= "\n" . $data->diseases->other_text;
+                            $selectedDiseases .= "" . $data->diseases->other_text;
                             }
                             @endphp
                             {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
