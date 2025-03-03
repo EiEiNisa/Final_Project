@@ -3,12 +3,28 @@
 @section('content')
 <style>
 .head {
-    color: #020364;
+    background-color: #f8f9fa; /* สีพื้นหลังอ่อนๆ */
+    color: #020364; /* สีตัวหนังสือ */
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 8px; /* มุมโค้งมน */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงาเบาๆ */
+    margin-bottom: 20px;
 }
+
+.head h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.head a {
+    font-size: 16px;
+    padding: 8px 16px;
+}
+
 
 .title {
     color: #020364;
@@ -374,7 +390,7 @@ form {
                 const bmiInput = document.getElementById('bmi');
                 const phoneInput = document.getElementById('phone');
                 const idlineInput = document.getElementById('idline');
-                const extraFieldsInput = document.getElementById('extra_fields'); // สำหรับแสดงค่า extra_fields
+                const extraFieldsInput = document.getElementById('extra_fields');
 
                 function calculateAge(birthdate) {
                     const birthDate = new Date(birthdate);
@@ -466,7 +482,7 @@ form {
                             ข้อมูลนี้มีอยู่ในระบบ
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
                         </div>
                     </div>
                 </div>
@@ -883,7 +899,7 @@ form {
                     </div>
 
                     <div class="form-check form-check-inline" id="otherInputContainer"
-                        style="display: none; margin-top: 10px; width:40%;">
+                        style="display: none; margin-top: 10px; width:100%;">
                         <input type="text" class="form-control" name="other_text" id="other_text"
                             placeholder="กรุณาระบุ">
                     </div>
