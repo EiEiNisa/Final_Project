@@ -83,15 +83,20 @@
 }
 
 .custom-accordion-item {
-    border: 1px solid #e0e0e0; /* เปลี่ยนสีเส้นขอบ */
-    border-radius: 8px; /* เพิ่มความโค้งมน */
+    border: 1px solid #e0e0e0;
+    /* เปลี่ยนสีเส้นขอบ */
+    border-radius: 8px;
+    /* เพิ่มความโค้งมน */
     overflow: hidden;
-    margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรายการ */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+    margin-bottom: 10px;
+    /* เพิ่มระยะห่างระหว่างรายการ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* เพิ่มเงา */
 }
 
 .custom-accordion-item .accordion-header {
-    background-color: #f0f8ff; /* เปลี่ยนสีพื้นหลัง header */
+    background-color: #f0f8ff;
+    /* เปลี่ยนสีพื้นหลัง header */
 }
 
 .custom-accordion-item .accordion-button {
@@ -100,11 +105,13 @@
     align-items: center;
     width: 100%;
     text-align: left;
-    padding: 1.2rem 1.5rem; /* เพิ่ม padding */
+    padding: 1.2rem 1.5rem;
+    /* เพิ่ม padding */
     border: none;
     background: transparent;
     box-shadow: none;
-    color: #333; /* เปลี่ยนสีตัวหนังสือ */
+    color: #333;
+    /* เปลี่ยนสีตัวหนังสือ */
 }
 
 .custom-accordion-item .accordion-button:focus {
@@ -112,57 +119,80 @@
 }
 
 .custom-accordion-item .accordion-button:not(.collapsed) {
-    background-color: #e0f2fe; /* เปลี่ยนสีพื้นหลังเมื่อเปิด */
+    background-color: #e0f2fe;
+    /* เปลี่ยนสีพื้นหลังเมื่อเปิด */
 }
 
 .custom-accordion-item .checkup-title {
-    font-weight: 600; /* ปรับความหนาตัวหนังสือ */
-    color: #2e7d32; /* เปลี่ยนสีตัวหนังสือ title */
+    font-weight: 600;
+    /* ปรับความหนาตัวหนังสือ */
+    color: #020364;
+    /* เปลี่ยนสีตัวหนังสือ title */
 }
 
 .custom-accordion-item .checkup-date {
-    color: #555; /* เปลี่ยนสีตัวหนังสือ date */
-    margin-left: 1rem; /* เพิ่มระยะห่างระหว่าง title และ date */
+    color: #555;
+    /* เปลี่ยนสีตัวหนังสือ date */
+    margin-left: 1rem;
+    /* เพิ่มระยะห่างระหว่าง title และ date */
 }
 
 .custom-accordion-item .accordion-body {
-    padding: 1.5rem; /* เพิ่ม padding */
-    background-color: #fff; /* เปลี่ยนสีพื้นหลัง body */
+    padding: 1.5rem;
+    /* เพิ่ม padding */
+    background-color: #fff;
+    /* เปลี่ยนสีพื้นหลัง body */
 }
 
 .custom-accordion-item .form-group {
-    margin-bottom: 1.2rem; /* เพิ่มระยะห่าง */
+    margin-bottom: 1.2rem;
+    /* เพิ่มระยะห่าง */
 }
 
 .custom-accordion-item .form-group label {
     display: block;
     margin-bottom: 0.6rem;
-    font-weight: 500; /* ปรับความหนาตัวหนังสือ label */
-    color: #444; /* เปลี่ยนสีตัวหนังสือ label */
+    font-weight: 500;
+    /* ปรับความหนาตัวหนังสือ label */
+    color: #444;
+    /* เปลี่ยนสีตัวหนังสือ label */
 }
 
 .custom-accordion-item .form-group .form-control {
     width: 100%;
-    padding: 0.6rem 1rem; /* เพิ่ม padding */
-    border: 1px solid #ccc; /* เปลี่ยนสีเส้นขอบ input */
-    border-radius: 6px; /* เพิ่มความโค้งมน input */
+    padding: 0.6rem 1rem;
+    /* เพิ่ม padding */
+    border: 1px solid #ccc;
+    /* เปลี่ยนสีเส้นขอบ input */
+    border-radius: 6px;
+    /* เพิ่มความโค้งมน input */
     box-sizing: border-box;
-    color: #333; /* เปลี่ยนสีตัวหนังสือ input */
-    background-color: #f9f9f9; /* เปลี่ยนสีพื้นหลัง input */
+    color: #333;
+    /* เปลี่ยนสีตัวหนังสือ input */
+    background-color: #f9f9f9;
+    /* เปลี่ยนสีพื้นหลัง input */
 }
 
 .custom-accordion-item .btn-secondary {
-    margin-top: 1.5rem; /* เพิ่มระยะห่าง */
-    background-color: #6c757d; /* เปลี่ยนสีปุ่ม */
-    border-color: #6c757d; /* เปลี่ยนสีเส้นขอบปุ่ม */
-    color: #fff; /* เปลี่ยนสีตัวหนังสือปุ่ม */
-    padding: 0.6rem 1.2rem; /* เพิ่ม padding ปุ่ม */
-    border-radius: 6px; /* เพิ่มความโค้งมนปุ่ม */
+    margin-top: 1.5rem;
+    /* เพิ่มระยะห่าง */
+    background-color: #6c757d;
+    /* เปลี่ยนสีปุ่ม */
+    border-color: #6c757d;
+    /* เปลี่ยนสีเส้นขอบปุ่ม */
+    color: #fff;
+    /* เปลี่ยนสีตัวหนังสือปุ่ม */
+    padding: 0.6rem 1.2rem;
+    /* เพิ่ม padding ปุ่ม */
+    border-radius: 6px;
+    /* เพิ่มความโค้งมนปุ่ม */
 }
 
 .custom-accordion-item .btn-secondary:hover {
-    background-color: #5a6268; /* เปลี่ยนสีปุ่มเมื่อ hover */
-    border-color: #5a6268; /* เปลี่ยนสีเส้นขอบปุ่มเมื่อ hover */
+    background-color: #5a6268;
+    /* เปลี่ยนสีปุ่มเมื่อ hover */
+    border-color: #5a6268;
+    /* เปลี่ยนสีเส้นขอบปุ่มเมื่อ hover */
 }
 
 .form-group,
@@ -665,11 +695,14 @@ form {
                 document.querySelectorAll(".accordion-button").forEach(button => {
                     button.addEventListener("click", function() {
                         let target = document.querySelector(this.getAttribute(
-                            "data-bs-target"));
-                        if (target.classList.contains("show")) {
-                            bootstrap.Collapse.getInstance(target).hide();
+                        "data-bs-target"));
+                        let collapse = bootstrap.Collapse.getInstance(target);
+                        if (collapse) {
+                            collapse.toggle();
                         } else {
-                            new bootstrap.Collapse(target).show();
+                            new bootstrap.Collapse(target, {
+                                toggle: true
+                            });
                         }
                     });
                 });
