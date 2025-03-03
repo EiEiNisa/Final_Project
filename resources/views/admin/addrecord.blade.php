@@ -2,62 +2,63 @@
 
 @section('content')
 <style>
-.head {
-    background: linear-gradient(135deg, #4A90E2, #020364); /* ไล่สีให้ดูทันสมัย */
-    color: #ffffff; /* สีตัวอักษรขาว */
-    padding: 20px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 12px; /* มุมโค้งมนให้ดูนุ่มนวล */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* เงาให้ดูมีมิติ */
-    margin-bottom: 20px;
+.card-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้ดูมีมิติ */
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease-in-out;
 }
 
-.head h4 {
-    font-size: 28px;
+.card-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* เงาเข้มขึ้นเมื่อ hover */
+}
+
+.card-header {
+    background: linear-gradient(135deg, #4A90E2, #020364); /* ไล่สีให้ดูทันสมัย */
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h4 {
+    font-size: 24px;
     font-weight: bold;
     margin: 0;
-    letter-spacing: 1px;
 }
 
-.head a {
-    font-size: 16px;
-    padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.2); /* ปุ่มโปร่งใส */
-    border: none;
-    border-radius: 8px;
+.card-header .btn-back {
+    background: rgba(255, 255, 255, 0.3);
     color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
 }
 
-.head a:hover {
-    background-color: rgba(255, 255, 255, 0.4); /* เปลี่ยนสีตอน hover */
+.card-header .btn-back:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 
-.rectangle-box {
-    margin-bottom: 50px;
-    width: 100%;
-    padding: 25px;
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ให้เงาดูมีมิติ */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+.card-body {
+    padding: 20px;
 }
 
-.title {
-    color: #020364;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
-    font-size: 22px;
-    font-weight: bold;
-    border-bottom: 2px solid #E0E0E0;
+.btn-edit {
+    background-color: #4A90E2;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 16px;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-edit:hover {
+    background-color: #357ABD;
 }
 
 form {
@@ -352,7 +353,7 @@ form {
 }
 </style>
 
-<div class="container py-2">
+<div class="card-container">
 
     @if(session('success'))
     <div class="alert alert-success">
@@ -365,12 +366,12 @@ form {
     </div>
     @endif
 
-    <div class="head">
+    <div class="card-header">
         <h4><strong>HEALTH CARD</strong></h4>
         <a href="/admin/record" type="button" class="btn btn-secondary">กลับ</a>
     </div>
 
-    <div class="rectangle-box">
+    <div class="card-body">
         <form id="Recorddata" action="{{ route('recorddata.store') }}" method="POST">
             @csrf
             <!--ข้อมูลประจำตัว-->
