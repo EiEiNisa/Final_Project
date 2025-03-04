@@ -412,29 +412,60 @@ button.btn-primary:hover {
             </div>
 
             <script>
+            document.getElementById('excelFile').addEventListener('change', function(event) {
+                let file = event.target.files[0];
+                if (!file) return;
+
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let data = new Uint8Array(e.target.result);
+                    let workbook = XLSX.read(data, {
+                        type: 'array'
+                    });
+                    let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    let jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+                        header: 1
+                    });
+
+                    displayPreview(jsonData);
+                };
+                reader.readAsArrayBuffer(file);
+            });
+
             function displayPreview(data) {
-    let tableBody = document.getElementById('tableBody');
-    tableBody.innerHTML = "";
+                let tableHead = document.getElementById('tableHead');
+                let tableBody = document.getElementById('tableBody');
 
-    if (data.length === 0) return;
+                tableHead.innerHTML = "";
+                tableBody.innerHTML = "";
 
-    let columnCount = data[0].length;
+                if (data.length === 0) return;
 
-    data.slice(1).forEach(rowData => {
-        let row = document.createElement('tr');
+                // สร้าง Header
+                let headers = data[0];
+                let columnCount = headers.length;
 
-        for (let i = 0; i < columnCount; i++) {
-            let td = document.createElement('td');
-            td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
-            td.style.width = "auto"; // ให้ขนาดเซลล์ปรับอัตโนมัติ
-            td.style.wordBreak = "break-word"; // ให้ข้อความขึ้นบรรทัดใหม่ถ้ายาวเกิน
-            row.appendChild(td);
-        }
+                let headerRow = document.createElement('tr');
+                headers.forEach(header => {
+                    let th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                tableHead.appendChild(headerRow);
 
-        tableBody.appendChild(row);
-    });
-}
+                // สร้างข้อมูลแถว
+                data.slice(1).forEach(rowData => {
+                    let row = document.createElement('tr');
 
+                    for (let i = 0; i < columnCount; i++) {
+                        let td = document.createElement('td');
+                        td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
+                        row.appendChild(td);
+                    }
+
+                    tableBody.appendChild(row);
+                });
+            }
             </script>
 
             <!--  Export File -->
