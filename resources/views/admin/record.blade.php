@@ -189,7 +189,7 @@ button.btn-primary:hover {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    /* ช่วยให้คอลัมน์กว้างเท่ากัน */
+    /* ทำให้คอลัมน์แต่ละช่องมีขนาดคงที่ */
 }
 
 #previewTable th,
@@ -199,8 +199,19 @@ button.btn-primary:hover {
     text-align: left;
     white-space: nowrap;
     /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* ตัดข้อความถ้ายาวเกิน */
 }
 
+#previewTable th {
+    background-color: #f4f4f4;
+}
+
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
 
 @media (max-width: 768px) {
 
@@ -393,7 +404,7 @@ button.btn-primary:hover {
 
                             <!-- ส่วนแสดงตัวอย่างข้อมูล -->
                             <h5 class="mt-4">ตัวอย่างข้อมูล</h5>
-                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <div class="table-responsive">
                                 <table class="table table-bordered" id="previewTable">
                                     <thead>
                                         <tr id="tableHead"></tr>
@@ -401,6 +412,7 @@ button.btn-primary:hover {
                                     <tbody id="tableBody"></tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -436,11 +448,10 @@ button.btn-primary:hover {
 
                 if (data.length === 0) return;
 
-                // ดึง Header (แถวแรก)
+                // สร้าง Header
                 let headers = data[0];
                 let columnCount = headers.length;
 
-                // สร้างหัวตาราง
                 let headerRow = document.createElement('tr');
                 headers.forEach(header => {
                     let th = document.createElement('th');
@@ -449,7 +460,7 @@ button.btn-primary:hover {
                 });
                 tableHead.appendChild(headerRow);
 
-                // สร้างข้อมูลในตารางให้จำนวนคอลัมน์ตรงกัน
+                // สร้างข้อมูลแถว
                 data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
 
