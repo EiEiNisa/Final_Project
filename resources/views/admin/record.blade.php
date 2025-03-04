@@ -486,7 +486,6 @@ button.btn-primary:hover {
                 };
 
                 reader.readAsBinaryString(file);
-                dd($request->all());
             });
 
             function displayPreview(data) {
