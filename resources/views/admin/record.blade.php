@@ -540,7 +540,9 @@ button.btn-primary:hover {
                     .then(response => response.json())
                     .then(result => {
                         showAlert(result.message);
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000); // หน่วงเวลา 3 วินาที
                     })
                     .catch(error => {
                         console.error("Error:", error);
