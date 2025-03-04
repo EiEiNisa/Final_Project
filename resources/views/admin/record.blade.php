@@ -1097,14 +1097,65 @@ button.btn-primary:hover {
                         });
                         </script>
 
-                        <form action="{{ route('admin.print') }}" method="GET" target="_blank">
-                            @foreach ($recorddata as $item)
-                            <input type="checkbox" name="ids[]" value="{{ $item->id }}"> {{ $item->name }}<br>
-                            @endforeach
-                            <button type="submit" class="btn btn-warning btn-sm">
-                                <i class="fa-solid fa-print"></i> พิมพ์
-                            </button>
-                        </form>
+                        <!-- ปุ่มเปิด Modal -->
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#printModal">
+                            <i class="fa-solid fa-print"></i> พิมพ์
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="printModal" tabindex="-1" aria-labelledby="printModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="printModalLabel">เลือกข้อมูลที่ต้องการพิมพ์</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="printForm" action="{{ route('admin.print') }}" method="GET"
+                                            target="_blank">
+                                            <div class="mb-3">
+                                                <label for="selectAll" class="form-check-label">
+                                                    <input type="checkbox" id="selectAll" class="form-check-input">
+                                                    เลือกทั้งหมด
+                                                </label>
+                                            </div>
+                                            @foreach ($recorddata as $item)
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="ids[]"
+                                                    value="{{ $item->id }}" id="check{{ $item->id }}">
+                                                <label class="form-check-label" for="check{{ $item->id }}">
+                                                    {{ $item->name }}
+                                                </label>
+                                            </div>
+                                            @endforeach
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">ยกเลิก</button>
+                                        <button type="submit" class="btn btn-primary"
+                                            onclick="submitPrintForm()">พิมพ์</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                        // ฟังก์ชันเลือกทั้งหมด
+                        document.getElementById('selectAll').addEventListener('change', function() {
+                            let checkboxes = document.querySelectorAll('input[name="ids[]"]');
+                            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                        });
+
+                        // ฟังก์ชันส่งฟอร์ม
+                        function submitPrintForm() {
+                            document.getElementById('printForm').submit();
+                        }
+                        </script>
+
 
                     </td>
                 </tr>
