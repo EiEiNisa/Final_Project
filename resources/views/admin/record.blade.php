@@ -435,7 +435,7 @@ button.btn-primary:hover {
                 tableBody.innerHTML = "";
 
                 if (data.length === 0) return;
-
+                console.log(data);
                 // สร้าง Header
                 let headers = data[0];
                 let columnCount = headers.length;
@@ -450,16 +450,17 @@ button.btn-primary:hover {
 
                 // สร้างข้อมูลแถว
                 data.slice(1).forEach(rowData => {
-                    let row = document.createElement('tr');
+        let row = document.createElement('tr');
 
-                    for (let i = 0; i < columnCount; i++) {
-                        let td = document.createElement('td');
-                        td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
-                        row.appendChild(td);
-                    }
+        for (let i = 0; i < columnCount; i++) {
+            let td = document.createElement('td');
+            td.textContent = rowData[i] || "";
+            row.appendChild(td);
+            console.log("rowData[" + i + "]:", rowData[i]); // เพิ่มบรรทัดนี้
+        }
 
-                    tableBody.appendChild(row);
-                });
+        tableBody.appendChild(row);
+    });
             }
             </script>
 
