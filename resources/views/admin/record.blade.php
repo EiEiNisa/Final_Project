@@ -189,25 +189,24 @@ button.btn-primary:hover {
     width: 100%;
     border-collapse: collapse;
     table-layout: auto;
-    /* 🟢 ให้ตารางปรับขนาดตามข้อมูล */
 }
 
 #previewTable th,
 #previewTable td {
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid #E0E0E0;
+    /* เปลี่ยนสีเส้นขอบเป็นเทาอ่อน */
     text-align: left;
     min-width: 100px;
     word-break: break-word;
-    /* 🟢 ป้องกันคำยาวไม่ตัดคำ */
 }
 
-/* ✅ ป้องกันปัญหาหัวตาราง (thead) ไม่ตรงกับ tbody */
 #previewTable thead {
     display: table;
     width: 100%;
     table-layout: fixed;
-    /* 🟢 ให้ thead ปรับขนาดตาม tbody */
+    background-color: #E8F5E9;
+    /* เปลี่ยนสีพื้นหลังหัวตารางเป็นเขียวอ่อน */
 }
 
 #previewTable tbody {
@@ -215,7 +214,16 @@ button.btn-primary:hover {
     width: 100%;
     overflow-y: auto;
     max-height: 400px;
-    /* 🟢 ปรับให้มี Scroll ถ้าข้อมูลยาว */
+}
+
+/* เพิ่มการตกแต่งเพิ่มเติม */
+#previewTable tr:nth-child(even) {
+    background-color: #F5F5F5;
+    /* แถวคู่มีพื้นหลังสีเทาอ่อน */
+}
+
+#previewTable th {
+    font-weight: bold;
 }
 
 
@@ -601,7 +609,8 @@ button.btn-primary:hover {
                                                 <li><strong>zone1_critical</strong> - ค่าโซน 1 วิกฤต</li>
                                                 <li><strong>zone1_complications</strong> - ค่าโซน 1 โรคแทรกซ้อน</li>
                                                 <li><strong>zone1_heart</strong> - ค่าโซน 1 หัวใจ</li>
-                                                <li><strong>zone1_cerebrovascular </strong> - ค่าโซน 1 หลอดเลือดสมอง</li>
+                                                <li><strong>zone1_cerebrovascular </strong> - ค่าโซน 1 หลอดเลือดสมอง
+                                                </li>
                                                 <li><strong>zone1_kidney</strong> - ค่าโซน 1 ไต</li>
                                                 <li><strong>zone1_eye</strong> - ค่าโซน 1 ตา</li>
                                                 <li><strong>zone1_foot</strong> - ค่าโซน 1 เท้า</li>
