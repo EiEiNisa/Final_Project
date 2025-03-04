@@ -562,7 +562,7 @@ button.btn-primary:hover {
                                 </div>
                                 <br>
                                 <!-- ปุ่มแสดงคำอธิบาย -->
-                                <button class="btn btn-warning mb-3" onclick="toggleDescription()" style="color: #fff;">
+                                <button class="btn btn-info mb-3" onclick="toggleDescription()" style="color: #fff;">
                                     แสดงคำอธิบายคอลัมน์
                                 </button>
 
@@ -607,11 +607,11 @@ button.btn-primary:hover {
                                                 <li><strong>zone1_foot</strong> - ค่าโซน 1 เท้า</li>
                                                 <li><strong>zone2_normal</strong> - ค่าโซน 2 ปกติ</li>
                                                 <li><strong>zone2_risk_group</strong> - ค่าโซน 2 กลุ่มเสี่ยง</li>
+                                                <li><strong>zone2_good_control</strong> - ค่าโซน 2 คุมได้ดี</li>
                                             </ul>
                                         </div>
                                         <div class="col-md-6">
                                             <ul>
-                                            <li><strong>zone2_good_control</strong> - ค่าโซน 2 คุมได้ดี</li>
                                                 <li><strong>zone2_watch_out</strong> - ค่าโซน 2 เฝ้าระวัง</li>
                                                 <li><strong>zone2_danger</strong> - ค่าโซน 2 อันตราย</li>
                                                 <li><strong>zone2_critical</strong> - ค่าโซน 2 วิกฤต</li>
