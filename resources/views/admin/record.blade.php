@@ -188,7 +188,6 @@ button.btn-primary:hover {
 #previewTable {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
 }
 
 #previewTable th {
@@ -200,7 +199,7 @@ button.btn-primary:hover {
 #previewTable td {
     word-break: break-word;
     white-space: normal;
-    min-width: 150px; /* ปรับค่า min-width ตามต้องการ */
+    min-width: 150px;
 }
 
 @media (max-width: 768px) {
