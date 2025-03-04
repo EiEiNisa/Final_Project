@@ -194,8 +194,7 @@ button.btn-primary:hover {
 #previewTable th,
 #previewTable td {
     padding: 8px;
-    border: 1px solid #E0E0E0;
-    /* เปลี่ยนสีเส้นขอบเป็นเทาอ่อน */
+    border: 1px solid #E0E0E0; /* เปลี่ยนสีเส้นขอบเป็นเทาอ่อน */
     text-align: left;
     min-width: 100px;
     word-break: break-word;
@@ -205,8 +204,7 @@ button.btn-primary:hover {
     display: table;
     width: 100%;
     table-layout: fixed;
-    background-color: #E8F5E9;
-    /* เปลี่ยนสีพื้นหลังหัวตารางเป็นเขียวอ่อน */
+    background-color: #E8F5E9; /* เปลี่ยนสีพื้นหลังหัวตารางเป็นเขียวอ่อน */
 }
 
 #previewTable tbody {
@@ -218,14 +216,12 @@ button.btn-primary:hover {
 
 /* เพิ่มการตกแต่งเพิ่มเติม */
 #previewTable tr:nth-child(even) {
-    background-color: #F5F5F5;
-    /* แถวคู่มีพื้นหลังสีเทาอ่อน */
+    background-color: #F5F5F5; /* แถวคู่มีพื้นหลังสีเทาอ่อน */
 }
 
 #previewTable th {
     font-weight: bold;
 }
-
 
 @media (max-width: 768px) {
 
@@ -570,7 +566,7 @@ button.btn-primary:hover {
                                 </div>
                                 <br>
                                 <!-- ปุ่มแสดงคำอธิบาย -->
-                                <button class="btn btn-primary mb-3" onclick="toggleDescription()" style="color: #fff;">
+                                <button class="btn btn-success mb-3" onclick="toggleDescription()" style="color: #fff;">
                                     แสดงคำอธิบายคอลัมน์
                                 </button>
 
