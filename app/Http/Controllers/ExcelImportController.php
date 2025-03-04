@@ -20,11 +20,21 @@ class ExcelImportController extends Controller
 
         try {
             foreach ($data as $row) {
-                
-                    $existingRecord = Recorddata::where('id_card', $row['id_card'])->first();
-                if ($existingRecord) {
-                    return response()->json(['error' => 'ข้อมูลที่มีรหัสบัตรประชาชน ' . $row['id_card'] . ' เคยถูกอัปเดตไปแล้ว'], 400);
-                }
+
+                $existingRecord = Recorddata::where('id_card', $row['id_card'])->first();
+            if ($existingRecord) {
+                return response()->json(['error' => 'เลขบัตรประชาชนนี้มีอยู่ในระบบแล้ว กรุณาตรวจสอบข้อมูล'], 400);
+            }
+
+            // ตรวจสอบรูปแบบของเลขบัตรประชาชน (ต้องเป็น 13 หลัก)
+            if (!preg_match('/^\d{13}$/', $row['id_card'])) {
+                return response()->json(['error' => 'เลขบัตรประชาชนต้องมี 13 หลัก กรุณาตรวจสอบ'], 400);
+            }
+
+            // ตรวจสอบว่ามีค่าหรือไม่
+            if (empty($row['id_card'])) {
+                return response()->json(['error' => 'กรุณากรอกเลขบัตรประชาชน'], 400);
+            }
 
                 $recorddata = Recorddata::firstOrCreate([
                     'id_card' => $row['id_card'],
