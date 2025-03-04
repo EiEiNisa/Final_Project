@@ -478,13 +478,11 @@ button.btn-primary:hover {
             function handleFile(file) {
                 let reader = new FileReader();
                 reader.onload = function(e) {
-                    let textData;
                     try {
-                        // ตรวจสอบไฟล์ CSV หรือ Excel
                         if (file.name.endsWith(".csv")) {
-                            let decoder = new TextDecoder("windows-874"); // แปลงเป็นภาษาไทย
-                            textData = decoder.decode(e.target.result);
-                            parseCSV(textData);
+                            let decoder = new TextDecoder("windows-874"); // ใช้ encoding ภาษาไทย
+                            let textData = decoder.decode(e.target.result);
+                            parseCSV(textData); // ส่ง textData ตรงๆ ไป parse
                         } else {
                             parseExcel(e.target.result);
                         }
@@ -495,17 +493,14 @@ button.btn-primary:hover {
                 };
 
                 if (file.name.endsWith(".csv")) {
-                    reader.readAsArrayBuffer(file); // ใช้ ArrayBuffer เพื่อใช้ TextDecoder
+                    reader.readAsArrayBuffer(file); // ใช้ ArrayBuffer เพื่อให้ TextDecoder ใช้งานได้
                 } else {
                     reader.readAsBinaryString(file);
                 }
             }
 
             function parseCSV(data) {
-                let decoder = new TextDecoder("windows-874"); // ลองใช้ encoding ภาษาไทย
-                let decodedData = decoder.decode(new Uint8Array([...data].map(c => c.charCodeAt(0))));
-
-                Papa.parse(decodedData, {
+                Papa.parse(data, {
                     header: true,
                     complete: function(results) {
                         jsonData = results.data.map(obj => ({
@@ -525,6 +520,7 @@ button.btn-primary:hover {
                     }
                 });
             }
+
 
             function parseExcel(data) {
                 let workbook = XLSX.read(data, {
