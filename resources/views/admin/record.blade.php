@@ -188,7 +188,7 @@ button.btn-primary:hover {
 #previewTable {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* บังคับให้แต่ละคอลัมน์มีขนาดเท่ากัน */
+    table-layout: fixed; /* ช่วยให้คอลัมน์กว้างเท่ากัน */
 }
 
 #previewTable th, #previewTable td {
@@ -196,15 +196,8 @@ button.btn-primary:hover {
     border: 1px solid #ddd;
     text-align: left;
     white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
-    overflow: hidden; /* ป้องกันข้อความล้น */
-    text-overflow: ellipsis; /* ถ้าข้อความยาวให้ขึ้น ... */
 }
 
-#previewTable tbody td {
-    word-break: break-word; /* ให้ข้อความขึ้นบรรทัดใหม่ถ้ายาวเกิน */
-    white-space: normal; /* อนุญาตให้ขึ้นบรรทัดใหม่ */
-    vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของช่อง */
-}
 
 @media (max-width: 768px) {
 
