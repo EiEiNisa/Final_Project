@@ -20,7 +20,12 @@ class ExcelImportController extends Controller
 
         try {
             foreach ($data as $row) {
-                // บันทึกข้อมูลลงในตาราง recorddata
+                
+                    $existingRecord = Recorddata::where('id_card', $row['id_card'])->first();
+                if ($existingRecord) {
+                    return response()->json(['error' => 'ข้อมูลที่มีรหัสบัตรประชาชน ' . $row['id_card'] . ' เคยถูกอัปเดตไปแล้ว'], 400);
+                }
+
                 $recorddata = Recorddata::firstOrCreate([
                     'id_card' => $row['id_card'],
                     'prefix' => $row['prefix'],
@@ -120,10 +125,9 @@ class ExcelImportController extends Controller
                 ]);
             } // ปิด foreach
 
-            return response()->json(['message' => 'นำเข้าข้อมูลสำเร็จ!'], 200);
-        } catch (\Exception $e) {
-            Log::error('Import error:', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
-        }
+            return response()->json(['message' => 'นำเข้าข้อมูลสำเร็จ']);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
+    }
     }
 }
