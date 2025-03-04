@@ -502,16 +502,17 @@ button.btn-primary:hover {
             function parseCSV(data) {
                 Papa.parse(data, {
                     header: true,
+                    skipEmptyLines: true,
                     complete: function(results) {
-                        jsonData = results.data.map(obj => ({
-                            'เลขบัตรประชาชน': formatID(obj['id_card']),
-                            'prefix': decodeText(obj['prefix']),
-                            'name': decodeText(obj['name']),
-                            'surname': decodeText(obj['surname']),
-                            'housenumber': obj['housenumber'],
-                            'birthdate': obj['birthdate']
-                        }));
+                        jsonData = results.data.map(obj => {
+                            let formattedObj = {}; // เก็บข้อมูลทั้งหมด
+                            Object.keys(obj).forEach(key => {
+                                formattedObj[key] = decodeText(obj[key]); // ถอดรหัสทุกค่า
+                            });
+                            return formattedObj;
+                        });
 
+                        // แสดง preview
                         displayPreview([Object.keys(jsonData[0]), ...jsonData.map(Object.values)]);
                     },
                     error: function(error) {
@@ -520,7 +521,6 @@ button.btn-primary:hover {
                     }
                 });
             }
-
 
             function parseExcel(data) {
                 let workbook = XLSX.read(data, {
