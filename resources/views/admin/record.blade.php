@@ -376,7 +376,7 @@ button.btn-primary:hover {
 
                             <!-- ส่วนแสดงตัวอย่างข้อมูล -->
                             <h5 class="mt-4">ตัวอย่างข้อมูล</h5>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered" id="previewTable">
                                     <thead>
                                         <tr id="tableHead"></tr>
@@ -388,7 +388,7 @@ button.btn-primary:hover {
                     </div>
                 </div>
             </div>
-            
+
             <script>
             document.getElementById('excelFile').addEventListener('change', function(event) {
                 let file = event.target.files[0];
@@ -419,7 +419,7 @@ button.btn-primary:hover {
 
                 if (data.length === 0) return;
 
-                // หัวตาราง
+                // สร้างหัวตาราง
                 let headerRow = document.createElement('tr');
                 data[0].forEach(header => {
                     let th = document.createElement('th');
@@ -428,17 +428,16 @@ button.btn-primary:hover {
                 });
                 tableHead.appendChild(headerRow);
 
-                // แสดงข้อมูลไม่เกิน 5 แถว
-                let maxRows = Math.min(data.length, 6);
-                for (let i = 1; i < maxRows; i++) {
+                // แสดงข้อมูลทุกแถว
+                data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
-                    data[i].forEach(cell => {
+                    rowData.forEach(cell => {
                         let td = document.createElement('td');
                         td.textContent = cell;
                         row.appendChild(td);
                     });
                     tableBody.appendChild(row);
-                }
+                });
             }
             </script>
 
