@@ -380,7 +380,11 @@ button.btn-primary:hover {
         {{ session('error') }}
     </div>
     @endif
-
+    @if(session('message'))
+    <div class="alert alert-danger">
+        {{ session('message') }}
+    </div>
+    @endif
     <div class="title">
         <h4><strong>บันทึกข้อมูล</strong></h4>
         <div class="btn-container">
