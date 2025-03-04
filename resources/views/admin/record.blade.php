@@ -459,14 +459,7 @@ button.btn-primary:hover {
                     return;
                 }
 
-                let allowedExtensions = ['xlsx', 'xls', 'csv'];
                 let fileExtension = file.name.split('.').pop().toLowerCase();
-
-                if (!allowedExtensions.includes(fileExtension)) {
-                    showAlert("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
-                    this.value = "";
-                    return;
-                }
 
                 let reader = new FileReader();
 
@@ -477,7 +470,7 @@ button.btn-primary:hover {
                         if (fileExtension === 'csv') {
                             parseCSV(data);
                         } else {
-                            parseExcel(e.target.result);
+                            parseExcel(data);
                         }
 
                         uploadedFiles.push(file.name);
@@ -488,15 +481,15 @@ button.btn-primary:hover {
                 };
 
                 if (fileExtension === 'csv') {
-                    reader.readAsText(file, 'utf-8'); // ✅ อ่าน CSV เป็น UTF-8
+                    reader.readAsText(file, "utf-8"); // ✅ อ่าน CSV แบบ UTF-8
                 } else {
-                    reader.readAsArrayBuffer(file); // ✅ อ่านไฟล์ XLSX แบบ array buffer
+                    reader.readAsBinaryString(file); // ✅ อ่าน XLSX แบบ binary
                 }
             });
 
             function parseExcel(data) {
                 let workbook = XLSX.read(data, {
-                    type: 'array'
+                    type: 'binary'
                 });
                 let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                 let rawData = XLSX.utils.sheet_to_json(firstSheet, {
@@ -510,6 +503,7 @@ button.btn-primary:hover {
 
             function parseCSV(data) {
                 let rows = data.split("\n").map(row => row.split(","));
+
                 jsonData = formatData(rows);
                 displayPreview(jsonData);
             }
@@ -521,7 +515,7 @@ button.btn-primary:hover {
                 let formattedData = rawData.slice(1).map(row => {
                     let obj = {};
                     headers.forEach((key, index) => {
-                        let value = row[index] !== undefined ? row[index].trim() : null;
+                        let value = row[index] !== undefined ? row[index].trim() : "";
 
                         if (key === 'id_card') {
                             obj[key] = fixIdCard(value);
@@ -543,7 +537,7 @@ button.btn-primary:hover {
                 let fixedValue = value.toString().trim();
 
                 if (fixedValue.includes("E")) {
-                    fixedValue = parseFloat(fixedValue).toFixed(0); // ✅ ป้องกัน Scientific Notation
+                    fixedValue = parseFloat(fixedValue).toFixed(0); // ✅ แปลง Scientific Notation
                 }
 
                 return fixedValue;
@@ -599,42 +593,6 @@ button.btn-primary:hover {
 
                 document.getElementById('submitDataBtn').disabled = false;
             }
-
-            document.getElementById('submitDataBtn').addEventListener('click', async function() {
-                if (jsonData.length < 2) {
-                    showAlert('ไม่มีข้อมูลสำหรับบันทึก');
-                    return;
-                }
-
-                let headers = jsonData[0];
-                let rows = jsonData.slice(1);
-
-                try {
-                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                        },
-                        body: JSON.stringify({
-                            data: rows
-                        })
-                    });
-
-                    if (!response.ok) {
-                        const errorResponse = await response.json();
-                        throw new Error(errorResponse.error ||
-                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
-                    }
-
-                    const result = await response.json();
-                    window.location.href = "{{ route('recorddata.index') }}";
-
-                } catch (error) {
-                    console.error("Fetch error:", error);
-                    showAlert(error.message);
-                }
-            });
 
             function showAlert(message) {
                 document.getElementById('alertMessage').textContent = message;
