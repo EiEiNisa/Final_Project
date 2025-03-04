@@ -505,7 +505,7 @@ button.btn-primary:hover {
                     return obj;
                 });
 
-                fetch("{{ route('import') }}", {
+                fetch("{{ secure_url('import') }}", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
