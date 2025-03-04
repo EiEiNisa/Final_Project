@@ -452,9 +452,12 @@ button.btn-primary:hover {
                 let file = this.files[0];
                 if (!file) return;
 
+                let allowedExtensions = ['xlsx', 'xls', 'csv'];
                 let fileExtension = file.name.split('.').pop().toLowerCase();
-                if (fileExtension !== 'xlsx' && fileExtension !== 'csv') {
-                    showAlert("กรุณาเลือกไฟล์ Excel (.xlsx) หรือ CSV (.csv)");
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    showErrorModal("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
+                    this.value = ""; // รีเซ็ต input file
                     return;
                 }
 
@@ -464,13 +467,19 @@ button.btn-primary:hover {
                     let workbook = XLSX.read(data, {
                         type: 'array'
                     });
+
+                    console.log("Workbook:", workbook); // ✅ ตรวจสอบข้อมูล Workbook
+
                     let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                     jsonData = XLSX.utils.sheet_to_json(firstSheet, {
                         header: 1
                     });
 
+                    console.log("JSON Data:", jsonData); // ✅ ตรวจสอบข้อมูล JSON ก่อนใช้จริง
+
                     displayPreview(jsonData);
                 };
+
                 reader.readAsArrayBuffer(file);
             });
 
@@ -488,11 +497,24 @@ button.btn-primary:hover {
 
                 // สร้าง thead
                 let headerRow = document.createElement('tr');
-                headers.forEach(header => {
-                    let th = document.createElement('th');
-                    th.textContent = header;
-                    headerRow.appendChild(th);
+                headers.forEach((key, index) => {
+                    if (key === 'birthdate') {
+                        let excelDate = row[index];
+
+                        if (!isNaN(excelDate)) { // ✅ ตรวจสอบว่าค่าเป็นตัวเลข (Excel Date)
+                            let date = new Date((excelDate - 25569) * 86400000);
+                            obj[key] = date.toISOString().split("T")[0]; // แปลงเป็น YYYY-MM-DD
+                        } else if (typeof excelDate === 'string' && excelDate.includes('/')) {
+                            let parts = excelDate.split('/');
+                            obj[key] = `${parts[2]}-${parts[1]}-${parts[0]}`; // รองรับ dd/mm/yyyy
+                        } else {
+                            obj[key] = null;
+                        }
+                    } else {
+                        obj[key] = row[index] !== undefined ? row[index] : null;
+                    }
                 });
+
                 tableHead.appendChild(headerRow);
 
                 // สร้าง tbody
@@ -537,7 +559,7 @@ button.btn-primary:hover {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
                         },
                         body: JSON.stringify({
                             data: rows
@@ -554,10 +576,10 @@ button.btn-primary:hover {
                     });
             });
 
-            function showAlert(message) {
-                document.getElementById('alertMessage').textContent = message;
-                let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-                alertModal.show();
+            function showAlert(message, type = "danger") {
+                let alertModal = document.getElementById('alertModal');
+                document.getElementById('alertMessage').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+                new bootstrap.Modal(alertModal).show();
             }
 
             function translateError(errorMessage) {
@@ -570,7 +592,6 @@ button.btn-primary:hover {
 
                 return errorTranslations[errorMessage] || "เกิดข้อผิดพลาดที่ไม่รู้จัก";
             }
-            </script>
             </script>
 
             <!--  Export File -->
