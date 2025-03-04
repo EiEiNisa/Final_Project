@@ -1106,45 +1106,46 @@ button.btn-primary:hover {
                         <!-- Modal -->
                         <div class="modal fade" id="printModal" tabindex="-1" aria-labelledby="printModalLabel"
                             aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog modal-md">
+                                <!-- ขนาดกลาง ดูกระชับ -->
                                 <div class="modal-content shadow-sm rounded-3">
-                                    <div class="modal-header bg-primary text-white">
-                                        <h5 class="modal-title" id="printModalLabel">
-                                            <i class="fa-solid fa-print"></i> เลือกข้อมูลที่ต้องการพิมพ์
+                                    <!-- ขอบโค้งเล็กน้อย -->
+                                    <div class="modal-header bg-light border-bottom">
+                                        <!-- โทนสีอ่อน -->
+                                        <h5 class="modal-title fw-bold" id="printModalLabel">
+                                            <i class="fa-solid fa-print text-primary"></i> เลือกข้อมูลที่ต้องการพิมพ์
                                         </h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <form id="printForm" action="{{ route('admin.print') }}" method="GET"
                                             target="_blank">
-                                            <div class="mb-2">
-                                                <input type="checkbox" id="selectAll" class="form-check-input me-2">
-                                                <label for="selectAll" class="form-check-label fw-bold text-primary">
+                                            <div class="form-check mb-3">
+                                                <input type="checkbox" id="selectAll" class="form-check-input">
+                                                <label for="selectAll" class="form-check-label text-dark fw-semibold">
                                                     เลือกทั้งหมด
                                                 </label>
                                             </div>
-                                            <div class="overflow-auto" style="max-height: 400px;">
-                                                <!-- ทำให้เลื่อนดูได้ -->
-                                                @foreach ($recorddata as $item)
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="ids[]"
-                                                        value="{{ $item->id }}" id="check{{ $item->id }}">
-                                                    <label class="form-check-label" for="check{{ $item->id }}">
-                                                        {{ $item->name }}
-                                                    </label>
-                                                </div>
-                                                @endforeach
+                                            @foreach ($recorddata as $item)
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="ids[]"
+                                                    value="{{ $item->id }}" id="check{{ $item->id }}">
+                                                <label class="form-check-label" for="check{{ $item->id }}">
+                                                    {{ $item->name }}
+                                                </label>
                                             </div>
+                                            @endforeach
                                         </form>
                                     </div>
-                                    <div class="modal-footer d-flex justify-content-end">
-                                        <!-- ปุ่มชิดขวา -->
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            <i class="fa-solid fa-xmark"></i> ยกเลิก
+                                    <div class="modal-footer d-flex justify-content-end gap-2">
+                                        <!-- ปรับปุ่มอยู่ติดกัน -->
+                                        <button type="button" class="btn btn-outline-secondary px-4"
+                                            data-bs-dismiss="modal">
+                                            ยกเลิก
                                         </button>
-                                        <button type="submit" class="btn btn-primary ms-2" onclick="submitPrintForm()">
-                                            <i class="fa-solid fa-print"></i> พิมพ์
+                                        <button type="submit" class="btn btn-primary px-4" onclick="submitPrintForm()">
+                                            พิมพ์
                                         </button>
                                     </div>
                                 </div>
@@ -1163,6 +1164,7 @@ button.btn-primary:hover {
                             document.getElementById('printForm').submit();
                         }
                         </script>
+
 
                     </td>
                 </tr>
