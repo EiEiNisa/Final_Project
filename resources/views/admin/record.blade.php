@@ -422,7 +422,7 @@ button.btn-primary:hover {
                             </div>
 
                             <button type="button" class="btn btn-success w-100 mt-3" id="submitDataBtn"
-                                disabled>บันทึกข้อมูลลงฐานข้อมูล</button>
+                                disabled>นำเข้าข้อมูล</button>
                         </div>
                     </div>
                 </div>
@@ -560,9 +560,8 @@ button.btn-primary:hover {
                         const errorText = await response.text();
                         throw new Error(`Network response was not ok: ${response.status} - ${errorText}`);
                     }
-
                     const result = await response.json();
-                    showAlert(result.message);
+                    window.location.href = "{{ route('recorddata.index') }}";
                 } catch (error) {
                     console.error("Fetch error:", error);
                     showAlert("เกิดข้อผิดพลาดในการติดต่อ Server: " + error.message);
