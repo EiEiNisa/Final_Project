@@ -354,35 +354,95 @@ button.btn-primary:hover {
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#importModal">
                 นำเข้าข้อมูล
             </button>
+
             <!-- Modal -->
             <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="modal-header d-flex justify-content-between align-items-center">
+                        <div class="modal-header">
                             <h5 class="modal-title" id="importModalLabel">นำเข้าข้อมูล</h5>
-                            <button type="button" class="btn btn-light rounded-circle shadow-sm close-btn"
-                                data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
+                            <form id="uploadForm" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="excelFile" class="form-label fw-bold">เลือกไฟล์ Excel
-                                        ที่ต้องการนำเข้า (.csv) </label>
+                                    <label for="excelFile" class="form-label fw-bold">เลือกไฟล์ Excel หรือ CSV</label>
                                     <input type="file" class="form-control" id="excelFile" name="file"
                                         accept=".xlsx, .xls, .csv" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">นำเข้าข้อมูล</button>
                             </form>
+
+                            <!-- ส่วนแสดงตัวอย่างข้อมูล -->
+                            <h5 class="mt-4">ตัวอย่างข้อมูล</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="previewTable">
+                                    <thead>
+                                        <tr id="tableHead"></tr>
+                                    </thead>
+                                    <tbody id="tableBody"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Import File -->
+            
+            <script>
+            document.getElementById('excelFile').addEventListener('change', function(event) {
+                let file = event.target.files[0];
+                if (!file) return;
 
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let data = new Uint8Array(e.target.result);
+                    let workbook = XLSX.read(data, {
+                        type: 'array'
+                    });
+                    let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    let jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+                        header: 1
+                    });
+
+                    displayPreview(jsonData);
+                };
+                reader.readAsArrayBuffer(file);
+            });
+
+            function displayPreview(data) {
+                let tableHead = document.getElementById('tableHead');
+                let tableBody = document.getElementById('tableBody');
+
+                tableHead.innerHTML = "";
+                tableBody.innerHTML = "";
+
+                if (data.length === 0) return;
+
+                // หัวตาราง
+                let headerRow = document.createElement('tr');
+                data[0].forEach(header => {
+                    let th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                tableHead.appendChild(headerRow);
+
+                // แสดงข้อมูลไม่เกิน 5 แถว
+                let maxRows = Math.min(data.length, 6);
+                for (let i = 1; i < maxRows; i++) {
+                    let row = document.createElement('tr');
+                    data[i].forEach(cell => {
+                        let td = document.createElement('td');
+                        td.textContent = cell;
+                        row.appendChild(td);
+                    });
+                    tableBody.appendChild(row);
+                }
+            }
+            </script>
+
+            <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
 
             <a type="button" class="btn btn-success" href="/admin/addrecord"><i

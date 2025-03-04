@@ -515,7 +515,7 @@ form {
             </div>
 
             <div class="form-group1">
-                <label for="waistline" class="form-label">รอบเอว</label>
+                <label for="waistline" class="form-label">รอบเอว (ซม.)</label>
                 <input type="number" class="form-control" id="waistline" name="waistline"
                     value="{{ old('waistline', $recorddata->waistline) }}">
             </div>
