@@ -443,7 +443,7 @@ button.btn-primary:hover {
                     </div>
                 </div>
             </div>
-            
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -491,19 +491,24 @@ button.btn-primary:hover {
                 };
 
                 if (file.name.endsWith('.csv')) {
-                    reader.readAsText(file);
+                    reader.readAsText(file, "UTF-8"); // ลองบังคับอ่านเป็น UTF-8
                 } else {
                     reader.readAsBinaryString(file);
                 }
             }
 
+
             function parseCSV(data) {
-                Papa.parse(data, {
+                // ลองใช้ TextDecoder เพื่อแก้ไขการเข้ารหัสผิดเพี้ยน
+                let decoder = new TextDecoder("utf-8");
+                let decodedData = decoder.decode(new Uint8Array([...data].map(c => c.charCodeAt(0))));
+
+                Papa.parse(decodedData, {
                     header: true,
                     complete: function(results) {
                         jsonData = results.data.map(obj => {
                             return {
-                                'เลขบัตรประชาชน': formatID(obj['เลขบัตรประชาชน']),
+                                'เลขบัตรประชาชน': formatID(obj['id_card']),
                                 'prefix': decodeText(obj['prefix']),
                                 'name': decodeText(obj['name']),
                                 'surname': decodeText(obj['surname']),
@@ -511,6 +516,7 @@ button.btn-primary:hover {
                                 'birthdate': obj['birthdate']
                             };
                         });
+
                         displayPreview([Object.keys(jsonData[0]), ...jsonData.map(Object.values)]);
                     },
                     error: function(error) {
