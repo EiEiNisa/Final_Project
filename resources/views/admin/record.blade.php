@@ -436,8 +436,12 @@ button.btn-primary:hover {
 
                 if (data.length === 0) return;
                 console.log(data);
-                // สร้าง Header
-                let headers = data[0];
+
+                // แปลง data เป็น array 2 มิติ
+                let dataArray = data.map(obj => Object.values(obj));
+
+                // ใช้ dataArray แทน data ในส่วนที่เหลือของโค้ด
+                let headers = dataArray[0];
                 let columnCount = headers.length;
 
                 let headerRow = document.createElement('tr');
@@ -449,18 +453,18 @@ button.btn-primary:hover {
                 tableHead.appendChild(headerRow);
 
                 // สร้างข้อมูลแถว
-                data.slice(1).forEach(rowData => {
-        let row = document.createElement('tr');
+                dataArray.slice(1).forEach(rowData => {
+                    let row = document.createElement('tr');
 
-        for (let i = 0; i < columnCount; i++) {
-            let td = document.createElement('td');
-            td.textContent = rowData[i] || "";
-            row.appendChild(td);
-            console.log("rowData[" + i + "]:", rowData[i]); // เพิ่มบรรทัดนี้
-        }
+                    for (let i = 0; i < columnCount; i++) {
+                        let td = document.createElement('td');
+                        td.textContent = rowData[i] || "";
+                        row.appendChild(td);
+                        console.log("rowData[" + i + "]:", rowData[i]); // เพิ่มบรรทัดนี้
+                    }
 
-        tableBody.appendChild(row);
-    });
+                    tableBody.appendChild(row);
+                });
             }
             </script>
 
