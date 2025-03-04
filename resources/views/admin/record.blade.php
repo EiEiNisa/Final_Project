@@ -583,7 +583,7 @@ button.btn-primary:hover {
 
                                 <!-- ส่วนอัปโหลดไฟล์ -->
                                 <div class="mb-4 p-3 border rounded">
-                                    <h7 class="mb-3">อัปโหลดไฟล์</h7>
+                                    <h6 class="mb-3">อัปโหลดไฟล์</h6>
                                     <form id="uploadForm" enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
