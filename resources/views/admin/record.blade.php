@@ -497,26 +497,11 @@ button.btn-primary:hover {
 
                 // สร้าง thead
                 let headerRow = document.createElement('tr');
-                let obj = {}; // ✅ กำหนดตัวแปร obj ก่อนใช้
-
-                headers.forEach((key, index) => {
-                    if (key === 'birthdate') {
-                        let excelDate = row[index];
-
-                        if (!isNaN(excelDate)) { // ✅ ตรวจสอบว่าค่าเป็นตัวเลข (Excel Date)
-                            let date = new Date((excelDate - 25569) * 86400000);
-                            obj[key] = date.toISOString().split("T")[0]; // แปลงเป็น YYYY-MM-DD
-                        } else if (typeof excelDate === 'string' && excelDate.includes('/')) {
-                            let parts = excelDate.split('/');
-                            obj[key] = `${parts[2]}-${parts[1]}-${parts[0]}`; // รองรับ dd/mm/yyyy
-                        } else {
-                            obj[key] = null;
-                        }
-                    } else {
-                        obj[key] = row[index] !== undefined ? row[index] : null;
-                    }
+                headers.forEach(header => {
+                    let th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
                 });
-
                 tableHead.appendChild(headerRow);
 
                 // สร้าง tbody
@@ -561,7 +546,7 @@ button.btn-primary:hover {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
                         },
                         body: JSON.stringify({
                             data: rows
@@ -578,10 +563,10 @@ button.btn-primary:hover {
                     });
             });
 
-            function showAlert(message, type = "danger") {
-                let alertModal = document.getElementById('alertModal');
-                document.getElementById('alertMessage').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-                new bootstrap.Modal(alertModal).show();
+            function showAlert(message) {
+                document.getElementById('alertMessage').textContent = message;
+                let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
             }
 
             function translateError(errorMessage) {
