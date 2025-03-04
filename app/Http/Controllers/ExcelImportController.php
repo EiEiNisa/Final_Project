@@ -16,8 +16,6 @@ class ExcelImportController extends Controller
 {
     public function import(Request $request)
     {
-        dd($request->all()); // เพิ่มบรรทัดนี้เพื่อตรวจสอบข้อมูลที่ส่งมา
-
         $data = $request->json()->all()['data']; // รับข้อมูล JSON จาก request
 
         try {
