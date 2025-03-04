@@ -444,7 +444,162 @@ button.btn-primary:hover {
                 </div>
             </div>
 
-            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+            <script>
+            let jsonData = [];
+            let uploadedFiles = [];
+
+            document.getElementById('excelFile').addEventListener('change', function() {
+                let file = this.files[0];
+                if (!file) return;
+
+                if (uploadedFiles.includes(file.name)) {
+                    showAlert("ไฟล์ " + file.name + " ถูกอัปโหลดไปแล้ว");
+                    this.value = "";
+                    return;
+                }
+
+                let fileExtension = file.name.split('.').pop().toLowerCase();
+
+                let reader = new FileReader();
+
+                reader.onload = function(e) {
+                    try {
+                        let data = e.target.result;
+
+                        if (fileExtension === 'csv') {
+                            parseCSV(data);
+                        } else {
+                            parseExcel(data);
+                        }
+
+                        uploadedFiles.push(file.name);
+                    } catch (error) {
+                        console.error("Error reading file:", error);
+                        showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์");
+                    }
+                };
+
+                if (fileExtension === 'csv') {
+                    reader.readAsText(file, "utf-8"); // ✅ อ่าน CSV แบบ UTF-8
+                } else {
+                    reader.readAsBinaryString(file); // ✅ อ่าน XLSX แบบ binary
+                }
+            });
+
+            function parseExcel(data) {
+                let workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
+                let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                let rawData = XLSX.utils.sheet_to_json(firstSheet, {
+                    header: 1,
+                    raw: true
+                });
+
+                jsonData = formatData(rawData);
+                displayPreview(jsonData);
+            }
+
+            function parseCSV(data) {
+                let rows = data.split("\n").map(row => row.split(","));
+
+                jsonData = formatData(rows);
+                displayPreview(jsonData);
+            }
+
+            function formatData(rawData) {
+                if (rawData.length === 0) return [];
+
+                let headers = rawData[0].map(cleanText);
+                let formattedData = rawData.slice(1).map(row => {
+                    let obj = {};
+                    headers.forEach((key, index) => {
+                        let value = row[index] !== undefined ? row[index].trim() : "";
+
+                        if (key === 'id_card') {
+                            obj[key] = fixIdCard(value);
+                        } else if (key === 'birthdate') {
+                            obj[key] = convertExcelDate(value);
+                        } else {
+                            obj[key] = cleanText(value);
+                        }
+                    });
+                    return obj;
+                });
+
+                return [headers, ...formattedData];
+            }
+
+            function fixIdCard(value) {
+                if (!value) return "";
+
+                let fixedValue = value.toString().trim();
+
+                if (fixedValue.includes("E")) {
+                    fixedValue = parseFloat(fixedValue).toFixed(0); // ✅ แปลง Scientific Notation
+                }
+
+                return fixedValue;
+            }
+
+            function convertExcelDate(value) {
+                let numericValue = parseFloat(value);
+                if (!isNaN(numericValue) && numericValue > 30000) {
+                    let unixTimestamp = (numericValue - 25569) * 86400;
+                    let date = new Date(unixTimestamp * 1000);
+                    return date.toISOString().slice(0, 10);
+                }
+                return value;
+            }
+
+            function cleanText(text) {
+                if (!text) return "";
+
+                let fixedText = text.toString().normalize("NFC");
+                fixedText = fixedText.replace(/[^\u0E00-\u0E7F\w\s]/g, ""); // ✅ ลบอักขระแปลกปลอม
+                return fixedText;
+            }
+
+            function displayPreview(data) {
+                let tableHead = document.getElementById('tableHead');
+                let tableBody = document.getElementById('tableBody');
+
+                tableHead.innerHTML = "";
+                tableBody.innerHTML = "";
+
+                if (data.length === 0) return;
+
+                let headers = data[0];
+                let columnCount = headers.length;
+
+                let headerRow = document.createElement('tr');
+                headers.forEach(header => {
+                    let th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                tableHead.appendChild(headerRow);
+
+                data.slice(1).forEach(rowData => {
+                    let row = document.createElement('tr');
+                    for (let i = 0; i < columnCount; i++) {
+                        let td = document.createElement('td');
+                        td.textContent = rowData[headers[i]] !== undefined ? rowData[headers[i]] : "";
+                        row.appendChild(td);
+                    }
+                    tableBody.appendChild(row);
+                });
+
+                document.getElementById('submitDataBtn').disabled = false;
+            }
+
+            function showAlert(message) {
+                document.getElementById('alertMessage').textContent = message;
+                let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
+            }
+            </script>
 
 
             <!--  Export File -->
