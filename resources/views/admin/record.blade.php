@@ -497,6 +497,8 @@ button.btn-primary:hover {
 
                 // สร้าง thead
                 let headerRow = document.createElement('tr');
+                let obj = {}; // ✅ กำหนดตัวแปร obj ก่อนใช้
+
                 headers.forEach((key, index) => {
                     if (key === 'birthdate') {
                         let excelDate = row[index];
