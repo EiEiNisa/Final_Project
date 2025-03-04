@@ -448,9 +448,18 @@ button.btn-primary:hover {
             <script>
             let jsonData = [];
 
+            let uploadedFiles = []; // เก็บรายชื่อไฟล์ที่อัปโหลดแล้ว
+
             document.getElementById('excelFile').addEventListener('change', function() {
                 let file = this.files[0];
                 if (!file) return;
+
+                // ตรวจสอบไฟล์ซ้ำกัน
+                if (uploadedFiles.includes(file.name)) {
+                    showAlert("ไฟล์ " + file.name + " ถูกอัปโหลดไปแล้ว");
+                    this.value = "";
+                    return;
+                }
 
                 let allowedExtensions = ['xlsx', 'xls', 'csv'];
                 let fileExtension = file.name.split('.').pop().toLowerCase();
@@ -479,6 +488,7 @@ button.btn-primary:hover {
                         console.log("JSON Data:", jsonData);
 
                         displayPreview(jsonData);
+                        uploadedFiles.push(file.name); // เพิ่มชื่อไฟล์ลงในรายการ
                     } catch (error) {
                         console.error("Error reading file:", error);
                         showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์");
