@@ -478,9 +478,13 @@ button.btn-primary:hover {
             function handleFile(file) {
                 let reader = new FileReader();
                 reader.onload = function(e) {
+                    let textData;
                     try {
-                        if (file.name.endsWith('.csv')) {
-                            parseCSV(e.target.result);
+                        // ตรวจสอบไฟล์ CSV หรือ Excel
+                        if (file.name.endsWith(".csv")) {
+                            let decoder = new TextDecoder("windows-874"); // แปลงเป็นภาษาไทย
+                            textData = decoder.decode(e.target.result);
+                            parseCSV(textData);
                         } else {
                             parseExcel(e.target.result);
                         }
@@ -490,13 +494,12 @@ button.btn-primary:hover {
                     }
                 };
 
-                if (file.name.endsWith('.csv')) {
-                    reader.readAsText(file, "ISO-8859-11"); // รองรับภาษาไทย (TIS-620)
+                if (file.name.endsWith(".csv")) {
+                    reader.readAsArrayBuffer(file); // ใช้ ArrayBuffer เพื่อใช้ TextDecoder
                 } else {
                     reader.readAsBinaryString(file);
                 }
             }
-
 
             function parseCSV(data) {
                 // ลองใช้ TextDecoder เพื่อแก้ไขการเข้ารหัสผิดเพี้ยน
