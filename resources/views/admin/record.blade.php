@@ -443,8 +443,10 @@ button.btn-primary:hover {
                     </div>
                 </div>
             </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
             <script>
             let jsonData = [];
             let uploadedFiles = [];
@@ -459,106 +461,64 @@ button.btn-primary:hover {
                     return;
                 }
 
+                let allowedExtensions = ['xlsx', 'xls', 'csv'];
                 let fileExtension = file.name.split('.').pop().toLowerCase();
 
-                let reader = new FileReader();
+                if (!allowedExtensions.includes(fileExtension)) {
+                    showAlert("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
+                    this.value = "";
+                    return;
+                }
 
+                handleFile(file);
+                uploadedFiles.push(file.name);
+            });
+
+            function handleFile(file) {
+                let reader = new FileReader();
                 reader.onload = function(e) {
                     try {
-                        let data = e.target.result;
-
-                        if (fileExtension === 'csv') {
-                            parseCSV(data);
+                        if (file.name.endsWith('.csv')) {
+                            parseCSV(e.target.result);
                         } else {
-                            parseExcel(data);
+                            parseExcel(e.target.result);
                         }
-
-                        uploadedFiles.push(file.name);
                     } catch (error) {
                         console.error("Error reading file:", error);
                         showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์");
                     }
                 };
 
-                if (fileExtension === 'csv') {
-                    reader.readAsText(file, "utf-8"); // ✅ อ่าน CSV แบบ UTF-8
+                if (file.name.endsWith('.csv')) {
+                    reader.readAsText(file);
                 } else {
-                    reader.readAsBinaryString(file); // ✅ อ่าน XLSX แบบ binary
+                    reader.readAsBinaryString(file);
                 }
-            });
+            }
 
             function parseExcel(data) {
                 let workbook = XLSX.read(data, {
                     type: 'binary'
                 });
                 let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                let rawData = XLSX.utils.sheet_to_json(firstSheet, {
-                    header: 1,
-                    raw: true
+                jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+                    header: 1
                 });
-
-                jsonData = formatData(rawData);
                 displayPreview(jsonData);
             }
 
             function parseCSV(data) {
-                let rows = data.split("\n").map(row => row.split(","));
-
-                jsonData = formatData(rows);
-                displayPreview(jsonData);
-            }
-
-            function formatData(rawData) {
-                if (rawData.length === 0) return [];
-
-                let headers = rawData[0].map(cleanText);
-                let formattedData = rawData.slice(1).map(row => {
-                    let obj = {};
-                    headers.forEach((key, index) => {
-                        let value = row[index] !== undefined ? row[index].trim() : "";
-
-                        if (key === 'id_card') {
-                            obj[key] = fixIdCard(value);
-                        } else if (key === 'birthdate') {
-                            obj[key] = convertExcelDate(value);
-                        } else {
-                            obj[key] = cleanText(value);
-                        }
-                    });
-                    return obj;
+                Papa.parse(data, {
+                    header: true,
+                    complete: function(results) {
+                        jsonData = [results.meta.fields, ...results.data.map(obj => Object.values(obj))];
+                        displayPreview(jsonData);
+                    },
+                    error: function(error) {
+                        console.error("CSV parsing error:", error);
+                        showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์ CSV");
+                    }
                 });
-
-                return [headers, ...formattedData];
-            }
-
-            function fixIdCard(value) {
-                if (!value) return "";
-
-                let fixedValue = value.toString().trim();
-
-                if (fixedValue.includes("E")) {
-                    fixedValue = parseFloat(fixedValue).toFixed(0); // ✅ แปลง Scientific Notation
-                }
-
-                return fixedValue;
-            }
-
-            function convertExcelDate(value) {
-                let numericValue = parseFloat(value);
-                if (!isNaN(numericValue) && numericValue > 30000) {
-                    let unixTimestamp = (numericValue - 25569) * 86400;
-                    let date = new Date(unixTimestamp * 1000);
-                    return date.toISOString().slice(0, 10);
-                }
-                return value;
-            }
-
-            function cleanText(text) {
-                if (!text) return "";
-
-                let fixedText = text.toString().normalize("NFC");
-                fixedText = fixedText.replace(/[^\u0E00-\u0E7F\w\s]/g, ""); // ✅ ลบอักขระแปลกปลอม
-                return fixedText;
             }
 
             function displayPreview(data) {
@@ -585,7 +545,7 @@ button.btn-primary:hover {
                     let row = document.createElement('tr');
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[headers[i]] !== undefined ? rowData[headers[i]] : "";
+                        td.textContent = rowData[i] !== undefined ? rowData[i] : "";
                         row.appendChild(td);
                     }
                     tableBody.appendChild(row);
@@ -594,13 +554,63 @@ button.btn-primary:hover {
                 document.getElementById('submitDataBtn').disabled = false;
             }
 
+            document.getElementById('submitDataBtn').addEventListener('click', async function() {
+                if (jsonData.length < 2) {
+                    showAlert('ไม่มีข้อมูลสำหรับบันทึก');
+                    return;
+                }
+
+                let headers = jsonData[0];
+                let rows = jsonData.slice(1).map(row => {
+                    let obj = {};
+                    headers.forEach((key, index) => {
+                        if (key === 'birthdate' && typeof row[index] === 'number') {
+                            let excelDate = Math.floor(row[
+                            index]); // ปัดเศษ birthdate ให้เป็นจำนวนเต็ม
+                            let unixTimestamp = (excelDate - 25569) * 86400;
+                            let date = new Date(unixTimestamp * 1000);
+                            obj[key] = date.toISOString().slice(0, 10);
+                        } else {
+                            obj[key] = row[index] !== undefined ? row[index] : null;
+                        }
+                    });
+                    return obj;
+                });
+
+                try {
+                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify({
+                            data: rows
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorResponse = await response.json();
+                        throw new Error(errorResponse.error ||
+                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
+                    }
+
+                    const result = await response.json();
+                    window.location.href = "{{ route('recorddata.index') }}";
+
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    showAlert(error.message);
+                }
+            });
+
             function showAlert(message) {
+                console.log("แจ้งเตือน:", message);
                 document.getElementById('alertMessage').textContent = message;
                 let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                 alertModal.show();
             }
             </script>
-
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
