@@ -428,39 +428,22 @@ button.btn-primary:hover {
             });
 
             function displayPreview(data) {
-                let tableHead = document.getElementById('tableHead');
                 let tableBody = document.getElementById('tableBody');
-
-                tableHead.innerHTML = "";
                 tableBody.innerHTML = "";
 
                 if (data.length === 0) return;
-                console.log(data);
 
-                // แปลง data เป็น array 2 มิติ
-                let dataArray = data.map(obj => Object.values(obj));
+                let columnCount = data[0].length;
 
-                // ใช้ dataArray แทน data ในส่วนที่เหลือของโค้ด
-                let headers = dataArray[0];
-                let columnCount = headers.length;
-
-                let headerRow = document.createElement('tr');
-                headers.forEach(header => {
-                    let th = document.createElement('th');
-                    th.textContent = header;
-                    headerRow.appendChild(th);
-                });
-                tableHead.appendChild(headerRow);
-
-                // สร้างข้อมูลแถว
-                dataArray.slice(1).forEach(rowData => {
+                data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
 
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] || "";
+                        td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
+                        td.style.width = "auto"; // ให้ขนาดเซลล์ปรับอัตโนมัติ
+                        td.style.wordBreak = "break-word"; // ให้ข้อความขึ้นบรรทัดใหม่ถ้ายาวเกิน
                         row.appendChild(td);
-                        console.log("rowData[" + i + "]:", rowData[i]); // เพิ่มบรรทัดนี้
                     }
 
                     tableBody.appendChild(row);
