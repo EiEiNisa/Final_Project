@@ -477,7 +477,7 @@ button.btn-primary:hover {
                         });
 
                         console.log("JSON Data:", jsonData);
-                        
+
                         displayPreview(jsonData);
                     } catch (error) {
                         console.error("Error reading file:", error);
@@ -554,17 +554,25 @@ button.btn-primary:hover {
                             data: rows
                         })
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json(); // แปลง response เป็น JSON
+                    })
                     .then(result => {
                         showAlert(result.message);
                     })
                     .catch(error => {
                         console.error("Error:", error);
+                        console.log(error.message); // เพิ่ม console.log
+                        console.log(error.response); // เพิ่ม console.log
                         showAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
                     });
             });
 
             function showAlert(message) {
+                console.log(message); // เพิ่ม console.log
                 document.getElementById('alertMessage').textContent = message;
                 let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                 alertModal.show();
