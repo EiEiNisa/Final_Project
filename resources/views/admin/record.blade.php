@@ -452,6 +452,12 @@ button.btn-primary:hover {
                 let file = this.files[0];
                 if (!file) return;
 
+                let fileExtension = file.name.split('.').pop().toLowerCase();
+                if (fileExtension !== 'xlsx' && fileExtension !== 'csv') {
+                    showAlert("กรุณาเลือกไฟล์ Excel (.xlsx) หรือ CSV (.csv)");
+                    return;
+                }
+
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     let data = new Uint8Array(e.target.result);
@@ -543,7 +549,7 @@ button.btn-primary:hover {
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        let errorMessage = translateError(error.message);
+                        let errorMessage = translateError(error.message); // แปลงข้อความ error
                         showAlert(errorMessage);
                     });
             });
@@ -564,6 +570,7 @@ button.btn-primary:hover {
 
                 return errorTranslations[errorMessage] || "เกิดข้อผิดพลาดที่ไม่รู้จัก";
             }
+            </script>
             </script>
 
             <!--  Export File -->
