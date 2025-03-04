@@ -402,6 +402,81 @@ button.btn-primary:hover {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <h5 class="mt-4">ตัวอย่างข้อมูลที่นำเข้า</h5>
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>id_card</th>
+                                            <th>prefix</th>
+                                            <th>name</th>
+                                            <th>surname</th>
+                                            <th>housenumber</th>
+                                            <th>birthdate</th>
+                                            <th>age</th>
+                                            <th>blood_group</th>
+                                            <th>weight</th>
+                                            <th>height</th>
+                                            <th>waistline</th>
+                                            <th>bmi</th>
+                                            <th>phone</th>
+                                            <th>idline</th>
+                                            <th>user_name</th>
+                                            <th>sys</th>
+                                            <th>dia</th>
+                                            <th>pul</th>
+                                            <th>body_temp</th>
+                                            <th>blood_oxygen</th>
+                                            <th>blood_level</th>
+                                            <th>zone1_normal</th>
+                                            <th>zone1_risk_group</th>
+                                            <th>zone1_good_control</th>
+                                            <th>zone1_watch_out</th>
+                                            <th>zone1_danger</th>
+                                            <th>zone1_critical</th>
+                                            <th>zone1_complications</th>
+                                            <th>zone1_heart</th>
+                                            <th>zone1_cerebrovascular</th>
+                                            <th>zone1_kidney</th>
+                                            <th>zone1_eye</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>7777777777777</td>
+                                            <td>นางสาว</td>
+                                            <td>ณิศวรา</td>
+                                            <td>บางทราย</td>
+                                            <td>102/35</td>
+                                            <td>2003-01-30</td>
+                                            <td>22</td>
+                                            <td>A</td>
+                                            <td>52</td>
+                                            <td>170</td>
+                                            <td>26</td>
+                                            <td>22.9</td>
+                                            <td>123456789</td>
+                                            <td>pp</td>
+                                            <td>ข้าวสารเสก</td>
+                                            <td>55</td>
+                                            <td>55</td>
+                                            <td>55</td>
+                                            <td>37</td>
+                                            <td>12</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <form id="uploadForm" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
@@ -411,7 +486,7 @@ button.btn-primary:hover {
                                 </div>
                             </form>
 
-                            <h5 class="mt-4">ตัวอย่างข้อมูล</h5>
+                            <h5 class="mt-4">preview</h5>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered" id="previewTable">
                                     <thead>
@@ -629,7 +704,6 @@ button.btn-primary:hover {
                 }, 100);
             }
             </script>
-
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
