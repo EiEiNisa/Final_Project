@@ -444,29 +444,44 @@ button.btn-primary:hover {
                 </div>
             </div>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
-            <script>
-            let jsonData = [];
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></>
+<script>
+    let jsonData = [];
 
-            document.getElementById('excelFile').addEventListener('change', function() {
-                let file = this.files[0];
-                if (!file) return;
+    document.getElementById('excelFile').addEventListener('change', function() {
+        let file = this.files[0];
+        if (!file) return;
 
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    let data = new Uint8Array(e.target.result);
-                    let workbook = XLSX.read(data, {
-                        type: 'array'
-                    });
-                    let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    jsonData = XLSX.utils.sheet_to_json(firstSheet, {
-                        header: 1
-                    });
+        let allowedExtensions = ['xlsx', 'xls', 'csv'];
+        let fileExtension = file.name.split('.').pop().toLowerCase();
 
-                    displayPreview(jsonData);
-                };
-                reader.readAsArrayBuffer(file);
+        if (!allowedExtensions.includes(fileExtension)) {
+            showAlert("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
+            this.value = ""; // รีเซ็ต input file
+            return;
+        }
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let data = e.target.result; // เปลี่ยนจาก Uint8Array เป็น binary string
+            let workbook = XLSX.read(data, {
+                type: 'binary' // ระบุ type เป็น binary
             });
+
+            console.log("Workbook:", workbook); // ✅ ตรวจสอบข้อมูล Workbook
+
+            let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+                header: 1
+            });
+
+            console.log("JSON Data:", jsonData); // ✅ ตรวจสอบข้อมูล JSON ก่อนใช้จริง
+
+            displayPreview(jsonData);
+        };
+
+        reader.readAsBinaryString(file); // ใช้ readAsBinaryString แทน readAsArrayBuffer
+    });
 
             function displayPreview(data) {
                 let tableHead = document.getElementById('tableHead');

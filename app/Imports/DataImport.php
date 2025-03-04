@@ -16,7 +16,7 @@ class DataImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
 {
-    
+    $data = $request->json()->all()['data'];
     //dd($row);
 
     $recorddata = Recorddata::firstOrCreate([
