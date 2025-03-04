@@ -188,19 +188,26 @@ button.btn-primary:hover {
 #previewTable {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
 }
 
-#previewTable th {
+#previewTable th,
+#previewTable td {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
-    width: 150px;
+    min-width: 100px;
+    /* ป้องกันข้อความเบียดกัน */
+    white-space: nowrap;
+    /* ป้องกันข้อความซ้อนกัน */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-#previewTable td {
-    word-break: break-word;
+#previewTable tbody td {
     white-space: normal;
+    /* อนุญาตให้ขึ้นบรรทัดใหม่ */
+    word-break: break-word;
+    /* ให้ข้อความขึ้นบรรทัดใหม่หากยาวเกิน */
 }
 
 @media (max-width: 768px) {
@@ -428,26 +435,44 @@ button.btn-primary:hover {
             });
 
             function displayPreview(data) {
+                let tableHead = document.getElementById('tableHead');
                 let tableBody = document.getElementById('tableBody');
+
+                tableHead.innerHTML = "";
                 tableBody.innerHTML = "";
 
                 if (data.length === 0) return;
+                console.log("Raw Data:", data);
 
-                let columnCount = data[0].length;
+                // แปลงข้อมูลให้อยู่ในรูปแบบอาร์เรย์ 2 มิติ
+                let dataArray = data.map(row => Array.isArray(row) ? row : Object.values(row));
 
-                data.slice(1).forEach(rowData => {
+                let headers = dataArray[0]; // หัวตาราง
+                let columnCount = headers.length; // นับจำนวนคอลัมน์ทั้งหมด
+
+                // 🟢 สร้างส่วน thead
+                let headerRow = document.createElement('tr');
+                headers.forEach(header => {
+                    let th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                tableHead.appendChild(headerRow);
+
+                // 🟢 สร้างส่วน tbody
+                dataArray.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
 
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
-                        td.style.width = "auto"; // ให้ขนาดเซลล์ปรับอัตโนมัติ
-                        td.style.wordBreak = "break-word"; // ให้ข้อความขึ้นบรรทัดใหม่ถ้ายาวเกิน
+                        td.textContent = rowData[i] !== undefined ? rowData[i] : ""; // ป้องกันค่าหาย
                         row.appendChild(td);
                     }
 
                     tableBody.appendChild(row);
                 });
+
+                console.log("Processed Data:", dataArray);
             }
             </script>
 
