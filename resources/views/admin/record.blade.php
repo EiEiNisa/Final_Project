@@ -444,7 +444,7 @@ button.btn-primary:hover {
                 </div>
             </div>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
             <script>
             let jsonData = [];
             let uploadedFiles = [];
@@ -490,7 +490,7 @@ button.btn-primary:hover {
                 if (fileExtension === 'csv') {
                     reader.readAsText(file, 'utf-8'); // ✅ อ่าน CSV เป็น UTF-8
                 } else {
-                    reader.readAsArrayBuffer(file); // ✅ อ่านไฟล์ xlsx แบบ array buffer
+                    reader.readAsArrayBuffer(file); // ✅ อ่านไฟล์ XLSX แบบ array buffer
                 }
             });
 
@@ -500,7 +500,8 @@ button.btn-primary:hover {
                 });
                 let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                 let rawData = XLSX.utils.sheet_to_json(firstSheet, {
-                    header: 1
+                    header: 1,
+                    raw: true
                 });
 
                 jsonData = formatData(rawData);
@@ -641,6 +642,7 @@ button.btn-primary:hover {
                 alertModal.show();
             }
             </script>
+
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
