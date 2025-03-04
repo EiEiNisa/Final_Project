@@ -447,14 +447,12 @@ button.btn-primary:hover {
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script>
             let jsonData = [];
-
-            let uploadedFiles = []; // เก็บรายชื่อไฟล์ที่อัปโหลดแล้ว
+            let uploadedFiles = [];
 
             document.getElementById('excelFile').addEventListener('change', function() {
                 let file = this.files[0];
                 if (!file) return;
 
-                // ตรวจสอบไฟล์ซ้ำกัน
                 if (uploadedFiles.includes(file.name)) {
                     showAlert("ไฟล์ " + file.name + " ถูกอัปโหลดไปแล้ว");
                     this.value = "";
@@ -471,35 +469,92 @@ button.btn-primary:hover {
                 }
 
                 let reader = new FileReader();
+
                 reader.onload = function(e) {
                     try {
                         let data = e.target.result;
-                        let workbook = XLSX.read(data, {
-                            type: 'binary'
-                        });
 
-                        console.log("Workbook:", workbook);
+                        if (fileExtension === 'csv') {
+                            parseCSV(data);
+                        } else {
+                            parseExcel(data);
+                        }
 
-                        let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                        jsonData = XLSX.utils.sheet_to_json(firstSheet, {
-                            header: 1
-                        });
-
-                        console.log("JSON Data:", jsonData);
-
-                        displayPreview(jsonData);
-                        uploadedFiles.push(file.name); // เพิ่มชื่อไฟล์ลงในรายการ
+                        uploadedFiles.push(file.name);
                     } catch (error) {
                         console.error("Error reading file:", error);
                         showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์");
                     }
                 };
 
-                reader.readAsBinaryString(file);
+                if (fileExtension === 'csv') {
+                    reader.readAsText(file, 'utf-8'); // ✅ อ่าน CSV เป็น UTF-8
+                } else {
+                    reader.readAsBinaryString(file);
+                }
             });
 
+            function parseExcel(data) {
+                let workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
+                let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                let rawData = XLSX.utils.sheet_to_json(firstSheet, {
+                    header: 1
+                });
+
+                jsonData = formatData(rawData);
+                displayPreview(jsonData);
+            }
+
+            function parseCSV(data) {
+                let rows = data.split("\n").map(row => row.split(","));
+                jsonData = formatData(rows);
+                displayPreview(jsonData);
+            }
+
+            function formatData(rawData) {
+                if (rawData.length === 0) return [];
+
+                let headers = rawData[0];
+                let formattedData = rawData.slice(1).map(row => {
+                    let obj = {};
+
+                    headers.forEach((key, index) => {
+                        let value = row[index] !== undefined ? row[index].trim() : null;
+
+                        if (key === 'birthdate' && value) {
+                            obj[key] = convertExcelDate(value);
+                        } else {
+                            obj[key] = cleanText(value);
+                        }
+                    });
+
+                    return obj;
+                });
+
+                return [headers, ...formattedData];
+            }
+
+            function convertExcelDate(value) {
+                let numericValue = parseFloat(value);
+                if (!isNaN(numericValue)) {
+                    let unixTimestamp = (numericValue - 25569) * 86400;
+                    let date = new Date(unixTimestamp * 1000);
+                    return date.toISOString().slice(0, 10);
+                }
+                return value;
+            }
+
+            function cleanText(text) {
+                if (!text) return "";
+
+                let fixedText = text.normalize("NFC"); // ✅ แก้ปัญหาอักขระเพี้ยน
+                fixedText = fixedText.replace(/[^\u0E00-\u0E7F\w\s]/g, ""); // ✅ ลบอักขระแปลกปลอม
+                return fixedText;
+            }
+
             function displayPreview(data) {
-                console.log("Data for preview:", data);
                 let tableHead = document.getElementById('tableHead');
                 let tableBody = document.getElementById('tableBody');
 
@@ -523,7 +578,7 @@ button.btn-primary:hover {
                     let row = document.createElement('tr');
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] !== undefined ? rowData[i] : "";
+                        td.textContent = rowData[headers[i]] !== undefined ? rowData[headers[i]] : "";
                         row.appendChild(td);
                     }
                     tableBody.appendChild(row);
@@ -539,20 +594,7 @@ button.btn-primary:hover {
                 }
 
                 let headers = jsonData[0];
-                let rows = jsonData.slice(1).map(row => {
-                    let obj = {};
-                    headers.forEach((key, index) => {
-                        if (key === 'birthdate' && typeof row[index] === 'number') {
-                            let excelDate = row[index];
-                            let unixTimestamp = (excelDate - 25569) * 86400;
-                            let date = new Date(unixTimestamp * 1000);
-                            obj[key] = date.toISOString().slice(0, 10);
-                        } else {
-                            obj[key] = row[index] !== undefined ? row[index] : null;
-                        }
-                    });
-                    return obj;
-                });
+                let rows = jsonData.slice(1);
 
                 try {
                     const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
@@ -567,7 +609,6 @@ button.btn-primary:hover {
                     });
 
                     if (!response.ok) {
-                        // 🔹 ตรวจสอบว่าเซิร์ฟเวอร์ส่ง JSON กลับมาหรือไม่
                         const errorResponse = await response.json();
                         throw new Error(errorResponse.error ||
                             `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
@@ -583,12 +624,12 @@ button.btn-primary:hover {
             });
 
             function showAlert(message) {
-                console.log("แจ้งเตือน:", message);
                 document.getElementById('alertMessage').textContent = message;
                 let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                 alertModal.show();
             }
             </script>
+
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
