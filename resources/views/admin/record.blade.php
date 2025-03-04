@@ -583,7 +583,7 @@ button.btn-primary:hover {
             });
 
             function showAlert(message) {
-                console.log(message);
+                console.log("แจ้งเตือน:", message);
                 document.getElementById('alertMessage').textContent = message;
                 let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                 alertModal.show();
