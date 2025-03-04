@@ -405,7 +405,8 @@ button.btn-primary:hover {
                             <h5 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h5>
 
                             <!-- คำอธิบายคอลัมน์ -->
-                            <div class="mb-3 p-2 border bg-light rounded">
+                            <div class="mb-3 p-2 border bg-light rounded"
+                                style="background-color: #F4A261; color: #ffffff;">
                                 <h7>คำอธิบายคอลัมน์</h7>
                                 <ul>
                                     <li><strong>id_card</strong> - หมายเลขบัตรประชาชน</li>
@@ -425,7 +426,8 @@ button.btn-primary:hover {
                             </div>
 
                             <!-- ส่วนแสดงตัวอย่าง -->
-                            <div class="mb-4 p-3 border rounded">
+                            <div class="mb-4 p-3 border rounded" style="background-color: #264653; color: #ffffff;">
+                                <h5 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h5>
                                 <h5 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h5>
                                 <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
