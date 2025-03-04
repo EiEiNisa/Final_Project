@@ -393,7 +393,6 @@ button.btn-primary:hover {
                 นำเข้าข้อมูล
             </button>
 
-            <!-- Modal -->
             <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -412,7 +411,6 @@ button.btn-primary:hover {
                                 </div>
                             </form>
 
-                            <!-- ส่วนแสดงตัวอย่างข้อมูล -->
                             <h5 class="mt-4">ตัวอย่างข้อมูล</h5>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered" id="previewTable">
@@ -423,9 +421,24 @@ button.btn-primary:hover {
                                 </table>
                             </div>
 
-                            <!-- ปุ่มส่งข้อมูล -->
                             <button type="button" class="btn btn-success w-100 mt-3" id="submitDataBtn"
                                 disabled>บันทึกข้อมูลลงฐานข้อมูล</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="alertModalLabel">แจ้งเตือน</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="alertMessage">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
                         </div>
                     </div>
                 </div>
@@ -492,7 +505,7 @@ button.btn-primary:hover {
 
             document.getElementById('submitDataBtn').addEventListener('click', function() {
                 if (jsonData.length < 2) {
-                    alert('ไม่มีข้อมูลสำหรับบันทึก');
+                    showAlert('ไม่มีข้อมูลสำหรับบันทึก');
                     return;
                 }
 
@@ -500,7 +513,16 @@ button.btn-primary:hover {
                 let rows = jsonData.slice(1).map(row => {
                     let obj = {};
                     headers.forEach((key, index) => {
-                        obj[key] = row[index] !== undefined ? row[index] : null;
+                        // ตรวจสอบและแปลง birthdate
+                        if (key === 'birthdate' && typeof row[index] === 'number') {
+                            // แปลงตัวเลขเป็นวันที่ (สมมติว่าตัวเลขคือจำนวนวันจาก 1900-01-01)
+                            let excelDate = row[index];
+                            let unixTimestamp = (excelDate - 25569) * 86400;
+                            let date = new Date(unixTimestamp * 1000);
+                            obj[key] = date.toISOString().slice(0, 10); // แปลงเป็น YYYY-MM-DD
+                        } else {
+                            obj[key] = row[index] !== undefined ? row[index] : null;
+                        }
                     });
                     return obj;
                 });
@@ -517,11 +539,20 @@ button.btn-primary:hover {
                     })
                     .then(response => response.json())
                     .then(result => {
-                        alert(result.message);
+                        showAlert(result.message);
                         location.reload();
                     })
-                    .catch(error => console.error("Error:", error));
+                    .catch(error => {
+                        console.error("Error:", error);
+                        showAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+                    });
             });
+
+            function showAlert(message) {
+                document.getElementById('alertMessage').textContent = message;
+                let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                alertModal.show();
+            }
             </script>
 
             <!--  Export File -->
