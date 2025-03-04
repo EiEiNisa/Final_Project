@@ -432,7 +432,7 @@ button.btn-primary:hover {
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="alertModalLabel">แจ้งเตือน</h5>
+                            <h5 class="modal-title" id="alertModalLabel" style="color: red;">แจ้งเตือน</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="alertMessage">
@@ -543,7 +543,8 @@ button.btn-primary:hover {
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        showAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+                        let errorMessage = translateError(error.message);
+                        showAlert(errorMessage);
                     });
             });
 
@@ -551,6 +552,17 @@ button.btn-primary:hover {
                 document.getElementById('alertMessage').textContent = message;
                 let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                 alertModal.show();
+            }
+
+            function translateError(errorMessage) {
+                const errorTranslations = {
+                    "No ReaderType or WriterType could be detected. Make sure you either pass a valid extension to the filename or pass an explicit type.": "ไม่สามารถตรวจพบชนิดของไฟล์ได้ โปรดตรวจสอบว่าคุณได้ระบุนามสกุลไฟล์ที่ถูกต้อง หรือระบุชนิดไฟล์อย่างชัดเจน",
+                    // เพิ่มข้อความ error อื่นๆ และข้อความแปลภาษาไทยที่สอดคล้องกัน
+                    "Failed to fetch": "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
+                    "เกิดข้อผิดพลาดในการบันทึกข้อมูล": "เกิดข้อผิดพลาดในการบันทึกข้อมูล"
+                };
+
+                return errorTranslations[errorMessage] || "เกิดข้อผิดพลาดที่ไม่รู้จัก";
             }
             </script>
 
