@@ -188,18 +188,19 @@ button.btn-primary:hover {
 #previewTable {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 #previewTable th {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
+    width: 150px;
 }
 
 #previewTable td {
     word-break: break-word;
     white-space: normal;
-    min-width: 150px;
 }
 
 @media (max-width: 768px) {
