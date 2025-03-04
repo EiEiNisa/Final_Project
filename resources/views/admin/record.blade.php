@@ -452,34 +452,19 @@ button.btn-primary:hover {
                 let file = this.files[0];
                 if (!file) return;
 
-                let allowedExtensions = ['xlsx', 'xls', 'csv'];
-                let fileExtension = file.name.split('.').pop().toLowerCase();
-
-                if (!allowedExtensions.includes(fileExtension)) {
-                    showErrorModal("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
-                    this.value = ""; // รีเซ็ต input file
-                    return;
-                }
-
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     let data = new Uint8Array(e.target.result);
                     let workbook = XLSX.read(data, {
                         type: 'array'
                     });
-
-                    console.log("Workbook:", workbook); // ✅ ตรวจสอบข้อมูล Workbook
-
                     let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                     jsonData = XLSX.utils.sheet_to_json(firstSheet, {
                         header: 1
                     });
 
-                    console.log("JSON Data:", jsonData); // ✅ ตรวจสอบข้อมูล JSON ก่อนใช้จริง
-
                     displayPreview(jsonData);
                 };
-
                 reader.readAsArrayBuffer(file);
             });
 
@@ -558,8 +543,7 @@ button.btn-primary:hover {
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        let errorMessage = translateError(error.message); // แปลงข้อความ error
-                        showAlert(errorMessage);
+                        showAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
                     });
             });
 
@@ -567,17 +551,6 @@ button.btn-primary:hover {
                 document.getElementById('alertMessage').textContent = message;
                 let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                 alertModal.show();
-            }
-
-            function translateError(errorMessage) {
-                const errorTranslations = {
-                    "No ReaderType or WriterType could be detected. Make sure you either pass a valid extension to the filename or pass an explicit type.": "ไม่สามารถตรวจพบชนิดของไฟล์ได้ โปรดตรวจสอบว่าคุณได้ระบุนามสกุลไฟล์ที่ถูกต้อง หรือระบุชนิดไฟล์อย่างชัดเจน",
-                    // เพิ่มข้อความ error อื่นๆ และข้อความแปลภาษาไทยที่สอดคล้องกัน
-                    "Failed to fetch": "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
-                    "เกิดข้อผิดพลาดในการบันทึกข้อมูล": "เกิดข้อผิดพลาดในการบันทึกข้อมูล"
-                };
-
-                return errorTranslations[errorMessage] || "เกิดข้อผิดพลาดที่ไม่รู้จัก";
             }
             </script>
 
