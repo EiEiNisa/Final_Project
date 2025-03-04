@@ -562,14 +562,13 @@ button.btn-primary:hover {
                                 </div>
                                 <br>
                                 <!-- ปุ่มแสดงคำอธิบาย -->
-                                <button class="btn btn-info mb-3" onclick="toggleDescription()"
-                                    style="background-color: #E76F51; color: #fff; border: none;">
-                                    แสดง/ซ่อนคำอธิบายคอลัมน์
+                                <button class="btn btn-warning mb-3" onclick="toggleDescription()">
+                                    แสดงคำอธิบายคอลัมน์
                                 </button>
 
                                 <!-- คำอธิบายคอลัมน์ (ซ่อนตอนเริ่ม) -->
                                 <div id="columnDescription" class="mb-3 p-3 border rounded"
-                                    style="display: none; background-color: #F4A261; color: #fff;">
+                                    style="display: none; background-color: #f8f9fa; color: #fff;">
                                     <h6>คำอธิบายคอลัมน์</h6>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -666,7 +665,7 @@ button.btn-primary:hover {
                 }
             }
             </script>
-            
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
