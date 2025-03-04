@@ -410,8 +410,6 @@ button.btn-primary:hover {
                                     <input type="file" class="form-control" id="excelFile" name="file"
                                         accept=".xlsx, .xls, .csv" required>
                                 </div>
-                                <button type="button" class="btn btn-primary w-100"
-                                    id="previewBtn">พรีวิวข้อมูล</button>
                             </form>
 
                             <!-- ส่วนแสดงตัวอย่างข้อมูล -->
@@ -435,15 +433,11 @@ button.btn-primary:hover {
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script>
-            let jsonData = []; // ตัวแปรเก็บข้อมูลที่แปลงจากไฟล์
+            let jsonData = [];
 
-            document.getElementById('previewBtn').addEventListener('click', function() {
-                let fileInput = document.getElementById('excelFile');
-                let file = fileInput.files[0];
-                if (!file) {
-                    alert('กรุณาเลือกไฟล์ก่อน!');
-                    return;
-                }
+            document.getElementById('excelFile').addEventListener('change', function() {
+                let file = this.files[0];
+                if (!file) return;
 
                 let reader = new FileReader();
                 reader.onload = function(e) {
@@ -469,12 +463,11 @@ button.btn-primary:hover {
                 tableBody.innerHTML = "";
 
                 if (data.length === 0) return;
-                console.log("Raw Data:", data);
 
                 let headers = data[0];
                 let columnCount = headers.length;
 
-                // 🟢 สร้าง thead
+                // สร้าง thead
                 let headerRow = document.createElement('tr');
                 headers.forEach(header => {
                     let th = document.createElement('th');
@@ -483,7 +476,7 @@ button.btn-primary:hover {
                 });
                 tableHead.appendChild(headerRow);
 
-                // 🟢 สร้าง tbody
+                // สร้าง tbody
                 data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
                     for (let i = 0; i < columnCount; i++) {
@@ -494,8 +487,7 @@ button.btn-primary:hover {
                     tableBody.appendChild(row);
                 });
 
-                console.log("Processed Data:", data);
-                document.getElementById('submitDataBtn').disabled = false; // เปิดใช้งานปุ่มบันทึก
+                document.getElementById('submitDataBtn').disabled = false;
             }
 
             document.getElementById('submitDataBtn').addEventListener('click', function() {
@@ -531,7 +523,6 @@ button.btn-primary:hover {
                     .catch(error => console.error("Error:", error));
             });
             </script>
-
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
