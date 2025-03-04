@@ -191,13 +191,18 @@ button.btn-primary:hover {
     table-layout: fixed;
 }
 
-#previewTable th,
+#previewTable th {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
+}
+
 #previewTable td {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
 }
-
 
 @media (max-width: 768px) {
 
