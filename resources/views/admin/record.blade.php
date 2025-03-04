@@ -203,8 +203,8 @@ button.btn-primary:hover {
 #previewTable tbody td {
     word-break: break-word; /* ให้ข้อความขึ้นบรรทัดใหม่ถ้ายาวเกิน */
     white-space: normal; /* อนุญาตให้ขึ้นบรรทัดใหม่ */
+    vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของช่อง */
 }
-
 
 @media (max-width: 768px) {
 
