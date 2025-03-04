@@ -188,30 +188,23 @@ button.btn-primary:hover {
 #previewTable {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
-    /* ทำให้คอลัมน์แต่ละช่องมีขนาดคงที่ */
+    table-layout: fixed; /* บังคับให้แต่ละคอลัมน์มีขนาดเท่ากัน */
 }
 
-#previewTable th,
-#previewTable td {
+#previewTable th, #previewTable td {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
-    white-space: nowrap;
-    /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    /* ตัดข้อความถ้ายาวเกิน */
+    white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
+    overflow: hidden; /* ป้องกันข้อความล้น */
+    text-overflow: ellipsis; /* ถ้าข้อความยาวให้ขึ้น ... */
 }
 
-#previewTable th {
-    background-color: #f4f4f4;
+#previewTable tbody td {
+    word-break: break-word; /* ให้ข้อความขึ้นบรรทัดใหม่ถ้ายาวเกิน */
+    white-space: normal; /* อนุญาตให้ขึ้นบรรทัดใหม่ */
 }
 
-.table-responsive {
-    max-height: 400px;
-    overflow-y: auto;
-}
 
 @media (max-width: 768px) {
 
@@ -419,60 +412,29 @@ button.btn-primary:hover {
             </div>
 
             <script>
-            document.getElementById('excelFile').addEventListener('change', function(event) {
-                let file = event.target.files[0];
-                if (!file) return;
-
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    let data = new Uint8Array(e.target.result);
-                    let workbook = XLSX.read(data, {
-                        type: 'array'
-                    });
-                    let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    let jsonData = XLSX.utils.sheet_to_json(firstSheet, {
-                        header: 1
-                    });
-
-                    displayPreview(jsonData);
-                };
-                reader.readAsArrayBuffer(file);
-            });
-
             function displayPreview(data) {
-                let tableHead = document.getElementById('tableHead');
-                let tableBody = document.getElementById('tableBody');
+    let tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = "";
 
-                tableHead.innerHTML = "";
-                tableBody.innerHTML = "";
+    if (data.length === 0) return;
 
-                if (data.length === 0) return;
+    let columnCount = data[0].length;
 
-                // สร้าง Header
-                let headers = data[0];
-                let columnCount = headers.length;
+    data.slice(1).forEach(rowData => {
+        let row = document.createElement('tr');
 
-                let headerRow = document.createElement('tr');
-                headers.forEach(header => {
-                    let th = document.createElement('th');
-                    th.textContent = header;
-                    headerRow.appendChild(th);
-                });
-                tableHead.appendChild(headerRow);
+        for (let i = 0; i < columnCount; i++) {
+            let td = document.createElement('td');
+            td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
+            td.style.width = "auto"; // ให้ขนาดเซลล์ปรับอัตโนมัติ
+            td.style.wordBreak = "break-word"; // ให้ข้อความขึ้นบรรทัดใหม่ถ้ายาวเกิน
+            row.appendChild(td);
+        }
 
-                // สร้างข้อมูลแถว
-                data.slice(1).forEach(rowData => {
-                    let row = document.createElement('tr');
+        tableBody.appendChild(row);
+    });
+}
 
-                    for (let i = 0; i < columnCount; i++) {
-                        let td = document.createElement('td');
-                        td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
-                        row.appendChild(td);
-                    }
-
-                    tableBody.appendChild(row);
-                });
-            }
             </script>
 
             <!--  Export File -->
