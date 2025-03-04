@@ -497,6 +497,29 @@ button.btn-primary:hover {
                 }
             }
 
+            function parseCSV(data) {
+                Papa.parse(data, {
+                    header: true,
+                    complete: function(results) {
+                        jsonData = results.data.map(obj => {
+                            return {
+                                'เลขบัตรประชาชน': formatID(obj['เลขบัตรประชาชน']),
+                                'prefix': decodeText(obj['prefix']),
+                                'name': decodeText(obj['name']),
+                                'surname': decodeText(obj['surname']),
+                                'housenumber': obj['housenumber'],
+                                'birthdate': obj['birthdate']
+                            };
+                        });
+                        displayPreview([Object.keys(jsonData[0]), ...jsonData.map(Object.values)]);
+                    },
+                    error: function(error) {
+                        console.error("CSV parsing error:", error);
+                        showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์ CSV");
+                    }
+                });
+            }
+
             function parseExcel(data) {
                 let workbook = XLSX.read(data, {
                     type: 'binary'
@@ -505,41 +528,40 @@ button.btn-primary:hover {
                 jsonData = XLSX.utils.sheet_to_json(firstSheet, {
                     header: 1
                 });
-                jsonData = jsonData.map(row => {
-                    if (row.birthdate && typeof row.birthdate === 'number') {
-                        let excelDate = row.birthdate;
-                        let unixTimestamp = (excelDate - 25569) * 86400;
-                        let date = new Date(unixTimestamp * 1000);
-                        row.birthdate = date.toISOString().slice(0, 10);
-                    }
-                    return row;
+
+                let headers = jsonData[0];
+                jsonData = jsonData.slice(1).map(row => {
+                    let obj = {};
+                    headers.forEach((key, index) => {
+                        obj[key] = key === 'birthdate' ? formatExcelDate(row[index]) : row[index];
+                    });
+                    return obj;
                 });
-                displayPreview(jsonData);
+
+                displayPreview([headers, ...jsonData.map(Object.values)]);
             }
 
-            function parseCSV(data) {
-                Papa.parse(data, {
-                    header: true,
-                    complete: function(results) {
-                        jsonData = results.data.map(row => {
-                            // แปลงเลขบัตรประชาชนให้เป็น 13 หลัก
-                            if (row['เลขบัตรประชาชน']) {
-                                row['เลขบัตรประชาชน'] = row['เลขบัตรประชาชน'].toString();
-                                if (row['เลขบัตรประชาชน'].includes("E")) {
-                                    row['เลขบัตรประชาชน'] = parseFloat(row['เลขบัตรประชาชน'])
-                                        .toFixed(0);
-                                }
-                            }
-                            return row;
-                        });
-                        jsonData.unshift(results.meta.fields); // เพิ่ม header
-                        displayPreview(jsonData);
-                    },
-                    error: function(error) {
-                        console.error("CSV parsing error:", error);
-                        showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์ CSV");
-                    }
-                });
+            function formatID(id) {
+                if (!id) return "";
+                let num = Number(id);
+                return num.toString().padStart(13, '0');
+            }
+
+            function decodeText(text) {
+                if (!text) return "";
+                try {
+                    return decodeURIComponent(escape(text));
+                } catch (e) {
+                    return text;
+                }
+            }
+
+            function formatExcelDate(serial) {
+                if (!serial || isNaN(serial)) return serial;
+                let excelDate = Math.floor(serial);
+                let unixTimestamp = (excelDate - 25569) * 86400;
+                let date = new Date(unixTimestamp * 1000);
+                return date.toISOString().slice(0, 10);
             }
 
             function displayPreview(data) {
@@ -566,7 +588,7 @@ button.btn-primary:hover {
                     let row = document.createElement('tr');
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[headers[i]] !== undefined ? rowData[headers[i]] : "";
+                        td.textContent = rowData[i] !== undefined ? rowData[i] : "";
                         row.appendChild(td);
                     }
                     tableBody.appendChild(row);
@@ -576,7 +598,53 @@ button.btn-primary:hover {
             }
 
             document.getElementById('submitDataBtn').addEventListener('click', async function() {
-                // ... (ส่วนของการส่งข้อมูลไปยังเซิร์ฟเวอร์เหมือนเดิม)
+                if (jsonData.length < 2) {
+                    showAlert('ไม่มีข้อมูลสำหรับบันทึก');
+                    return;
+                }
+
+                let headers = jsonData[0];
+                let rows = jsonData.slice(1).map(row => {
+                    let obj = {};
+                    headers.forEach((key, index) => {
+                        if (key === 'birthdate' && typeof row[index] === 'number') {
+                            let excelDate = Math.floor(row[
+                                index]); // ปัดเศษ birthdate ให้เป็นจำนวนเต็ม
+                            let unixTimestamp = (excelDate - 25569) * 86400;
+                            let date = new Date(unixTimestamp * 1000);
+                            obj[key] = date.toISOString().slice(0, 10);
+                        } else {
+                            obj[key] = row[index] !== undefined ? row[index] : null;
+                        }
+                    });
+                    return obj;
+                });
+
+                try {
+                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify({
+                            data: rows
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorResponse = await response.json();
+                        throw new Error(errorResponse.error ||
+                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
+                    }
+
+                    const result = await response.json();
+                    window.location.href = "{{ route('recorddata.index') }}";
+
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    showAlert(error.message);
+                }
             });
 
             function showAlert(message) {
