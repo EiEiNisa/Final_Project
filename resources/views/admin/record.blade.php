@@ -191,8 +191,7 @@ button.btn-primary:hover {
     table-layout: fixed;
 }
 
-#previewTable th,
-#previewTable td {
+#previewTable th {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
@@ -200,7 +199,8 @@ button.btn-primary:hover {
 
 #previewTable td {
     word-break: break-word;
-    white-space: normal; /* เพิ่มบรรทัดนี้ */
+    white-space: normal;
+    min-width: 150px; /* ปรับค่า min-width ตามต้องการ */
 }
 
 @media (max-width: 768px) {
