@@ -502,23 +502,20 @@ button.btn-primary:hover {
             }
 
             function parseCSV(data) {
-                // ลองใช้ TextDecoder เพื่อแก้ไขการเข้ารหัสผิดเพี้ยน
-                let decoder = new TextDecoder("utf-8");
+                let decoder = new TextDecoder("windows-874"); // ลองใช้ encoding ภาษาไทย
                 let decodedData = decoder.decode(new Uint8Array([...data].map(c => c.charCodeAt(0))));
 
                 Papa.parse(decodedData, {
                     header: true,
                     complete: function(results) {
-                        jsonData = results.data.map(obj => {
-                            return {
-                                'เลขบัตรประชาชน': formatID(obj['id_card']),
-                                'prefix': decodeText(obj['prefix']),
-                                'name': decodeText(obj['name']),
-                                'surname': decodeText(obj['surname']),
-                                'housenumber': obj['housenumber'],
-                                'birthdate': obj['birthdate']
-                            };
-                        });
+                        jsonData = results.data.map(obj => ({
+                            'เลขบัตรประชาชน': formatID(obj['id_card']),
+                            'prefix': decodeText(obj['prefix']),
+                            'name': decodeText(obj['name']),
+                            'surname': decodeText(obj['surname']),
+                            'housenumber': obj['housenumber'],
+                            'birthdate': obj['birthdate']
+                        }));
 
                         displayPreview([Object.keys(jsonData[0]), ...jsonData.map(Object.values)]);
                     },
