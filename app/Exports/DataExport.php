@@ -6,8 +6,10 @@ use App\Models\Recorddata;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class DataExport implements FromCollection, WithHeadings, WithMapping
+class DataExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting
 {
     public function collection()
     {
@@ -56,7 +58,7 @@ class DataExport implements FromCollection, WithHeadings, WithMapping
     public function map($row): array
     {
         return [
-            "'" . $row->id_card, // เพิ่มเครื่องหมาย ' เพื่อให้ Excel อ่านเป็น text
+            (string) $row->id_card, // แปลงให้เป็น String โดยตรง
             $row->prefix,
             $row->name,
             $row->surname,
@@ -70,7 +72,14 @@ class DataExport implements FromCollection, WithHeadings, WithMapping
             $row->bmi,
             $row->phone,
             $row->idline,
-            $row->user_id
+            $row->user_name
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_TEXT, // กำหนดให้คอลัมน์ A (id_card) เป็น Text
         ];
     }
 }
