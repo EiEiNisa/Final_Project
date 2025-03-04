@@ -562,7 +562,7 @@ button.btn-primary:hover {
                                 </div>
                                 <br>
                                 <!-- ปุ่มแสดงคำอธิบาย -->
-                                <button class="btn btn-info mb-3" onclick="toggleDescription()" style="color: #fff;">
+                                <button class="btn btn-primary mb-3" onclick="toggleDescription()" style="color: #fff;">
                                     แสดงคำอธิบายคอลัมน์
                                 </button>
 
