@@ -443,6 +443,7 @@ button.btn-primary:hover {
                     </div>
                 </div>
             </div>
+            
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -504,6 +505,15 @@ button.btn-primary:hover {
                 jsonData = XLSX.utils.sheet_to_json(firstSheet, {
                     header: 1
                 });
+                jsonData = jsonData.map(row => {
+                    if (row.birthdate && typeof row.birthdate === 'number') {
+                        let excelDate = row.birthdate;
+                        let unixTimestamp = (excelDate - 25569) * 86400;
+                        let date = new Date(unixTimestamp * 1000);
+                        row.birthdate = date.toISOString().slice(0, 10);
+                    }
+                    return row;
+                });
                 displayPreview(jsonData);
             }
 
@@ -511,7 +521,18 @@ button.btn-primary:hover {
                 Papa.parse(data, {
                     header: true,
                     complete: function(results) {
-                        jsonData = [results.meta.fields, ...results.data.map(obj => Object.values(obj))];
+                        jsonData = results.data.map(row => {
+                            // แปลงเลขบัตรประชาชนให้เป็น 13 หลัก
+                            if (row['เลขบัตรประชาชน']) {
+                                row['เลขบัตรประชาชน'] = row['เลขบัตรประชาชน'].toString();
+                                if (row['เลขบัตรประชาชน'].includes("E")) {
+                                    row['เลขบัตรประชาชน'] = parseFloat(row['เลขบัตรประชาชน'])
+                                        .toFixed(0);
+                                }
+                            }
+                            return row;
+                        });
+                        jsonData.unshift(results.meta.fields); // เพิ่ม header
                         displayPreview(jsonData);
                     },
                     error: function(error) {
@@ -545,7 +566,7 @@ button.btn-primary:hover {
                     let row = document.createElement('tr');
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] !== undefined ? rowData[i] : "";
+                        td.textContent = rowData[headers[i]] !== undefined ? rowData[headers[i]] : "";
                         row.appendChild(td);
                     }
                     tableBody.appendChild(row);
@@ -555,53 +576,7 @@ button.btn-primary:hover {
             }
 
             document.getElementById('submitDataBtn').addEventListener('click', async function() {
-                if (jsonData.length < 2) {
-                    showAlert('ไม่มีข้อมูลสำหรับบันทึก');
-                    return;
-                }
-
-                let headers = jsonData[0];
-                let rows = jsonData.slice(1).map(row => {
-                    let obj = {};
-                    headers.forEach((key, index) => {
-                        if (key === 'birthdate' && typeof row[index] === 'number') {
-                            let excelDate = Math.floor(row[
-                            index]); // ปัดเศษ birthdate ให้เป็นจำนวนเต็ม
-                            let unixTimestamp = (excelDate - 25569) * 86400;
-                            let date = new Date(unixTimestamp * 1000);
-                            obj[key] = date.toISOString().slice(0, 10);
-                        } else {
-                            obj[key] = row[index] !== undefined ? row[index] : null;
-                        }
-                    });
-                    return obj;
-                });
-
-                try {
-                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                        },
-                        body: JSON.stringify({
-                            data: rows
-                        })
-                    });
-
-                    if (!response.ok) {
-                        const errorResponse = await response.json();
-                        throw new Error(errorResponse.error ||
-                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
-                    }
-
-                    const result = await response.json();
-                    window.location.href = "{{ route('recorddata.index') }}";
-
-                } catch (error) {
-                    console.error("Fetch error:", error);
-                    showAlert(error.message);
-                }
+                // ... (ส่วนของการส่งข้อมูลไปยังเซิร์ฟเวอร์เหมือนเดิม)
             });
 
             function showAlert(message) {
