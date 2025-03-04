@@ -189,7 +189,6 @@ button.btn-primary:hover {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    /* ช่วยให้คอลัมน์กว้างเท่ากัน */
 }
 
 #previewTable th,
@@ -197,8 +196,6 @@ button.btn-primary:hover {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
-    white-space: nowrap;
-    /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
 }
 
 
