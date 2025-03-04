@@ -194,7 +194,8 @@ button.btn-primary:hover {
 #previewTable th,
 #previewTable td {
     padding: 8px;
-    border: 1px solid #E0E0E0; /* เปลี่ยนสีเส้นขอบเป็นเทาอ่อน */
+    border: 1px solid #E0E0E0;
+    /* เปลี่ยนสีเส้นขอบเป็นเทาอ่อน */
     text-align: left;
     min-width: 100px;
     word-break: break-word;
@@ -204,7 +205,8 @@ button.btn-primary:hover {
     display: table;
     width: 100%;
     table-layout: fixed;
-    background-color: #E8F5E9; /* เปลี่ยนสีพื้นหลังหัวตารางเป็นเขียวอ่อน */
+    background-color: #E8F5E9;
+    /* เปลี่ยนสีพื้นหลังหัวตารางเป็นเขียวอ่อน */
 }
 
 #previewTable tbody {
@@ -216,7 +218,8 @@ button.btn-primary:hover {
 
 /* เพิ่มการตกแต่งเพิ่มเติม */
 #previewTable tr:nth-child(even) {
-    background-color: #F5F5F5; /* แถวคู่มีพื้นหลังสีเทาอ่อน */
+    background-color: #F5F5F5;
+    /* แถวคู่มีพื้นหลังสีเทาอ่อน */
 }
 
 #previewTable th {
@@ -1094,10 +1097,14 @@ button.btn-primary:hover {
                         });
                         </script>
 
-                        <a href="{{ route('admin.print', ['id' => $data->id]) }}" target="_blank"
-                            class="btn btn-warning btn-sm">
-                            <i class="fa-solid fa-print"></i>
-                        </a>
+                        <form action="{{ route('admin.print') }}" method="GET" target="_blank">
+                            @foreach ($data as $item)
+                            <input type="checkbox" name="ids[]" value="{{ $item->id }}"> {{ $item->name }}<br>
+                            @endforeach
+                            <button type="submit" class="btn btn-warning btn-sm">
+                                <i class="fa-solid fa-print"></i> พิมพ์
+                            </button>
+                        </form>
 
                     </td>
                 </tr>

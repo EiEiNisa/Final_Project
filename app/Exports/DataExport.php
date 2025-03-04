@@ -58,7 +58,7 @@ class DataExport implements FromCollection, WithHeadings, WithMapping, WithColum
     public function map($row): array
     {
         return [
-            (string) $row->id_card, // แปลงให้เป็น String โดยตรง
+            "'" . $row->id_card,
             $row->prefix,
             $row->name,
             $row->surname,
@@ -76,10 +76,11 @@ class DataExport implements FromCollection, WithHeadings, WithMapping, WithColum
         ];
     }
 
-    public function columnFormats(): array
+        public function columnFormats(): array
     {
         return [
-            'A' => NumberFormat::FORMAT_TEXT, // กำหนดให้คอลัมน์ A (id_card) เป็น Text
+            'A' => NumberFormat::FORMAT_TEXT, // บังคับให้คอลัมน์ A เป็น Text
         ];
     }
+
 }
