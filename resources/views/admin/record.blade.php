@@ -491,7 +491,7 @@ button.btn-primary:hover {
                 };
 
                 if (file.name.endsWith('.csv')) {
-                    reader.readAsText(file, "UTF-8"); // ลองบังคับอ่านเป็น UTF-8
+                    reader.readAsText(file, "ISO-8859-11"); // รองรับภาษาไทย (TIS-620)
                 } else {
                     reader.readAsBinaryString(file);
                 }
