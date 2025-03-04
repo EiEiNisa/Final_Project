@@ -188,6 +188,8 @@ button.btn-primary:hover {
 #previewTable {
     width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
+    /* 🟢 ให้ตารางปรับขนาดตามข้อมูล */
 }
 
 #previewTable th,
@@ -196,19 +198,26 @@ button.btn-primary:hover {
     border: 1px solid #ddd;
     text-align: left;
     min-width: 100px;
-    /* ป้องกันข้อความเบียดกัน */
-    white-space: nowrap;
-    /* ป้องกันข้อความซ้อนกัน */
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-break: break-word;
+    /* 🟢 ป้องกันคำยาวไม่ตัดคำ */
 }
 
-#previewTable tbody td {
-    white-space: normal;
-    /* อนุญาตให้ขึ้นบรรทัดใหม่ */
-    word-break: break-word;
-    /* ให้ข้อความขึ้นบรรทัดใหม่หากยาวเกิน */
+/* ✅ ป้องกันปัญหาหัวตาราง (thead) ไม่ตรงกับ tbody */
+#previewTable thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    /* 🟢 ให้ thead ปรับขนาดตาม tbody */
 }
+
+#previewTable tbody {
+    display: block;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 400px;
+    /* 🟢 ปรับให้มี Scroll ถ้าข้อมูลยาว */
+}
+
 
 @media (max-width: 768px) {
 
@@ -444,10 +453,8 @@ button.btn-primary:hover {
                 if (data.length === 0) return;
                 console.log("Raw Data:", data);
 
-                // 🟢 แปลงข้อมูลเป็นอาร์เรย์ 2 มิติ
                 let dataArray = data.map(row => Array.isArray(row) ? row : Object.values(row));
-
-                let headers = dataArray[0]; // 🟠 หัวตาราง
+                let headers = dataArray[0];
                 let columnCount = headers.length;
 
                 // 🟢 สร้าง thead
@@ -460,18 +467,13 @@ button.btn-primary:hover {
                 tableHead.appendChild(headerRow);
 
                 // 🟢 สร้าง tbody
-                dataArray.slice(1).forEach((rowData, index) => {
+                dataArray.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
-                    console.log(`Row ${index}:`, rowData); // 🟢 ตรวจสอบข้อมูลแต่ละแถว
-
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] !== undefined ? rowData[i] :
-                        "N/A"; // ถ้าค่า undefined ให้ใส่ "N/A"
-                        td.style.backgroundColor = "lightyellow"; // 🔥 ทดสอบสีพื้นหลัง
+                        td.textContent = rowData[i] !== undefined ? rowData[i] : "";
                         row.appendChild(td);
                     }
-
                     tableBody.appendChild(row);
                 });
 
