@@ -477,7 +477,7 @@ button.btn-primary:hover {
                         });
 
                         console.log("JSON Data:", jsonData);
-
+                        
                         displayPreview(jsonData);
                     } catch (error) {
                         console.error("Error reading file:", error);
@@ -486,6 +486,7 @@ button.btn-primary:hover {
                 };
 
                 reader.readAsBinaryString(file);
+                dd($request->all());
             });
 
             function displayPreview(data) {
@@ -570,7 +571,7 @@ button.btn-primary:hover {
                 alertModal.show();
             }
             </script>
-            
+
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
 
