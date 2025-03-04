@@ -444,13 +444,13 @@ button.btn-primary:hover {
                 if (data.length === 0) return;
                 console.log("Raw Data:", data);
 
-                // แปลงข้อมูลให้อยู่ในรูปแบบอาร์เรย์ 2 มิติ
+                // 🟢 แปลงข้อมูลเป็นอาร์เรย์ 2 มิติ (ป้องกัน Object แปลกๆ)
                 let dataArray = data.map(row => Array.isArray(row) ? row : Object.values(row));
 
-                let headers = dataArray[0]; // หัวตาราง
-                let columnCount = headers.length; // นับจำนวนคอลัมน์ทั้งหมด
+                let headers = dataArray[0]; // 🟠 หัวตาราง (row ที่ 0)
+                let columnCount = headers.length; // จำนวนคอลัมน์ทั้งหมด
 
-                // 🟢 สร้างส่วน thead
+                // 🟢 สร้างส่วน thead (หัวตาราง)
                 let headerRow = document.createElement('tr');
                 headers.forEach(header => {
                     let th = document.createElement('th');
@@ -459,13 +459,13 @@ button.btn-primary:hover {
                 });
                 tableHead.appendChild(headerRow);
 
-                // 🟢 สร้างส่วน tbody
+                // 🟢 สร้างส่วน tbody (แถวข้อมูล)
                 dataArray.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
 
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] !== undefined ? rowData[i] : ""; // ป้องกันค่าหาย
+                        td.textContent = rowData[i] !== undefined ? rowData[i] : ""; // ป้องกันคอลัมน์ขาด
                         row.appendChild(td);
                     }
 
