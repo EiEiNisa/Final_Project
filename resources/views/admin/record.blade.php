@@ -477,7 +477,7 @@ button.btn-primary:hover {
                         if (fileExtension === 'csv') {
                             parseCSV(data);
                         } else {
-                            parseExcel(data);
+                            parseExcel(e.target.result);
                         }
 
                         uploadedFiles.push(file.name);
@@ -490,13 +490,13 @@ button.btn-primary:hover {
                 if (fileExtension === 'csv') {
                     reader.readAsText(file, 'utf-8'); // ✅ อ่าน CSV เป็น UTF-8
                 } else {
-                    reader.readAsBinaryString(file);
+                    reader.readAsArrayBuffer(file); // ✅ อ่านไฟล์ xlsx แบบ array buffer
                 }
             });
 
             function parseExcel(data) {
                 let workbook = XLSX.read(data, {
-                    type: 'binary'
+                    type: 'array'
                 });
                 let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                 let rawData = XLSX.utils.sheet_to_json(firstSheet, {
@@ -516,29 +516,41 @@ button.btn-primary:hover {
             function formatData(rawData) {
                 if (rawData.length === 0) return [];
 
-                let headers = rawData[0];
+                let headers = rawData[0].map(cleanText);
                 let formattedData = rawData.slice(1).map(row => {
                     let obj = {};
-
                     headers.forEach((key, index) => {
                         let value = row[index] !== undefined ? row[index].trim() : null;
 
-                        if (key === 'birthdate' && value) {
+                        if (key === 'id_card') {
+                            obj[key] = fixIdCard(value);
+                        } else if (key === 'birthdate') {
                             obj[key] = convertExcelDate(value);
                         } else {
                             obj[key] = cleanText(value);
                         }
                     });
-
                     return obj;
                 });
 
                 return [headers, ...formattedData];
             }
 
+            function fixIdCard(value) {
+                if (!value) return "";
+
+                let fixedValue = value.toString().trim();
+
+                if (fixedValue.includes("E")) {
+                    fixedValue = parseFloat(fixedValue).toFixed(0); // ✅ ป้องกัน Scientific Notation
+                }
+
+                return fixedValue;
+            }
+
             function convertExcelDate(value) {
                 let numericValue = parseFloat(value);
-                if (!isNaN(numericValue)) {
+                if (!isNaN(numericValue) && numericValue > 30000) {
                     let unixTimestamp = (numericValue - 25569) * 86400;
                     let date = new Date(unixTimestamp * 1000);
                     return date.toISOString().slice(0, 10);
@@ -549,7 +561,7 @@ button.btn-primary:hover {
             function cleanText(text) {
                 if (!text) return "";
 
-                let fixedText = text.normalize("NFC"); // ✅ แก้ปัญหาอักขระเพี้ยน
+                let fixedText = text.toString().normalize("NFC");
                 fixedText = fixedText.replace(/[^\u0E00-\u0E7F\w\s]/g, ""); // ✅ ลบอักขระแปลกปลอม
                 return fixedText;
             }
@@ -629,7 +641,6 @@ button.btn-primary:hover {
                 alertModal.show();
             }
             </script>
-
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
