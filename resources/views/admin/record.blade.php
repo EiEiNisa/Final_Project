@@ -489,7 +489,7 @@ button.btn-primary:hover {
             });
 
             function displayPreview(data) {
-                console.log("Data for preview:", data); // ตรวจสอบข้อมูลที่ส่งมา
+                console.log("Data for preview:", data);
                 let tableHead = document.getElementById('tableHead');
                 let tableBody = document.getElementById('tableBody');
 
@@ -522,7 +522,7 @@ button.btn-primary:hover {
                 document.getElementById('submitDataBtn').disabled = false;
             }
 
-            document.getElementById('submitDataBtn').addEventListener('click', function() {
+            document.getElementById('submitDataBtn').addEventListener('click', async function() {
                 if (jsonData.length < 2) {
                     showAlert('ไม่มีข้อมูลสำหรับบันทึก');
                     return;
@@ -544,7 +544,8 @@ button.btn-primary:hover {
                     return obj;
                 });
 
-                fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
+                try {
+                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -553,26 +554,23 @@ button.btn-primary:hover {
                         body: JSON.stringify({
                             data: rows
                         })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json(); // แปลง response เป็น JSON
-                    })
-                    .then(result => {
-                        showAlert(result.message);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        console.log(error.message); // เพิ่ม console.log
-                        console.log(error.response); // เพิ่ม console.log
-                        showAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
                     });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Network response was not ok: ${response.status} - ${errorText}`);
+                    }
+
+                    const result = await response.json();
+                    showAlert(result.message);
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    showAlert("เกิดข้อผิดพลาดในการติดต่อ Server: " + error.message);
+                }
             });
 
             function showAlert(message) {
-                console.log(message); // เพิ่ม console.log
+                console.log(message);
                 document.getElementById('alertMessage').textContent = message;
                 let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
                 alertModal.show();
