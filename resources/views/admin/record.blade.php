@@ -1107,11 +1107,8 @@ button.btn-primary:hover {
                         <div class="modal fade" id="printModal" tabindex="-1" aria-labelledby="printModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <!-- ขยายขนาด Modal -->
-                                <div class="modal-content shadow-lg rounded-4">
-                                    <!-- เพิ่มเงาและขอบโค้ง -->
+                                <div class="modal-content shadow-sm rounded-3">
                                     <div class="modal-header bg-primary text-white">
-                                        <!-- เปลี่ยนสีหัวข้อ -->
                                         <h5 class="modal-title" id="printModalLabel">
                                             <i class="fa-solid fa-print"></i> เลือกข้อมูลที่ต้องการพิมพ์
                                         </h5>
@@ -1121,34 +1118,32 @@ button.btn-primary:hover {
                                     <div class="modal-body">
                                         <form id="printForm" action="{{ route('admin.print') }}" method="GET"
                                             target="_blank">
-                                            <div class="d-flex align-items-center mb-3 p-2 border-bottom">
+                                            <div class="mb-2">
                                                 <input type="checkbox" id="selectAll" class="form-check-input me-2">
                                                 <label for="selectAll" class="form-check-label fw-bold text-primary">
                                                     เลือกทั้งหมด
                                                 </label>
                                             </div>
-                                            <div class="row">
+                                            <div class="overflow-auto" style="max-height: 400px;">
+                                                <!-- ทำให้เลื่อนดูได้ -->
                                                 @foreach ($recorddata as $item)
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded-3 mb-2 shadow-sm">
-                                                        <input class="form-check-input" type="checkbox" name="ids[]"
-                                                            value="{{ $item->id }}" id="check{{ $item->id }}">
-                                                        <label class="form-check-label" for="check{{ $item->id }}">
-                                                            <i class="fa-solid fa-user"></i> {{ $item->name }}
-                                                        </label>
-                                                    </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ids[]"
+                                                        value="{{ $item->id }}" id="check{{ $item->id }}">
+                                                    <label class="form-check-label" for="check{{ $item->id }}">
+                                                        {{ $item->name }}
+                                                    </label>
                                                 </div>
                                                 @endforeach
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="modal-footer bg-light">
-                                        <button type="button" class="btn btn-secondary rounded-pill px-4"
-                                            data-bs-dismiss="modal">
+                                    <div class="modal-footer d-flex justify-content-end">
+                                        <!-- ปุ่มชิดขวา -->
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                             <i class="fa-solid fa-xmark"></i> ยกเลิก
                                         </button>
-                                        <button type="submit" class="btn btn-primary rounded-pill px-4"
-                                            onclick="submitPrintForm()">
+                                        <button type="submit" class="btn btn-primary ms-2" onclick="submitPrintForm()">
                                             <i class="fa-solid fa-print"></i> พิมพ์
                                         </button>
                                     </div>
