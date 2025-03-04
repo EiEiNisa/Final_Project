@@ -1097,8 +1097,8 @@ button.btn-primary:hover {
                         });
                         </script>
 
-                        <form action="{{ route('admin.print) }}" method="GET" target="_blank">
-                            @foreach ($data as $item)
+                        <form action="{{ route('admin.print') }}" method="GET" target="_blank">
+                            @foreach ($recorddata as $item)
                             <input type="checkbox" name="ids[]" value="{{ $item->id }}"> {{ $item->name }}<br>
                             @endforeach
                             <button type="submit" class="btn btn-warning btn-sm">
