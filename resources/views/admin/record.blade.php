@@ -561,24 +561,46 @@ button.btn-primary:hover {
                                     </table>
                                 </div>
                                 <br>
-                                <!-- คำอธิบายคอลัมน์ -->
-                                <div class="mb-3 p-2 border bg-light rounded">
-                                    <h9>คำอธิบายคอลัมน์</h9>
-                                    <ul>
-                                        <li><strong>id_card</strong> - หมายเลขบัตรประชาชน</li>
-                                        <li><strong>prefix</strong> - คำนำหน้า (นาย, นางสาว ฯลฯ)</li>
-                                        <li><strong>name</strong> - ชื่อจริง</li>
-                                        <li><strong>surname</strong> - นามสกุล</li>
-                                        <li><strong>housenumber</strong> - บ้านเลขที่</li>
-                                        <li><strong>birthdate</strong> - วันเกิด (YYYY-MM-DD)</li>
-                                        <li><strong>age</strong> - อายุ</li>
-                                        <li><strong>blood_group</strong> - กรุ๊ปเลือด (A, B, AB, O)</li>
-                                        <li><strong>weight</strong> - น้ำหนัก (กิโลกรัม)</li>
-                                        <li><strong>height</strong> - ส่วนสูง (เซนติเมตร)</li>
-                                        <li><strong>bmi</strong> - ดัชนีมวลกาย</li>
-                                        <li><strong>phone</strong> - เบอร์โทรศัพท์</li>
-                                        <li><strong>user_name</strong> - ชื่อผู้ใช้งาน</li>
-                                    </ul>
+                                <!-- ปุ่มแสดงคำอธิบาย -->
+                                <button class="btn btn-info mb-3" onclick="toggleDescription()"
+                                    style="background-color: #E76F51; color: #fff; border: none;">
+                                    แสดง/ซ่อนคำอธิบายคอลัมน์
+                                </button>
+
+                                <!-- คำอธิบายคอลัมน์ (ซ่อนตอนเริ่ม) -->
+                                <div id="columnDescription" class="mb-3 p-3 border rounded"
+                                    style="display: none; background-color: #F4A261; color: #fff;">
+                                    <h6>คำอธิบายคอลัมน์</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li><strong>id_card</strong> - หมายเลขบัตรประชาชน</li>
+                                                <li><strong>prefix</strong> - คำนำหน้า (นาย, นางสาว ฯลฯ)</li>
+                                                <li><strong>name</strong> - ชื่อจริง</li>
+                                                <li><strong>surname</strong> - นามสกุล</li>
+                                                <li><strong>housenumber</strong> - บ้านเลขที่</li>
+                                                <li><strong>birthdate</strong> - วันเกิด (YYYY-MM-DD)</li>
+                                                <li><strong>age</strong> - อายุ</li>
+                                                <li><strong>blood_group</strong> - กรุ๊ปเลือด (A, B, AB, O)</li>
+                                                <li><strong>weight</strong> - น้ำหนัก (กิโลกรัม)</li>
+                                                <li><strong>height</strong> - ส่วนสูง (เซนติเมตร)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li><strong>bmi</strong> - ดัชนีมวลกาย</li>
+                                                <li><strong>phone</strong> - เบอร์โทรศัพท์</li>
+                                                <li><strong>user_name</strong> - ชื่อผู้ใช้งาน</li>
+                                                <li><strong>sys</strong> - ความดันตัวบน</li>
+                                                <li><strong>dia</strong> - ความดันตัวล่าง</li>
+                                                <li><strong>pul</strong> - อัตราการเต้นของหัวใจ</li>
+                                                <li><strong>body_temp</strong> - อุณหภูมิร่างกาย</li>
+                                                <li><strong>blood_oxygen</strong> - ออกซิเจนในเลือด</li>
+                                                <li><strong>blood_level</strong> - ระดับน้ำตาลในเลือด</li>
+                                                <li><strong>zone1_normal</strong> - ค่าโซน 1 ปกติ</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- ส่วนอัปโหลดไฟล์ -->
@@ -607,7 +629,7 @@ button.btn-primary:hover {
                                         </table>
                                     </div>
                                 </div>
-                                
+
                                 <!-- ปุ่ม Submit -->
                                 <button type="button" class="btn btn-success w-100" id="submitDataBtn"
                                     disabled>นำเข้าข้อมูล</button>
@@ -634,6 +656,17 @@ button.btn-primary:hover {
                 </div>
             </div>
 
+            <script>
+            function toggleDescription() {
+                var desc = document.getElementById("columnDescription");
+                if (desc.style.display === "none") {
+                    desc.style.display = "block";
+                } else {
+                    desc.style.display = "none";
+                }
+            }
+            </script>
+            
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
