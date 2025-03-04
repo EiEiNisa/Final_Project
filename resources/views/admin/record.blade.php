@@ -402,10 +402,31 @@ button.btn-primary:hover {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <h5 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h5>
+
+                            <!-- คำอธิบายคอลัมน์ -->
+                            <div class="mb-3 p-2 border bg-light rounded">
+                                <h7>คำอธิบายคอลัมน์</h7>
+                                <ul>
+                                    <li><strong>id_card</strong> - หมายเลขบัตรประชาชน</li>
+                                    <li><strong>prefix</strong> - คำนำหน้า (นาย, นางสาว ฯลฯ)</li>
+                                    <li><strong>name</strong> - ชื่อจริง</li>
+                                    <li><strong>surname</strong> - นามสกุล</li>
+                                    <li><strong>housenumber</strong> - บ้านเลขที่</li>
+                                    <li><strong>birthdate</strong> - วันเกิด (YYYY-MM-DD)</li>
+                                    <li><strong>age</strong> - อายุ</li>
+                                    <li><strong>blood_group</strong> - กรุ๊ปเลือด (A, B, AB, O)</li>
+                                    <li><strong>weight</strong> - น้ำหนัก (กิโลกรัม)</li>
+                                    <li><strong>height</strong> - ส่วนสูง (เซนติเมตร)</li>
+                                    <li><strong>bmi</strong> - ดัชนีมวลกาย</li>
+                                    <li><strong>phone</strong> - เบอร์โทรศัพท์</li>
+                                    <li><strong>user_name</strong> - ชื่อผู้ใช้งาน</li>
+                                </ul>
+                            </div>
 
                             <!-- ส่วนแสดงตัวอย่าง -->
                             <div class="mb-4 p-3 border rounded">
-                                <h5 class="mb-3">ตัวอย่างข้อมูล</h5>
+                                <h5 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h5>
                                 <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                         <thead>
@@ -577,7 +598,7 @@ button.btn-primary:hover {
 
                                 <!-- ส่วน Preview -->
                                 <div class="mb-4 p-3 border rounded">
-                                    <h5 class="mb-3">Preview</h5>
+                                    <h5 class="mb-3">ตัวอย่างข้อมูลที่นำเข้า</h5>
                                     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                         <table class="table table-bordered" id="previewTable">
                                             <thead>
