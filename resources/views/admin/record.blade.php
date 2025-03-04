@@ -505,7 +505,7 @@ button.btn-primary:hover {
                     return obj;
                 });
 
-                fetch("{{ secure_url('import') }}", {
+                fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
