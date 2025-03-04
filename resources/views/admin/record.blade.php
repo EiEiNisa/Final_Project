@@ -402,7 +402,7 @@ button.btn-primary:hover {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <h5 class="mt-4">ตัวอย่างข้อมูลที่นำเข้า</h5>
+                            <h5 class="mt-4">ตัวอย่าง</h5>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
                                     <thead>
@@ -439,6 +439,45 @@ button.btn-primary:hover {
                                             <th>zone1_cerebrovascular</th>
                                             <th>zone1_kidney</th>
                                             <th>zone1_eye</th>
+                                            <th>zone1_foot</th>
+                                            <th>zone2_normal</th>
+                                            <th>zone2_risk_group</th>
+                                            <th>zone2_good_control</th>
+                                            <th>zone2_watch_out</th>
+                                            <th>zone2_danger</th>
+                                            <th>zone2_critical</th>
+                                            <th>zone2_complications</th>
+                                            <th>zone2_heart</th>
+                                            <th>zone2_eye</th>
+                                            <th>diabetes</th>
+                                            <th>cerebral_artery</th>
+                                            <th>kidney</th>
+                                            <th>blood_pressure</th>
+                                            <th>heart</th>
+                                            <th>eye</th>
+                                            <th>other</th>
+                                            <th>other_text</th>
+                                            <th>drink</th>
+                                            <th>drink_sometimes</th>
+                                            <th>dont_drin</th>
+                                            <th>sometime_smoke</th>
+                                            <th>smoke</th>
+                                            <th>dont_smoke</th>
+                                            <th>troubled</th>
+                                            <th>dont_live</th>
+                                            <th>bored</th>
+                                            <th>help_yourself</th>
+                                            <th>can_help</th>
+                                            <th>cant_help</th>
+                                            <th>caregiver</th>
+                                            <th>have_caregiver</th>
+                                            <th>no_caregiver</th>
+                                            <th>group1</th>
+                                            <th>group2</th>
+                                            <th>group3</th>
+                                            <th>house</th>
+                                            <th>society</th>
+                                            <th>bed_ridden</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -472,6 +511,44 @@ button.btn-primary:hover {
                                             <td>0</td>
                                             <td>1</td>
                                             <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
                                             <td>1</td>
                                         </tr>
                                     </tbody>
