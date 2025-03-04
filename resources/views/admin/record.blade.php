@@ -444,9 +444,9 @@ button.btn-primary:hover {
                 </div>
             </div>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js">
-            <script >
-                let jsonData = [];
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+            <script>
+            let jsonData = [];
 
             document.getElementById('excelFile').addEventListener('change', function() {
                 let file = this.files[0];
@@ -457,33 +457,39 @@ button.btn-primary:hover {
 
                 if (!allowedExtensions.includes(fileExtension)) {
                     showAlert("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
-                    this.value = ""; // รีเซ็ต input file
+                    this.value = "";
                     return;
                 }
 
                 let reader = new FileReader();
                 reader.onload = function(e) {
-                    let data = e.target.result; // เปลี่ยนจาก Uint8Array เป็น binary string
-                    let workbook = XLSX.read(data, {
-                        type: 'binary' // ระบุ type เป็น binary
-                    });
+                    try {
+                        let data = e.target.result;
+                        let workbook = XLSX.read(data, {
+                            type: 'binary'
+                        });
 
-                    console.log("Workbook:", workbook); // ✅ ตรวจสอบข้อมูล Workbook
+                        console.log("Workbook:", workbook);
 
-                    let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    jsonData = XLSX.utils.sheet_to_json(firstSheet, {
-                        header: 1
-                    });
+                        let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+                            header: 1
+                        });
 
-                    console.log("JSON Data:", jsonData); // ✅ ตรวจสอบข้อมูล JSON ก่อนใช้จริง
+                        console.log("JSON Data:", jsonData);
 
-                    displayPreview(jsonData);
+                        displayPreview(jsonData);
+                    } catch (error) {
+                        console.error("Error reading file:", error);
+                        showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์");
+                    }
                 };
 
-                reader.readAsBinaryString(file); // ใช้ readAsBinaryString แทน readAsArrayBuffer
+                reader.readAsBinaryString(file);
             });
 
             function displayPreview(data) {
+                console.log("Data for preview:", data); // ตรวจสอบข้อมูลที่ส่งมา
                 let tableHead = document.getElementById('tableHead');
                 let tableBody = document.getElementById('tableBody');
 
@@ -495,7 +501,6 @@ button.btn-primary:hover {
                 let headers = data[0];
                 let columnCount = headers.length;
 
-                // สร้าง thead
                 let headerRow = document.createElement('tr');
                 headers.forEach(header => {
                     let th = document.createElement('th');
@@ -504,7 +509,6 @@ button.btn-primary:hover {
                 });
                 tableHead.appendChild(headerRow);
 
-                // สร้าง tbody
                 data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
                     for (let i = 0; i < columnCount; i++) {
@@ -528,13 +532,11 @@ button.btn-primary:hover {
                 let rows = jsonData.slice(1).map(row => {
                     let obj = {};
                     headers.forEach((key, index) => {
-                        // ตรวจสอบและแปลง birthdate
                         if (key === 'birthdate' && typeof row[index] === 'number') {
-                            // แปลงตัวเลขเป็นวันที่ (สมมติว่าตัวเลขคือจำนวนวันจาก 1900-01-01)
                             let excelDate = row[index];
                             let unixTimestamp = (excelDate - 25569) * 86400;
                             let date = new Date(unixTimestamp * 1000);
-                            obj[key] = date.toISOString().slice(0, 10); // แปลงเป็น YYYY-MM-DD
+                            obj[key] = date.toISOString().slice(0, 10);
                         } else {
                             obj[key] = row[index] !== undefined ? row[index] : null;
                         }
@@ -568,7 +570,7 @@ button.btn-primary:hover {
                 alertModal.show();
             }
             </script>
-
+            
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
 
