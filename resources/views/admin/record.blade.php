@@ -188,14 +188,17 @@ button.btn-primary:hover {
 #previewTable {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* ช่วยให้คอลัมน์กว้างเท่ากัน */
+    table-layout: fixed;
+    /* ช่วยให้คอลัมน์กว้างเท่ากัน */
 }
 
-#previewTable th, #previewTable td {
+#previewTable th,
+#previewTable td {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
-    white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
+    white-space: nowrap;
+    /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
 }
 
 
@@ -387,10 +390,9 @@ button.btn-primary:hover {
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">นำเข้าข้อมูล</button>
                             </form>
-
                             <!-- ส่วนแสดงตัวอย่างข้อมูล -->
                             <h5 class="mt-4">ตัวอย่างข้อมูล</h5>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered" id="previewTable">
                                     <thead>
                                         <tr id="tableHead"></tr>
@@ -398,7 +400,6 @@ button.btn-primary:hover {
                                     <tbody id="tableBody"></tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
