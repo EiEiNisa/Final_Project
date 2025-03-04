@@ -120,7 +120,12 @@ class ExcelImportController extends Controller
                     'society' => filter_var($row['society'], FILTER_VALIDATE_BOOLEAN),
                     'bed_ridden' => filter_var($row['bed_ridden'], FILTER_VALIDATE_BOOLEAN),
                 ]);
-    }
-}
+            } // ปิด foreach
+
+            return response()->json(['message' => 'นำเข้าข้อมูลสำเร็จ!'], 200);
+        } catch (\Exception $e) {
+            Log::error('Import error:', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
+        }
     }
 }
