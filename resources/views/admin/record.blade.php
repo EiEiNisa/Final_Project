@@ -444,13 +444,13 @@ button.btn-primary:hover {
                 if (data.length === 0) return;
                 console.log("Raw Data:", data);
 
-                // 🟢 แปลงข้อมูลเป็นอาร์เรย์ 2 มิติ (ป้องกัน Object แปลกๆ)
+                // 🟢 แปลงข้อมูลเป็นอาร์เรย์ 2 มิติ
                 let dataArray = data.map(row => Array.isArray(row) ? row : Object.values(row));
 
-                let headers = dataArray[0]; // 🟠 หัวตาราง (row ที่ 0)
-                let columnCount = headers.length; // จำนวนคอลัมน์ทั้งหมด
+                let headers = dataArray[0]; // 🟠 หัวตาราง
+                let columnCount = headers.length;
 
-                // 🟢 สร้างส่วน thead (หัวตาราง)
+                // 🟢 สร้าง thead
                 let headerRow = document.createElement('tr');
                 headers.forEach(header => {
                     let th = document.createElement('th');
@@ -459,13 +459,16 @@ button.btn-primary:hover {
                 });
                 tableHead.appendChild(headerRow);
 
-                // 🟢 สร้างส่วน tbody (แถวข้อมูล)
-                dataArray.slice(1).forEach(rowData => {
+                // 🟢 สร้าง tbody
+                dataArray.slice(1).forEach((rowData, index) => {
                     let row = document.createElement('tr');
+                    console.log(`Row ${index}:`, rowData); // 🟢 ตรวจสอบข้อมูลแต่ละแถว
 
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] !== undefined ? rowData[i] : ""; // ป้องกันคอลัมน์ขาด
+                        td.textContent = rowData[i] !== undefined ? rowData[i] :
+                        "N/A"; // ถ้าค่า undefined ให้ใส่ "N/A"
+                        td.style.backgroundColor = "lightyellow"; // 🔥 ทดสอบสีพื้นหลัง
                         row.appendChild(td);
                     }
 
