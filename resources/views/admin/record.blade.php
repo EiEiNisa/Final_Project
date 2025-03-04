@@ -402,7 +402,7 @@ button.btn-primary:hover {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <h5 class="mt-4">ตัวอย่าง</h5>
+                            <h7 class="mt-4">ตัวอย่าง</h7>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
                                     <thead>
@@ -550,10 +550,14 @@ button.btn-primary:hover {
                                             <td>0</td>
                                             <td>0</td>
                                             <td>1</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>1</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <br>
                             <form id="uploadForm" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
@@ -563,7 +567,7 @@ button.btn-primary:hover {
                                 </div>
                             </form>
 
-                            <h5 class="mt-4">preview</h5>
+                            <h7 class="mt-4">preview</h7>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered" id="previewTable">
                                     <thead>
