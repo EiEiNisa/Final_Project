@@ -191,17 +191,15 @@ button.btn-primary:hover {
     table-layout: fixed;
 }
 
-#previewTable th {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
-    white-space: nowrap;
-}
-
+#previewTable th,
 #previewTable td {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
+}
+
+#previewTable td {
+    word-break: break-word; /* เพิ่มบรรทัดนี้ */
 }
 
 @media (max-width: 768px) {
