@@ -185,6 +185,23 @@ button.btn-primary:hover {
     cursor: pointer;
 }
 
+#previewTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    /* ช่วยให้คอลัมน์กว้างเท่ากัน */
+}
+
+#previewTable th,
+#previewTable td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
+    /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
+}
+
+
 @media (max-width: 768px) {
 
     .title {
@@ -419,23 +436,29 @@ button.btn-primary:hover {
 
                 if (data.length === 0) return;
 
+                // ดึง Header (แถวแรก)
+                let headers = data[0];
+                let columnCount = headers.length;
+
                 // สร้างหัวตาราง
                 let headerRow = document.createElement('tr');
-                data[0].forEach(header => {
+                headers.forEach(header => {
                     let th = document.createElement('th');
                     th.textContent = header;
                     headerRow.appendChild(th);
                 });
                 tableHead.appendChild(headerRow);
 
-                // แสดงข้อมูลทุกแถว
+                // สร้างข้อมูลในตารางให้จำนวนคอลัมน์ตรงกัน
                 data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
-                    rowData.forEach(cell => {
+
+                    for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
-                        td.textContent = cell;
+                        td.textContent = rowData[i] || ""; // ถ้าข้อมูลไม่มีให้เติมค่าว่าง
                         row.appendChild(td);
-                    });
+                    }
+
                     tableBody.appendChild(row);
                 });
             }
