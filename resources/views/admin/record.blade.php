@@ -405,7 +405,7 @@ button.btn-primary:hover {
 
                             <!-- ส่วนแสดงตัวอย่าง -->
                             <div class="mb-4 p-3 border rounded">
-                                <h7 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h7>
+                                <h6 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h6>
                                 <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                         <thead>
@@ -597,7 +597,7 @@ button.btn-primary:hover {
 
                                 <!-- ส่วน Preview -->
                                 <div class="mb-4 p-3 border rounded">
-                                    <h7 class="mb-3">ตัวอย่างข้อมูลที่นำเข้า</h7>
+                                    <h6 class="mb-3">ตัวอย่างข้อมูลที่นำเข้า</h6>
                                     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                         <table class="table table-bordered" id="previewTable">
                                             <thead>
