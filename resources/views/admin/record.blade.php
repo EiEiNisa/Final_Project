@@ -445,8 +445,7 @@ button.btn-primary:hover {
             </div>
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js">
-            < /> <
-            script >
+            <script >
                 let jsonData = [];
 
             document.getElementById('excelFile').addEventListener('change', function() {
