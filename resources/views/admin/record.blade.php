@@ -562,13 +562,13 @@ button.btn-primary:hover {
                                 </div>
                                 <br>
                                 <!-- ปุ่มแสดงคำอธิบาย -->
-                                <button class="btn btn-warning mb-3" onclick="toggleDescription()">
+                                <button class="btn btn-warning mb-3" onclick="toggleDescription()" style="color: #fff;">
                                     แสดงคำอธิบายคอลัมน์
                                 </button>
 
                                 <!-- คำอธิบายคอลัมน์ (ซ่อนตอนเริ่ม) -->
                                 <div id="columnDescription" class="mb-3 p-3 border rounded"
-                                    style="display: none; background-color: #f8f9fa; color: #fff;">
+                                    style="display: none; background-color: #f8f9fa; color: #020364;">
                                     <h6>คำอธิบายคอลัมน์</h6>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -579,24 +579,71 @@ button.btn-primary:hover {
                                                 <li><strong>surname</strong> - นามสกุล</li>
                                                 <li><strong>housenumber</strong> - บ้านเลขที่</li>
                                                 <li><strong>birthdate</strong> - วันเกิด (YYYY-MM-DD)</li>
-                                                <li><strong>age</strong> - อายุ</li>
+                                                <li><strong>age</strong> - อายุ (ปี)</li>
                                                 <li><strong>blood_group</strong> - กรุ๊ปเลือด (A, B, AB, O)</li>
                                                 <li><strong>weight</strong> - น้ำหนัก (กิโลกรัม)</li>
                                                 <li><strong>height</strong> - ส่วนสูง (เซนติเมตร)</li>
+                                                <li><strong>waist</strong> - รอบเอว (เซนติเมตร)</li>
+                                                <li><strong>bmi</strong> - ดัชนีมวลกาย (Body Mass Index)</li>
+                                                <li><strong>phone</strong> - เบอร์โทรศัพท์</li>
+                                                <li><strong>user_name</strong> - ชื่อผู้ใช้งานระบบ</li>
+                                                <li><strong>sys</strong> - ความดันโลหิตค่าบน (mmHg)</li>
+                                                <li><strong>dia</strong> - ความดันโลหิตค่าล่าง (mmHg)</li>
+                                                <li><strong>pul</strong> - อัตราการเต้นของหัวใจ (ครั้งต่อนาที)</li>
+                                                <li><strong>body_temp</strong> - อุณหภูมิร่างกาย (°C)</li>
+                                                <li><strong>blood_oxygen</strong> - ปริมาณออกซิเจนในเลือด (%)</li>
+                                                <li><strong>blood_level</strong> - ระดับน้ำตาลในเลือด (mg/dL)</li>
+                                                <li><strong>zone1_normal</strong> - ค่าโซน 1 ปกติ</li>
+                                                <li><strong>zone1_risk_group</strong> - ค่าโซน 1 กลุ่มเสี่ยง</li>
+                                                <li><strong>zone1_good_control</strong> - ค่าโซน 1 คุมได้ดี</li>
+                                                <li><strong>zone1_watch_out</strong> - ค่าโซน 1 เฝ้าระวัง</li>
+                                                <li><strong>zone1_danger</strong> - ค่าโซน 1 อันตราย</li>
+                                                <li><strong>zone1_critical</strong> - ค่าโซน 1 วิกฤต</li>
+                                                <li><strong>zone1_complications</strong> - ค่าโซน 1 โรคแทรกซ้อน</li>
+                                                <li><strong>zone1_heart</strong> - ค่าโซน 1 หัวใจ</li>
+                                                <li><strong>zone1_cerebrovascular </strong> - ค่าโซน 1 หลอดเลือดสมอง</li>
+                                                <li><strong>zone1_kidney</strong> - ค่าโซน 1 ไต</li>
+                                                <li><strong>zone1_eye</strong> - ค่าโซน 1 ตา</li>
+                                                <li><strong>zone1_foot</strong> - ค่าโซน 1 เท้า</li>
+                                                <li><strong>zone2_normal</strong> - ค่าโซน 2 ปกติ</li>
+                                                <li><strong>zone2_risk_group</strong> - ค่าโซน 2 กลุ่มเสี่ยง</li>
+                                                <li><strong>zone2_good_control</strong> - ค่าโซน 2 คุมได้ดี</li>
+                                                <li><strong>zone2_watch_out</strong> - ค่าโซน 2 เฝ้าระวัง</li>
+                                                <li><strong>zone2_danger</strong> - ค่าโซน 2 อันตราย</li>
+                                                <li><strong>zone2_critical</strong> - ค่าโซน 2 วิกฤต</li>
+                                                <li><strong>zone2_complications</strong> - ค่าโซน 2 โรคแทรกซ้อน</li>
+                                                <li><strong>zone2_heart</strong> - ค่าโซน 2 ปกติ</li>
+                                                <li><strong>zone2_eye</strong> - ค่าโซน 2 ตา</li>
                                             </ul>
                                         </div>
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><strong>bmi</strong> - ดัชนีมวลกาย</li>
-                                                <li><strong>phone</strong> - เบอร์โทรศัพท์</li>
-                                                <li><strong>user_name</strong> - ชื่อผู้ใช้งาน</li>
-                                                <li><strong>sys</strong> - ความดันตัวบน</li>
-                                                <li><strong>dia</strong> - ความดันตัวล่าง</li>
-                                                <li><strong>pul</strong> - อัตราการเต้นของหัวใจ</li>
-                                                <li><strong>body_temp</strong> - อุณหภูมิร่างกาย</li>
-                                                <li><strong>blood_oxygen</strong> - ออกซิเจนในเลือด</li>
-                                                <li><strong>blood_level</strong> - ระดับน้ำตาลในเลือด</li>
-                                                <li><strong>zone1_normal</strong> - ค่าโซน 1 ปกติ</li>
+                                                <li><strong>diabetes</strong> - เป็นโรคเบาหวานหรือไม่</li>
+                                                <li><strong>blood_pressure</strong> - เป็นโรคความดันโลหิตสูงหรือไม่</li>
+                                                <li><strong>heart</strong> - เป็นโรคหัวใจหรือไม่</li>
+                                                <li><strong>kidney</strong> - เป็นโรคไตหรือไม่</li>
+                                                <li><strong>cerebral_artery</strong> - เป็นโรคหลอดเลือดสมองหรือไม่</li>
+                                                <li><strong>eye</strong> - มีภาวะโรคเกี่ยวกับดวงตาหรือไม่</li>
+                                                <li><strong>other</strong> - โรคประจำตัวอื่น ๆ</li>
+                                                <li><strong>other_text</strong> - รายละเอียดโรคอื่น ๆ</li>
+                                                <li><strong>drink</strong> - ดื่มเครื่องดื่มแอลกอฮอล์หรือไม่</li>
+                                                <li><strong>drink_sometimes</strong> - ดื่มแอลกอฮอล์เป็นครั้งคราว</li>
+                                                <li><strong>dont_drink</strong> - ไม่ดื่มแอลกอฮอล์</li>
+                                                <li><strong>smoke</strong> - สูบบุหรี่หรือไม่</li>
+                                                <li><strong>sometime_smoke</strong> - สูบบุหรี่เป็นครั้งคราว</li>
+                                                <li><strong>dont_smoke</strong> - ไม่สูบบุหรี่</li>
+                                                <li><strong>troubled</strong> - มีความเครียดหรือไม่</li>
+                                                <li><strong>dont_live</strong> - เคยมีความคิดอยากฆ่าตัวตาย</li>
+                                                <li><strong>bored</strong> - มีอาการเบื่อหน่ายหรือหมดกำลังใจ</li>
+                                                <li><strong>help_yourself</strong> - สามารถดูแลตัวเองได้หรือไม่</li>
+                                                <li><strong>can_help</strong> - สามารถช่วยเหลือตัวเองได้</li>
+                                                <li><strong>cant_help</strong> - ไม่สามารถช่วยเหลือตัวเองได้</li>
+                                                <li><strong>caregiver</strong> - มีผู้ดูแลหรือไม่</li>
+                                                <li><strong>have_caregiver</strong> - มีผู้ดูแล</li>
+                                                <li><strong>no_caregiver</strong> - ไม่มีผู้ดูแล</li>
+                                                <li><strong>house</strong> - มีบ้านเป็นของตัวเองหรือไม่</li>
+                                                <li><strong>society</strong> - การมีส่วนร่วมในสังคม</li>
+                                                <li><strong>bed_ridden</strong> - เป็นผู้ป่วยติดเตียงหรือไม่</li>
                                             </ul>
                                         </div>
                                     </div>
