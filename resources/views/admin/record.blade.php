@@ -400,13 +400,16 @@ button.btn-primary:hover {
                         </div>
                         <div class="modal-body">
                             <form id="uploadForm" enctype="multipart/form-data">
+                                @csrf
                                 <div class="mb-3">
                                     <label for="excelFile" class="form-label fw-bold">เลือกไฟล์ Excel หรือ CSV</label>
                                     <input type="file" class="form-control" id="excelFile" name="file"
                                         accept=".xlsx, .xls, .csv" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">นำเข้าข้อมูล</button>
+                                <button type="button" class="btn btn-primary w-100"
+                                    id="previewBtn">พรีวิวข้อมูล</button>
                             </form>
+
                             <!-- ส่วนแสดงตัวอย่างข้อมูล -->
                             <h5 class="mt-4">ตัวอย่างข้อมูล</h5>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
@@ -417,15 +420,26 @@ button.btn-primary:hover {
                                     <tbody id="tableBody"></tbody>
                                 </table>
                             </div>
+
+                            <!-- ปุ่มส่งข้อมูล -->
+                            <button type="button" class="btn btn-success w-100 mt-3" id="submitDataBtn"
+                                disabled>บันทึกข้อมูลลงฐานข้อมูล</button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script>
-            document.getElementById('excelFile').addEventListener('change', function(event) {
-                let file = event.target.files[0];
-                if (!file) return;
+            let jsonData = []; // ตัวแปรเก็บข้อมูลที่แปลงจากไฟล์
+
+            document.getElementById('previewBtn').addEventListener('click', function() {
+                let fileInput = document.getElementById('excelFile');
+                let file = fileInput.files[0];
+                if (!file) {
+                    alert('กรุณาเลือกไฟล์ก่อน!');
+                    return;
+                }
 
                 let reader = new FileReader();
                 reader.onload = function(e) {
@@ -434,7 +448,7 @@ button.btn-primary:hover {
                         type: 'array'
                     });
                     let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    let jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+                    jsonData = XLSX.utils.sheet_to_json(firstSheet, {
                         header: 1
                     });
 
@@ -453,8 +467,7 @@ button.btn-primary:hover {
                 if (data.length === 0) return;
                 console.log("Raw Data:", data);
 
-                let dataArray = data.map(row => Array.isArray(row) ? row : Object.values(row));
-                let headers = dataArray[0];
+                let headers = data[0];
                 let columnCount = headers.length;
 
                 // 🟢 สร้าง thead
@@ -467,7 +480,7 @@ button.btn-primary:hover {
                 tableHead.appendChild(headerRow);
 
                 // 🟢 สร้าง tbody
-                dataArray.slice(1).forEach(rowData => {
+                data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
                     for (let i = 0; i < columnCount; i++) {
                         let td = document.createElement('td');
@@ -477,9 +490,44 @@ button.btn-primary:hover {
                     tableBody.appendChild(row);
                 });
 
-                console.log("Processed Data:", dataArray);
+                console.log("Processed Data:", data);
+                document.getElementById('submitDataBtn').disabled = false; // เปิดใช้งานปุ่มบันทึก
             }
+
+            document.getElementById('submitDataBtn').addEventListener('click', function() {
+                if (jsonData.length < 2) {
+                    alert('ไม่มีข้อมูลสำหรับบันทึก');
+                    return;
+                }
+
+                let headers = jsonData[0];
+                let rows = jsonData.slice(1).map(row => {
+                    let obj = {};
+                    headers.forEach((key, index) => {
+                        obj[key] = row[index] !== undefined ? row[index] : null;
+                    });
+                    return obj;
+                });
+
+                fetch("{{ route('import') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify({
+                            data: rows
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        alert(result.message);
+                        location.reload();
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
             </script>
+
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>

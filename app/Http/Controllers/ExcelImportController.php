@@ -2,45 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\DataImport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Recorddata;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class ExcelImportController extends Controller
 {
     public function import(Request $request)
     {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $originalName = $file->getClientOriginalName();
-            $filePath = $file->getRealPath();
-            $extension = $file->getClientOriginalExtension();
+        $data = $request->input('data');
 
-            $newFileName = time() . '.' . $extension;
-            $file->move(public_path('uploads'), $newFileName);
-
-            $newFilePath = public_path('uploads') . '/' . $newFileName;
-
-            \Log::info('Starting Excel import...');
-            try {
-                Excel::import(new DataImport($newFileName, $newFilePath), $newFilePath);
-                \Log::info('Import successful');
-                return redirect()->route('recorddata.index')->with('success', 'นำเข้าข้อมูลสำเร็จ!');
-            } catch (\Exception $e) {
-                \Log::error('Error during import: ' . $e->getMessage());
-                return redirect()->route('recorddata.index')->with('error', 'เกิดข้อผิดพลาดระหว่างการนำเข้า: ' . $e->getMessage());
-            }
-        } else {
-            // ถ้าไม่เจอไฟล์
-            return redirect()->route('recorddata.index')->with('error', 'กรุณาอัปโหลดไฟล์!');
+        if (!$data || count($data) == 0) {
+            return response()->json(['message' => 'ไม่มีข้อมูลที่สามารถบันทึกได้'], 400);
         }
 
-        // ถ้าหากไม่เจอเงื่อนไขใดๆ ก็ redirect ไปยังหน้าเดิม
-        return redirect()->route('recorddata.index')->with('error', 'กรุณาอัปโหลดไฟล์!');
+        try {
+            foreach ($data as $row) {
+                $recorddata = Recorddata::firstOrCreate([
+                    'id_card' => $row['id_card'],
+                    'prefix' => $row['prefix'],
+                    'name' => $row['name'],
+                    'surname' => $row['surname'],
+                    'housenumber' => $row['housenumber'],
+                    'birthdate' => $row['birthdate'],
+                    'age' => $row['age'],
+                    'blood_group' => $row['blood_group'],
+                    'weight' => $row['weight'],
+                    'height' => $row['height'],
+                    'waistline' => $row['waistline'],
+                    'bmi' => $row['bmi'],
+                    'phone' => $row['phone'],
+                    'idline' => $row['idline'],
+                    'user_id' => $row['user_id'],
+                ]);
+            }
+
+            return response()->json(['message' => 'นำเข้าข้อมูลสำเร็จ!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
+        }
     }
 }
-
-
-
