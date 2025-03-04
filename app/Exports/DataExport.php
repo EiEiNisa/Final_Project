@@ -26,7 +26,7 @@ class DataExport implements FromCollection, WithHeadings, WithMapping
             'bmi', 
             'phone', 
             'idline',
-            'user_id'
+            'user_name'
         )
         ->get()
         ->makeHidden(['id', 'created_at', 'updated_at']); // ซ่อนคอลัมน์ที่ไม่ต้องการ
@@ -49,7 +49,7 @@ class DataExport implements FromCollection, WithHeadings, WithMapping
             'bmi', 
             'phone', 
             'idline',
-            'user_id'
+            'user_name'
         ];
     }
 
