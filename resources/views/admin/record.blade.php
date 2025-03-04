@@ -405,7 +405,7 @@ button.btn-primary:hover {
 
                             <!-- ส่วนแสดงตัวอย่าง -->
                             <div class="mb-4 p-3 border rounded">
-                                <h8 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h8>
+                                <h7 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h7>
                                 <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                         <thead>
@@ -561,35 +561,9 @@ button.btn-primary:hover {
                                     </table>
                                 </div>
                                 <br>
-                                <!-- ส่วนอัปโหลดไฟล์ -->
-                                <div class="mb-4 p-3 border rounded">
-                                    <h8 class="mb-3">อัปโหลดไฟล์</h8>
-                                    <form id="uploadForm" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="mb-3">
-                                            <label for="excelFile" class="form-label fw-bold">เลือกไฟล์ Excel หรือ
-                                                CSV</label>
-                                            <input type="file" class="form-control" id="excelFile" name="file"
-                                                accept=".xlsx, .xls, .csv" required>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- ส่วน Preview -->
-                                <div class="mb-4 p-3 border rounded">
-                                    <h8 class="mb-3">ตัวอย่างข้อมูลที่นำเข้า</h8>
-                                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                                        <table class="table table-bordered" id="previewTable">
-                                            <thead>
-                                                <tr id="tableHead"></tr>
-                                            </thead>
-                                            <tbody id="tableBody"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
                                 <!-- คำอธิบายคอลัมน์ -->
                                 <div class="mb-3 p-2 border bg-light rounded">
-                                    <h8>คำอธิบายคอลัมน์</h8>
+                                    <h9>คำอธิบายคอลัมน์</h9>
                                     <ul>
                                         <li><strong>id_card</strong> - หมายเลขบัตรประชาชน</li>
                                         <li><strong>prefix</strong> - คำนำหน้า (นาย, นางสาว ฯลฯ)</li>
@@ -607,6 +581,33 @@ button.btn-primary:hover {
                                     </ul>
                                 </div>
 
+                                <!-- ส่วนอัปโหลดไฟล์ -->
+                                <div class="mb-4 p-3 border rounded">
+                                    <h7 class="mb-3">อัปโหลดไฟล์</h7>
+                                    <form id="uploadForm" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="excelFile" class="form-label fw-bold">เลือกไฟล์ Excel หรือ
+                                                CSV</label>
+                                            <input type="file" class="form-control" id="excelFile" name="file"
+                                                accept=".xlsx, .xls, .csv" required>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- ส่วน Preview -->
+                                <div class="mb-4 p-3 border rounded">
+                                    <h7 class="mb-3">ตัวอย่างข้อมูลที่นำเข้า</h7>
+                                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                        <table class="table table-bordered" id="previewTable">
+                                            <thead>
+                                                <tr id="tableHead"></tr>
+                                            </thead>
+                                            <tbody id="tableBody"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
                                 <!-- ปุ่ม Submit -->
                                 <button type="button" class="btn btn-success w-100" id="submitDataBtn"
                                     disabled>นำเข้าข้อมูล</button>
