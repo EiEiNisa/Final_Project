@@ -567,14 +567,18 @@ button.btn-primary:hover {
                     });
 
                     if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Network response was not ok: ${response.status} - ${errorText}`);
+                        // 🔹 ตรวจสอบว่าเซิร์ฟเวอร์ส่ง JSON กลับมาหรือไม่
+                        const errorResponse = await response.json();
+                        throw new Error(errorResponse.error ||
+                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                     }
+
                     const result = await response.json();
                     window.location.href = "{{ route('recorddata.index') }}";
+
                 } catch (error) {
                     console.error("Fetch error:", error);
-                    showAlert("เกิดข้อผิดพลาดในการติดต่อ Server: " + error.message);
+                    showAlert(error.message);
                 }
             });
 
