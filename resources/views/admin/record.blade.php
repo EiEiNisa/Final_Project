@@ -480,9 +480,9 @@ button.btn-primary:hover {
                 reader.onload = function(e) {
                     try {
                         if (file.name.endsWith(".csv")) {
-                            let decoder = new TextDecoder("windows-874"); // ใช้ encoding ภาษาไทย
+                            let decoder = new TextDecoder("windows-874");
                             let textData = decoder.decode(e.target.result);
-                            parseCSV(textData); // ส่ง textData ตรงๆ ไป parse
+                            parseCSV(textData);
                         } else {
                             parseExcel(e.target.result);
                         }
@@ -493,7 +493,7 @@ button.btn-primary:hover {
                 };
 
                 if (file.name.endsWith(".csv")) {
-                    reader.readAsArrayBuffer(file); // ใช้ ArrayBuffer เพื่อให้ TextDecoder ใช้งานได้
+                    reader.readAsArrayBuffer(file);
                 } else {
                     reader.readAsBinaryString(file);
                 }
@@ -505,14 +505,12 @@ button.btn-primary:hover {
                     skipEmptyLines: true,
                     complete: function(results) {
                         jsonData = results.data.map(obj => {
-                            let formattedObj = {}; // เก็บข้อมูลทั้งหมด
+                            let formattedObj = {};
                             Object.keys(obj).forEach(key => {
-                                formattedObj[key] = decodeText(obj[key]); // ถอดรหัสทุกค่า
+                                formattedObj[key] = decodeText(obj[key]);
                             });
                             return formattedObj;
                         });
-
-                        // แสดง preview
                         displayPreview([Object.keys(jsonData[0]), ...jsonData.map(Object.values)]);
                     },
                     error: function(error) {
@@ -530,7 +528,6 @@ button.btn-primary:hover {
                 jsonData = XLSX.utils.sheet_to_json(firstSheet, {
                     header: 1
                 });
-
                 let headers = jsonData[0];
                 jsonData = jsonData.slice(1).map(row => {
                     let obj = {};
@@ -539,14 +536,15 @@ button.btn-primary:hover {
                     });
                     return obj;
                 });
-
                 displayPreview([headers, ...jsonData.map(Object.values)]);
             }
 
-            function formatID(id) {
-                if (!id) return "";
-                let num = Number(id);
-                return num.toString().padStart(13, '0');
+            function formatExcelDate(serial) {
+                if (!serial || isNaN(serial)) return serial;
+                let excelDate = Math.floor(serial);
+                let unixTimestamp = (excelDate - 25569) * 86400;
+                let date = new Date(unixTimestamp * 1000);
+                return date.toISOString().slice(0, 10);
             }
 
             function decodeText(text) {
@@ -558,26 +556,15 @@ button.btn-primary:hover {
                 }
             }
 
-            function formatExcelDate(serial) {
-                if (!serial || isNaN(serial)) return serial;
-                let excelDate = Math.floor(serial);
-                let unixTimestamp = (excelDate - 25569) * 86400;
-                let date = new Date(unixTimestamp * 1000);
-                return date.toISOString().slice(0, 10);
-            }
-
             function displayPreview(data) {
                 let tableHead = document.getElementById('tableHead');
                 let tableBody = document.getElementById('tableBody');
-
                 tableHead.innerHTML = "";
                 tableBody.innerHTML = "";
 
                 if (data.length === 0) return;
 
                 let headers = data[0];
-                let columnCount = headers.length;
-
                 let headerRow = document.createElement('tr');
                 headers.forEach(header => {
                     let th = document.createElement('th');
@@ -588,39 +575,23 @@ button.btn-primary:hover {
 
                 data.slice(1).forEach(rowData => {
                     let row = document.createElement('tr');
-                    for (let i = 0; i < columnCount; i++) {
+                    rowData.forEach(cell => {
                         let td = document.createElement('td');
-                        td.textContent = rowData[i] !== undefined ? rowData[i] : "";
+                        td.textContent = cell !== undefined ? cell : "";
                         row.appendChild(td);
-                    }
+                    });
                     tableBody.appendChild(row);
                 });
-
                 document.getElementById('submitDataBtn').disabled = false;
             }
 
             document.getElementById('submitDataBtn').addEventListener('click', async function() {
-                if (jsonData.length < 2) {
+                console.log("jsonData ก่อนส่งไปบันทึก:", jsonData);
+
+                if (!jsonData || jsonData.length === 0) {
                     showAlert('ไม่มีข้อมูลสำหรับบันทึก');
                     return;
                 }
-
-                let headers = jsonData[0];
-                let rows = jsonData.slice(1).map(row => {
-                    let obj = {};
-                    headers.forEach((key, index) => {
-                        if (key === 'birthdate' && typeof row[index] === 'number') {
-                            let excelDate = Math.floor(row[
-                                index]); // ปัดเศษ birthdate ให้เป็นจำนวนเต็ม
-                            let unixTimestamp = (excelDate - 25569) * 86400;
-                            let date = new Date(unixTimestamp * 1000);
-                            obj[key] = date.toISOString().slice(0, 10);
-                        } else {
-                            obj[key] = row[index] !== undefined ? row[index] : null;
-                        }
-                    });
-                    return obj;
-                });
 
                 try {
                     const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
@@ -630,7 +601,7 @@ button.btn-primary:hover {
                             "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
                         },
                         body: JSON.stringify({
-                            data: rows
+                            data: jsonData
                         })
                     });
 
@@ -641,8 +612,8 @@ button.btn-primary:hover {
                     }
 
                     const result = await response.json();
+                    console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
                     window.location.href = "{{ route('recorddata.index') }}";
-
                 } catch (error) {
                     console.error("Fetch error:", error);
                     showAlert(error.message);
@@ -652,10 +623,13 @@ button.btn-primary:hover {
             function showAlert(message) {
                 console.log("แจ้งเตือน:", message);
                 document.getElementById('alertMessage').textContent = message;
-                let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-                alertModal.show();
+                setTimeout(() => {
+                    let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                    alertModal.show();
+                }, 100);
             }
             </script>
+
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
