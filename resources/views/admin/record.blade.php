@@ -199,7 +199,8 @@ button.btn-primary:hover {
 }
 
 #previewTable td {
-    word-break: break-word; /* เพิ่มบรรทัดนี้ */
+    word-break: break-word;
+    white-space: normal; /* เพิ่มบรรทัดนี้ */
 }
 
 @media (max-width: 768px) {
