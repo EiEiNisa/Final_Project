@@ -577,20 +577,24 @@ public function destroyPermanently($id)
         // ค้นหาข้อมูลที่ถูกซ่อน
         $record = Recorddata::findOrFail($id);
 
+        // ลบข้อมูลที่เกี่ยวข้องทั้งหมดก่อน
         $record->diseases()->delete();
         $record->healthRecords()->delete();
         $record->healthZones()->delete();
         $record->healthZones2()->delete();
         $record->lifestyleHabits()->delete();
         $record->elderlyInformations()->delete();
+
+        // ลบข้อมูลหลัก
         $record->forceDelete();
 
         return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
     } catch (\Exception $e) {
+        // แสดงข้อความข้อผิดพลาดพร้อมบันทึกข้อผิดพลาด
+        \Log::error('Error deleting record: ' . $e->getMessage());
         return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการลบข้อมูล');
     }
 }
-
 
     public function disease()
     {
