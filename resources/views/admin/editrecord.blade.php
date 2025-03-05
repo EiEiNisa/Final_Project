@@ -688,6 +688,7 @@ form {
                                         ];
                                         $selectedDiseases = [];
                                         foreach ($diseases[$diseases->keys()[$index]] as $disease) {
+                                        if(is_object($disease)) { // เพิ่มการตรวจสอบตรงนี้
                                         $diseaseArray = collect($disease->toArray())
                                         ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
                                         ->keys()
@@ -696,6 +697,7 @@ form {
                                         $selectedDiseases = array_merge($selectedDiseases, $diseaseArray);
                                         if ($disease->other == 1 && !empty($disease->other_text)) {
                                         $selectedDiseases[] = $disease->other_text;
+                                        }
                                         }
                                         }
                                         $selectedDiseasesString = implode(", ", $selectedDiseases);
