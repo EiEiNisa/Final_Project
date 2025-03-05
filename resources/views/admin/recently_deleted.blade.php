@@ -182,7 +182,7 @@ tr:hover {
         <table>
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>ลำดับที่</th>
                     <th>เลขบัตรประชาชน</th>
                     <th>ชื่อ-นามสกุล</th>
                     <th>บ้านเลขที่</th>
@@ -196,42 +196,42 @@ tr:hover {
             <tbody>
                 @foreach ($deletedRecords as $record)
                 <tr>
-                    <td><strong>{{ $deletedRecords->firstItem() + $loop->index }}</strong></td>
-                    <td><strong>{{ $record->id_card }}</strong></td>
-                    <td><strong>{{ $record->name }} {{ $record->surname }}</strong></td>
-                    <td><strong>{{ $record->housenumber }}</strong></td>
-                    <td><strong>{{ \Carbon\Carbon::parse($record->birthdate)->translatedFormat('d F Y') }}</strong></td>
-                    <td><strong>{{ $record->age }}</strong></td>
-                    <td><strong>{{ $record->phone }}</strong></td>
-                    <td><strong>
-                            @if($record->diseases)
-                            @php
-                            $diseaseLabels = [
-                            'diabetes' => 'เบาหวาน',
-                            'cerebral_artery' => 'หลอดเลือดสมอง',
-                            'kidney' => 'โรคไต',
-                            'blood_pressure' => 'ความดันโลหิตสูง',
-                            'heart' => 'โรคหัวใจ',
-                            'eye' => 'โรคตา'
-                            ];
+                    <td>{{ $deletedRecords->firstItem() + $loop->index }}</td>
+                    <td>{{ $record->id_card }}</td>
+                    <td>{{ $record->name }} {{ $record->surname }}</td>
+                    <td>{{ $record->housenumber }}</td>
+                    <td>{{ \Carbon\Carbon::parse($record->birthdate)->translatedFormat('d F Y') }}</td>
+                    <td>{{ $record->age }}</td>
+                    <td>{{ $record->phone }}</td>
+                    <td>
+                        @if($record->diseases)
+                        @php
+                        $diseaseLabels = [
+                        'diabetes' => 'เบาหวาน',
+                        'cerebral_artery' => 'หลอดเลือดสมอง',
+                        'kidney' => 'โรคไต',
+                        'blood_pressure' => 'ความดันโลหิตสูง',
+                        'heart' => 'โรคหัวใจ',
+                        'eye' => 'โรคตา'
+                        ];
 
-                            $selectedDiseases = collect($record->diseases->toArray())
-                            ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
-                            ->keys()
-                            ->map(fn($key) => $diseaseLabels[$key])
-                            ->implode("\n");
+                        $selectedDiseases = collect($record->diseases->toArray())
+                        ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
+                        ->keys()
+                        ->map(fn($key) => $diseaseLabels[$key])
+                        ->implode("\n");
 
-                            // ถ้ามีข้อมูล 'other' และ 'other_text' จะเชื่อมต่อโดยไม่เว้นบรรทัด
-                            if ($record->diseases->other && !empty($record->diseases->other_text)) {
-                            $selectedDiseases .= $selectedDiseases ? ' ' . $record->diseases->other_text :
-                            $record->diseases->other_text;
-                            }
-                            @endphp
-                            {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
-                            @else
-                            -
-                            @endif
-                        </strong></td>
+                        // ถ้ามีข้อมูล 'other' และ 'other_text' จะเชื่อมต่อโดยไม่เว้นบรรทัด
+                        if ($record->diseases->other && !empty($record->diseases->other_text)) {
+                        $selectedDiseases .= $selectedDiseases ? ' ' . $record->diseases->other_text :
+                        $record->diseases->other_text;
+                        }
+                        @endphp
+                        {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
+                        @else
+                        -
+                        @endif
+                    </td>
                     <td>
                         <!-- ปุ่มกู้คืนพร้อม Modal -->
                         <button class="btn btn-success btn-custom" data-bs-toggle="modal"
