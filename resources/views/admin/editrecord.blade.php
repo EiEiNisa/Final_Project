@@ -676,7 +676,7 @@ form {
                                     @endif
                                     <div class="form-group">
                                         <label>โรคประจำตัว</label>
-                                        @if($diseases && $diseases->isNotEmpty())
+                                        @if(isset($diseases->keys()[$index]))
                                         @php
                                         $diseaseLabels = [
                                         'diabetes' => 'เบาหวาน',
@@ -687,7 +687,7 @@ form {
                                         'eye' => 'โรคตา'
                                         ];
                                         $selectedDiseases = [];
-                                        foreach ($diseases as $disease) {
+                                        foreach ($diseases[$diseases->keys()[$index]] as $disease) {
                                         $diseaseArray = collect($disease->toArray())
                                         ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
                                         ->keys()
