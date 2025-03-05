@@ -676,7 +676,7 @@ form {
                                     @endif
                                     <div class="form-group">
                                         <label>โรคประจำตัว</label>
-                                        @if($diseases)
+                                        @if($diseases && $diseases->isNotEmpty())
                                         @php
                                         $diseaseLabels = [
                                         'diabetes' => 'เบาหวาน',
@@ -686,17 +686,22 @@ form {
                                         'heart' => 'โรคหัวใจ',
                                         'eye' => 'โรคตา'
                                         ];
-                                        $selectedDiseases = collect($diseases->toArray())
+                                        $selectedDiseases = [];
+                                        foreach ($diseases as $disease) {
+                                        $diseaseArray = collect($disease->toArray())
                                         ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
                                         ->keys()
                                         ->map(fn($key) => $diseaseLabels[$key])
-                                        ->implode(", ");
-                                        if ($diseases->other == 1 && !empty($diseases->other_text)) {
-                                        $selectedDiseases .= ($selectedDiseases ? ", " : "") . $diseases->other_text;
+                                        ->toArray();
+                                        $selectedDiseases = array_merge($selectedDiseases, $diseaseArray);
+                                        if ($disease->other == 1 && !empty($disease->other_text)) {
+                                        $selectedDiseases[] = $disease->other_text;
                                         }
+                                        }
+                                        $selectedDiseasesString = implode(", ", $selectedDiseases);
                                         @endphp
                                         <input type="text" class="form-control"
-                                            value="{{ $selectedDiseases ?: 'ไม่มีโรคประจำตัว' }}" readonly>
+                                            value="{{ $selectedDiseasesString ?: 'ไม่มีโรคประจำตัว' }}" readonly>
                                         @else
                                         <input type="text" class="form-control" value="ไม่มีข้อมูลโรคประจำตัว" readonly>
                                         @endif
