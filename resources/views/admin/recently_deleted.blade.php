@@ -81,59 +81,79 @@ tr:hover {
     transform: scale(1.05);
 }
 
-/* ปรับการแสดง Modal */
-.modal-content {
-    border-radius: 0.5rem;
-}
-
-.modal-header {
-    background-color: #f8f9fc;
-}
-
-.modal-footer button {
-    border-radius: 0.3rem;
-}
-
-/* การจัดการการแสดงผลของ pagination */
 .custom-pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    font-size: 16px;
 }
 
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #6c757d;
+    background-color: #5a5d61;
+    /* เทาเข้ม */
     color: #ffffff;
     border: none;
     border-radius: 6px;
     text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin: 0;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .custom-pagination a:hover {
-    background-color: #5a6268;
+    background-color: #4d5054;
+    /* เทาเข้มขึ้นเมื่อ hover */
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .custom-pagination .active {
-    background-color: #495057;
+    background-color: #343a40;
+    /* เทาดำ */
     font-weight: bold;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 .custom-pagination .disabled {
-    background-color: #d6d8db;
-    color: #868e96;
+    background-color: #bcbec2;
+    /* เทาหม่นอ่อน */
+    color: #6c757d;
     cursor: not-allowed;
-    box-shadow: none;
-    opacity: 0.6;
 }
 
 .custom-pagination .disabled:hover {
-    background-color: #d6d8db;
+    background-color: #bcbec2;
+    /* ไม่เปลี่ยนสีเมื่อ hover */
+}
+
+.btn-cancel {
+    padding: 10px 10px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6368;
+}
+
+.btn-confirm {
+    padding: 10px 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-confirm:hover {
+    background-color: #218838;
 }
 
 @media (max-width: 768px) {
@@ -184,8 +204,6 @@ tr:hover {
 
 </style>
 
-
-<!-- การแจ้งเตือน Success/Error -->
 @if(session('success'))
 <div class="alert alert-success">
     {!! session('success') !!}
@@ -202,7 +220,7 @@ tr:hover {
     <br>
     <div class="box">
         <div class="title">
-            จัดการสิทธิ์ผู้ใช้
+            ลบล่าสุด
         </div>
 
         <table class="table table-bordered table-striped">
