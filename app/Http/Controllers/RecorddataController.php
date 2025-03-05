@@ -782,7 +782,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     ));
 }
 
-public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
+public function update_form_general_information(Request $request, $recorddata_id)
 {
     // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
