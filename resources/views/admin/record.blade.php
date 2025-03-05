@@ -1119,10 +1119,6 @@ button.btn-primary:hover {
                                                     placeholder="ค้นหาชื่อ...">
                                             </div>
                                             <div class="accordion" id="dataAccordion">
-                                                @php
-                                                $recorddataList = \App\Models\Recorddata::all();
-                                                $groupedData = $recorddataList->groupBy('section');
-                                                @endphp
                                                 @foreach ($groupedData as $section => $items)
                                                 <div class="accordion-item">
                                                     <h2 class="accordion-header" id="heading{{ $loop->index }}">
@@ -1147,7 +1143,8 @@ button.btn-primary:hover {
                                                                     class="form-check-label fw-bold text-primary">เลือกทั้งหมดในกลุ่ม</label>
                                                             </div>
                                                             <div class="row">
-                                                                @foreach ($items as $item)
+                                                                @foreach ($recorddataList as $item)
+                                                                @if ($item->section == $section)
                                                                 <div class="col-md-6 mb-2">
                                                                     <div class="card p-2">
                                                                         <div class="form-check print-form-check">
@@ -1166,6 +1163,7 @@ button.btn-primary:hover {
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                @endif
                                                                 @endforeach
                                                             </div>
                                                         </div>
@@ -1173,6 +1171,7 @@ button.btn-primary:hover {
                                                 </div>
                                                 @endforeach
                                             </div>
+                                            {{ $recorddataList->links() }} {{-- เพิ่มปุ่มเลื่อน --}}
                                         </form>
                                     </div>
                                     <div class="modal-footer bg-light">
@@ -1188,7 +1187,7 @@ button.btn-primary:hover {
                                 </div>
                             </div>
                         </div>
-
+                        
                         <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             const searchInput = document.getElementById('searchInput');

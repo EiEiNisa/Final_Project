@@ -16,7 +16,7 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    $recorddataList = Recorddata::all();
+    $recorddataList = Recorddata::paginate(30);
 
     $currentYear = Carbon::now()->year;
 
