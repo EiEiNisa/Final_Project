@@ -654,105 +654,67 @@ form {
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label>โรคประจำตัว</label>
-                                    @php
-                                    // หาข้อมูลโรคประจำตัวตามการตรวจ
-                                    $diseaseDate = \Carbon\Carbon::parse($healthRecord->created_at)->format('Y-m-d');
-                                    $selectedDiseases = isset($diseaseGroups[$diseaseDate]) ?
-                                    $diseaseGroups[$diseaseDate] : [];
+                                <div class="col-md-6">
+                                    @if(isset($lifestylesHabit[$index]))
+                                    <div class="form-group1">
+                                        <label
+                                            for="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}">พฤติกรรม-สุขภาพจิต</label>
+                                        <input type="text" class="form-control"
+                                            id="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}"
+                                            name="lifestyleshabit[{{ $lifestylesHabit[$index]['id'] }}]"
+                                            value="{{ $lifestylesHabit[$index]['lifestyleshabit'] ?? '' }}" readonly>
+                                    </div>
+                                    @endif
 
-                                    $diseaseLabels = [
-                                    'diabetes' => 'เบาหวาน',
-                                    'cerebral_artery' => 'หลอดเลือดสมอง',
-                                    'kidney' => 'โรคไต',
-                                    'blood_pressure' => 'ความดันโลหิตสูง',
-                                    'heart' => 'โรคหัวใจ',
-                                    'eye' => 'โรคตา'
-                                    ];
+                                    @if(isset($elderlyInfo[$index]))
+                                    <div class="form-group1">
+                                        <label
+                                            for="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}">ข้อมูลผู้สูงอายุ</label>
+                                        <input type="text" class="form-control"
+                                            id="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}"
+                                            name="elderlyhabit[{{ $elderlyInfo[$index]['id'] }}]"
+                                            value="{{ $elderlyInfo[$index]['lifestyleshabit'] }}" readonly>
+                                    </div>
+                                    @endif
 
-                                    $selectedDiseaseNames = [];
-                                    foreach ($selectedDiseases as $disease) {
-                                    $diseaseNames = [];
-                                    foreach ($diseaseLabels as $key => $label) {
-                                    if ($disease->$key == 1) {
-                                    $diseaseNames[] = $label;
-                                    }
-                                    }
-                                    if ($disease->other == 1 && !empty($disease->other_text)) {
-                                    $diseaseNames[] = $disease->other_text;
-                                    }
-                                    $selectedDiseaseNames = array_merge($selectedDiseaseNames, $diseaseNames);
-                                    }
-
-                                    $selectedDiseasesString = !empty($selectedDiseaseNames) ? implode(", ",
-                                    $selectedDiseaseNames) : 'ไม่มีโรคประจำตัว';
-                                    @endphp
-                                    <input type="text" class="form-control" value="{{ $selectedDiseasesString }}"
-                                        readonly>
+                                    <div class="form-group">
+                                        <label for="user_name">ผู้บันทึกข้อมูล</label>
+                                        <input type="text" class="form-control" id="user_name" name="user_name"
+                                            value="{{ old('user_name', $recorddata->user_name) }}" readonly>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                @if(isset($lifestylesHabit[$index]))
-                                <div class="form-group1">
-                                    <label
-                                        for="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}">พฤติกรรม-สุขภาพจิต</label>
-                                    <input type="text" class="form-control"
-                                        id="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}"
-                                        name="lifestyleshabit[{{ $lifestylesHabit[$index]['id'] }}]"
-                                        value="{{ $lifestylesHabit[$index]['lifestyleshabit'] ?? '' }}" readonly>
-                                </div>
-                                @endif
-
-                                @if(isset($elderlyInfo[$index]))
-                                <div class="form-group1">
-                                    <label for="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}">ข้อมูลผู้สูงอายุ</label>
-                                    <input type="text" class="form-control"
-                                        id="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}"
-                                        name="elderlyhabit[{{ $elderlyInfo[$index]['id'] }}]"
-                                        value="{{ $elderlyInfo[$index]['lifestyleshabit'] }}" readonly>
-                                </div>
-                                @endif
-
-                                <div class="form-group">
-                                    <label for="user_name">ผู้บันทึกข้อมูล</label>
-                                    <input type="text" class="form-control" id="user_name" name="user_name"
-                                        value="{{ old('user_name', $recorddata->user_name) }}" readonly>
-                                </div>
-                            </div>
+                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
+                                class="btn btn-secondary" id="#editBtn">
+                                แก้ไขข้อมูล
+                            </a>
                         </div>
-                        <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
-                            class="btn btn-secondary" id="#editBtn">
-                            แก้ไขข้อมูล
-                        </a>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
-    </div>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".accordion-button").forEach(button => {
-            button.addEventListener("click", function() {
-                let target = document.querySelector(this.getAttribute(
-                    "data-bs-target"));
-                let collapse = bootstrap.Collapse.getInstance(target);
-                if (collapse) {
-                    collapse.toggle();
-                } else {
-                    new bootstrap.Collapse(target, {
-                        toggle: true
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelectorAll(".accordion-button").forEach(button => {
+                    button.addEventListener("click", function() {
+                        let target = document.querySelector(this.getAttribute(
+                            "data-bs-target"));
+                        let collapse = bootstrap.Collapse.getInstance(target);
+                        if (collapse) {
+                            collapse.toggle();
+                        } else {
+                            new bootstrap.Collapse(target, {
+                                toggle: true
+                            });
+                        }
                     });
-                }
+                });
             });
-        });
-    });
-    </script>
+            </script>
 
-</div>
-</form>
+    </div>
+    </form>
 </div>
 </div>
 @endsection
