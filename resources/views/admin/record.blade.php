@@ -110,15 +110,6 @@ button.btn-primary:hover {
     border-color: #0056b3;
 }
 
-.custom-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    font-size: 16px;
-}
-
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
@@ -126,11 +117,14 @@ button.btn-primary:hover {
     /* สีเขียวหลัก */
     color: #ffffff;
     border: none;
+    /* ลบขอบ */
     border-radius: 6px;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     /* เพิ่มเงา */
+    margin: 0;
+    /* ลบ margin */
 }
 
 .custom-pagination a:hover {
@@ -156,6 +150,8 @@ button.btn-primary:hover {
     cursor: not-allowed;
     box-shadow: none;
     /* ลบเงาสำหรับ disabled */
+    opacity: 0.6;
+    /* ทำให้ดูจางลง */
 }
 
 .custom-pagination .disabled:hover {
@@ -1125,11 +1121,10 @@ button.btn-primary:hover {
                                             </div>
                                             <div class="accordion" id="dataAccordion">
                                                 @php
-                                                $recorddataList = \App\Models\Recorddata::all(); // ดึงข้อมูลทั้งหมด
-                                                $groupedData = $recorddataList->groupBy('department'); // จัดกลุ่มตาม
-                                                department
+                                                $recorddataList = \App\Models\Recorddata::all();
+                                                $groupedData = $recorddataList->groupBy('section');
                                                 @endphp
-                                                @foreach ($groupedData as $department => $items)
+                                                @foreach ($groupedData as $section => $items)
                                                 <div class="accordion-item">
                                                     <h2 class="accordion-header" id="heading{{ $loop->index }}">
                                                         <button class="accordion-button" type="button"
@@ -1137,7 +1132,7 @@ button.btn-primary:hover {
                                                             data-bs-target="#collapse{{ $loop->index }}"
                                                             aria-expanded="true"
                                                             aria-controls="collapse{{ $loop->index }}">
-                                                            {{ $department }} ({{ $items->count() }})
+                                                            {{ $section }} ({{ $items->count() }})
                                                         </button>
                                                     </h2>
                                                     <div id="collapse{{ $loop->index }}"
@@ -1148,7 +1143,7 @@ button.btn-primary:hover {
                                                             <div class="d-flex align-items-center mb-2">
                                                                 <input type="checkbox"
                                                                     class="form-check-input me-2 selectGroup"
-                                                                    data-group="{{ $department }}">
+                                                                    data-group="{{ $section }}">
                                                                 <label
                                                                     class="form-check-label fw-bold text-primary">เลือกทั้งหมดในกลุ่ม</label>
                                                             </div>
@@ -1162,7 +1157,7 @@ button.btn-primary:hover {
                                                                                 value="{{ $item->id }}"
                                                                                 id="check{{ $item->id }}"
                                                                                 data-name="{{ $item->name }}"
-                                                                                data-department="{{ $department }}">
+                                                                                data-department="{{ $section }}">
                                                                             <label class="form-check-label text-start"
                                                                                 for="check{{ $item->id }}">
                                                                                 <i class="fa-solid fa-user"></i>
