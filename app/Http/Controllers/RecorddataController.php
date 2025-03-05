@@ -690,7 +690,7 @@ public function Usersearch(Request $request)
     return view('User.record', compact('recorddata', 'users', 'diseases'));
 }
 
-public function edit_general_information(Request $request, $recorddata_id, $checkup_index) 
+public function edit_general_information(Request $request, $recorddata_id, $checkup_index)  
 {
     // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
@@ -711,7 +711,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     }
 
     // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
-    // ตอนนี้ index จะเริ่มจาก 0 เช่นกัน
+    // ตรวจสอบว่า checkup_index ที่ส่งมาถึงกับลำดับการตรวจที่ถูกต้อง
     $healthRecord = $healthRecords[$checkup_index];
 
     // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ healthRecord_id
