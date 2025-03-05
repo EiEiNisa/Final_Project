@@ -694,34 +694,43 @@ public function Usersearch(Request $request)
 }
 
 
-public function edit_general_information(Request $request, $recorddata_id, $checkup_id)
+public function edit_general_information(Request $request, $recorddata_id, $checkup_index)
 {
     // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
-    // ค้นหาข้อมูลที่เกี่ยวข้องเฉพาะสำหรับ checkup_id ที่ส่งมา
-    $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
-                                 ->where('checkup_id', $checkup_id)
-                                 ->first();
-    if (!$healthRecord) {
-        return back()->with('error', 'ไม่พบข้อมูลสำหรับการตรวจครั้งที่ ' . $checkup_id);
+    // ค้นหาข้อมูล healthRecord โดยใช้ recorddata_id
+    // และจัดเรียงลำดับเพื่อเลือกการตรวจตาม index ที่ส่งมา
+    $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
+                                 ->orderBy('created_at', 'desc') // หรือ order อื่น ๆ ที่ต้องการ
+                                 ->get();
+
+    // ตรวจสอบว่า healthRecords มีข้อมูลหรือไม่
+    if ($healthRecords->isEmpty()) {
+        return back()->with('error', 'ไม่พบข้อมูลการตรวจ');
     }
 
-    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ สำหรับ checkup_id ที่ถูกเลือก
+    // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
+    $healthRecord = $healthRecords[$checkup_index] ?? null;
+    if (!$healthRecord) {
+        return back()->with('error', 'ไม่พบข้อมูลสำหรับการตรวจครั้งที่ ' . ($checkup_index + 1));
+    }
+
+    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('checkup_id', $checkup_id)
+                            ->where('created_at', $healthRecord->created_at)
                             ->first();
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('checkup_id', $checkup_id)
+                              ->where('created_at', $healthRecord->created_at)
                               ->first();
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                       ->where('checkup_id', $checkup_id)
+                       ->where('created_at', $healthRecord->created_at)
                        ->first();
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('checkup_id', $checkup_id)
+                                ->where('created_at', $healthRecord->created_at)
                                 ->first();
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                      ->where('checkup_id', $checkup_id)
+                                      ->where('created_at', $healthRecord->created_at)
                                       ->first();
 
     // Define $zones and $zones2
@@ -738,7 +747,6 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         'zone1_kidney' => ['value' => $healthZone->zone1_kidney ?? 0, 'label' => 'โรคไต'],
         'zone1_eye' => ['value' => $healthZone->zone1_eye ?? 0, 'label' => 'โรคตา'],
     ];
-    
 
     $zones2 = [
         'zone2_normal' => ['value' => $healthZone2->zone2_normal ?? 0, 'label' => '≥ 180/110 mmHg'],
@@ -757,9 +765,10 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ส่งข้อมูลไปยังหน้า view
     return view('admin.editrecord_general_information', compact(
         'recorddata', 'healthRecord', 'healthZone', 'healthZone2',
-        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_id', 'zones', 'zones2'
+        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
     ));
 }
+
 
 public function update_general_information(Request $request, $recorddata_id = null, $checkup_id = null) 
 {
