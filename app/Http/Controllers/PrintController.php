@@ -16,8 +16,9 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    $recorddataList = Recorddata::paginate(30);
-    $groupedData = $recorddataList->groupBy('section');
+    $recorddataList = Recorddata::all()->groupBy('section'); // ดึงข้อมูลทั้งหมดมาแบ่งกลุ่ม
+    $paginatedData = Recorddata::paginate(30); // แบ่งเป็นหน้าละ 30 รายการ
+
     $currentYear = Carbon::now()->year;
 
     $healthRecords = HealthRecord::where('recorddata_id', $id)
