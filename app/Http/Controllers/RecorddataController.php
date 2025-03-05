@@ -772,7 +772,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
     // ส่งข้อมูลไปยังหน้า view
     return view('admin.editrecord_general_information', compact(
-        'recorddata', 'healthRecord', 'healthZone', 'healthZone2',
+        'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'recorddata_id' ,
         'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
     ));
 }
