@@ -41,15 +41,28 @@ class Recorddata extends Model
         return $this->hasOne(ElderlyInformation::class, 'recorddata_id', 'id');
     }
 
-    // เชื่อมกับ health_zones
-    public function healthZone()
+    // เชื่อมกับ health_zones (แก้จาก hasOne เป็น hasMany ถ้ามีหลายแถว)
+    public function healthZones()
     {
-        return $this->hasOne(HealthZone::class, 'recorddata_id', 'id');
+        return $this->hasMany(HealthZone::class, 'recorddata_id', 'id');
     }
 
-    // **เพิ่มเมธอด healthRecords ที่ขาดหายไป**
+    // เชื่อมกับ health_zone2 (ถ้ามีหลายแถว ใช้ hasMany)
+    public function healthZones2()
+    {
+        return $this->hasMany(HealthZone2::class, 'recorddata_id', 'id');
+    }
+
+    // เชื่อมกับ health_records (ต้องใช้ hasMany เพราะมีหลายรายการ)
     public function healthRecords()
     {
         return $this->hasMany(HealthRecord::class, 'recorddata_id', 'id');
     }
+
+    // เชื่อมกับ lifestyle_habits
+    public function lifestyleHabits()
+    {
+        return $this->hasMany(LifestyleHabit::class, 'recorddata_id', 'id');
+    }
 }
+
