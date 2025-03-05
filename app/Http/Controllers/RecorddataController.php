@@ -728,7 +728,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id) // แก้ไขตรงนี้
                             ->first();
-    dd($healthZone2); 
+    //dd($healthZone2); 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
                         ->where('id', $healthRecord->id) // แก้ไขตรงนี้
                         ->first();
