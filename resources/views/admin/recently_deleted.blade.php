@@ -71,10 +71,26 @@
         border-radius: 0.3rem;
     }
 
-    /* ปรับสไตล์สำหรับ pagination */
     .pagination {
         justify-content: center;
         padding: 10px;
+    }
+
+    .pagination a {
+        padding: 10px;
+        margin: 0 5px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .pagination a:hover {
+        background-color: #0056b3;
+    }
+
+    .pagination .active {
+        background-color: #28a745;
     }
 </style>
 

@@ -552,7 +552,7 @@ public function destroy($id)
 
 public function recentlyDeleted()
 {
-    // ดึงข้อมูลที่ถูกซ่อน (is_deleted = true)
+    // ดึงข้อมูลที่ถูกซ่อน (is_deleted = true) และแบ่งหน้าแสดง 10 รายการต่อหน้า
     $deletedRecords = Recorddata::where('is_deleted', true)->paginate(10); // เพิ่ม pagination
 
     return view('admin.recently_deleted', compact('deletedRecords'));
