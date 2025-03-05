@@ -910,8 +910,6 @@ public function update_form_general_information(Request $request, $recorddata_id
 
         return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตข้อมูลสำเร็จเรียบร้อย!');
     }
-}
-
 
 public function searchIdCard(Request $request)
 {
