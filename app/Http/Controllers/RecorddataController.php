@@ -541,10 +541,10 @@ public function destroy($id)
 {
     try {
         $recorddata = Recorddata::findOrFail($id);
-        $recorddata->is_deleted = true; // เปลี่ยนสถานะเป็น 'ซ่อน' แทนการลบ
+        $recorddata->is_deleted = true;
         $recorddata->save();
 
-        return redirect()->route('recorddata.index')->with('success', 'ข้อมูลถูกซ่อนไว้แล้ว');
+        return redirect()->route('recorddata.index')->with('success', 'ข้อมูลถูกลบเรียบร้อยแล้ว หากต้องการกู้คืนข้อมูลสามารถทำได้ที่หน้า <a href="/admin/recently_deleted">ลบล่าสุด</a>');
     } catch (\Exception $e) {
         return redirect()->route('recorddata.index')->with('error', 'เกิดข้อผิดพลาดในการซ่อนข้อมูล');
     }

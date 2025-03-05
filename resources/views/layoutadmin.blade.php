@@ -21,7 +21,7 @@
 
     <!--- SheetJS --->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    
+
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@300;400;600&family=Sarabun:wght@300;400;600&display=swap');
 
@@ -250,7 +250,7 @@
             <a href="/admin/about"><i class="fas fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span></a>
             <a href="/admin/editprofile"><i class="fas fa-user-edit"></i> <span>แก้ไขโปรไฟล์</span></a>
             <a href="/admin/manageuser"><i class="fas fa-user-shield"></i> <span>จัดการสิทธิ์</span></a>
-            <a href="/admin/recently_deleted"><i class="fas fa-user-shield"></i> <span>ค่าที่ซ่อน</span></a>
+            <a href="/admin/recently_deleted"><i class="fas fa-trash-restore-alt"></i> <span>ลบล่าสุด</span></a>
         </div>
 
         <!-- แสดงชื่อผู้ใช้งาน + ปุ่มออกจากระบบ -->
