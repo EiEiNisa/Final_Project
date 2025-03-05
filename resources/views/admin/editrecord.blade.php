@@ -656,9 +656,7 @@ form {
 
                                 <div class="form-group">
                                     <label>โรคประจำตัว</label>
-                                    @if(isset($diseases->keys()[$index]) &&
-                                    isset($diseases[$diseases->keys()[$index]]) &&
-                                    !empty($diseases[$diseases->keys()[$index]]))
+                                    @if($diseases && is_object($diseases))
                                     @php
                                     $diseaseLabels = [
                                     'diabetes' => 'เบาหวาน',
@@ -669,21 +667,16 @@ form {
                                     'eye' => 'โรคตา'
                                     ];
                                     $selectedDiseases = [];
-                                    foreach ($diseases[$diseases->keys()[$index]] as $disease) {
-                                    if(is_object($disease)) {
-                                    $diseaseArray = collect($disease->toArray())
+                                    $diseaseArray = collect($diseases->toArray())
                                     ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
                                     ->keys()
                                     ->map(fn($key) => $diseaseLabels[$key])
                                     ->toArray();
                                     $selectedDiseases = array_merge($selectedDiseases, $diseaseArray);
-                                    if ($disease->other == 1 && !empty($disease->other_text)) {
-                                    $selectedDiseases[] = $disease->other_text;
-                                    }
-                                    }
+                                    if ($diseases->other == 1 && !empty($diseases->other_text)) {
+                                    $selectedDiseases[] = $diseases->other_text;
                                     }
                                     $selectedDiseasesString = implode(", ", $selectedDiseases);
-                                    // dd($selectedDiseasesString); // เพิ่มการตรวจสอบตรงนี้
                                     @endphp
                                     <input type="text" class="form-control"
                                         value="{{ $selectedDiseasesString ?: 'ไม่มีโรคประจำตัว' }}" readonly>
