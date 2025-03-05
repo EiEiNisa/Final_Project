@@ -111,68 +111,6 @@ tr:hover {
     /* ไม่เปลี่ยนสีเมื่อ hover */
 }
 
-/* ปรับขนาดปุ่ม success */
-.btn-success {
-    padding: 6px 12px; /* ลดขนาด padding */
-    font-size: 14px; /* ลดขนาดตัวหนังสือ */
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-success:hover {
-    background-color: #218838;
-}
-
-/* ปรับขนาดปุ่ม danger */
-.btn-danger {
-    padding: 6px 12px; /* ลดขนาด padding */
-    font-size: 14px; /* ลดขนาดตัวหนังสือ */
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-}
-
-.btn-cancel {
-    padding: 10px 10px;
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.btn-cancel:hover {
-    background-color: #5a6368;
-}
-
-.btn-confirm {
-    padding: 10px 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.btn-confirm:hover {
-    background-color: #218838;
-}
-
 @media (max-width: 768px) {
 
     th,
