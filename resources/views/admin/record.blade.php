@@ -377,19 +377,22 @@ button.btn-primary:hover {
 
     @if(session('success'))
     <div class="alert alert-success">
-        {{ session('success') }}
+        {!! session('success') !!}
     </div>
     @endif
+
     @if(session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
     @endif
+
     @if(session('message'))
     <div class="alert alert-danger">
         {{ session('message') }}
     </div>
     @endif
+    
     <div class="title">
         <h4><strong>บันทึกข้อมูล</strong></h4>
         <div class="btn-container">
