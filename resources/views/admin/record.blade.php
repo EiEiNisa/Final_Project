@@ -1253,26 +1253,18 @@ button.btn-primary:hover {
                             selectGroups.forEach(group => {
                                 group.addEventListener('change', function() {
                                     console.log('Select group changed:', this.dataset.group,
-                                        this.checked); // เพิ่ม console.log
+                                        this.checked); 
                                     const department = this.dataset.group;
                                     const items = document.querySelectorAll(
                                         `.data-item[data-department="${department}"]`);
-                                    console.log('Items:', items); // เพิ่ม console.log
+                                    console.log('Items:', items);
                                     items.forEach(item => item.checked = this.checked);
                                 });
                             });
 
                             // ปุ่มพิมพ์
                             function submitPrintForm() {
-                                const form = document.getElementById('printForm');
-                                const selectedItems = document.querySelectorAll('.data-item:checked');
-                                console.log('Selected items:', selectedItems); // เพิ่ม console.log
-                                if (selectedItems.length === 0) {
-                                    alert('กรุณาเลือกข้อมูลก่อนพิมพ์');
-                                    return;
-                                }
-                                console.log('Submitting form'); // เพิ่ม console.log
-                                form.submit();
+                                document.getElementById('printForm').submit();
                             }
 
                             // เปิดโมเดลเมื่อคลิก
