@@ -1211,17 +1211,17 @@ button.btn-primary:hover {
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="modal-footer bg-light d-flex justify-content-end align-items-center">
-                                        <button type="button" class="btn btn-secondary rounded-pill px-4"
+                                    <div
+                                        class="modal-footer custom-bg-light d-flex justify-content-end align-items-center">
+                                        <button type="button" class="btn custom-btn-secondary rounded-pill px-4"
                                             data-bs-dismiss="modal">
                                             <i class="fa-solid fa-xmark"></i> ยกเลิก
                                         </button>
-                                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-2"
+                                        <button type="submit" class="btn custom-btn-primary rounded-pill px-4 ms-2"
                                             onclick="submitPrintForm()">
                                             <i class="fa-solid fa-print"></i> พิมพ์
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
