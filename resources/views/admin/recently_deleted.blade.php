@@ -179,6 +179,12 @@ tr:hover {
         </div>
         @endif
 
+        @if(session('error'))
+        <script type="text/javascript">
+        console.error("Error: {{ session('error') }}");
+        </script>
+        @endif
+
         <table>
             <thead>
                 <tr>
@@ -269,7 +275,8 @@ tr:hover {
 
                         <!-- ปุ่มลบถาวรพร้อม Modal -->
                         <button class="btn btn-danger btn-custom" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal{{ $record->id }}"><i class="fa-solid fa-trash fa-sm"></i></button>
+                            data-bs-target="#deleteModal{{ $record->id }}"><i
+                                class="fa-solid fa-trash fa-sm"></i></button>
 
                         <!-- Modal สำหรับลบถาวร -->
                         <div class="modal fade" id="deleteModal{{ $record->id }}" tabindex="-1"

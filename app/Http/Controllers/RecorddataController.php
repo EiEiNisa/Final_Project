@@ -619,10 +619,9 @@ public function destroyPermanently($id)
         $record->forceDelete();
 
         return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
-    } catch (\Exception $e) {
-        // แสดงข้อความข้อผิดพลาดพร้อมบันทึกข้อผิดพลาด
-        \Log::error('Error deleting record: ' . $e->getMessage());
-        return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการลบข้อมูล');
+    }catch (\Exception $e) {
+        // ส่งข้อความข้อผิดพลาดไปยัง session
+        return redirect()->route('admin.recently_deleted')->with('error', $e->getMessage());
     }
 }
 
