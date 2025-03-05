@@ -8,8 +8,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    /* เพื่อให้ปุ่มแตกแถวในหน้าจอเล็ก */
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 3px solid #020364;
+    margin-bottom: 20px;
+}
+
+.box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-container {
@@ -1061,10 +1070,8 @@ button.btn-primary:hover {
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="deleteModalLabel{{ $data->id }}"
                                             style="color:#000;">ยืนยันการลบข้อมูล</h5>
-                                        <button type="button" class="btn btn-light rounded-circle shadow-sm close-btn"
-                                            data-bs-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body" style="color:#000;">
                                         คุณต้องการลบข้อมูลนี้ใช่หรือไม่?

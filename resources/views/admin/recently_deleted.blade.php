@@ -3,62 +3,82 @@
 @section('content')
 
 <style>
-/* ปรับขนาด card header ให้ใหญ่ขึ้น */
-.card-header {
-    background-color: #4e73df;
-    color: white;
-    font-size: 1.5rem; /* เพิ่มขนาดตัวอักษรให้ใหญ่ขึ้น */
-    padding: 1rem 1.5rem; /* ปรับ padding ใหญ่ขึ้น */
-}
-
-.card-header h4 {
-    margin-bottom: 0;
+.title {
+    color: #020364;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 24px;
     font-weight: bold;
+    border-bottom: 3px solid #020364;
+    margin-bottom: 20px;
 }
 
-.table {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    width: 100%;
+.box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.table th {
-    background-color: #020364;
-    color: #fff !important;
-    /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
-    text-align: center;
-}
-
-.table td {
-    background-color: #7DA7D8;
-    color: #fff !important;
-    word-wrap: break-word;
-    max-width: 200px;
-    text-align: center;
-}
-
-.table td:hover,
-.table th:hover {
-    color: #fff !important;
-}
-
-/* ปรับปุ่มให้เล็กลง */
-.btn-sm {
-    padding: 0.25rem 0.5rem; /* ลดขนาด padding ของปุ่ม */
-    font-size: 0.75rem; /* ลดขนาดตัวอักษรในปุ่ม */
-    line-height: 1.25;
-    border-radius: 0.25rem;
-}
-
-/* ปรับสี alert */
-.alert-success {
-    background-color: #28a745;
-    color: white;
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
 
 .alert-danger {
-    background-color: #dc3545;
-    color: white;
+    background-color: #ffcccc;
+    color: #a94442;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+th {
+    background-color: #020364;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tr:nth-child(even) {
+    background-color: #e9f2fb;
+}
+
+tr:hover {
+    background-color: #d6e9f9;
+}
+
+.btn {
+    padding: 8px 15px;
+    background-color: #020364;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #fff;
+    transform: scale(1.05);
 }
 
 /* ปรับการแสดง Modal */
@@ -115,6 +135,53 @@
 .custom-pagination .disabled:hover {
     background-color: #d6d8db;
 }
+
+@media (max-width: 768px) {
+    th,
+    td {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .title {
+        font-size: 16px;
+    }
+
+    .alert {
+        font-size: 12px;
+    }
+
+    .custom-pagination {
+        font-size: 12px;
+    }
+
+    .custom-pagination a,
+    .custom-pagination span {
+        font-size: 12px;
+    }
+
+    .btn-cancel,
+    .btn-confirm {
+        font-size: 12px;
+    }
+
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+}
+
 </style>
 
 
@@ -131,13 +198,13 @@
 </div>
 @endif
 
-<!-- ส่วนหัวของหน้า -->
-<div class="card">
-    <div class="card-header">
-        <h4>ข้อมูลที่ถูกลบ (Recently Deleted Records)</h4>
-    </div>
+<div class="container py-3">
+    <br>
+    <div class="box">
+        <div class="title">
+            จัดการสิทธิ์ผู้ใช้
+        </div>
 
-    <div class="card-body">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -202,7 +269,8 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="restoreModalLabel{{ $record->id }}" style="color: #000;">
+                                        <h5 class="modal-title" id="restoreModalLabel{{ $record->id }}"
+                                            style="color: #000;">
                                             ยืนยันการกู้คืนข้อมูล</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
@@ -235,7 +303,8 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel{{ $record->id }}" style="color: #000;" >ยืนยันการลบข้อมูล
+                                        <h5 class="modal-title" id="deleteModalLabel{{ $record->id }}"
+                                            style="color: #000;">ยืนยันการลบข้อมูล
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>

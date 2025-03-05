@@ -80,24 +80,6 @@ tr:hover {
     transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-
-    th,
-    td {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    .btn {
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-
-    .title {
-        font-size: 20px;
-    }
-}
-
 .custom-pagination {
     display: flex;
     justify-content: center;
