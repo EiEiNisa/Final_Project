@@ -802,7 +802,7 @@ public function update_form_general_information(Request $request, $recorddata_id
     }
 
     // เลือก healthRecord ที่ต้องการจาก healthRecords โดยใช้ checkup_index
-    $healthRecord = $healthRecords[$request->checkup_index - 1];
+    $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id);
 
     // อัปเดตข้อมูล healthRecord
     $updated = $healthRecord->update([
