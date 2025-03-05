@@ -344,7 +344,7 @@ form {
     </div>
 
     <div class="card-body">
-        <form
+        <form id="Recorddata"
             action="{{ route('recorddata.update_form_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $checkup_index]) }}"
             method="POST">
             @csrf
@@ -814,8 +814,6 @@ form {
                 </div>
             </div>
 
-
-
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
                     บันทึก
@@ -874,6 +872,7 @@ form {
                     );
                 </script>
 
+                <!-- ปุ่มเปิด Modal -->
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#resetModal">ยกเลิก</button>
 
@@ -883,9 +882,7 @@ form {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="resetModalLabel">
-                                    ยืนยันการยกเลิก
-                                </h5>
+                                <h5 class="modal-title" id="resetModalLabel">ยืนยันการยกเลิก</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -901,38 +898,16 @@ form {
                 </div>
 
                 <script>
-                document
-                    .getElementById(
-                        'confirmReset'
-                    )
-                    .addEventListener(
-                        'click',
-                        function() {
-                            const
-                                form =
-                                document
-                                .getElementById(
-                                    'Recorddata'
-                                );
-                            if (
-                                form) {
-                                form
-                                    .reset(); // รีเซ็ตข้อมูลฟอร์ม
-                            }
+                document.getElementById('confirmReset').addEventListener('click', function() {
+                    const form = document.getElementById('Recorddata');
+                    if (form) {
+                        form.reset(); // รีเซ็ตค่าทั้งหมดในฟอร์ม
+                    }
 
-                            // ปิด Modal ก่อน
-                            const
-                                resetModal =
-                                new bootstrap
-                                .Modal(
-                                    document
-                                    .getElementById(
-                                        'resetModal'
-                                    )
-                                );
-                            resetModal
-                                .hide();
-                        );
+                    // ปิด Modal
+                    const resetModal = bootstrap.Modal.getInstance(document.getElementById('resetModal'));
+                    resetModal.hide();
+                });
                 </script>
         </form>
     </div>
