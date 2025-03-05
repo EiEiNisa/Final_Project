@@ -157,6 +157,7 @@ tr:hover {
 }
 
 @media (max-width: 768px) {
+
     th,
     td {
         font-size: 12px;
@@ -197,24 +198,12 @@ tr:hover {
         -webkit-overflow-scrolling: touch;
     }
 
-    th, td {
+    th,
+    td {
         white-space: nowrap;
     }
 }
-
 </style>
-
-@if(session('success'))
-<div class="alert alert-success">
-    {!! session('success') !!}
-</div>
-@endif
-
-@if(session('error'))
-<div class="alert alert-danger">
-    {{ session('error') }}
-</div>
-@endif
 
 <div class="container py-3">
     <br>
@@ -223,7 +212,19 @@ tr:hover {
             ลบล่าสุด
         </div>
 
-        <table class="table table-bordered table-striped">
+        @if(session('success'))
+        <div class="alert alert-success">
+            {!! session('success') !!}
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+
+        <table>
             <thead>
                 <tr>
                     <th>#</th>
