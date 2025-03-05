@@ -1263,14 +1263,14 @@ button.btn-primary:hover {
                             });
 
                             function submitPrintForm() {
-                                console.log('submitPrintForm() called'); // เพิ่ม console.log
+                                console.log('submitPrintForm() called');
                                 const form = document.getElementById('printForm');
-                                console.log('Form:', form); // เพิ่ม console.log
+                                console.log('Form:', form);
                                 if (form) {
                                     form.submit();
-                                    console.log('Form submitted'); // เพิ่ม console.log
+                                    console.log('Form submitted');
                                 } else {
-                                    console.error('Form not found'); // เพิ่ม console.error
+                                    console.error('Form not found');
                                 }
                             }
 
