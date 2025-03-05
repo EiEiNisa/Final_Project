@@ -136,7 +136,7 @@ class PrintController extends Controller
         ]);
     }
 
-    return view('admin.print', compact('recorddata', 'inspections', 'healthRecords'));
+    return view('admin.print', compact('recorddata', 'inspections', 'healthRecords' , 'groupedData'));
 }
 
 private function getHealthZoneData($healthZone)
