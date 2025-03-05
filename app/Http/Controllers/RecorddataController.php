@@ -643,9 +643,7 @@ public function destroyPermanently($id)
 
         return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
     } catch (\Exception $e) {
-        // บันทึกข้อผิดพลาด
-        \Log::error('Error deleting recorddata with ID ' . $id . ': ' . $e->getMessage());
-        return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการลบข้อมูล');
+        return redirect()->route('admin.recently_deleted')->with('error', $e->getMessage());
     }
 }
 
