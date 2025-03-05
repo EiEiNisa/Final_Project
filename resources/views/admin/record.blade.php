@@ -113,49 +113,37 @@ button.btn-primary:hover {
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #198754;
-    /* สีเขียวหลัก */
+    background-color: #6c757d;
     color: #ffffff;
     border: none;
-    /* ลบขอบ */
     border-radius: 6px;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    /* เพิ่มเงา */
     margin: 0;
-    /* ลบ margin */
 }
 
 .custom-pagination a:hover {
-    background-color: #157347;
-    /* สีเขียวเข้มขึ้นเมื่อ hover */
+    background-color: #5a6268;
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    /* เพิ่มเงาเมื่อ hover */
 }
 
 .custom-pagination .active {
-    background-color: #146c43;
-    /* สีเขียวเข้มสุดสำหรับ active */
+    background-color: #495057;
     font-weight: bold;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-    /* เพิ่มเงาสำหรับ active */
 }
 
 .custom-pagination .disabled {
-    background-color: #A3D9A5;
-    /* สีเขียวอ่อนสำหรับ disabled */
-    color: #5C9A5A;
+    background-color: #d6d8db;
+    color: #868e96;
     cursor: not-allowed;
     box-shadow: none;
-    /* ลบเงาสำหรับ disabled */
     opacity: 0.6;
-    /* ทำให้ดูจางลง */
 }
 
 .custom-pagination .disabled:hover {
-    background-color: #A3D9A5;
+    background-color: #d6d8db;
 }
 
 
@@ -1158,7 +1146,7 @@ button.btn-primary:hover {
                                                                                 id="check{{ $item->id }}"
                                                                                 data-name="{{ $item->name }}"
                                                                                 data-department="{{ $section }}">
-                                                                            <label class="form-check-label text-start"
+                                                                            <label class="form-check-label"
                                                                                 for="check{{ $item->id }}">
                                                                                 <i class="fa-solid fa-user"></i>
                                                                                 {{ $item->prefix }} {{ $item->name }}
