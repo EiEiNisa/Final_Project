@@ -1253,7 +1253,7 @@ button.btn-primary:hover {
                             selectGroups.forEach(group => {
                                 group.addEventListener('change', function() {
                                     console.log('Select group changed:', this.dataset.group,
-                                        this.checked); 
+                                        this.checked);
                                     const department = this.dataset.group;
                                     const items = document.querySelectorAll(
                                         `.data-item[data-department="${department}"]`);
@@ -1262,9 +1262,16 @@ button.btn-primary:hover {
                                 });
                             });
 
-                            // ปุ่มพิมพ์
                             function submitPrintForm() {
-                                document.getElementById('printForm').submit();
+                                console.log('submitPrintForm() called'); // เพิ่ม console.log
+                                const form = document.getElementById('printForm');
+                                console.log('Form:', form); // เพิ่ม console.log
+                                if (form) {
+                                    form.submit();
+                                    console.log('Form submitted'); // เพิ่ม console.log
+                                } else {
+                                    console.error('Form not found'); // เพิ่ม console.error
+                                }
                             }
 
                             // เปิดโมเดลเมื่อคลิก
