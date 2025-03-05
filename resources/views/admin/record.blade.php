@@ -1097,21 +1097,16 @@ button.btn-primary:hover {
                         });
                         </script>
 
-                        <!-- ปุ่มเปิด Modal -->
                         <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                             data-bs-target="#printModal">
                             <i class="fa-solid fa-print"></i>
                         </button>
 
-                        <!-- Modal -->
                         <div class="modal fade" id="printModal" tabindex="-1" aria-labelledby="printModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <!-- ขยายขนาด Modal -->
                                 <div class="modal-content shadow-lg rounded-4">
-                                    <!-- เพิ่มเงาและขอบโค้ง -->
                                     <div class="modal-header bg-primary text-white">
-                                        <!-- เปลี่ยนสีหัวข้อ -->
                                         <h5 class="modal-title" id="printModalLabel">
                                             <i class="fa-solid fa-print"></i> เลือกข้อมูลที่ต้องการพิมพ์
                                         </h5>
@@ -1121,21 +1116,60 @@ button.btn-primary:hover {
                                     <div class="modal-body">
                                         <form id="printForm" action="{{ route('admin.print') }}" method="GET"
                                             target="_blank">
-                                            <div class="d-flex align-items-center mb-3 p-2 border-bottom">
-                                                <input type="checkbox" id="selectAll" class="form-check-input me-2">
-                                                <label for="selectAll" class="form-check-label fw-bold text-primary">
-                                                    เลือกทั้งหมด
-                                                </label>
+                                            <div class="mb-3">
+                                                <input type="text" id="searchInput" class="form-control"
+                                                    placeholder="ค้นหาชื่อ...">
                                             </div>
-                                            <div class="row">
-                                                @foreach ($recorddata as $item)
-                                                <div class="col-md-6">
-                                                    <div class="form-check p-2 border rounded-3 mb-2 shadow-sm">
-                                                        <input class="form-check-input" type="checkbox" name="ids[]"
-                                                            value="{{ $item->id }}" id="check{{ $item->id }}">
-                                                        <label class="form-check-label" for="check{{ $item->id }}">
-                                                            <i class="fa-solid fa-user"></i> {{ $item->name }}
-                                                        </label>
+                                            <div class="accordion" id="dataAccordion">
+                                                @php
+                                                $groupedData = $recorddata->groupBy('department'); // สมมติว่ามีฟิลด์
+                                                'department'
+                                                @endphp
+                                                @foreach ($groupedData as $department => $items)
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="heading{{ $loop->index }}">
+                                                        <button class="accordion-button" type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse{{ $loop->index }}"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapse{{ $loop->index }}">
+                                                            {{ $department }} ({{ $items->count() }})
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapse{{ $loop->index }}"
+                                                        class="accordion-collapse collapse show"
+                                                        aria-labelledby="heading{{ $loop->index }}"
+                                                        data-bs-parent="#dataAccordion">
+                                                        <div class="accordion-body">
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <input type="checkbox"
+                                                                    class="form-check-input me-2 selectGroup"
+                                                                    data-group="{{ $department }}">
+                                                                <label
+                                                                    class="form-check-label fw-bold text-primary">เลือกทั้งหมดในกลุ่ม</label>
+                                                            </div>
+                                                            <div class="row">
+                                                                @foreach ($items as $item)
+                                                                <div class="col-md-6 mb-2">
+                                                                    <div class="card p-2">
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input data-item"
+                                                                                type="checkbox" name="ids[]"
+                                                                                value="{{ $item->id }}"
+                                                                                id="check{{ $item->id }}"
+                                                                                data-name="{{ $item->name }}"
+                                                                                data-department="{{ $department }}">
+                                                                            <label class="form-check-label"
+                                                                                for="check{{ $item->id }}">
+                                                                                <i class="fa-solid fa-user"></i>
+                                                                                {{ $item->name }}
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 @endforeach
@@ -1157,18 +1191,40 @@ button.btn-primary:hover {
                         </div>
 
                         <script>
-                        // ฟังก์ชันเลือกทั้งหมด
-                        document.getElementById('selectAll').addEventListener('change', function() {
-                            let checkboxes = document.querySelectorAll('input[name="ids[]"]');
-                            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const searchInput = document.getElementById('searchInput');
+                            const dataItems = document.querySelectorAll('.data-item');
+
+                            searchInput.addEventListener('input', function() {
+                                const searchTerm = searchInput.value.toLowerCase();
+                                dataItems.forEach(item => {
+                                    const name = item.dataset.name.toLowerCase();
+                                    const department = item.dataset.department.toLowerCase();
+                                    const card = item.closest('.col-md-6');
+                                    if (name.includes(searchTerm) || department.includes(
+                                            searchTerm)) {
+                                        card.style.display = '';
+                                    } else {
+                                        card.style.display = 'none';
+                                    }
+                                });
+                            });
+
+                            const selectGroups = document.querySelectorAll('.selectGroup');
+                            selectGroups.forEach(group => {
+                                group.addEventListener('change', function() {
+                                    const department = this.dataset.group;
+                                    const items = document.querySelectorAll(
+                                        `.data-item[data-department="${department}"]`);
+                                    items.forEach(item => item.checked = this.checked);
+                                });
+                            });
                         });
 
-                        // ฟังก์ชันส่งฟอร์ม
                         function submitPrintForm() {
                             document.getElementById('printForm').submit();
                         }
                         </script>
-
                     </td>
                 </tr>
                 @endforeach
