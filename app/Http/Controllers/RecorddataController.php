@@ -565,7 +565,7 @@ public function restore($id)
         $recorddata->is_deleted = false; // เปลี่ยนสถานะกลับมาเป็นไม่ถูกซ่อน
         $recorddata->save();
 
-        return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกกู้คืนแล้ว');
+        return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกกู้คืนแล้ว คุณสามารถดูข้อมูลที่กู้คืนได้ที่<a href="/admin/record">บันทึกข้อมูล</a>');
     } catch (\Exception $e) {
         return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการกู้คืนข้อมูล');
     }
@@ -575,7 +575,7 @@ public function destroyPermanently($id)
 {
     try {
         // ค้นหาข้อมูลที่ถูกซ่อน
-        $record = Recorddata::findOrFail($id);  // แก้ไขให้ค้นหาจากฐานข้อมูลโดยไม่ใช้ onlyTrashed
+        $record = Recorddata::findOrFail($id);
 
         // ลบข้อมูลถาวรจากฐานข้อมูล
         $record->forceDelete();

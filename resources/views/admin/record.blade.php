@@ -392,7 +392,7 @@ button.btn-primary:hover {
         {{ session('message') }}
     </div>
     @endif
-    
+
     <div class="title">
         <h4><strong>บันทึกข้อมูล</strong></h4>
         <div class="btn-container">
@@ -1060,20 +1060,20 @@ button.btn-primary:hover {
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="deleteModalLabel{{ $data->id }}"
-                                            style="color:#000;">ยืนยันการซ่อนข้อมูล</h5>
+                                            style="color:#000;">ยืนยันการลบข้อมูล</h5>
                                         <button type="button" class="btn btn-light rounded-circle shadow-sm close-btn"
                                             data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body" style="color:#000;">
-                                        คุณต้องการซ่อนข้อมูลนี้ใช่หรือไม่?
+                                        คุณต้องการลบข้อมูลนี้ใช่หรือไม่?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">ไม่</button>
+                                            data-bs-dismiss="modal">ยกเลิก</button>
                                         <button type="button" class="btn btn-danger confirmDelete"
-                                            data-form-id="deleteForm{{ $data->id }}">ยืนยันการซ่อน</button>
+                                            data-form-id="deleteForm{{ $data->id }}">ยืนยันการลบ</button>
                                     </div>
                                 </div>
                             </div>
