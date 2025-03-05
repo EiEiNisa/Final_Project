@@ -676,7 +676,7 @@ form {
                                     @endif
                                     <div class="form-group">
                                         <label>โรคประจำตัว</label>
-                                        @if(isset($diseases) && !empty($diseases))
+                                        @if($diseases)
                                         @php
                                         $diseaseLabels = [
                                         'diabetes' => 'เบาหวาน',
