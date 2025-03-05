@@ -2,12 +2,13 @@
 
 @section('content')
 
-<!-- Custom Styles -->
 <style>
-/* ปรับ header ของตาราง */
+/* ปรับขนาด card header ให้ใหญ่ขึ้น */
 .card-header {
     background-color: #4e73df;
     color: white;
+    font-size: 1.5rem; /* เพิ่มขนาดตัวอักษรให้ใหญ่ขึ้น */
+    padding: 1rem 1.5rem; /* ปรับ padding ใหญ่ขึ้น */
 }
 
 .card-header h4 {
@@ -15,11 +16,38 @@
     font-weight: bold;
 }
 
-/* ปรับปุ่มให้สวยงาม */
+/* ปรับสีตาราง */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #dee2e6; /* ขอบสีอ่อน */
+    padding: 0.75rem; /* เพิ่มช่องว่างในเซลล์ */
+    font-size: 0.9rem; /* ลดขนาดตัวอักษรในตาราง */
+}
+
+th {
+    background-color: #f8f9fc; /* สีพื้นหลังของหัวตาราง */
+    color: #333; /* สีตัวหนังสือในหัวตาราง */
+    font-weight: bold;
+}
+
+td {
+    background-color: #fff; /* สีพื้นหลังของแถวข้อมูล */
+    color: #495057; /* สีตัวหนังสือในแถวข้อมูล */
+}
+
+tr:nth-child(even) td {
+    background-color: #f1f3f5; /* สีพื้นหลังของแถวที่เป็นเลขคู่ */
+}
+
+/* ปรับปุ่มให้เล็กลง */
 .btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
+    padding: 0.25rem 0.5rem; /* ลดขนาด padding ของปุ่ม */
+    font-size: 0.75rem; /* ลดขนาดตัวอักษรในปุ่ม */
+    line-height: 1.25;
     border-radius: 0.25rem;
 }
 
@@ -32,31 +60,6 @@
 .alert-danger {
     background-color: #dc3545;
     color: white;
-}
-
-/* การจัดการช่องข้อมูลในตาราง */
-td,
-th {
-    text-align: center;
-    vertical-align: middle;
-}
-
-/* ปรับขนาดของปุ่ม */
-.btn-custom {
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    border-radius: 0.3rem;
-}
-
-/* ปรับสีปุ่มสำหรับการกู้คืนและลบ */
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
 }
 
 /* ปรับการแสดง Modal */
@@ -72,6 +75,7 @@ th {
     border-radius: 0.3rem;
 }
 
+/* การจัดการการแสดงผลของ pagination */
 .custom-pagination {
     display: flex;
     justify-content: center;
@@ -113,6 +117,7 @@ th {
     background-color: #d6d8db;
 }
 </style>
+
 
 <!-- การแจ้งเตือน Success/Error -->
 @if(session('success'))
@@ -176,8 +181,10 @@ th {
                             ->map(fn($key) => $diseaseLabels[$key])
                             ->implode("\n");
 
+                            // ถ้ามีข้อมูล 'other' และ 'other_text' จะเชื่อมต่อโดยไม่เว้นบรรทัด
                             if ($record->diseases->other && !empty($record->diseases->other_text)) {
-                            $selectedDiseases .= "\n" . $record->diseases->other_text;
+                            $selectedDiseases .= $selectedDiseases ? ' ' . $record->diseases->other_text :
+                            $record->diseases->other_text;
                             }
                             @endphp
                             {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
