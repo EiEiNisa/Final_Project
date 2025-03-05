@@ -66,21 +66,6 @@ tr:hover {
     background-color: #d6e9f9;
 }
 
-.btn {
-    padding: 8px 15px;
-    background-color: #020364;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-    background-color: #fff;
-    transform: scale(1.05);
-}
-
 .custom-pagination {
     display: flex;
     justify-content: center;
