@@ -699,29 +699,30 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
-    // ตรวจสอบว่ามี user_name หรือไม่
-    if (!$recorddata->user_name) {
-        return back()->with('error', 'ไม่พบชื่อผู้บันทึก กรุณาแก้ไขข้อมูล');
+    // ค้นหาข้อมูลที่เกี่ยวข้องเฉพาะสำหรับ checkup_id ที่ส่งมา
+    $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
+                                 ->where('checkup_id', $checkup_id)
+                                 ->first();
+    if (!$healthRecord) {
+        return back()->with('error', 'ไม่พบข้อมูลสำหรับการตรวจครั้งที่ ' . $checkup_id);
     }
 
-    // ค้นหาข้อมูลที่เกี่ยวข้อง
-    $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)->first();
-    if (!$healthRecord) return back()->with('error', 'ไม่พบข้อมูล healthRecord');
-
-    $healthZone = HealthZone::where('recorddata_id', $recorddata_id)->first();
-    if (!$healthZone) return back()->with('error', 'ไม่พบข้อมูล health_zone');
-
-    $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)->first();
-    if (!$healthZone2) return back()->with('error', 'ไม่พบข้อมูล health_zone2');
-
-    $diseases = Disease::where('recorddata_id', $recorddata_id)->first();
-    if (!$diseases) return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
-    //dd($diseases);
-    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)->first();
-    if (!$lifestyles) return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
-
-    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)->first();
-    if (!$elderlyInfos) return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
+    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ สำหรับ checkup_id ที่ถูกเลือก
+    $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
+                            ->where('checkup_id', $checkup_id)
+                            ->first();
+    $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
+                              ->where('checkup_id', $checkup_id)
+                              ->first();
+    $diseases = Disease::where('recorddata_id', $recorddata_id)
+                       ->where('checkup_id', $checkup_id)
+                       ->first();
+    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
+                                ->where('checkup_id', $checkup_id)
+                                ->first();
+    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
+                                      ->where('checkup_id', $checkup_id)
+                                      ->first();
 
     // Define $zones and $zones2
     $zones = [
@@ -759,7 +760,6 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         'diseases', 'lifestyles', 'elderlyInfos', 'checkup_id', 'zones', 'zones2'
     ));
 }
-
 
 public function update_general_information(Request $request, $recorddata_id = null, $checkup_id = null) 
 {
