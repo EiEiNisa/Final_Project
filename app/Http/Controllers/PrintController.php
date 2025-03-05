@@ -27,8 +27,8 @@ class PrintController extends Controller
         $currentYear = Carbon::now()->year;
     
         $inspections = collect();
-        dd($inspections);
-        
+        //dd($inspections);
+
         foreach ($ids as $id) {
             $recorddata = Recorddata::find($id);  
         
