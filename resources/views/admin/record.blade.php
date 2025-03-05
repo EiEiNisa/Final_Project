@@ -1222,6 +1222,7 @@ button.btn-primary:hover {
                                             <i class="fa-solid fa-print"></i> พิมพ์
                                         </button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -1258,6 +1259,20 @@ button.btn-primary:hover {
                                 });
                             });
 
+                            // ปุ่มพิมพ์
+                            function submitPrintForm() {
+                                const form = document.getElementById('printForm');
+
+                                // ตรวจสอบว่ามีข้อมูลที่เลือกแล้วหรือไม่
+                                const selectedItems = document.querySelectorAll('.data-item:checked');
+                                if (selectedItems.length === 0) {
+                                    alert('กรุณาเลือกข้อมูลก่อนพิมพ์');
+                                    return;
+                                }
+
+                                form.submit(); // ส่งฟอร์ม
+                            }
+
                             // เปิดโมเดลเมื่อคลิก
                             $('#printModal').on('show.bs.modal', function(event) {
                                 const currentPage = new URLSearchParams(window.location.search).get(
@@ -1285,26 +1300,17 @@ button.btn-primary:hover {
 
                             // ฟังก์ชั่นโหลดข้อมูลหน้า
                             function loadPageData(page) {
-                                // ส่งคำขอ AJAX เพื่อดึงข้อมูลของหน้าที่กำหนด
                                 $.ajax({
-                                    url: `?page=${page}`, // ใช้ URL ที่มีพารามิเตอร์ page
+                                    url: `?page=${page}`,
                                     method: 'GET',
                                     success: function(response) {
-                                        // อัพเดตเนื้อหาของ accordion ด้วยข้อมูลใหม่
                                         $('#dataAccordion').html($(response).find('#dataAccordion')
                                             .html());
-
-                                        // ตั้งค่าปุ่มการแบ่งหน้าให้ตรงกับหน้าปัจจุบัน
                                         const newUrl = new URL(window.location.href);
                                         newUrl.searchParams.set('page', page);
                                         window.history.pushState({}, '', newUrl);
                                     }
                                 });
-                            }
-
-                            // ฟังก์ชั่นส่งข้อมูลพิมพ์
-                            function submitPrintForm() {
-                                document.getElementById('printForm').submit();
                             }
                         });
                         </script>
