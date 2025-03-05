@@ -12,9 +12,7 @@ use App\Models\LifestyleHabit;
 use App\Models\ElderlyInformation;
 use Carbon\Carbon;
 
-class PrintController extends Controller
-{
-    public function showPrintPage(Request $request)
+public function showPrintPage(Request $request)
 {
     $ids = $request->input('ids');  // รับค่า ids[] จาก URL
 
@@ -30,6 +28,15 @@ class PrintController extends Controller
     $inspections = collect();  // Initialize inspections collection
 
     foreach ($ids as $id) {
+        // Fetch the specific Recorddata object
+        $recorddata = Recorddata::find($id);  // Fetch the recorddata by ID
+
+        // If recorddata is not found, continue to the next ID
+        if (!$recorddata) {
+            continue; // or you can return an error if necessary
+        }
+
+        // Fetch related models
         $healthRecords = HealthRecord::where('recorddata_id', $id)
             ->whereYear('created_at', $currentYear)
             ->get();
@@ -75,7 +82,7 @@ class PrintController extends Controller
 
             $inspections->push([  // Push the current inspection data to the inspections collection
                 'inspection_number' => $i + 1,
-                'date' => $recorddata->created_at->format('d/m/Y'),
+                'date' => $recorddata->created_at->format('d/m/Y'), // Use recorddata's created_at
                 'health_record' => $healthRecord ? [
                     'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',
                     'dia' => $healthRecord->dia ?? 'ไม่มีข้อมูล',
