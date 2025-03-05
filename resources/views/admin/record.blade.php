@@ -1120,6 +1120,10 @@ button.btn-primary:hover {
                                             </div>
                                             <div class="accordion" id="dataAccordion">
                                                 @php
+                                                $recorddataList = \App\Models\Recorddata::all();
+                                                $groupedData = $recorddataList->groupBy('section');
+                                                $perPage = 20; // จำนวนรายการต่อหน้า
+                                                $page = request()->input('page', 1); // รับค่า page จาก query string
                                                 $offset = ($page - 1) * $perPage;
                                                 @endphp
                                                 @foreach ($groupedData as $section => $items)
@@ -1172,8 +1176,8 @@ button.btn-primary:hover {
                                                                 <ul class="pagination justify-content-center">
                                                                     @if ($page > 1)
                                                                     <li class="page-item">
-                                                                        <a class="page-link" href="javascript:void(0);"
-                                                                            data-page="{{ $page - 1 }}"
+                                                                        <a class="page-link"
+                                                                            href="?page={{ $page - 1 }}"
                                                                             aria-label="Previous">
                                                                             <span aria-hidden="true">&laquo;</span>
                                                                         </a>
@@ -1184,15 +1188,13 @@ button.btn-primary:hover {
                                                                         <li
                                                                             class="page-item {{ ($page == $i) ? 'active' : '' }}">
                                                                             <a class="page-link"
-                                                                                href="javascript:void(0);"
-                                                                                data-page="{{ $i }}">{{ $i }}</a>
+                                                                                href="?page={{ $i }}">{{ $i }}</a>
                                                                         </li>
                                                                         @endfor
                                                                         @if ($page < ceil($items->count() / $perPage))
                                                                             <li class="page-item">
                                                                                 <a class="page-link"
-                                                                                    href="javascript:void(0);"
-                                                                                    data-page="{{ $page + 1 }}"
+                                                                                    href="?page={{ $page + 1 }}"
                                                                                     aria-label="Next">
                                                                                     <span
                                                                                         aria-hidden="true">&raquo;</span>
@@ -1228,6 +1230,7 @@ button.btn-primary:hover {
                             const searchInput = document.getElementById('searchInput');
                             const dataItems = document.querySelectorAll('.data-item');
 
+                            // ค้นหาข้อมูล
                             searchInput.addEventListener('input', function() {
                                 const searchTerm = searchInput.value.toLowerCase();
                                 dataItems.forEach(item => {
@@ -1243,6 +1246,7 @@ button.btn-primary:hover {
                                 });
                             });
 
+                            // เลือกทั้งหมดในแต่ละกลุ่ม
                             const selectGroups = document.querySelectorAll('.selectGroup');
                             selectGroups.forEach(group => {
                                 group.addEventListener('change', function() {
@@ -1253,46 +1257,28 @@ button.btn-primary:hover {
                                 });
                             });
 
-                            const paginationLinks = document.querySelectorAll('.pagination a');
-                            paginationLinks.forEach(link => {
-                                link.addEventListener('click', function(e) {
-                                    e.preventDefault();
-                                    const page = this.dataset.page;
-                                    loadPage(page);
-                                });
+                            // เปิดโมเดลเมื่อคลิก
+                            $('#printModal').on('show.bs.modal', function(event) {
+                                // เก็บสถานะหน้าเดิม
+                                const currentPage = new URLSearchParams(window.location.search).get(
+                                    'page');
+                                if (currentPage) {
+                                    // หากมี query string page, ตั้งค่าให้ตรงกับหน้าเดิม
+                                    $(this).find('.pagination .page-item').each(function() {
+                                        const pageLink = $(this).find('a');
+                                        if (pageLink.attr('href').includes(
+                                                `page=${currentPage}`)) {
+                                            pageLink.addClass('active');
+                                        }
+                                    });
+                                }
                             });
 
-                            function loadPage(page) {
-                                const xhr = new XMLHttpRequest();
-                                xhr.open('GET', '?page=' + page);
-                                xhr.onload = function() {
-                                    if (xhr.status >= 200 && xhr.status < 300) {
-                                        document.getElementById('dataAccordion').innerHTML = xhr
-                                            .responseText;
-                                        // เพิ่ม event listener ให้กับ pagination links ใหม่
-                                        const newPaginationLinks = document.querySelectorAll(
-                                            '.pagination a');
-                                        newPaginationLinks.forEach(link => {
-                                            link.addEventListener('click', function(e) {
-                                                e.preventDefault();
-                                                const page = this.dataset.page;
-                                                loadPage(page);
-                                            });
-                                        });
-                                    } else {
-                                        console.error('Failed to load page');
-                                    }
-                                };
-                                xhr.onerror = function() {
-                                    console.error('Network error');
-                                };
-                                xhr.send();
+                            // ฟังก์ชั่นส่งข้อมูลพิมพ์
+                            function submitPrintForm() {
+                                document.getElementById('printForm').submit();
                             }
                         });
-
-                        function submitPrintForm() {
-                            document.getElementById('printForm').submit();
-                        }
                         </script>
 
                     </td>
