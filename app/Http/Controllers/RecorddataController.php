@@ -735,10 +735,10 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
                                       ->first(); // ไม่ต้องใช้ healthrecord_i
 
     // ดีบัก: ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
-    dd('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
-    dd('Diseases: ' . ($diseases ? 'Found' : 'Not Found'));
-    dd('LifestyleHabit: ' . ($lifestyles ? 'Found' : 'Not Found'));
-    dd('ElderlyInformation: ' . ($elderlyInfos ? 'Found' : 'Not Found'));
+    //dd('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
+    //dd('Diseases: ' . ($diseases ? 'Found' : 'Not Found'));
+    //dd('LifestyleHabit: ' . ($lifestyles ? 'Found' : 'Not Found'));
+    //dd('ElderlyInformation: ' . ($elderlyInfos ? 'Found' : 'Not Found'));
 
     // Define $zones and $zones2
     $zones = [
