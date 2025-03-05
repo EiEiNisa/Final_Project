@@ -534,17 +534,39 @@ public function update(Request $request, $id)
     return back()->with('success', 'ข้อมูลถูกบันทึกแล้ว');
 }
 
+public function destroy($id)
+{
+    try {
+        $recorddata = Recorddata::findOrFail($id);
+        $recorddata->is_deleted = true; // เปลี่ยนสถานะเป็น 'ซ่อน' แทนการลบ
+        $recorddata->save();
 
-    public function destroy($id)
-    {
-        try {
-            $recorddata = Recorddata::findOrFail($id);
-            $recorddata->delete();
-            return redirect()->route('recorddata.index')->with('success', 'ข้อมูลถูกลบแล้ว');
-        } catch (\Exception $e) {
-            return redirect()->route('recorddata.index')->with('error', 'เกิดข้อผิดพลาดในการลบข้อมูล');
-        }
+        return redirect()->route('recorddata.index')->with('success', 'ข้อมูลถูกซ่อนไว้แล้ว');
+    } catch (\Exception $e) {
+        return redirect()->route('recorddata.index')->with('error', 'เกิดข้อผิดพลาดในการซ่อนข้อมูล');
     }
+}
+
+public function recentlyDeleted()
+{
+    // ดึงข้อมูลที่ถูกซ่อน (is_deleted = true)
+    $deletedRecords = Recorddata::where('is_deleted', true)->get();
+
+    return view('admin.recently_deleted', compact('deletedRecords'));
+}
+
+public function restore($id)
+{
+    try {
+        $recorddata = Recorddata::findOrFail($id);
+        $recorddata->is_deleted = false; // เปลี่ยนสถานะกลับมาเป็นไม่ถูกซ่อน
+        $recorddata->save();
+
+        return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกกู้คืนแล้ว');
+    } catch (\Exception $e) {
+        return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการกู้คืนข้อมูล');
+    }
+}
 
     public function disease()
     {

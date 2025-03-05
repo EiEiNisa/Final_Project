@@ -1061,35 +1061,36 @@ button.btn-primary:hover {
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="deleteModalLabel{{ $data->id }}"
                                             style="color:#000;">
-                                            ยืนยันการลบ</h5>
+                                            ยืนยันการซ่อนข้อมูล</h5>
                                         <button type="button" class="btn btn-light rounded-circle shadow-sm close-btn"
                                             data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
-
                                     </div>
                                     <div class="modal-body" style="color:#000;">
-                                        คุณต้องการลบข้อมูลนี้ใช่หรือไม่?
+                                        คุณต้องการซ่อนข้อมูลนี้ใช่หรือไม่?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">ไม่</button>
                                         <button type="button" class="btn btn-danger confirmDelete"
-                                            data-form-id="deleteForm{{ $data->id }}">ยืนยันการลบ</button>
+                                            data-form-id="deleteForm{{ $data->id }}">
+                                            ยืนยันการซ่อน
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <script>
-                        // เมื่อกดปุ่ม "ยืนยันการลบ"
+                        // เมื่อกดปุ่ม "ยืนยันการซ่อน"
                         document.querySelectorAll('.confirmDelete').forEach(button => {
                             button.addEventListener('click', function() {
                                 var formId = this.getAttribute(
-                                    'data-form-id'); // ดึง ID ของฟอร์มที่ต้องการส่ง
+                                'data-form-id'); // ดึง ID ของฟอร์มที่ต้องการส่ง
                                 var form = document.getElementById(formId); // หาฟอร์มที่มี ID นี้
                                 console.log('Submitting form with ID: ' +
-                                    formId); // เช็คว่า ID ของฟอร์มถูกดึงมาไหม
+                                formId); // เช็คว่า ID ของฟอร์มถูกดึงมาไหม
                                 form.submit(); // ส่งฟอร์ม
                             });
                         });
@@ -1251,7 +1252,7 @@ button.btn-primary:hover {
 
                                     // เลือกทั้งหมดของข้อมูลที่แสดงในหน้าปัจจุบัน
                                     const allItems = document.querySelectorAll(
-                                    '.data-item'); // ใช้ข้อมูลที่แสดงทั้งหมด
+                                        '.data-item'); // ใช้ข้อมูลที่แสดงทั้งหมด
                                     allItems.forEach(item => item.checked = this.checked);
 
                                     // ถ้าคุณต้องการเลือกข้อมูลทั้งหมดจากเซิร์ฟเวอร์จริง ๆ (28 รายการ)
