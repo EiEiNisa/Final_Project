@@ -1274,6 +1274,18 @@ button.btn-primary:hover {
                                 }
                             });
 
+                            // ป้องกันการโหลดหน้าใหม่เมื่อคลิกที่ลิงก์เปลี่ยนหน้า
+                            $(document).on('click', '.pagination .page-link', function(e) {
+                                e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+                                const url = new URL(this.href);
+                                const page = url.searchParams.get('page'); // ดึงค่า page จาก URL
+
+                                // โหลดหน้าใหม่ด้วย AJAX (ถ้าคุณต้องการโหลดข้อมูลโดยไม่โหลดทั้งหน้า)
+                                // หรือถ้าไม่ต้องการ AJAX ให้ปล่อยให้หน้าใหม่แสดง
+                                // คุณอาจจะสามารถจัดการการเปลี่ยนหน้าในโมเดลได้เอง
+                                $('#dataAccordion').load(url.pathname + ' #dataAccordion');
+                            });
+
                             // ฟังก์ชั่นส่งข้อมูลพิมพ์
                             function submitPrintForm() {
                                 document.getElementById('printForm').submit();

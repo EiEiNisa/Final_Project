@@ -205,6 +205,7 @@
                     <p>{{ $inspection['elderly_information'] ?? 'ไม่มีข้อมูล' }}</p>
                     @endif
                 </div>
+
                 <div class="divider"></div>
                 @endif
             @endif
