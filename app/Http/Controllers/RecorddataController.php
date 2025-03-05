@@ -761,7 +761,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 public function update_general_information(Request $request, $recorddata_id = null, $checkup_id = null) 
 {
     
-    dd($request->all());
+    //dd($request->all());
     //dd($recorddata_id, $checkup_id);
 
     // หากมี recorddata_id และ checkup_id ให้ทำการอัพเดตข้อมูล
