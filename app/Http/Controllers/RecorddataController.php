@@ -713,7 +713,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)->first();
     if (!$diseases) return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
-    dd($diseases)
+    dd($diseases);
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)->first();
     if (!$lifestyles) return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
 
