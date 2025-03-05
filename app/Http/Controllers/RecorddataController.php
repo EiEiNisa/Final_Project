@@ -261,10 +261,6 @@ public function store(Request $request)
         ->orderBy('created_at', 'desc')
         ->get();
     
-        $diseases = Disease::where('recorddata_id', $recorddata->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-    
         $diseaseNames = $diseases->map(function ($disease) { 
             $names = [];
             if ($disease->diabetes == 1) $names[] = 'เบาหวาน';
@@ -273,9 +269,11 @@ public function store(Request $request)
             if ($disease->blood_pressure == 1) $names[] = 'ความดันโลหิตสูง';
             if ($disease->heart == 1) $names[] = 'หัวใจ';
             if ($disease->eye == 1) $names[] = 'ตา';
-            if ($disease->other == 1) $names[] = 'อื่น ๆ';
+            if ($disease->other == 1) {
+                $names[] = '' . $disease->other_text;
+            }
             return ['id' => $disease->id, 'names' => implode(' ', $names)];
-        });
+        });        
         //dd($diseaseNames); 
     
         $lifestyles = LifestyleHabit::where('recorddata_id', $id)
@@ -692,62 +690,40 @@ public function Usersearch(Request $request)
 
 public function edit_general_information(Request $request, $recorddata_id, $checkup_index)  
 {
-    // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
-    // ค้นหาข้อมูล healthRecord โดยใช้ recorddata_id และจัดเรียงตาม id ของการตรวจ
     $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
-                                 ->orderBy('id', 'asc') // จัดเรียงตาม id จากน้อยไปหามาก
+                                 ->orderBy('id', 'asc') 
                                  ->get();
 
-    // ตรวจสอบว่า healthRecords มีข้อมูลหรือไม่
     if ($healthRecords->isEmpty()) {
         return back()->with('error', 'ไม่พบข้อมูลการตรวจ');
     }
 
-    // ดีบัก: ตรวจสอบจำนวนของ healthRecords
-    //dd('จำนวนการตรวจทั้งหมด: ' . $healthRecords->count()); // ใช้ dd แทน Log
-
-    // ดีบัก: ตรวจสอบค่าของ checkup_index ที่ได้รับ
-    //dd('checkup_index: ' . $checkup_index); // ใช้ dd แทน Log
-
-    // ตรวจสอบว่า checkup_index ไม่เกินจำนวนรายการที่มีอยู่
-    if ($checkup_index > $healthRecords->count() || $checkup_index < 1) { // ตรวจสอบว่า checkup_index เริ่มจาก 1
+    if ($checkup_index > $healthRecords->count() || $checkup_index < 1) {
         return back()->with('error', 'ไม่พบข้อมูลการตรวจครั้งที่ ' . $checkup_index);
     }
 
-    // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
-    $healthRecord = $healthRecords[$checkup_index - 1]; // -1 เพื่อให้ตรงกับ index ของ array ที่เริ่มจาก 0
-    //dd($healthRecord->id);
+    $healthRecord = $healthRecords[$checkup_index - 1];
 
-    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ recorddata_id และ id ของ healthRecord
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('id', $healthRecord->id)  // ใช้ id ของ healthRecord
+                            ->where('id', $healthRecord->id) 
                             ->first();
-                            //dd($healthZone); 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                            ->where('id', $healthRecord->id) // แก้ไขตรงนี้
+                            ->where('id', $healthRecord->id) 
                             ->first();
-    //dd($healthZone2); 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                        ->where('id', $healthRecord->id) // แก้ไขตรงนี้
+                        ->where('id', $healthRecord->id) 
                         ->first();
     
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('id', $healthRecord->id) // แก้ไขตรงนี้
+                                ->where('id', $healthRecord->id)
                                 ->first();
     
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                        ->where('id', $healthRecord->id) // แก้ไขตรงนี้
+                                        ->where('id', $healthRecord->id)
                                         ->first();
 
-    // ดีบัก: ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
-    //dd('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
-    //dd('Diseases: ' . ($diseases ? 'Found' : 'Not Found'));
-    //dd('LifestyleHabit: ' . ($lifestyles ? 'Found' : 'Not Found'));
-    //dd('ElderlyInformation: ' . ($elderlyInfos ? 'Found' : 'Not Found'));
-
-    // Define $zones and $zones2
     $zones = [
         'zone1_normal' => ['value' => $healthZone->zone1_normal ?? 0, 'label' => '≤ 120/80 mmHg'],
         'zone1_risk_group' => ['value' => $healthZone->zone1_risk_group ?? 0, 'label' => '120/80 - 139/89 mmHg'],

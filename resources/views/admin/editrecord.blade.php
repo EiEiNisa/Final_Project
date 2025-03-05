@@ -656,16 +656,15 @@ form {
                                     </div>
                                 </div>
 
-                                <!-- ข้อมูลโรคที่พบ -->
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-group3">
-                                        <label for="diseases_{{ $index }}">โรคที่พบ</label>
-                                        <input type="text" class="form-control" id="diseases_{{ $index }}"
-                                            name="diseases[{{ $index }}]"
-                                            value="{{ $diseases->isNotEmpty() ? $diseases->pluck('name')->implode(', ') : 'ไม่มีข้อมูล' }}"
-                                            readonly>
-                                    </div>
+                                @if(isset($elderlyInfo[$index]))
+                                <div class="col-md-12 mb-3">
+                                    <label for="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}">ข้อมูลผู้สูงอายุ</label>
+                                    <input type="text" class="form-control"
+                                        id="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}"
+                                        name="elderlyhabit[{{ $elderlyInfo[$index]['id'] }}]"
+                                        value="{{ $elderlyInfo[$index]['lifestyleshabit'] }}" readonly>
                                 </div>
+                                @endif
 
                                 <!-- ข้อมูลเพิ่มเติม -->
                                 <div class="col-md-4">
