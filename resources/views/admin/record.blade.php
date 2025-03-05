@@ -1228,6 +1228,18 @@ button.btn-primary:hover {
                         </div>
 
                         <script>
+                        function submitPrintForm() {
+                            console.log('submitPrintForm() called');
+                            const form = document.getElementById('printForm');
+                            console.log('Form:', form);
+                            if (form) {
+                                form.submit();
+                                console.log('Form submitted');
+                            } else {
+                                console.error('Form not found');
+                            }
+                        }
+
                         document.addEventListener('DOMContentLoaded', function() {
                             const searchInput = document.getElementById('searchInput');
                             const dataItems = document.querySelectorAll('.data-item');
@@ -1262,18 +1274,6 @@ button.btn-primary:hover {
                                 });
                             });
 
-                            function submitPrintForm() {
-                                console.log('submitPrintForm() called');
-                                const form = document.getElementById('printForm');
-                                console.log('Form:', form);
-                                if (form) {
-                                    form.submit();
-                                    console.log('Form submitted');
-                                } else {
-                                    console.error('Form not found');
-                                }
-                            }
-
                             // เปิดโมเดลเมื่อคลิก
                             $('#printModal').on('show.bs.modal', function(event) {
                                 const currentPage = new URLSearchParams(window.location.search).get(
@@ -1291,15 +1291,14 @@ button.btn-primary:hover {
 
                             // ป้องกันการโหลดหน้าใหม่เมื่อคลิกที่ลิงก์เปลี่ยนหน้า
                             $(document).on('click', '.pagination .page-link', function(e) {
-                                e.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+                                e.preventDefault();
                                 const url = new URL(this.href);
-                                const page = url.searchParams.get('page'); // ดึงค่า page จาก URL
+                                const page = url.searchParams.get('page');
 
                                 // โหลดข้อมูลของหน้าปัจจุบัน
                                 loadPageData(page);
                             });
 
-                            // ฟังก์ชั่นโหลดข้อมูลหน้า
                             function loadPageData(page) {
                                 $.ajax({
                                     url: `?page=${page}`,
