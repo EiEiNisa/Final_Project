@@ -1252,9 +1252,12 @@ button.btn-primary:hover {
                             const selectGroups = document.querySelectorAll('.selectGroup');
                             selectGroups.forEach(group => {
                                 group.addEventListener('change', function() {
+                                    console.log('Select group changed:', this.dataset.group,
+                                        this.checked); // เพิ่ม console.log
                                     const department = this.dataset.group;
                                     const items = document.querySelectorAll(
                                         `.data-item[data-department="${department}"]`);
+                                    console.log('Items:', items); // เพิ่ม console.log
                                     items.forEach(item => item.checked = this.checked);
                                 });
                             });
@@ -1262,15 +1265,14 @@ button.btn-primary:hover {
                             // ปุ่มพิมพ์
                             function submitPrintForm() {
                                 const form = document.getElementById('printForm');
-
-                                // ตรวจสอบว่ามีข้อมูลที่เลือกแล้วหรือไม่
                                 const selectedItems = document.querySelectorAll('.data-item:checked');
+                                console.log('Selected items:', selectedItems); // เพิ่ม console.log
                                 if (selectedItems.length === 0) {
                                     alert('กรุณาเลือกข้อมูลก่อนพิมพ์');
                                     return;
                                 }
-
-                                form.submit(); // ส่งฟอร์ม
+                                console.log('Submitting form'); // เพิ่ม console.log
+                                form.submit();
                             }
 
                             // เปิดโมเดลเมื่อคลิก
