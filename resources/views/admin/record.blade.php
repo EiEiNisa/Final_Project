@@ -1249,38 +1249,19 @@ button.btn-primary:hover {
                                 selectAllCheckbox.addEventListener('change', function() {
                                     console.log('Select all changed:', this.checked);
 
-                                    // ดึงข้อมูลทุก checkbox ที่มี class 'data-item' (เลือกทั้งหมดแม้ไม่ได้แสดงอยู่)
-                                    fetchAllCheckboxes().then(allItems => {
-                                        allItems.forEach(item => item.checked =
-                                            selectAllCheckbox.checked);
-                                    });
+                                    // เลือกทั้งหมดของข้อมูลที่แสดงในหน้าปัจจุบัน
+                                    const allItems = document.querySelectorAll(
+                                    '.data-item'); // ใช้ข้อมูลที่แสดงทั้งหมด
+                                    allItems.forEach(item => item.checked = this.checked);
+
+                                    // ถ้าคุณต้องการเลือกข้อมูลทั้งหมดจากเซิร์ฟเวอร์จริง ๆ (28 รายการ)
+                                    // คำสั่ง AJAX จะไปดึงข้อมูลทั้งหมดจากเซิร์ฟเวอร์
+                                    // fetchAllCheckboxes().then(allItems => {
+                                    //     allItems.forEach(item => item.checked = selectAllCheckbox.checked);
+                                    // });
                                 });
                             }
 
-                            function fetchAllCheckboxes() {
-                                return new Promise(resolve => {
-                                    let allItems = document.querySelectorAll('.data-item');
-
-                                    if (allItems.length === 28) {
-                                        resolve(allItems); // ถ้าข้อมูลครบ 28 รายการแล้ว ให้เลือกได้เลย
-                                    } else {
-                                        // ใช้ AJAX โหลดข้อมูลทั้งหมด (ต้องมี API หรือ Backend รองรับ)
-                                        $.ajax({
-                                            url: `?page=all`, // ต้องปรับให้ backend รองรับ
-                                            method: 'GET',
-                                            success: function(response) {
-                                                const tempContainer = document
-                                                    .createElement('div');
-                                                tempContainer.innerHTML = response;
-                                                allItems = tempContainer.querySelectorAll(
-                                                    '.data-item');
-                                                resolve(allItems);
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                            
                             // ค้นหาข้อมูล
                             searchInput.addEventListener('input', function() {
                                 const searchTerm = searchInput.value.toLowerCase();
