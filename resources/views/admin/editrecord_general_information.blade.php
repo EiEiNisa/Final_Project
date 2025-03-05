@@ -340,7 +340,7 @@ form {
 
     <div class="card-header">
         <h4><strong>แก้ไขข้อมูล</strong></h4>
-        <a href="/admin/edit_form_general_information/{{ $recorddata_id }}" class="btn btn-success">กลับ</a>
+        <a href="/admin/editrecord/{{ $recorddata_id }}" class="btn btn-success">กลับ</a>
     </div>
 
     <div class="card-body">
