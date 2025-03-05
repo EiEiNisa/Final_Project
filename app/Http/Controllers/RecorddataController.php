@@ -571,16 +571,20 @@ public function restore($id)
     }
 }
 
-public function destroyPermanently($id)
+public function destroyPermanently($id) 
 {
     try {
         // ค้นหาข้อมูลที่ถูกซ่อน
         $record = Recorddata::findOrFail($id);
 
-        // ลบข้อมูลถาวรจากฐานข้อมูล
+        $record->diseases()->delete();
+        $record->healthRecords()->delete();
+        $record->healthZones()->delete();
+        $record->healthZones2()->delete();
+        $record->lifestyleHabits()->delete();
+        $record->elderlyInformations()->delete();
         $record->forceDelete();
 
-        // ส่งข้อความไปที่หน้า
         return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
     } catch (\Exception $e) {
         return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการลบข้อมูล');
