@@ -661,7 +661,7 @@ form {
                                         <label for="diseaseNames_{{ $index }}">โรคที่พบ</label>
                                         <input type="text" class="form-control" id="diseaseNames_{{ $index }}"
                                             name="diseaseNames[{{ $index }}]"
-                                            value="{{ isset($diseaseNames[$index]) ? ($diseaseNames[$index]['other'] == 1 ? $diseaseNames[$index]['other_text'] : $diseaseNames[$index]['names']) : 'ไม่มีข้อมูล' }}"
+                                            value="{{ isset($diseaseNames[$index]) ? (isset($diseaseNames[$index]['other']) && $diseaseNames[$index]['other'] == 1 ? $diseaseNames[$index]['other_text'] : $diseaseNames[$index]['names']) : 'ไม่มีข้อมูล' }}"
                                             readonly>
                                     </div>
                                 </div>
