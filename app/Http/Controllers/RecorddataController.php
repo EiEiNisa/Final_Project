@@ -719,26 +719,20 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
     $healthRecord = $healthRecords[$checkup_index - 1]; // -1 เพื่อให้ตรงกับ index ของ array ที่เริ่มจาก 0
 
-    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ healthRecord_id
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
-                            ->first() ?? new HealthZone(); // ถ้าไม่พบให้สร้าง HealthZone ใหม่
+                            ->first(); // ไม่ต้องใช้ healthrecord_id
 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
-                              ->first() ?? new HealthZone2(); // ถ้าไม่พบให้สร้าง HealthZone2 ใหม่
+                              ->first(); // ไม่ต้องใช้ healthrecord_id
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                       ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
-                       ->first() ?? new Disease(); // ถ้าไม่พบให้สร้าง Disease ใหม่
+                       ->first(); // ไม่ต้องใช้ healthrecord_id
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
-                                ->first() ?? new LifestyleHabit(); // ถ้าไม่พบให้สร้าง LifestyleHabit ใหม่
+                                ->first(); // ไม่ต้องใช้ healthrecord_id
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                      ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
-                                      ->first() ?? new ElderlyInformation(); // ถ้าไม่พบให้สร้าง ElderlyInformation ใหม่
+                                      ->first(); // ไม่ต้องใช้ healthrecord_i
 
     // ดีบัก: ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
     dd('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
