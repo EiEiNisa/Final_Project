@@ -1112,8 +1112,8 @@ button.btn-primary:hover {
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="printForm" action="{{ route('admin.print') }}" method="GET"
-                                            target="_blank">
+                                        <form id="printForm" action="{{ route('admin.print', ['id' => $item->id]) }}"
+                                            method="GET" target="_blank">
                                             <div class="mb-3">
                                                 <input type="text" id="searchInput" class="form-control"
                                                     placeholder="ค้นหาชื่อ...">
@@ -1224,7 +1224,7 @@ button.btn-primary:hover {
                             document.getElementById('printForm').submit();
                         }
                         </script>
-                        
+
                     </td>
                 </tr>
                 @endforeach
