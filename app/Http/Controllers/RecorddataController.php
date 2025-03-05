@@ -277,6 +277,9 @@ public function edit($id, Request $request)
         return ['id' => $disease->id, 'names' => implode(' ', $names)];
     });
     //dd($diseaseNames); 
+    $diseaseGroups = $diseases->groupBy(function ($disease) {
+        return \Carbon\Carbon::parse($disease->created_at)->format('Y-m-d'); // ใช้วัน-เดือน-ปี เพื่อแยกตามการตรวจ
+    });
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $id)
         ->orderBy('created_at', 'desc')
