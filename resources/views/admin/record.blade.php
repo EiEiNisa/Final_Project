@@ -1143,12 +1143,12 @@ button.btn-primary:hover {
                                                         data-bs-parent="#dataAccordion">
                                                         <div class="accordion-body">
                                                             <div class="d-flex align-items-center mb-2">
-                                                                <input type="checkbox"
-                                                                    class="form-check-input me-2 selectGroup"
-                                                                    data-group="{{ $section }}">
+                                                                <input type="checkbox" id="selectAll"
+                                                                    class="form-check-input me-2">
                                                                 <label
-                                                                    class="form-check-label fw-bold text-primary">เลือกทั้งหมดในกลุ่ม</label>
+                                                                    class="form-check-label fw-bold text-danger">เลือกทั้งหมด</label>
                                                             </div>
+
                                                             <div class="row">
                                                                 @foreach ($items->slice($offset, $perPage) as $item)
                                                                 <div class="col-md-6 mb-2">
@@ -1244,6 +1244,16 @@ button.btn-primary:hover {
                             const searchInput = document.getElementById('searchInput');
                             const dataItems = document.querySelectorAll('.data-item');
 
+                            const selectAllCheckbox = document.getElementById('selectAll');
+                            if (selectAllCheckbox) {
+                                selectAllCheckbox.addEventListener('change', function() {
+                                    console.log('Select all changed:', this.checked);
+                                    const allItems = document.querySelectorAll(
+                                    '.data-item'); // เลือกทุกอัน
+                                    allItems.forEach(item => item.checked = this.checked);
+                                });
+                            }
+
                             // ค้นหาข้อมูล
                             searchInput.addEventListener('input', function() {
                                 const searchTerm = searchInput.value.toLowerCase();
@@ -1257,20 +1267,6 @@ button.btn-primary:hover {
                                     } else {
                                         card.style.display = 'none';
                                     }
-                                });
-                            });
-
-                            // เลือกทั้งหมดในแต่ละกลุ่ม
-                            const selectGroups = document.querySelectorAll('.selectGroup');
-                            selectGroups.forEach(group => {
-                                group.addEventListener('change', function() {
-                                    console.log('Select group changed:', this.dataset.group,
-                                        this.checked);
-                                    const department = this.dataset.group;
-                                    const items = document.querySelectorAll(
-                                        `.data-item[data-department="${department}"]`);
-                                    console.log('Items:', items);
-                                    items.forEach(item => item.checked = this.checked);
                                 });
                             });
 
