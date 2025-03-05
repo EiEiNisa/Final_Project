@@ -17,7 +17,7 @@ class PrintController extends Controller
     public function showPrintPage($id)
 {
     $recorddataList = Recorddata::paginate(30);
-
+    $groupedData = $recorddataList->groupBy('section');
     $currentYear = Carbon::now()->year;
 
     $healthRecords = HealthRecord::where('recorddata_id', $id)

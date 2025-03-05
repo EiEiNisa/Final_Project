@@ -112,7 +112,7 @@ button.btn-primary:hover {
 
 .custom-pagination {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; 
 }
 
 .custom-pagination a,
@@ -1187,7 +1187,7 @@ button.btn-primary:hover {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             const searchInput = document.getElementById('searchInput');
