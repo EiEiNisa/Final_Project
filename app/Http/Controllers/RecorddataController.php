@@ -706,7 +706,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     }
 
     // ดีบัก: ตรวจสอบจำนวนของ healthRecords
-    dd('จำนวนการตรวจทั้งหมด: ' . $healthRecords->count()); // ใช้ dd แทน Log
+    //dd('จำนวนการตรวจทั้งหมด: ' . $healthRecords->count()); // ใช้ dd แทน Log
 
     // ดีบัก: ตรวจสอบค่าของ checkup_index ที่ได้รับ
     dd('checkup_index: ' . $checkup_index); // ใช้ dd แทน Log
