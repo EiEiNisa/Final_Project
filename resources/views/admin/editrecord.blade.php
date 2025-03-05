@@ -645,6 +645,11 @@ form {
                                     value="{{ isset($zones[$index]) ? implode(' ', $zones[$index]) : '' }}" readonly>
                             </div>
 
+                            <div class="mt-3">
+                                <label>โรคประจำตัว</label>
+                                <textarea class="form-control"
+                                    readonly>{{ $healthRecord->diseases->implode(', ') ?? '-' }}</textarea>
+                            </div>
 
                             <div class="form-group3">
                                 <label for="health_zone2">blood pressure zone</label>
@@ -673,11 +678,10 @@ form {
                             </div>
                             @endif
 
-                            <div class="form-group">
-                                <label for="user_name">ผู้บันทึกข้อมูล</label>
-                                <input type="text" class="form-control" id="user_name" name="user_name"
-                                    value="{{ old('user_name', $recorddata->user_name) }}"
-                                    {{ $recorddata->user_name ? 'readonly' : '' }}>
+                            <div class="mt-3">
+                                <label>ผู้บันทึกข้อมูล</label>
+                                <input type="text" class="form-control" value="{{ $recorddata->user_name ?? '-' }}"
+                                    readonly>
                             </div>
 
                             <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
@@ -695,7 +699,7 @@ form {
                 document.querySelectorAll(".accordion-button").forEach(button => {
                     button.addEventListener("click", function() {
                         let target = document.querySelector(this.getAttribute(
-                        "data-bs-target"));
+                            "data-bs-target"));
                         let collapse = bootstrap.Collapse.getInstance(target);
                         if (collapse) {
                             collapse.toggle();
