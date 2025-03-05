@@ -309,10 +309,8 @@ form {
     </div>
 
     <div class="rectangle-box">
-        <form
-            action="{{ route('recorddata.update_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $checkup_id]) }}"
-            method="POST">
-            @csrf
+    <form action="{{ route('recorddata.update_general_information', ['recorddata_id' => $recorddata->id, 'checkup_index' => $checkup_index]) }}" method="POST">
+    @csrf
 
             <div class="form-group">
                 <label for="sys" style="margin-bottom: 5px; text-align: left; color: #020364;">SYS
