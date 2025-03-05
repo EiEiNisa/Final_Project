@@ -684,7 +684,7 @@ form {
                                     </div>
                                 </div>
                             </div>
-                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $checkup_id]) }}"
+                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
                                 class="btn btn-secondary" id="#editBtn">
                                 แก้ไขข้อมูล
                             </a>
