@@ -16,14 +16,16 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    $ids = $request->input('ids'); // รับค่า ids ที่ถูกเลือก
+    $ids = $request->input('ids');
 
         if (!$ids) {
             return redirect()->back()->with('error', 'กรุณาเลือกข้อมูลที่ต้องการพิมพ์');
         }
 
-        $recorddataList = Recorddata::whereIn('id', $ids)->get(); // ดึงข้อมูลทั้งหมดที่เลือก
+        $recorddataList = Recorddata::whereIn('id', $ids)->get(); 
         $currentYear = Carbon::now()->year;
+
+        dd(Recorddata::whereIn('id', $ids)->get());
 
     $healthRecords = HealthRecord::where('recorddata_id', $id)
         ->whereYear('created_at', $currentYear)

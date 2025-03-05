@@ -119,42 +119,37 @@ button.btn-primary:hover {
     font-size: 16px;
 }
 
-/* สีปุ่มปกติ */
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #198754;
-    /* เขียว Bootstrap btn-success */
+    background-color: #198754; /* สีเขียวหลัก */
     color: #ffffff;
     border: none;
     border-radius: 6px;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
 }
 
-/* เมื่อ hover */
 .custom-pagination a:hover {
-    background-color: #157347;
-    /* เขียวเข้มขึ้นเล็กน้อย */
+    background-color: #157347; /* สีเขียวเข้มขึ้นเมื่อ hover */
     transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* เพิ่มเงาเมื่อ hover */
 }
 
-/* ปุ่มที่ถูกเลือก (active) */
 .custom-pagination .active {
-    background-color: #146c43;
-    /* เขียวเข้ม Bootstrap */
+    background-color: #146c43; /* สีเขียวเข้มสุดสำหรับ active */
     font-weight: bold;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3); /* เพิ่มเงาสำหรับ active */
 }
 
-/* ปุ่มที่ไม่สามารถกดได้ (disabled) */
 .custom-pagination .disabled {
-    background-color: #A3D9A5;
-    /* เขียวอ่อนแบบซอฟต์ */
+    background-color: #A3D9A5; /* สีเขียวอ่อนสำหรับ disabled */
     color: #5C9A5A;
     cursor: not-allowed;
+    box-shadow: none; /* ลบเงาสำหรับ disabled */
 }
 
-/* ป้องกันสีเปลี่ยนเมื่อ hover */
 .custom-pagination .disabled:hover {
     background-color: #A3D9A5;
 }
