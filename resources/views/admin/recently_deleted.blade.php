@@ -202,12 +202,12 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="restoreModalLabel{{ $record->id }}">
+                                        <h5 class="modal-title" id="restoreModalLabel{{ $record->id }}" style="color: #000;">
                                             ยืนยันการกู้คืนข้อมูล</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div class="modal-body" style="color: #000;">
                                         คุณต้องการกู้คืนข้อมูลของ <strong>{{ $record->name }}
                                             {{ $record->surname }}</strong> หรือไม่?
                                     </div>
@@ -235,12 +235,12 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel{{ $record->id }}">ยืนยันการลบข้อมูล
+                                        <h5 class="modal-title" id="deleteModalLabel{{ $record->id }}" style="color: #000;" >ยืนยันการลบข้อมูล
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div class="modal-body" style="color: #000;">
                                         คุณต้องการลบข้อมูล <strong>{{ $record->name }} {{ $record->surname }}</strong>
                                         อย่างถาวรหรือไม่?
                                     </div>
