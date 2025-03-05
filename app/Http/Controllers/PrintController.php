@@ -17,47 +17,48 @@ class PrintController extends Controller
     public function showPrintPage(Request $request)
     {
         $ids = $request->input('ids');  // รับค่า ids[] จาก URL
-
+    
         if (!$ids) {
             return redirect()->route('admin.print')->with('error', 'No items selected.');
         }
-
+    
         $recorddataList = Recorddata::whereIn('id', $ids)->get();  
-
+    
         $currentYear = Carbon::now()->year;
-
-        $inspections = collect();  
+    
+        $inspections = collect();  // จะเก็บข้อมูลการตรวจของแต่ละบุคคล
         foreach ($ids as $id) {
             $recorddata = Recorddata::find($id);  
-
+    
             if (!$recorddata) {
                 continue; 
             }
-
+    
+            // ดึงข้อมูลการตรวจเฉพาะของบุคคลนี้
             $healthRecords = HealthRecord::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-
+    
             $healthZones = HealthZone::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-
+    
             $healthZones2 = HealthZone2::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-
+    
             $diseases = Disease::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-
+    
             $lifestyleHabits = LifestyleHabit::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-
+    
             $elderlyInformations = ElderlyInformation::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-
+    
             $inspectionCount = max(
                 $healthRecords->count(),
                 $healthZones->count(),
@@ -66,14 +67,15 @@ class PrintController extends Controller
                 $lifestyleHabits->count(),
                 $elderlyInformations->count()
             );
-
+    
             for ($i = 0; $i < $inspectionCount; $i++) {
+                // ดึงข้อมูลการตรวจของคนนี้
                 $healthRecord = isset($healthRecords[$i]) ? $healthRecords[$i] : null;
                 $healthZone = isset($healthZones[$i]) ? $healthZones[$i] : null;
                 $healthZone2 = isset($healthZones2[$i]) ? $healthZones2[$i] : null;
                 $disease = isset($diseases[$i]) ? $diseases[$i] : null;
                 $diseaseNames = [];
-
+    
                 if ($disease) {
                     if ($disease->diabetes == 1) $diseaseNames[] = 'เบาหวาน';
                     if ($disease->cerebral_artery == 1) $diseaseNames[] = 'หลอดเลือดสมอง';
@@ -83,10 +85,10 @@ class PrintController extends Controller
                     if ($disease->eye == 1) $diseaseNames[] = 'ตา';
                     if ($disease->other == 1) $diseaseNames[] = 'อื่น ๆ';
                 }
-
+    
                 $lifestyleHabit = isset($lifestyleHabits[$i]) ? $lifestyleHabits[$i] : null;
                 $habits = [];
-
+    
                 if ($lifestyleHabit) {
                     if ($lifestyleHabit->drink == 1) $habits[] = 'ดื่มแอลกอฮอล์';
                     if ($lifestyleHabit->drink_sometimes == 1) $habits[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
@@ -98,9 +100,10 @@ class PrintController extends Controller
                     if ($lifestyleHabit->dont_live == 1) $habits[] = 'ไม่อยากมีชีวิตอยู่';
                     if ($lifestyleHabit->bored == 1) $habits[] = 'เบื่อ';
                 }
+    
                 $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
                 $elderlyHabits = [];
-
+    
                 if ($elderlyInformation) {
                     if ($elderlyInformation->help_yourself == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
                     if ($elderlyInformation->can_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
@@ -115,7 +118,8 @@ class PrintController extends Controller
                     if ($elderlyInformation->society == 1) $elderlyHabits[] = 'ติดสังคม';
                     if ($elderlyInformation->bed_ridden == 1) $elderlyHabits[] = 'ติดเตียง';
                 }
-
+    
+                // เก็บข้อมูลการตรวจของแต่ละคน
                 $inspections->push([  
                     'inspection_number' => $i + 1,
                     'date' => $recorddata->created_at->format('d/m/Y'),
@@ -127,9 +131,7 @@ class PrintController extends Controller
                         'blood_oxygen' => $healthRecord->blood_oxygen ?? 'ไม่มีข้อมูล',
                         'blood_level' => $healthRecord->blood_level ?? 'ไม่มีข้อมูล',
                     ] : null,
-                    'health_zone_id' => $healthZone ? $healthZone->id : 'ไม่มีข้อมูล',
                     'health_zone' => $healthZone ? $this->getHealthZoneData($healthZone) : 'ไม่มีข้อมูล',
-                    'health_zone2_id' => $healthZone2 ? $healthZone2->id : 'ไม่มีข้อมูล',
                     'health_zone2' => $healthZone2 ? $this->getHealthZone2Data($healthZone2) : 'ไม่มีข้อมูล',
                     'disease' => $diseaseNames ?: 'ไม่มีข้อมูล',
                     'lifestyle_habits' => $habits ?: 'ไม่มีข้อมูล',
@@ -137,9 +139,9 @@ class PrintController extends Controller
                 ]);
             }
         }
-
-        return view('admin.print', compact('recorddataList', 'inspections', 'healthRecords'));
-    }
+    
+        return view('admin.print', compact('recorddataList', 'inspections'));
+    }    
 
 private function getHealthZoneData($healthZone)
 {

@@ -121,91 +121,92 @@
 
         <h3 class="inspection-title">ประวัติการตรวจ</h3>
         <br>
-        @foreach($inspections as $inspection)
-        <div class="info-box-container">
-            <div class="info-box">
-                <h5><strong>ตรวจครั้งที่ {{ $inspection['inspection_number'] }}</strong></h5>
-                <div><strong>วันที่ตรวจ:</strong> {{ $inspection['date'] }}</div>
-            </div>
+        @if(isset($inspections[$recorddata->id]))
+            @foreach($inspections[$recorddata->id] as $inspection)
+            <div class="info-box-container">
+                <div class="info-box">
+                    <h5><strong>ตรวจครั้งที่ {{ $inspection['inspection_number'] }}</strong></h5>
+                    <div><strong>วันที่ตรวจ:</strong> {{ $inspection['date'] }}</div>
+                </div>
 
-            <div class="info-box">
-                @if(isset($inspection['health_record']))
-                <div><strong>ความดัน (SYS): </strong>{{ $inspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}</div>
-                <div><strong>ความดัน (DIA): </strong>{{ $inspection['health_record']['dia'] ?? 'ไม่มีข้อมูล' }}</div>
-                <div><strong>ชีพจร: </strong>{{ $inspection['health_record']['pul'] ?? 'ไม่มีข้อมูล' }}</div>
-                <div><strong>อุณหภูมิร่างกาย: </strong>{{ $inspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}</div>
-                <div><strong>ออกซิเจนในเลือด:</strong>{{ $inspection['health_record']['blood_oxygen'] ?? 'ไม่มีข้อมูล' }}</div>
-                <div><strong>ระดับน้ำตาลในเลือด:</strong>{{ $inspection['health_record']['blood_level'] ?? 'ไม่มีข้อมูล' }}</div>
-                @endif
-            </div>
+                <div class="info-box">
+                    @if(isset($inspection['health_record']))
+                    <div><strong>ความดัน (SYS): </strong>{{ $inspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}</div>
+                    <div><strong>ความดัน (DIA): </strong>{{ $inspection['health_record']['dia'] ?? 'ไม่มีข้อมูล' }}</div>
+                    <div><strong>ชีพจร: </strong>{{ $inspection['health_record']['pul'] ?? 'ไม่มีข้อมูล' }}</div>
+                    <div><strong>อุณหภูมิร่างกาย: </strong>{{ $inspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}</div>
+                    <div><strong>ออกซิเจนในเลือด:</strong>{{ $inspection['health_record']['blood_oxygen'] ?? 'ไม่มีข้อมูล' }}</div>
+                    <div><strong>ระดับน้ำตาลในเลือด:</strong>{{ $inspection['health_record']['blood_level'] ?? 'ไม่มีข้อมูล' }}</div>
+                    @endif
+                </div>
 
-            <div class="info-box">
-                <p><strong>Blood Pressure Zone:</strong></p>
-                @if(is_array($inspection['health_zone']))
-                @foreach($inspection['health_zone'] as $zone)
-                <div>{{ $zone }}</div>
-                @endforeach
-                @else
-                <div>{{ $inspection['health_zone'] }}</div>
-                @endif
-            </div>
-
-            <div class="info-box">
-                <p><strong>Blood Pressure Zone2:</strong></p>
-                @if(is_array($inspection['health_zone2']))
-                @foreach($inspection['health_zone2'] as $zone2)
-                <div>{{ $zone2 }}</div>
-                @endforeach
-                @else
-                <div>{{ $inspection['health_zone2'] }}</div>
-                @endif
-            </div>
-
-            <div class="info-box">
-                <p><strong>โรคประจำตัว:</strong></p>
-                @if (is_array($inspection['disease']) || is_object($inspection['disease']))
-                <ul>
-                    @foreach ($inspection['disease'] as $disease)
-                    <li>{{ $disease }}</li>
+                <div class="info-box">
+                    <p><strong>Blood Pressure Zone:</strong></p>
+                    @if(is_array($inspection['health_zone']))
+                    @foreach($inspection['health_zone'] as $zone)
+                    <div>{{ $zone }}</div>
                     @endforeach
-                </ul>
-                @else
-                <p>{{ $inspection['disease'] ?? 'ไม่มีข้อมูล' }}</p>
-                @endif
-            </div>
+                    @else
+                    <div>{{ $inspection['health_zone'] }}</div>
+                    @endif
+                </div>
 
-            <div class="info-box">
-                <p><strong>พฤติกรรม-สุขภาพจิต:</strong></p>
-                @if (is_array($inspection['lifestyle_habits']))
-                <ul>
-                    @foreach ($inspection['lifestyle_habits'] as $habit)
-                    <li>{{ $habit }}</li>
+                <div class="info-box">
+                    <p><strong>Blood Pressure Zone2:</strong></p>
+                    @if(is_array($inspection['health_zone2']))
+                    @foreach($inspection['health_zone2'] as $zone2)
+                    <div>{{ $zone2 }}</div>
                     @endforeach
-                </ul>
-                @else
-                <p>{{ $inspection['lifestyle_habits'] ?? 'ไม่มีข้อมูล' }}</p>
-                @endif
-            </div>
+                    @else
+                    <div>{{ $inspection['health_zone2'] }}</div>
+                    @endif
+                </div>
 
-            <div class="info-box">
-                <p><strong>ข้อมูลผู้สูงอายุ:</strong></p>
-                @if (is_array($inspection['elderly_information']))
-                <ul>
-                    @foreach ($inspection['elderly_information'] as $elderlyHabits)
-                    <li>{{ $elderlyHabits }}</li>
-                    @endforeach
-                </ul>
-                @else
-                <p>{{ $inspection['elderly_information'] ?? 'ไม่มีข้อมูล' }}</p>
-                @endif
+                <div class="info-box">
+                    <p><strong>โรคประจำตัว:</strong></p>
+                    @if (is_array($inspection['disease']) || is_object($inspection['disease']))
+                    <ul>
+                        @foreach ($inspection['disease'] as $disease)
+                        <li>{{ $disease }}</li>
+                        @endforeach
+                    </ul>
+                    @else
+                    <p>{{ $inspection['disease'] ?? 'ไม่มีข้อมูล' }}</p>
+                    @endif
+                </div>
+
+                <div class="info-box">
+                    <p><strong>พฤติกรรม-สุขภาพจิต:</strong></p>
+                    @if (is_array($inspection['lifestyle_habits']))
+                    <ul>
+                        @foreach ($inspection['lifestyle_habits'] as $habit)
+                        <li>{{ $habit }}</li>
+                        @endforeach
+                    </ul>
+                    @else
+                    <p>{{ $inspection['lifestyle_habits'] ?? 'ไม่มีข้อมูล' }}</p>
+                    @endif
+                </div>
+
+                <div class="info-box">
+                    <p><strong>ข้อมูลผู้สูงอายุ:</strong></p>
+                    @if (is_array($inspection['elderly_information']))
+                    <ul>
+                        @foreach ($inspection['elderly_information'] as $elderlyHabits)
+                        <li>{{ $elderlyHabits }}</li>
+                        @endforeach
+                    </ul>
+                    @else
+                    <p>{{ $inspection['elderly_information'] ?? 'ไม่มีข้อมูล' }}</p>
+                    @endif
+                </div>
             </div>
-        </div>
-        <div class="divider"></div>
-        @endforeach
+            <div class="divider"></div>
+            @endforeach
+        @endif
         <div class="page-break"></div> <!-- เพิ่มให้แยกหน้าสำหรับคนถัดไป -->
         @endforeach
     </div>
 </body>
-
 
 </html>
