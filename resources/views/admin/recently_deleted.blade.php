@@ -235,7 +235,7 @@ tr:hover {
                     <td>
                         <!-- ปุ่มกู้คืนพร้อม Modal -->
                         <button class="btn btn-success btn-custom" data-bs-toggle="modal"
-                            data-bs-target="#restoreModal{{ $record->id }}"><i class="fas fa-undo"></i></button>
+                            data-bs-target="#restoreModal{{ $record->id }}"><i class="fas fa-undo fa-sm"></i></button>
 
                         <!-- Modal สำหรับกู้คืน -->
                         <div class="modal fade" id="restoreModal{{ $record->id }}" tabindex="-1"
@@ -269,7 +269,7 @@ tr:hover {
 
                         <!-- ปุ่มลบถาวรพร้อม Modal -->
                         <button class="btn btn-danger btn-custom" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal{{ $record->id }}"><i class="fa-solid fa-trash"></i></button>
+                            data-bs-target="#deleteModal{{ $record->id }}"><i class="fa-solid fa-trash fa-sm"></i></button>
 
                         <!-- Modal สำหรับลบถาวร -->
                         <div class="modal fade" id="deleteModal{{ $record->id }}" tabindex="-1"
