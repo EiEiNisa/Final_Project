@@ -1143,7 +1143,7 @@ button.btn-primary:hover {
                                                                     class="form-check-label fw-bold text-primary">เลือกทั้งหมดในกลุ่ม</label>
                                                             </div>
                                                             <div class="row">
-                                                                @foreach ($recorddataList as $item)
+                                                                @foreach ($recorddataList ?? [] as $item)
                                                                 @if ($item->section == $section)
                                                                 <div class="col-md-6 mb-2">
                                                                     <div class="card p-2">

@@ -16,8 +16,8 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    $recorddataList = Recorddata::all()->groupBy('section'); // ดึงข้อมูลทั้งหมดมาแบ่งกลุ่ม
-    $paginatedData = Recorddata::paginate(30); // แบ่งเป็นหน้าละ 30 รายการ
+    $recorddataList = Recorddata::all(); // ✅ ดึงข้อมูลทั้งหมด
+    $groupedData = $recorddataList->groupBy('section'); // ✅ จัดกลุ่มตาม section
 
     $currentYear = Carbon::now()->year;
 
@@ -137,7 +137,7 @@ class PrintController extends Controller
         ]);
     }
 
-    return view('admin.print', compact('recorddata', 'inspections', 'healthRecords', 'groupedData', 'healthZones', 'healthZones2', 'diseases', 'lifestyleHabits', 'elderlyInformations'));
+    return view('admin.print', compact('recorddataList','recorddata', 'inspections', 'healthRecords', 'groupedData', 'healthZones', 'healthZones2', 'diseases', 'lifestyleHabits', 'elderlyInformations'));
 }
 
 private function getHealthZoneData($healthZone)
