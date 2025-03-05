@@ -661,7 +661,7 @@ form {
                                         <label for="diseases_{{ $index }}">โรคที่พบ</label>
                                         <input type="text" class="form-control" id="diseases_{{ $index }}"
                                             name="diseases[{{ $index }}]"
-                                            value="{{ $diseases->isNotEmpty() ? $diseases->pluck('name')->implode(', ') : 'ไม่มีข้อมูล' }}"
+                                            value="{{ isset($diseases[$index]) ? ($diseases[$index]->other == 1 ? '' . $diseases[$index]->other_text : $diseases[$index]->name) : 'ไม่มีข้อมูล' }}"
                                             readonly>
                                     </div>
                                 </div>
