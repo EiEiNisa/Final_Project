@@ -1211,16 +1211,17 @@ button.btn-primary:hover {
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="modal-footer bg-light d-flex justify-content-between">
+                                    <div class="modal-footer bg-light d-flex justify-content-end align-items-center">
                                         <button type="button" class="btn btn-secondary rounded-pill px-4"
                                             data-bs-dismiss="modal">
                                             <i class="fa-solid fa-xmark"></i> ยกเลิก
                                         </button>
-                                        <button type="submit" class="btn btn-primary rounded-pill px-4"
+                                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-2"
                                             onclick="submitPrintForm()">
                                             <i class="fa-solid fa-print"></i> พิมพ์
                                         </button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -1259,11 +1260,9 @@ button.btn-primary:hover {
 
                             // เปิดโมเดลเมื่อคลิก
                             $('#printModal').on('show.bs.modal', function(event) {
-                                // เก็บสถานะหน้าเดิม
                                 const currentPage = new URLSearchParams(window.location.search).get(
                                     'page');
                                 if (currentPage) {
-                                    // หากมี query string page, ตั้งค่าให้ตรงกับหน้าเดิม
                                     $(this).find('.pagination .page-item').each(function() {
                                         const pageLink = $(this).find('a');
                                         if (pageLink.attr('href').includes(
@@ -1280,11 +1279,28 @@ button.btn-primary:hover {
                                 const url = new URL(this.href);
                                 const page = url.searchParams.get('page'); // ดึงค่า page จาก URL
 
-                                // โหลดหน้าใหม่ด้วย AJAX (ถ้าคุณต้องการโหลดข้อมูลโดยไม่โหลดทั้งหน้า)
-                                // หรือถ้าไม่ต้องการ AJAX ให้ปล่อยให้หน้าใหม่แสดง
-                                // คุณอาจจะสามารถจัดการการเปลี่ยนหน้าในโมเดลได้เอง
-                                $('#dataAccordion').load(url.pathname + ' #dataAccordion');
+                                // โหลดข้อมูลของหน้าปัจจุบัน
+                                loadPageData(page);
                             });
+
+                            // ฟังก์ชั่นโหลดข้อมูลหน้า
+                            function loadPageData(page) {
+                                // ส่งคำขอ AJAX เพื่อดึงข้อมูลของหน้าที่กำหนด
+                                $.ajax({
+                                    url: `?page=${page}`, // ใช้ URL ที่มีพารามิเตอร์ page
+                                    method: 'GET',
+                                    success: function(response) {
+                                        // อัพเดตเนื้อหาของ accordion ด้วยข้อมูลใหม่
+                                        $('#dataAccordion').html($(response).find('#dataAccordion')
+                                            .html());
+
+                                        // ตั้งค่าปุ่มการแบ่งหน้าให้ตรงกับหน้าปัจจุบัน
+                                        const newUrl = new URL(window.location.href);
+                                        newUrl.searchParams.set('page', page);
+                                        window.history.pushState({}, '', newUrl);
+                                    }
+                                });
+                            }
 
                             // ฟังก์ชั่นส่งข้อมูลพิมพ์
                             function submitPrintForm() {
