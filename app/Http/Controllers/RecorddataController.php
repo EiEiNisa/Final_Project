@@ -541,7 +541,7 @@ public function destroy($id)
 {
     try {
         $recorddata = Recorddata::findOrFail($id);
-        $recorddata->is_deleted = true;
+        $recorddata->is_deleted = true; // ตั้งค่า is_deleted เป็น true
         $recorddata->save();
 
         return redirect()->route('recorddata.index')->with('success', 'ข้อมูลถูกลบเรียบร้อยแล้ว หากต้องการกู้คืนข้อมูลสามารถทำได้ที่หน้า <a href="/admin/recently_deleted">ลบล่าสุด</a>');
@@ -553,7 +553,7 @@ public function destroy($id)
 public function recentlyDeleted()
 {
     // ดึงข้อมูลที่ถูกซ่อน (is_deleted = true)
-    $deletedRecords = Recorddata::where('is_deleted', true)->get();
+    $deletedRecords = Recorddata::where('is_deleted', true)->paginate(10); // เพิ่ม pagination
 
     return view('admin.recently_deleted', compact('deletedRecords'));
 }
@@ -573,15 +573,20 @@ public function restore($id)
 
 public function destroyPermanently($id)
 {
-    // ค้นหาข้อมูลที่ถูกซ่อน
-    $record = Recorddata::onlyTrashed()->findOrFail($id);
+    try {
+        // ค้นหาข้อมูลที่ถูกซ่อน
+        $record = Recorddata::findOrFail($id);  // แก้ไขให้ค้นหาจากฐานข้อมูลโดยไม่ใช้ onlyTrashed
 
-    // ลบข้อมูลถาวรจากฐานข้อมูล
-    $record->forceDelete();
+        // ลบข้อมูลถาวรจากฐานข้อมูล
+        $record->forceDelete();
 
-    // ส่งข้อความไปที่หน้า
-    return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
+        // ส่งข้อความไปที่หน้า
+        return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
+    } catch (\Exception $e) {
+        return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการลบข้อมูล');
+    }
 }
+
 
     public function disease()
     {
