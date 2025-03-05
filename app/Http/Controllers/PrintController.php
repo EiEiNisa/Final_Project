@@ -16,8 +16,11 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    $recorddataList = Recorddata::all(); // ✅ ดึงข้อมูลทั้งหมด
-    $groupedData = $recorddataList->groupBy('section'); // ✅ จัดกลุ่มตาม section
+    // ลบการรับค่า $ids ออก
+    // $ids = $request->input('ids');
+
+    // ดึงข้อมูลทั้งหมดจากตาราง recorddata
+    $recorddataList = Recorddata::all();
 
     $currentYear = Carbon::now()->year;
 
@@ -44,11 +47,6 @@ class PrintController extends Controller
     $elderlyInformations = ElderlyInformation::where('recorddata_id', $id)
         ->whereYear('created_at', $currentYear)
         ->get();
-
-    //$user = $recorddata-> user_id ?? 'ไม่มีข้อมูล';
-    //$userFullName = isset($recorddata->user_id) ? $recorddata->user_id->name . ' ' . $recorddata->user_id->surname : 'ไม่มีข้อมูล';
-    //dd($userFullName);
-
 
     $inspections = collect();
 
@@ -82,40 +80,39 @@ class PrintController extends Controller
         }
 
         $lifestyleHabit = isset($lifestyleHabits[$i]) ? $lifestyleHabits[$i] : null;
-    $habits = [];
+        $habits = [];
 
-    if ($lifestyleHabit) {
-        if ($lifestyleHabit->drink == 1) $habits[] = 'ดื่มแอลกอฮอล์';
-        if ($lifestyleHabit->drink_sometimes == 1) $habits[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
-        if ($lifestyleHabit->dont_drink == 1) $habits[] = 'ไม่ดื่มแอลกอฮอล์';
-        if ($lifestyleHabit->smoke == 1) $habits[] = 'สูบบุหรี่';
-        if ($lifestyleHabit->sometime_smoke == 1) $habits[] = 'สูบบุหรี่บางครั้ง';
-        if ($lifestyleHabit->dont_smoke == 1) $habits[] = 'ไม่สูบบุหรี่';
-        if ($lifestyleHabit->troubled == 1) $habits[] = 'ทุกข์ใจ ซึม เศร้า';
-        if ($lifestyleHabit->dont_live == 1) $habits[] = 'ไม่อยากมีชีวิตอยู่';
-        if ($lifestyleHabit->bored == 1) $habits[] = 'เบื่อ';
-    }
-    $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
-    $elderlyHabits = [];
+        if ($lifestyleHabit) {
+            if ($lifestyleHabit->drink == 1) $habits[] = 'ดื่มแอลกอฮอล์';
+            if ($lifestyleHabit->drink_sometimes == 1) $habits[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
+            if ($lifestyleHabit->dont_drink == 1) $habits[] = 'ไม่ดื่มแอลกอฮอล์';
+            if ($lifestyleHabit->smoke == 1) $habits[] = 'สูบบุหรี่';
+            if ($lifestyleHabit->sometime_smoke == 1) $habits[] = 'สูบบุหรี่บางครั้ง';
+            if ($lifestyleHabit->dont_smoke == 1) $habits[] = 'ไม่สูบบุหรี่';
+            if ($lifestyleHabit->troubled == 1) $habits[] = 'ทุกข์ใจ ซึม เศร้า';
+            if ($lifestyleHabit->dont_live == 1) $habits[] = 'ไม่อยากมีชีวิตอยู่';
+            if ($lifestyleHabit->bored == 1) $habits[] = 'เบื่อ';
+        }
+        $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
+        $elderlyHabits = [];
 
-    if ($elderlyInformation) {
-        if ($elderlyInformation->help_yourself == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
-        if ($elderlyInformation->can_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
-        if ($elderlyInformation->cant_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองไม่ได้';
-        if ($elderlyInformation->caregiver == 1) $elderlyHabits[] = 'ผู้ดูแล';
-        if ($elderlyInformation->have_caregiver == 1) $elderlyHabits[] = 'มีผู้ดูแล';
-        if ($elderlyInformation->no_caregiver == 1) $elderlyHabits[] = 'ไม่มีผู้ดูแล';
-        if ($elderlyInformation->group1 == 1) $elderlyHabits[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
-        if ($elderlyInformation->group2 == 1) $elderlyHabits[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
-        if ($elderlyInformation->group3 == 1) $elderlyHabits[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
-        if ($elderlyInformation->house == 1) $elderlyHabits[] = 'ติดบ้าน';
-        if ($elderlyInformation->society == 1) $elderlyHabits[] = 'ติดสังคม';
-        if ($elderlyInformation->bed_ridden == 1) $elderlyHabits[] = 'ติดเตียง';
-    }
+        if ($elderlyInformation) {
+            if ($elderlyInformation->help_yourself == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
+            if ($elderlyInformation->can_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
+            if ($elderlyInformation->cant_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองไม่ได้';
+            if ($elderlyInformation->caregiver == 1) $elderlyHabits[] = 'ผู้ดูแล';
+            if ($elderlyInformation->have_caregiver == 1) $elderlyHabits[] = 'มีผู้ดูแล';
+            if ($elderlyInformation->no_caregiver == 1) $elderlyHabits[] = 'ไม่มีผู้ดูแล';
+            if ($elderlyInformation->group1 == 1) $elderlyHabits[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
+            if ($elderlyInformation->group2 == 1) $elderlyHabits[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
+            if ($elderlyInformation->group3 == 1) $elderlyHabits[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
+            if ($elderlyInformation->house == 1) $elderlyHabits[] = 'ติดบ้าน';
+            if ($elderlyInformation->society == 1) $elderlyHabits[] = 'ติดสังคม';
+            if ($elderlyInformation->bed_ridden == 1) $elderlyHabits[] = 'ติดเตียง';
+        }
 
         $inspections->push([
             'inspection_number' => $i + 1,
-            
             'date' => $recorddata->created_at->format('d/m/Y'),
             'health_record' => $healthRecord ? [
                 'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',
@@ -137,7 +134,7 @@ class PrintController extends Controller
         ]);
     }
 
-    return view('admin.print', compact('recorddataList','recorddata', 'inspections', 'healthRecords', 'groupedData', 'healthZones', 'healthZones2', 'diseases', 'lifestyleHabits', 'elderlyInformations'));
+    return view('admin.print', compact('recorddataList', 'inspections', 'healthRecords'));
 }
 
 private function getHealthZoneData($healthZone)
