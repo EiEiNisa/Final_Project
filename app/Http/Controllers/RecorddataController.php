@@ -779,6 +779,11 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
 {
+    
+    //dd($request->all());
+    //dd($recorddata_id, $checkup_id);
+
+    // หากมี recorddata_id และ checkup_id ให้ทำการอัพเดตข้อมูล
     if ($recorddata_id && $checkup_id) {
         // ค้นหา recorddata โดยใช้ recorddata_id
         $recorddata = Recorddata::findOrFail($recorddata_id);
@@ -789,14 +794,13 @@ public function update_form_general_information(Request $request, $recorddata_id
 
         // ค้นหา healthRecord โดยใช้ recorddata_id และ checkup_id
         $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
-                                    ->where('id', $checkup_id) // กรองให้ตรงกับ checkup_id
-                                    ->first();
 
+                                    ->first();
+        //dd($healthRecord);
         if (!$healthRecord) {
             return back()->with('error', 'ไม่พบข้อมูล healthRecords');
         }
 
-        // อัปเดตข้อมูล HealthRecord
         $updated = $healthRecord->update([
             'sys' => $request->input('sys'),
             'dia' => $request->input('dia'),
@@ -805,12 +809,11 @@ public function update_form_general_information(Request $request, $recorddata_id
             'blood_oxygen' => $request->input('blood_oxygen'),
             'blood_level' => $request->input('blood_level'),
         ]);
-
+        
+        //dd($updated);
+        
         // อัปเดตข้อมูล HealthZone
-        $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                                ->where('id', $checkup_id) // กรองให้ตรงกับ checkup_id
-                                ->first();
-
+        $healthZone = HealthZone::where('recorddata_id', $recorddata_id)->first();
         if ($healthZone) {
             $healthZone->update([
                 'zone1_normal' => $request->has('zone1_normal') ? 1 : 0,
@@ -831,10 +834,7 @@ public function update_form_general_information(Request $request, $recorddata_id
         }
 
         // อัปเดตข้อมูล HealthZone2
-        $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                                  ->where('id', $checkup_id) // กรองให้ตรงกับ checkup_id
-                                  ->first();
-
+        $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)->first();
         if ($healthZone2) {
             $healthZone2->update([
                 'zone2_normal' => $request->has('zone2_normal') ? 1 : 0,
@@ -852,10 +852,7 @@ public function update_form_general_information(Request $request, $recorddata_id
         }
 
         // อัปเดตข้อมูล Diseases
-        $diseases = Disease::where('recorddata_id', $recorddata_id)
-                           ->where('id', $checkup_id) // กรองให้ตรงกับ checkup_id
-                           ->first();
-
+        $diseases = Disease::where('recorddata_id', $recorddata_id)->first();
         if ($diseases) {
             $diseases->update([
                 'diabetes' => $request->input('diabetes', 0),
@@ -871,10 +868,7 @@ public function update_form_general_information(Request $request, $recorddata_id
         }
 
         // อัปเดตข้อมูล LifestyleHabit
-        $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                    ->where('id', $checkup_id) // กรองให้ตรงกับ checkup_id
-                                    ->first();
-
+        $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)->first();
         if ($lifestyles) {
             $lifestyles->update([
                 'drink' => $request->input('drink', 0),
@@ -892,10 +886,7 @@ public function update_form_general_information(Request $request, $recorddata_id
         }
 
         // อัปเดตข้อมูล ElderlyInformation
-        $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                          ->where('id', $checkup_id) // กรองให้ตรงกับ checkup_id
-                                          ->first();
-
+        $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)->first();
         if ($elderlyInfos) {
             $elderlyInfos->update([
                 'help_yourself' => $request->input('help_yourself', 0),
@@ -916,8 +907,34 @@ public function update_form_general_information(Request $request, $recorddata_id
         }
 
         return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตข้อมูลสำเร็จเรียบร้อย!');
-    } else {
-        // ... (code for searching by id_card)
+    }
+
+    // หากไม่มี recorddata_id และ checkup_id ให้ทำการค้นหาข้อมูลด้วย id_card
+    else {
+        try {
+            $idCard = $request->input('id_card');
+            $data = Recorddata::where('id_card', $idCard)->first();
+
+            if ($data) {
+                // ส่งกลับเป็น JSON
+                return response()->json([
+                    'success' => true,
+                    'data' => $data,
+                ]);
+            } else {
+                // ถ้าไม่พบข้อมูล ส่งกลับ JSON ที่บอกว่าไม่พบข้อมูล
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ไม่พบข้อมูล',
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Search ID Card error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage(),
+            ]);
+        }
     }
 }
 
