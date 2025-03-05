@@ -28,38 +28,39 @@ class PrintController extends Controller
     
         $inspections = collect();
         dd($inspections);
+        
         foreach ($ids as $id) {
             $recorddata = Recorddata::find($id);  
-    
+        
             if (!$recorddata) {
                 continue; 
             }
-    
+        
             // ดึงข้อมูลการตรวจเฉพาะของบุคคลนี้
             $healthRecords = HealthRecord::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-    
+        
             $healthZones = HealthZone::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-    
+        
             $healthZones2 = HealthZone2::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-    
+        
             $diseases = Disease::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-    
+        
             $lifestyleHabits = LifestyleHabit::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-    
+        
             $elderlyInformations = ElderlyInformation::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
-    
+        
             $inspectionCount = max(
                 $healthRecords->count(),
                 $healthZones->count(),
@@ -68,7 +69,7 @@ class PrintController extends Controller
                 $lifestyleHabits->count(),
                 $elderlyInformations->count()
             );
-    
+        
             for ($i = 0; $i < $inspectionCount; $i++) {
                 // ดึงข้อมูลการตรวจของคนนี้
                 $healthRecord = isset($healthRecords[$i]) ? $healthRecords[$i] : null;
@@ -76,7 +77,7 @@ class PrintController extends Controller
                 $healthZone2 = isset($healthZones2[$i]) ? $healthZones2[$i] : null;
                 $disease = isset($diseases[$i]) ? $diseases[$i] : null;
                 $diseaseNames = [];
-    
+        
                 if ($disease) {
                     if ($disease->diabetes == 1) $diseaseNames[] = 'เบาหวาน';
                     if ($disease->cerebral_artery == 1) $diseaseNames[] = 'หลอดเลือดสมอง';
@@ -86,10 +87,10 @@ class PrintController extends Controller
                     if ($disease->eye == 1) $diseaseNames[] = 'ตา';
                     if ($disease->other == 1) $diseaseNames[] = 'อื่น ๆ';
                 }
-    
+        
                 $lifestyleHabit = isset($lifestyleHabits[$i]) ? $lifestyleHabits[$i] : null;
                 $habits = [];
-    
+        
                 if ($lifestyleHabit) {
                     if ($lifestyleHabit->drink == 1) $habits[] = 'ดื่มแอลกอฮอล์';
                     if ($lifestyleHabit->drink_sometimes == 1) $habits[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
@@ -101,10 +102,10 @@ class PrintController extends Controller
                     if ($lifestyleHabit->dont_live == 1) $habits[] = 'ไม่อยากมีชีวิตอยู่';
                     if ($lifestyleHabit->bored == 1) $habits[] = 'เบื่อ';
                 }
-    
+        
                 $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
                 $elderlyHabits = [];
-    
+        
                 if ($elderlyInformation) {
                     if ($elderlyInformation->help_yourself == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
                     if ($elderlyInformation->can_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
@@ -119,7 +120,7 @@ class PrintController extends Controller
                     if ($elderlyInformation->society == 1) $elderlyHabits[] = 'ติดสังคม';
                     if ($elderlyInformation->bed_ridden == 1) $elderlyHabits[] = 'ติดเตียง';
                 }
-    
+        
                 // เก็บข้อมูลการตรวจของแต่ละคน
                 $inspections->push([  
                     'inspection_number' => $i + 1,
@@ -140,7 +141,7 @@ class PrintController extends Controller
                 ]);
             }
         }
-    
+
         return view('admin.print', compact('recorddataList', 'inspections'));
     }    
 

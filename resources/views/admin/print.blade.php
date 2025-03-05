@@ -120,14 +120,16 @@
 
         <h3 class="inspection-title">ประวัติการตรวจ</h3>
         <br>
-        @foreach($inspections as $inspection)
-        @if($loop->index < count($recorddataList) && $recorddataList[$loop->index]->id == $recorddata->id)
-            @foreach($inspections[$loop->index] as $singleInspection)
+        @foreach($inspections as $index => $inspection)
+        @if($index < count($recorddataList) && $recorddataList[$index]->id == $recorddata->id)
+            @if(is_array($inspection))
+            @foreach($inspection as $singleInspection)
             <div class="info-box-container">
                 <div class="info-box">
                     <h5><strong>ตรวจครั้งที่ {{ $singleInspection['inspection_number'] }}</strong></h5>
                     <div><strong>วันที่ตรวจ:</strong> {{ $singleInspection['date'] }}</div>
                 </div>
+
 
                 <div class="info-box">
                     @if(isset($singleInspection['health_record']))
