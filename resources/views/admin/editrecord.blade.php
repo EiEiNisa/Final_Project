@@ -658,10 +658,10 @@ form {
 
                                 <div class="col-md-4 mb-3">
                                     <div class="form-group3">
-                                        <label for="diseases_{{ $index }}">โรคที่พบ</label>
-                                        <input type="text" class="form-control" id="diseases_{{ $index }}"
-                                            name="diseases[{{ $index }}]"
-                                            value="{{ isset($diseases[$index]) ? ($diseases[$index]->other == 1 ? '' . $diseases[$index]->other_text : $diseases[$index]->name) : 'ไม่มีข้อมูล' }}"
+                                        <label for="diseaseNames_{{ $index }}">โรคที่พบ</label>
+                                        <input type="text" class="form-control" id="diseaseNames_{{ $index }}"
+                                            name="diseaseNames[{{ $index }}]"
+                                            value="{{ isset($diseaseNames[$index]) ? ($diseaseNames[$index]->other == 1 ? '' . $diseaseNames[$index]->other_text : $diseaseNames[$index]->name) : 'ไม่มีข้อมูล' }}"
                                             readonly>
                                     </div>
                                 </div>
