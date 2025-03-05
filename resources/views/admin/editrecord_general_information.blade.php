@@ -896,19 +896,23 @@ form {
                         </div>
                     </div>
                 </div>
+        </form>
 
-                <script>
-                document.getElementById('confirmReset').addEventListener('click', function() {
-                    const form = document.getElementById('Recorddata');
-                    if (form) {
-                        form.reset(); // รีเซ็ตค่าทั้งหมดในฟอร์ม
-                    }
+        <script>
+        document.getElementById('confirmReset').addEventListener('click', function() {
+            const form = document.getElementById('Recorddata');
+            if (form) {
+                form.reset(); // รีเซ็ตค่าทั้งหมดในฟอร์ม
+            }
 
-                    // ปิด Modal
-                    const resetModal = bootstrap.Modal.getInstance(document.getElementById('resetModal'));
-                    resetModal.hide();
-                });
-                </script>
+            // ปิด Modal
+            const modalElement = document.getElementById('resetModal');
+            const resetModal = bootstrap.Modal.getInstance(modalElement);
+            if (resetModal) {
+                resetModal.hide();
+            }
+        });
+        </script>
         </form>
     </div>
 </div>
