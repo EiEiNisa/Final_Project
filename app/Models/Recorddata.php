@@ -29,21 +29,27 @@ class Recorddata extends Model
         'user_name',
     ];
 
+    // เชื่อมกับตาราง diseases
     public function diseases()
-{
-    return $this->hasOne(Disease::class, 'recorddata_id', 'id');
-}
-// ในโมเดล RecordData
-public function elderlyInformation() {
-    return $this->hasOne(ElderlyInformation::class);
-}
+    {
+        return $this->hasOne(Disease::class, 'recorddata_id', 'id');
+    }
 
-public function disease() {
-    return $this->hasOne(Disease::class);
-}
+    // เชื่อมกับ elderly_informations
+    public function elderlyInformation()
+    {
+        return $this->hasOne(ElderlyInformation::class, 'recorddata_id', 'id');
+    }
 
-public function healthZone() {
-    return $this->hasOne(HealthZone::class);
-}
+    // เชื่อมกับ health_zones
+    public function healthZone()
+    {
+        return $this->hasOne(HealthZone::class, 'recorddata_id', 'id');
+    }
 
+    // **เพิ่มเมธอด healthRecords ที่ขาดหายไป**
+    public function healthRecords()
+    {
+        return $this->hasMany(HealthRecord::class, 'recorddata_id', 'id');
+    }
 }

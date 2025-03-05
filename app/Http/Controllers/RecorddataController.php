@@ -571,42 +571,6 @@ public function restore($id)
     }
 }
 
-// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย HealthRecord
-public function healthRecords()
-{
-    return $this->hasMany(HealthRecord::class, 'recorddata_id', 'id');
-}
-
-// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย HealthZone
-public function healthZones()
-{
-    return $this->hasMany(HealthZone::class, 'recorddata_id', 'id');
-}
-
-// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย HealthZone2
-public function healthZones2()
-{
-    return $this->hasMany(HealthZone2::class, 'recorddata_id', 'id');
-}
-
-// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย Disease
-public function diseases()
-{
-    return $this->hasMany(Disease::class, 'recorddata_id', 'id');
-}
-
-// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย LifestyleHabit
-public function lifestyleHabits()
-{
-    return $this->hasMany(LifestyleHabit::class, 'recorddata_id', 'id');
-}
-
-// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย ElderlyInformation
-public function elderlyInformations()
-{
-    return $this->hasMany(ElderlyInformation::class, 'recorddata_id', 'id');
-}
-
 public function destroyPermanently($id)
 {
     try {
