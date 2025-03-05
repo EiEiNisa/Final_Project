@@ -723,23 +723,23 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ healthRecord_id
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id)
-                            ->first();
+                            ->first() ?? new HealthZone(); // ถ้าไม่พบให้สร้าง HealthZone ใหม่
 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
                               ->where('id', $healthRecord->id)
-                              ->first();
+                              ->first() ?? new HealthZone2(); // ถ้าไม่พบให้สร้าง HealthZone2 ใหม่
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
                        ->where('id', $healthRecord->id)
-                       ->first();
+                       ->first() ?? new Disease(); // ถ้าไม่พบให้สร้าง Disease ใหม่
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
                                 ->where('id', $healthRecord->id)
-                                ->first();
+                                ->first() ?? new LifestyleHabit(); // ถ้าไม่พบให้สร้าง LifestyleHabit ใหม่
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
                                       ->where('id', $healthRecord->id)
-                                      ->first();
+                                      ->first() ?? new ElderlyInformation(); // ถ้าไม่พบให้สร้าง ElderlyInformation ใหม่
 
     // Define $zones and $zones2
     $zones = [
@@ -776,6 +776,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
     ));
 }
+
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
 {
