@@ -76,6 +76,7 @@ Route::put('/admin/editrecord/{id}', [RecordDataController::class, 'update'])->n
 Route::get('/User/viewrecord/{id}', [RecordDataController::class, 'view'])->name('recorddata.view');
 Route::delete('/admin/record/{id}', [RecordDataController::class, 'destroy'])->name('recorddata.destroy');
 Route::get('/admin/recently_deleted', [RecordDataController::class, 'recentlyDeleted'])->name('admin.recently_deleted');
+Route::delete('/recorddata/{id}/destroy-permanently', [RecordDataController::class, 'destroyPermanently'])->name('recorddata.destroyPermanently');
 Route::patch('/admin/record/restore/{id}', [RecordDataController::class, 'restore'])->name('recorddata.restore');
 Route::get('/admin/search', [RecorddataController::class, 'search'])->name('recorddata.search');
 Route::get('/User/search', [RecorddataController::class, 'Usersearch'])->name('recorddata.Usersearch');

@@ -571,6 +571,18 @@ public function restore($id)
     }
 }
 
+public function destroyPermanently($id)
+{
+    // ค้นหาข้อมูลที่ถูกซ่อน
+    $record = Recorddata::onlyTrashed()->findOrFail($id);
+
+    // ลบข้อมูลถาวรจากฐานข้อมูล
+    $record->forceDelete();
+
+    // ส่งข้อความไปที่หน้า
+    return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
+}
+
     public function disease()
     {
         return $this->hasMany(Disease::class, 'recorddata_id');    
