@@ -402,7 +402,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone1_normal" name="zone1_normal" value="1"
                                 {{ $zones['zone1_normal']['value'] ? 'checked' : '' }}>
-                            <label for="zone1_normal">{{ $zones['zone1_normal']['label'] }}</label>
+                            <label for="zone1_normal">ปกติ</label>
                         </div>
                     </div>
 
@@ -412,7 +412,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone1_risk_group" name="zone1_risk_group" value="1"
                                 {{ $zones['zone1_risk_group']['value'] ? 'checked' : '' }}>
-                            <label for="zone1_risk_group">{{ $zones['zone1_risk_group']['label'] }}</label>
+                            <label for="zone1_risk_group">กลุ่มเสี่ยง</label>
                         </div>
                     </div>
 
@@ -423,7 +423,7 @@ form {
                                 <div class="form-check">
                                     <input type="checkbox" id="zone1_good_control" name="zone1_good_control" value="1"
                                         {{ $zones['zone1_good_control']['value'] ? 'checked' : '' }}>
-                                    <label for="zone1_good_control">{{ $zones['zone1_good_control']['label'] }}</label>
+                                    <label for="zone1_good_control">คุมได้ดี</label>
                                 </div>
                     </div>
 
@@ -433,7 +433,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone1_watch_out" name="zone1_watch_out" value="1"
                                 {{ $zones['zone1_watch_out']['value'] ? 'checked' : '' }}>
-                            <label for="zone1_watch_out">{{ $zones['zone1_watch_out']['label'] }}</label>
+                            <label for="zone1_watch_out">เฝ้าระวัง</label>
                         </div>
                     </div>
 
@@ -443,7 +443,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone1_danger" name="zone1_danger" value="1"
                                 {{ $zones['zone1_danger']['value'] ? 'checked' : '' }}>
-                            <label for="zone1_danger">{{ $zones['zone1_danger']['label'] }}</label>
+                            <label for="zone1_danger">อันตราย</label>
                         </div>
                     </div>
 
@@ -453,7 +453,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone1_critical" name="zone1_critical" value="1"
                                 {{ $zones['zone1_critical']['value'] ? 'checked' : '' }}>
-                            <label for="zone1_critical">{{ $zones['zone1_critical']['label'] }}</label>
+                            <label for="zone1_critical">วิกฤต</label>
                         </div>
                     </div>
 
@@ -463,7 +463,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone1_complications" name="zone1_complications" value="1"
                                 {{ $zones['zone1_complications']['value'] ? 'checked' : '' }}>
-                            <label for="zone1_complications">{{ $zones['zone1_complications']['label'] }}</label>
+                            <label for="zone1_complications">โรคแทรกซ้อน</label>
                         </div>
                     </div>
                 </div>
@@ -472,25 +472,31 @@ form {
                     <div class="form-check">
                         <input type="checkbox" id="zone1_heart" name="zone1_heart" value="1"
                             {{ $zones['zone1_heart']['value'] ? 'checked' : '' }}>
-                        <label for="zone1_heart">{{ $zones['zone1_heart']['label'] }}</label>
+                        <label for="zone1_heart">หัวใจ</label>
                     </div>
 
                     <div class="form-check">
                         <input type="checkbox" id="zone1_cerebrovascular" name="zone1_cerebrovascular" value="1"
                             {{ $zones['zone1_cerebrovascular']['value'] ? 'checked' : '' }}>
-                        <label for="zone1_cerebrovascular">{{ $zones['zone1_cerebrovascular']['label'] }}</label>
+                        <label for="zone1_cerebrovascular">หลอดเลือดสมอง</label>
                     </div>
 
                     <div class="form-check">
                         <input type="checkbox" id="zone1_kidney" name="zone1_kidney" value="1"
                             {{ $zones['zone1_kidney']['value'] ? 'checked' : '' }}>
-                        <label for="zone1_kidney">{{ $zones['zone1_kidney']['label'] }}</label>
+                        <label for="zone1_kidney">ไต</label>
                     </div>
 
                     <div class="form-check">
                         <input type="checkbox" id="zone1_eye" name="zone1_eye" value="1"
                             {{ $zones['zone1_eye']['value'] ? 'checked' : '' }}>
-                        <label for="zone1_eye">{{ $zones['zone1_eye']['label'] }}</label>
+                        <label for="zone1_eye">ตา</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" id="zone1_foot" name="zone1_foot" value="1"
+                            {{ $zones['zone1_foot']['value'] ? 'checked' : '' }}>
+                        <label for="zone1_foot">เท้า</label>
                     </div>
 
                 </div>
@@ -507,7 +513,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone2_normal" name="zone2_normal" value="1"
                                 {{ $zones2['zone2_normal']['value'] ? 'checked' : '' }}>
-                            <label for="zone2_normal">{{ $zones2['zone2_normal']['label'] }}</label>
+                            <label for="zone2_normal">ปกติ</label>
                         </div>
                     </div>
 
@@ -517,7 +523,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone2_risk_group" name="zone2_risk_group" value="1"
                                 {{ $zones2['zone2_risk_group']['value'] ? 'checked' : '' }}>
-                            <label for="zone2_risk_group">{{ $zones2['zone2_risk_group']['label'] }}</label>
+                            <label for="zone2_risk_group">กลุ่มเสี่ยง</label>
                         </div>
                     </div>
 
@@ -527,7 +533,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone2_good_control" name="zone2_good_control" value="1"
                                 {{ $zones2['zone2_good_control']['value'] ? 'checked' : '' }}>
-                            <label for="zone2_good_control">{{ $zones2['zone2_good_control']['label'] }}</label>
+                            <label for="zone2_good_control">คุมได้ดี</label>
                         </div>
                     </div>
 
@@ -537,7 +543,7 @@ form {
                                 <div class="form-check">
                                     <input type="checkbox" id="zone2_watch_out" name="zone2_watch_out" value="1"
                                         {{ $zones2['zone2_watch_out']['value'] ? 'checked' : '' }}>
-                                    <label for="zone2_watch_out">{{ $zones2['zone2_watch_out']['label'] }}</label>
+                                    <label for="zone2_watch_out">เฝ้าระวัง</label>
                                 </div>
                     </div>
 
@@ -547,7 +553,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone2_danger" name="zone2_danger" value="1"
                                 {{ $zones2['zone2_danger']['value'] ? 'checked' : '' }}>
-                            <label for="zone2_danger">{{ $zones2['zone2_danger']['label'] }}</label>
+                            <label for="zone2_danger">อันตราย</label>
                         </div>
                     </div>
 
@@ -557,7 +563,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone2_critical" name="zone2_critical" value="1"
                                 {{ $zones2['zone2_critical']['value'] ? 'checked' : '' }}>
-                            <label for="zone2_critical">{{ $zones2['zone2_critical']['label'] }}</label>
+                            <label for="zone2_critical">วิกฤต</label>
                         </div>
                     </div>
 
@@ -567,7 +573,7 @@ form {
                         <div class="form-check">
                             <input type="checkbox" id="zone2_complications" name="zone2_complications" value="1"
                                 {{ $zones2['zone2_complications']['value'] ? 'checked' : '' }}>
-                            <label for="zone2_complications">{{ $zones2['zone2_complications']['label'] }}</label>
+                            <label for="zone2_complications">โรคแทรกซ้อน</label>
                         </div>
                     </div>
                 </div>
@@ -576,13 +582,13 @@ form {
                     <div class="form-check">
                         <input type="checkbox" id="zone2_heart" name="zone2_heart" value="1"
                             {{ $zones2['zone2_heart']['value'] ? 'checked' : '' }}>
-                        <label for="zone2_heart">{{ $zones2['zone2_heart']['label'] }}</label>
+                        <label for="zone2_heart">หัวใจ</label>
                     </div>
 
                     <div class="form-check">
                         <input type="checkbox" id="zone2_eye" name="zone2_eye" value="1"
                             {{ $zones2['zone2_eye']['value'] ? 'checked' : '' }}>
-                        <label for="zone2_eye">{{ $zones2['zone2_eye']['label'] }}</label>
+                        <label for="zone2_eye">ตา</label>
                     </div>
                 </div>
             </div>

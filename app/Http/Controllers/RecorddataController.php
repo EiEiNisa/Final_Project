@@ -721,25 +721,32 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     $healthRecord = $healthRecords[$checkup_index - 1]; // -1 เพื่อให้ตรงกับ index ของ array ที่เริ่มจาก 0
 
     // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ healthRecord_id
+    // ตรวจสอบการค้นหาของ healthZone, healthZone2, Diseases, Lifestyle
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('id', $healthRecord->id)
+                            ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id 
                             ->first() ?? new HealthZone(); // ถ้าไม่พบให้สร้าง HealthZone ใหม่
 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('id', $healthRecord->id)
+                              ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id 
                               ->first() ?? new HealthZone2(); // ถ้าไม่พบให้สร้าง HealthZone2 ใหม่
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                       ->where('id', $healthRecord->id)
+                       ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id
                        ->first() ?? new Disease(); // ถ้าไม่พบให้สร้าง Disease ใหม่
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('id', $healthRecord->id)
+                                ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id
                                 ->first() ?? new LifestyleHabit(); // ถ้าไม่พบให้สร้าง LifestyleHabit ใหม่
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                      ->where('id', $healthRecord->id)
+                                      ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id
                                       ->first() ?? new ElderlyInformation(); // ถ้าไม่พบให้สร้าง ElderlyInformation ใหม่
+
+    // ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
+    \Log::debug('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
+    \Log::debug('Diseases: ' . ($diseases ? 'Found' : 'Not Found'));
+    \Log::debug('LifestyleHabit: ' . ($lifestyles ? 'Found' : 'Not Found'));
+    \Log::debug('ElderlyInformation: ' . ($elderlyInfos ? 'Found' : 'Not Found'));
 
     // Define $zones and $zones2
     $zones = [
@@ -776,7 +783,6 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
     ));
 }
-
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
 {
