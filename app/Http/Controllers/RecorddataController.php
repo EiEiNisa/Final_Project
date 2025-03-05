@@ -577,15 +577,32 @@ public function destroyPermanently($id)
         // ค้นหาข้อมูลที่ถูกซ่อน
         $record = Recorddata::findOrFail($id);
 
-        // ลบข้อมูลที่เกี่ยวข้องทั้งหมดก่อน
-        $record->diseases()->delete();
-        $record->healthRecords()->delete();
-        $record->healthZones()->delete();
-        $record->healthZones2()->delete();
-        $record->lifestyleHabits()->delete();
-        $record->elderlyInformations()->delete();
+        // ตรวจสอบว่ามีข้อมูลที่เชื่อมโยงกับตารางอื่น ๆ หรือไม่
+        if ($record->diseases()->exists()) {
+            $record->diseases()->forceDelete(); // ลบข้อมูลที่เชื่อมโยงในตาราง diseases
+        }
 
-        // ลบข้อมูลหลัก
+        if ($record->healthRecords()->exists()) {
+            $record->healthRecords()->forceDelete(); // ลบข้อมูลที่เชื่อมโยงในตาราง healthRecords
+        }
+
+        if ($record->healthZones()->exists()) {
+            $record->healthZones()->forceDelete(); // ลบข้อมูลที่เชื่อมโยงในตาราง healthZones
+        }
+
+        if ($record->healthZones2()->exists()) {
+            $record->healthZones2()->forceDelete(); // ลบข้อมูลที่เชื่อมโยงในตาราง healthZones2
+        }
+
+        if ($record->lifestyleHabits()->exists()) {
+            $record->lifestyleHabits()->forceDelete(); // ลบข้อมูลที่เชื่อมโยงในตาราง lifestyleHabits
+        }
+
+        if ($record->elderlyInformations()->exists()) {
+            $record->elderlyInformations()->forceDelete(); // ลบข้อมูลที่เชื่อมโยงในตาราง elderlyInformations
+        }
+
+        // ลบข้อมูลหลักในตาราง recorddata
         $record->forceDelete();
 
         return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
