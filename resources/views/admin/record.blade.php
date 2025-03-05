@@ -1122,6 +1122,9 @@ button.btn-primary:hover {
                                                 @php
                                                 $recorddataList = \App\Models\Recorddata::all();
                                                 $groupedData = $recorddataList->groupBy('section');
+                                                $perPage = 20; // จำนวนรายการต่อหน้า
+                                                $page = request()->input('page', 1); // รับค่า page จาก query string
+                                                $offset = ($page - 1) * $perPage;
                                                 @endphp
                                                 @foreach ($groupedData as $section => $items)
                                                 <div class="accordion-item">
@@ -1147,7 +1150,7 @@ button.btn-primary:hover {
                                                                     class="form-check-label fw-bold text-primary">เลือกทั้งหมดในกลุ่ม</label>
                                                             </div>
                                                             <div class="row">
-                                                                @foreach ($items as $item)
+                                                                @foreach ($items->slice($offset, $perPage) as $item)
                                                                 <div class="col-md-6 mb-2">
                                                                     <div class="card p-2">
                                                                         <div class="form-check print-form-check">
@@ -1168,6 +1171,39 @@ button.btn-primary:hover {
                                                                 </div>
                                                                 @endforeach
                                                             </div>
+                                                            @if ($items->count() > $perPage)
+                                                            <nav aria-label="Page navigation">
+                                                                <ul class="pagination justify-content-center">
+                                                                    @if ($page > 1)
+                                                                    <li class="page-item">
+                                                                        <a class="page-link"
+                                                                            href="?page={{ $page - 1 }}"
+                                                                            aria-label="Previous">
+                                                                            <span aria-hidden="true">&laquo;</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    @endif
+                                                                    @for ($i = 1; $i <= ceil($items->count() /
+                                                                        $perPage); $i++)
+                                                                        <li
+                                                                            class="page-item {{ ($page == $i) ? 'active' : '' }}">
+                                                                            <a class="page-link"
+                                                                                href="?page={{ $i }}">{{ $i }}</a>
+                                                                        </li>
+                                                                        @endfor
+                                                                        @if ($page < ceil($items->count() / $perPage))
+                                                                            <li class="page-item">
+                                                                                <a class="page-link"
+                                                                                    href="?page={{ $page + 1 }}"
+                                                                                    aria-label="Next">
+                                                                                    <span
+                                                                                        aria-hidden="true">&raquo;</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            @endif
+                                                                </ul>
+                                                            </nav>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1175,7 +1211,7 @@ button.btn-primary:hover {
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="modal-footer bg-light">
+                                    <div class="modal-footer bg-light d-flex justify-content-between">
                                         <button type="button" class="btn btn-secondary rounded-pill px-4"
                                             data-bs-dismiss="modal">
                                             <i class="fa-solid fa-xmark"></i> ยกเลิก
