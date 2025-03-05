@@ -14,7 +14,7 @@ use Carbon\Carbon;
 
 class PrintController extends Controller
 {
-    public function showPrintPage($id)
+    public function showPrintPage(Request $request)
 {
     $ids = $request->input('ids');  // รับค่า ids[] จาก URL
 
@@ -22,7 +22,7 @@ class PrintController extends Controller
     if (!$ids) {
         return redirect()->route('admin.print')->with('error', 'No items selected.');
     }
-    
+
     $recorddataList = Recorddata::all();
 
     $currentYear = Carbon::now()->year;
