@@ -122,32 +122,40 @@ button.btn-primary:hover {
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
-    background-color: #198754; /* สีเขียวหลัก */
+    background-color: #198754;
+    /* สีเขียวหลัก */
     color: #ffffff;
     border: none;
     border-radius: 6px;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* เพิ่มเงา */
 }
 
 .custom-pagination a:hover {
-    background-color: #157347; /* สีเขียวเข้มขึ้นเมื่อ hover */
+    background-color: #157347;
+    /* สีเขียวเข้มขึ้นเมื่อ hover */
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* เพิ่มเงาเมื่อ hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* เพิ่มเงาเมื่อ hover */
 }
 
 .custom-pagination .active {
-    background-color: #146c43; /* สีเขียวเข้มสุดสำหรับ active */
+    background-color: #146c43;
+    /* สีเขียวเข้มสุดสำหรับ active */
     font-weight: bold;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3); /* เพิ่มเงาสำหรับ active */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+    /* เพิ่มเงาสำหรับ active */
 }
 
 .custom-pagination .disabled {
-    background-color: #A3D9A5; /* สีเขียวอ่อนสำหรับ disabled */
+    background-color: #A3D9A5;
+    /* สีเขียวอ่อนสำหรับ disabled */
     color: #5C9A5A;
     cursor: not-allowed;
-    box-shadow: none; /* ลบเงาสำหรับ disabled */
+    box-shadow: none;
+    /* ลบเงาสำหรับ disabled */
 }
 
 .custom-pagination .disabled:hover {
@@ -1117,8 +1125,9 @@ button.btn-primary:hover {
                                             </div>
                                             <div class="accordion" id="dataAccordion">
                                                 @php
-                                                $groupedData = $recorddata->groupBy('department'); // สมมติว่ามีฟิลด์
-                                                'department'
+                                                $recorddataList = \App\Models\Recorddata::all(); // ดึงข้อมูลทั้งหมด
+                                                $groupedData = $recorddataList->groupBy('department'); // จัดกลุ่มตาม
+                                                department
                                                 @endphp
                                                 @foreach ($groupedData as $department => $items)
                                                 <div class="accordion-item">
@@ -1154,10 +1163,11 @@ button.btn-primary:hover {
                                                                                 id="check{{ $item->id }}"
                                                                                 data-name="{{ $item->name }}"
                                                                                 data-department="{{ $department }}">
-                                                                            <label class="form-check-label"
+                                                                            <label class="form-check-label text-start"
                                                                                 for="check{{ $item->id }}">
                                                                                 <i class="fa-solid fa-user"></i>
-                                                                                {{ $item->name }}
+                                                                                {{ $item->prefix }} {{ $item->name }}
+                                                                                {{ $item->surname }}
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -1220,6 +1230,8 @@ button.btn-primary:hover {
                             document.getElementById('printForm').submit();
                         }
                         </script>
+
+
                     </td>
                 </tr>
                 @endforeach
