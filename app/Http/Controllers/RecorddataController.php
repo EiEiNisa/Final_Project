@@ -725,20 +725,20 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
                             ->first();
                             //dd($healthZone); 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('id', $healthRecord->id)  // ใช้ id ของ healthRecord
+                            ->where('health_record_id', $healthRecord->id) // แก้ไขตรงนี้
+                            ->first();
+  dd($healthZone2); 
+  $diseases = Disease::where('recorddata_id', $recorddata_id)
+                     ->where('health_record_id', $healthRecord->id) // แก้ไขตรงนี้
+                     ->first();
+  
+  $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
+                              ->where('health_record_id', $healthRecord->id) // แก้ไขตรงนี้
                               ->first();
-                              dd($healthZone2); 
-    $diseases = Disease::where('recorddata_id', $recorddata_id)
-                       ->where('id', $healthRecord->id)  // ใช้ id ของ healthRecord
-                       ->first();
-
-    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('id', $healthRecord->id)  // ใช้ id ของ healthRecord
-                                ->first();
-
-    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                      ->where('id', $healthRecord->id)  // ใช้ id ของ healthRecord
-                                      ->first();
+  
+  $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
+                                    ->where('health_record_id', $healthRecord->id) // แก้ไขตรงนี้
+                                    ->first();
 
     // ดีบัก: ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
     //dd('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
