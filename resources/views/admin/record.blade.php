@@ -1120,10 +1120,6 @@ button.btn-primary:hover {
                                             </div>
                                             <div class="accordion" id="dataAccordion">
                                                 @php
-                                                $recorddataList = \App\Models\Recorddata::all();
-                                                $groupedData = $recorddataList->groupBy('section');
-                                                $perPage = 20; // จำนวนรายการต่อหน้า
-                                                $page = request()->input('page', 1); // รับค่า page จาก query string
                                                 $offset = ($page - 1) * $perPage;
                                                 @endphp
                                                 @foreach ($groupedData as $section => $items)
@@ -1176,8 +1172,8 @@ button.btn-primary:hover {
                                                                 <ul class="pagination justify-content-center">
                                                                     @if ($page > 1)
                                                                     <li class="page-item">
-                                                                        <a class="page-link"
-                                                                            href="?page={{ $page - 1 }}"
+                                                                        <a class="page-link" href="javascript:void(0);"
+                                                                            data-page="{{ $page - 1 }}"
                                                                             aria-label="Previous">
                                                                             <span aria-hidden="true">&laquo;</span>
                                                                         </a>
@@ -1188,13 +1184,15 @@ button.btn-primary:hover {
                                                                         <li
                                                                             class="page-item {{ ($page == $i) ? 'active' : '' }}">
                                                                             <a class="page-link"
-                                                                                href="?page={{ $i }}">{{ $i }}</a>
+                                                                                href="javascript:void(0);"
+                                                                                data-page="{{ $i }}">{{ $i }}</a>
                                                                         </li>
                                                                         @endfor
                                                                         @if ($page < ceil($items->count() / $perPage))
                                                                             <li class="page-item">
                                                                                 <a class="page-link"
-                                                                                    href="?page={{ $page + 1 }}"
+                                                                                    href="javascript:void(0);"
+                                                                                    data-page="{{ $page + 1 }}"
                                                                                     aria-label="Next">
                                                                                     <span
                                                                                         aria-hidden="true">&raquo;</span>
@@ -1254,6 +1252,42 @@ button.btn-primary:hover {
                                     items.forEach(item => item.checked = this.checked);
                                 });
                             });
+
+                            const paginationLinks = document.querySelectorAll('.pagination a');
+                            paginationLinks.forEach(link => {
+                                link.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    const page = this.dataset.page;
+                                    loadPage(page);
+                                });
+                            });
+
+                            function loadPage(page) {
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('GET', '?page=' + page);
+                                xhr.onload = function() {
+                                    if (xhr.status >= 200 && xhr.status < 300) {
+                                        document.getElementById('dataAccordion').innerHTML = xhr
+                                            .responseText;
+                                        // เพิ่ม event listener ให้กับ pagination links ใหม่
+                                        const newPaginationLinks = document.querySelectorAll(
+                                            '.pagination a');
+                                        newPaginationLinks.forEach(link => {
+                                            link.addEventListener('click', function(e) {
+                                                e.preventDefault();
+                                                const page = this.dataset.page;
+                                                loadPage(page);
+                                            });
+                                        });
+                                    } else {
+                                        console.error('Failed to load page');
+                                    }
+                                };
+                                xhr.onerror = function() {
+                                    console.error('Network error');
+                                };
+                                xhr.send();
+                            }
                         });
 
                         function submitPrintForm() {
