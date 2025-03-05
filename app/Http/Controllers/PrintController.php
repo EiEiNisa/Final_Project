@@ -121,10 +121,10 @@ class PrintController extends Controller
                     if ($elderlyInformation->bed_ridden == 1) $elderlyHabits[] = 'ติดเตียง';
                 }
         
-                // เก็บข้อมูลการตรวจของแต่ละคน
                 $inspections->push([  
                     'inspection_number' => $i + 1,
                     'date' => $recorddata->created_at->format('d/m/Y'),
+                    'recorddata_id' => $recorddata->id,  // Add this line
                     'health_record' => $healthRecord ? [
                         'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',
                         'dia' => $healthRecord->dia ?? 'ไม่มีข้อมูล',
@@ -139,6 +139,7 @@ class PrintController extends Controller
                     'lifestyle_habits' => $habits ?: 'ไม่มีข้อมูล',
                     'elderly_information' => $elderlyHabits ?: 'ไม่มีข้อมูล',
                 ]);
+                
             }
         }
 

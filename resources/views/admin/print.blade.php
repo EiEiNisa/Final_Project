@@ -121,7 +121,7 @@
         <h3 class="inspection-title">ประวัติการตรวจ</h3>
         <br>
         @foreach($inspections as $inspection)
-            @if($inspection['recorddata_id'] == $recorddata->id) <!-- Matching by recorddata_id -->
+            @if($inspection['recorddata_id'] == $recorddata->id)
                 @if(is_array($inspection))
                 <!-- Check if $inspection is an array -->
                 <div class="info-box">
