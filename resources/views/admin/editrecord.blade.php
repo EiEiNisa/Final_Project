@@ -676,7 +676,7 @@ form {
                                     @endif
                                     <div class="form-group">
                                         <label>โรคประจำตัว</label>
-                                        @if(isset($diseases[$index]))
+                                        @if(isset($diseases) && !empty($diseases))
                                         @php
                                         $diseaseLabels = [
                                         'diabetes' => 'เบาหวาน',
@@ -686,14 +686,13 @@ form {
                                         'heart' => 'โรคหัวใจ',
                                         'eye' => 'โรคตา'
                                         ];
-                                        $selectedDiseases = collect($diseases[$index]->toArray())
+                                        $selectedDiseases = collect($diseases->toArray())
                                         ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
                                         ->keys()
                                         ->map(fn($key) => $diseaseLabels[$key])
                                         ->implode(", ");
-                                        if ($diseases[$index]->other && !empty($diseases[$index]->other_text)) {
-                                        $selectedDiseases .= ($selectedDiseases ? ", " : "") .
-                                        $diseases[$index]->other_text;
+                                        if ($diseases->other == 1 && !empty($diseases->other_text)) {
+                                        $selectedDiseases .= ($selectedDiseases ? ", " : "") . $diseases->other_text;
                                         }
                                         @endphp
                                         <input type="text" class="form-control"
@@ -706,7 +705,7 @@ form {
                                         <label for="user_name">ผู้บันทึกข้อมูล</label>
                                         <input type="text" class="form-control" id="user_name" name="user_name"
                                             value="{{ old('user_name', $recorddata->user_name) }}" readonly>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                             <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
