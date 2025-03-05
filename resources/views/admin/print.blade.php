@@ -67,12 +67,11 @@
     </style>
 </head>
 
-
 <body>
     <div class="container mt-5">
         <h2 class="text-center">ข้อมูลบุคคล</h2>
 
-        @foreach($recorddataList as $recorddata)
+        @foreach($recorddataList as $index => $recorddata)
         <div class="info-box row-1">
             <div class="col">
                 <strong>เลขบัตรประชาชน:</strong> {{ $recorddata->id_card }}
@@ -117,19 +116,18 @@
                 <strong>LINE ID:</strong> {{ $recorddata->idline }}
             </div>
         </div>
+
         <div class="divider"></div>
 
         <h3 class="inspection-title">ประวัติการตรวจ</h3>
         <br>
         @foreach($inspections as $inspection)
         <div class="info-box-container">
-            <!-- แสดงหมายเลขการตรวจ -->
             <div class="info-box">
                 <h5><strong>ตรวจครั้งที่ {{ $inspection['inspection_number'] }}</strong></h5>
                 <div><strong>วันที่ตรวจ:</strong> {{ $inspection['date'] }}</div>
             </div>
 
-            <!-- Health Record -->
             <div class="info-box">
                 @if(isset($inspection['health_record']))
                 <div><strong>ความดัน (SYS): </strong>{{ $inspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}</div>
@@ -141,7 +139,6 @@
                 @endif
             </div>
 
-            <!-- Blood Pressure Zone -->
             <div class="info-box">
                 <p><strong>Blood Pressure Zone:</strong></p>
                 @if(is_array($inspection['health_zone']))
@@ -153,7 +150,6 @@
                 @endif
             </div>
 
-            <!-- Blood Pressure Zone2 -->
             <div class="info-box">
                 <p><strong>Blood Pressure Zone2:</strong></p>
                 @if(is_array($inspection['health_zone2']))
@@ -165,7 +161,6 @@
                 @endif
             </div>
 
-            <!-- โรคประจำตัว -->
             <div class="info-box">
                 <p><strong>โรคประจำตัว:</strong></p>
                 @if (is_array($inspection['disease']) || is_object($inspection['disease']))
@@ -179,7 +174,6 @@
                 @endif
             </div>
 
-            <!-- พฤติกรรม-สุขภาพจิต -->
             <div class="info-box">
                 <p><strong>พฤติกรรม-สุขภาพจิต:</strong></p>
                 @if (is_array($inspection['lifestyle_habits']))
@@ -193,7 +187,6 @@
                 @endif
             </div>
 
-            <!-- ข้อมูลผู้สูงอายุ -->
             <div class="info-box">
                 <p><strong>ข้อมูลผู้สูงอายุ:</strong></p>
                 @if (is_array($inspection['elderly_information']))
@@ -207,11 +200,12 @@
                 @endif
             </div>
         </div>
-
         <div class="divider"></div>
         @endforeach
+        <div class="page-break"></div> <!-- เพิ่มให้แยกหน้าสำหรับคนถัดไป -->
         @endforeach
     </div>
 </body>
+
 
 </html>

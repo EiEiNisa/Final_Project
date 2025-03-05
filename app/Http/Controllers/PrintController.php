@@ -18,27 +18,22 @@ class PrintController extends Controller
     {
         $ids = $request->input('ids');  // รับค่า ids[] จาก URL
 
-        // ตรวจสอบว่ามีค่าจาก ids[] หรือไม่
         if (!$ids) {
             return redirect()->route('admin.print')->with('error', 'No items selected.');
         }
 
-        $recorddataList = Recorddata::whereIn('id', $ids)->get();  // Use the selected IDs to filter the records
+        $recorddataList = Recorddata::whereIn('id', $ids)->get();  
 
         $currentYear = Carbon::now()->year;
 
-        $inspections = collect();  // Initialize inspections collection
-
+        $inspections = collect();  
         foreach ($ids as $id) {
-            // Fetch the specific Recorddata object
-            $recorddata = Recorddata::find($id);  // Fetch the recorddata by ID
+            $recorddata = Recorddata::find($id);  
 
-            // If recorddata is not found, continue to the next ID
             if (!$recorddata) {
-                continue; // or you can return an error if necessary
+                continue; 
             }
 
-            // Fetch related models
             $healthRecords = HealthRecord::where('recorddata_id', $id)
                 ->whereYear('created_at', $currentYear)
                 ->get();
