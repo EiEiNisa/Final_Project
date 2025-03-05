@@ -77,14 +77,53 @@ class PrintController extends Controller
                 $healthZone = isset($healthZones[$i]) ? $healthZones[$i] : null;
                 $healthZone2 = isset($healthZones2[$i]) ? $healthZones2[$i] : null;
                 $disease = isset($diseases[$i]) ? $diseases[$i] : null;
+                $diseaseNames = [];
+
+                if ($disease) {
+                    if ($disease->diabetes == 1) $diseaseNames[] = 'เบาหวาน';
+                    if ($disease->cerebral_artery == 1) $diseaseNames[] = 'หลอดเลือดสมอง';
+                    if ($disease->kidney == 1) $diseaseNames[] = 'ไต';
+                    if ($disease->blood_pressure == 1) $diseaseNames[] = 'ความดันโลหิตสูง';
+                    if ($disease->heart == 1) $diseaseNames[] = 'หัวใจ';
+                    if ($disease->eye == 1) $diseaseNames[] = 'ตา';
+                    if ($disease->other == 1) $diseaseNames[] = 'อื่น ๆ';
+                }
+
                 $lifestyleHabit = isset($lifestyleHabits[$i]) ? $lifestyleHabits[$i] : null;
+                $habits = [];
+
+                if ($lifestyleHabit) {
+                    if ($lifestyleHabit->drink == 1) $habits[] = 'ดื่มแอลกอฮอล์';
+                    if ($lifestyleHabit->drink_sometimes == 1) $habits[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
+                    if ($lifestyleHabit->dont_drink == 1) $habits[] = 'ไม่ดื่มแอลกอฮอล์';
+                    if ($lifestyleHabit->smoke == 1) $habits[] = 'สูบบุหรี่';
+                    if ($lifestyleHabit->sometime_smoke == 1) $habits[] = 'สูบบุหรี่บางครั้ง';
+                    if ($lifestyleHabit->dont_smoke == 1) $habits[] = 'ไม่สูบบุหรี่';
+                    if ($lifestyleHabit->troubled == 1) $habits[] = 'ทุกข์ใจ ซึม เศร้า';
+                    if ($lifestyleHabit->dont_live == 1) $habits[] = 'ไม่อยากมีชีวิตอยู่';
+                    if ($lifestyleHabit->bored == 1) $habits[] = 'เบื่อ';
+                }
                 $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
+                $elderlyHabits = [];
 
-                // Continue processing each record as per your existing logic
+                if ($elderlyInformation) {
+                    if ($elderlyInformation->help_yourself == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
+                    if ($elderlyInformation->can_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองได้';
+                    if ($elderlyInformation->cant_help == 1) $elderlyHabits[] = 'ช่วยเหลือตัวเองไม่ได้';
+                    if ($elderlyInformation->caregiver == 1) $elderlyHabits[] = 'ผู้ดูแล';
+                    if ($elderlyInformation->have_caregiver == 1) $elderlyHabits[] = 'มีผู้ดูแล';
+                    if ($elderlyInformation->no_caregiver == 1) $elderlyHabits[] = 'ไม่มีผู้ดูแล';
+                    if ($elderlyInformation->group1 == 1) $elderlyHabits[] = 'กลุ่มที่ 1 ผู้สูงอายุช่วยตัวเองและผู้อื่นได้';
+                    if ($elderlyInformation->group2 == 1) $elderlyHabits[] = 'กลุ่มที่ 2 ผู้สูงอายุช่วยตัวเองแต่มีโรคเรื้อรัง';
+                    if ($elderlyInformation->group3 == 1) $elderlyHabits[] = 'กลุ่มที่ 3 ผู้สูงอายุ/ผู้ป่วยดูแลตัวเองไม่ได้';
+                    if ($elderlyInformation->house == 1) $elderlyHabits[] = 'ติดบ้าน';
+                    if ($elderlyInformation->society == 1) $elderlyHabits[] = 'ติดสังคม';
+                    if ($elderlyInformation->bed_ridden == 1) $elderlyHabits[] = 'ติดเตียง';
+                }
 
-                $inspections->push([  // Push the current inspection data to the inspections collection
+                $inspections->push([  
                     'inspection_number' => $i + 1,
-                    'date' => $recorddata->created_at->format('d/m/Y'), // Use recorddata's created_at
+                    'date' => $recorddata->created_at->format('d/m/Y'),
                     'health_record' => $healthRecord ? [
                         'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',
                         'dia' => $healthRecord->dia ?? 'ไม่มีข้อมูล',
