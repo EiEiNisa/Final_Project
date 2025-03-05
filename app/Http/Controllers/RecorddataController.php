@@ -718,6 +718,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
     // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
     $healthRecord = $healthRecords[$checkup_index - 1]; // -1 เพื่อให้ตรงกับ index ของ array ที่เริ่มจาก 0
+    dd($healthRecords->count());
 
     // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ recorddata_id และ id ของ healthRecord
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
