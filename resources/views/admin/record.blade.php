@@ -1171,7 +1171,6 @@ button.btn-primary:hover {
                                                 </div>
                                                 @endforeach
                                             </div>
-                                            <!---{{ $paginatedData->links() }} {{-- เพิ่มปุ่มเลื่อน --}}--->
                                         </form>
                                     </div>
                                     <div class="modal-footer bg-light">
