@@ -331,7 +331,7 @@ tr:hover {
 
                         <!-- ปุ่มลบถาวรพร้อม Modal -->
                         <button class="btn btn-danger btn-custom" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal{{ $record->id }}">ลบถาวร</button>
+                            data-bs-target="#deleteModal{{ $record->id }}">ลบ</button>
 
                         <!-- Modal สำหรับลบถาวร -->
                         <div class="modal fade" id="deleteModal{{ $record->id }}" tabindex="-1"
