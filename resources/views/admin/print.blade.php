@@ -123,102 +123,102 @@
         @foreach($inspections as $index => $inspection)
         @if($index < count($recorddataList) && $recorddataList[$index]->id == $recorddata->id)
             @if(is_array($inspection))
-            @foreach($inspection as $singleInspection)
-            <div class="info-box-container">
-                <div class="info-box">
-                    <h5><strong>ตรวจครั้งที่ {{ $singleInspection['inspection_number'] }}</strong></h5>
-                    <div><strong>วันที่ตรวจ:</strong> {{ $singleInspection['date'] }}</div>
-                </div>
-
-                <div class="info-box">
-                    @if(isset($singleInspection['health_record']))
-                    <div><strong>ความดัน (SYS):</strong>{{ $singleInspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}
-                    </div>
-                    <div><strong>ความดัน (DIA):</strong>{{ $singleInspection['health_record']['dia'] ?? 'ไม่มีข้อมูล' }}
-                    </div>
-                    <div><strong>ชีพจร: </strong>{{ $singleInspection['health_record']['pul'] ?? 'ไม่มีข้อมูล' }}</div>
-                    <div>
-                        <strong>อุณหภูมิร่างกาย:</strong>{{ $singleInspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}
-                    </div>
-                    <div>
-                        <strong>ออกซิเจนในเลือด:</strong>{{ $singleInspection['health_record']['blood_oxygen'] ?? 'ไม่มีข้อมูล' }}
-                    </div>
-                    <div>
-                        <strong>ระดับน้ำตาลในเลือด:</strong>{{ $singleInspection['health_record']['blood_level'] ?? 'ไม่มีข้อมูล' }}
-                    </div>
-                    @endif
-                </div>
-
-                <div class="info-box">
-                    <p><strong>Blood Pressure Zone:</strong></p>
-                    @if(is_array($singleInspection['health_zone']))
-                    @foreach($singleInspection['health_zone'] as $zone)
-                    <div>{{ $zone }}</div>
-                    @endforeach
-                    @else
-                    <div>{{ $singleInspection['health_zone'] }}</div>
-                    @endif
-                </div>
-
-                <div class="info-box">
-                    <p><strong>Blood Pressure Zone2:</strong></p>
-                    @if(is_array($singleInspection['health_zone2']))
-                    @foreach($singleInspection['health_zone2'] as $zone2)
-                    <div>{{ $zone2 }}</div>
-                    @endforeach
-                    @else
-                    <div>{{ $singleInspection['health_zone2'] }}</div>
-                    @endif
-                </div>
-
-                <div class="info-box">
-                    <p><strong>โรคประจำตัว:</strong></p>
-                    @if (is_array($singleInspection['disease']) || is_object($singleInspection['disease']))
-                    <ul>
-                        @foreach ($singleInspection['disease'] as $disease)
-                        <li>{{ $disease }}</li>
-                        @endforeach
-                    </ul>
-                    @else
-                    <p>{{ $singleInspection['disease'] ?? 'ไม่มีข้อมูล' }}</p>
-                    @endif
-                </div>
-
-                <div class="info-box">
-                    <p><strong>พฤติกรรม-สุขภาพจิต:</strong></p>
-                    @if (is_array($singleInspection['lifestyle_habits']))
-                    <ul>
-                        @foreach ($singleInspection['lifestyle_habits'] as $habit)
-                        <li>{{ $habit }}</li>
-                        @endforeach
-                    </ul>
-                    @else
-                    <p>{{ $singleInspection['lifestyle_habits'] ?? 'ไม่มีข้อมูล' }}</p>
-                    @endif
-                </div>
-
-                <div class="info-box">
-                    <p><strong>ข้อมูลผู้สูงอายุ:</strong></p>
-                    @if (is_array($singleInspection['elderly_information']))
-                    <ul>
-                        @foreach ($singleInspection['elderly_information'] as $elderlyHabits)
-                        <li>{{ $elderlyHabits }}</li>
-                        @endforeach
-                    </ul>
-                    @else
-                    <p>{{ $singleInspection['elderly_information'] ?? 'ไม่มีข้อมูล' }}</p>
-                    @endif
-                </div>
+            @foreach($inspections as $singleInspection)
+            @if(is_array($singleInspection))
+            <div class="info-box">
+                <h5><strong>ตรวจครั้งที่ {{ $singleInspection['inspection_number'] }}</strong></h5>
+                <div><strong>วันที่ตรวจ:</strong> {{ $singleInspection['date'] }}</div>
             </div>
-            <div class="divider"></div>
-            @endforeach
-            @endif
-            @endif
-            @endforeach
-            <br>
-            <h2 class="text-center">ข้อมูลบุคคล</h2>
-            <div class="page-break"></div>
-            @endforeach
+
+            <div class="info-box">
+                @if(isset($singleInspection['health_record']))
+                <div><strong>ความดัน (SYS):</strong>{{ $singleInspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}
+                </div>
+                <div><strong>ความดัน (DIA):</strong>{{ $singleInspection['health_record']['dia'] ?? 'ไม่มีข้อมูล' }}
+                </div>
+                <div><strong>ชีพจร: </strong>{{ $singleInspection['health_record']['pul'] ?? 'ไม่มีข้อมูล' }}</div>
+                <div>
+                    <strong>อุณหภูมิร่างกาย:</strong>{{ $singleInspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}
+                </div>
+                <div>
+                    <strong>ออกซิเจนในเลือด:</strong>{{ $singleInspection['health_record']['blood_oxygen'] ?? 'ไม่มีข้อมูล' }}
+                </div>
+                <div>
+                    <strong>ระดับน้ำตาลในเลือด:</strong>{{ $singleInspection['health_record']['blood_level'] ?? 'ไม่มีข้อมูล' }}
+                </div>
+                @endif
+            </div>
+
+            <div class="info-box">
+                <p><strong>Blood Pressure Zone:</strong></p>
+                @if(is_array($singleInspection['health_zone']))
+                @foreach($singleInspection['health_zone'] as $zone)
+                <div>{{ $zone }}</div>
+                @endforeach
+                @else
+                <div>{{ $singleInspection['health_zone'] }}</div>
+                @endif
+            </div>
+
+            <div class="info-box">
+                <p><strong>Blood Pressure Zone2:</strong></p>
+                @if(is_array($singleInspection['health_zone2']))
+                @foreach($singleInspection['health_zone2'] as $zone2)
+                <div>{{ $zone2 }}</div>
+                @endforeach
+                @else
+                <div>{{ $singleInspection['health_zone2'] }}</div>
+                @endif
+            </div>
+
+            <div class="info-box">
+                <p><strong>โรคประจำตัว:</strong></p>
+                @if (is_array($singleInspection['disease']) || is_object($singleInspection['disease']))
+                <ul>
+                    @foreach ($singleInspection['disease'] as $disease)
+                    <li>{{ $disease }}</li>
+                    @endforeach
+                </ul>
+                @else
+                <p>{{ $singleInspection['disease'] ?? 'ไม่มีข้อมูล' }}</p>
+                @endif
+            </div>
+
+            <div class="info-box">
+                <p><strong>พฤติกรรม-สุขภาพจิต:</strong></p>
+                @if (is_array($singleInspection['lifestyle_habits']))
+                <ul>
+                    @foreach ($singleInspection['lifestyle_habits'] as $habit)
+                    <li>{{ $habit }}</li>
+                    @endforeach
+                </ul>
+                @else
+                <p>{{ $singleInspection['lifestyle_habits'] ?? 'ไม่มีข้อมูล' }}</p>
+                @endif
+            </div>
+
+            <div class="info-box">
+                <p><strong>ข้อมูลผู้สูงอายุ:</strong></p>
+                @if (is_array($singleInspection['elderly_information']))
+                <ul>
+                    @foreach ($singleInspection['elderly_information'] as $elderlyHabits)
+                    <li>{{ $elderlyHabits }}</li>
+                    @endforeach
+                </ul>
+                @else
+                <p>{{ $singleInspection['elderly_information'] ?? 'ไม่มีข้อมูล' }}</p>
+                @endif
+            </div>
+    </div>
+    <div class="divider"></div>
+    @endforeach
+    @endif
+    @endif
+    @endforeach
+    <br>
+    <h2 class="text-center">ข้อมูลบุคคล</h2>
+    <div class="page-break"></div>
+    @endforeach
     </div>
 
 </body>
