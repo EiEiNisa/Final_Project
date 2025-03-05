@@ -571,60 +571,83 @@ public function restore($id)
     }
 }
 
+// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย HealthRecord
+public function healthRecords()
+{
+    return $this->hasMany(HealthRecord::class, 'recorddata_id', 'id');
+}
+
+// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย HealthZone
+public function healthZones()
+{
+    return $this->hasMany(HealthZone::class, 'recorddata_id', 'id');
+}
+
+// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย HealthZone2
+public function healthZones2()
+{
+    return $this->hasMany(HealthZone2::class, 'recorddata_id', 'id');
+}
+
+// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย Disease
+public function diseases()
+{
+    return $this->hasMany(Disease::class, 'recorddata_id', 'id');
+}
+
+// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย LifestyleHabit
+public function lifestyleHabits()
+{
+    return $this->hasMany(LifestyleHabit::class, 'recorddata_id', 'id');
+}
+
+// กำหนดความสัมพันธ์ว่า Recorddata มีหลาย ElderlyInformation
+public function elderlyInformations()
+{
+    return $this->hasMany(ElderlyInformation::class, 'recorddata_id', 'id');
+}
+
 public function destroyPermanently($id)
 {
     try {
         // ค้นหาข้อมูลที่ถูกซ่อน
         $record = Recorddata::findOrFail($id);
 
-        // ลบข้อมูลจากตารางที่เชื่อมโยงกับ recorddata_id
-        // ตรวจสอบว่ามีข้อมูลในตารางอื่น ๆ ที่ใช้ recorddata_id หรือไม่
-        if ($record->diseases()->where('recorddata_id', $id)->exists()) {
-            $record->diseases()->where('recorddata_id', $id)->forceDelete();
-        }
-
-        // ลบข้อมูลที่เชื่อมโยงในตาราง healthRecords
+        // ลบข้อมูลที่เชื่อมโยงกับ recorddata_id
         if ($record->healthRecords()->where('recorddata_id', $id)->exists()) {
             $record->healthRecords()->where('recorddata_id', $id)->forceDelete();
         }
 
-        // ลบข้อมูลที่เชื่อมโยงในตาราง healthZones
         if ($record->healthZones()->where('recorddata_id', $id)->exists()) {
             $record->healthZones()->where('recorddata_id', $id)->forceDelete();
         }
 
-        // ลบข้อมูลที่เชื่อมโยงในตาราง healthZones2
         if ($record->healthZones2()->where('recorddata_id', $id)->exists()) {
             $record->healthZones2()->where('recorddata_id', $id)->forceDelete();
         }
 
-        // ลบข้อมูลที่เชื่อมโยงในตาราง lifestyleHabits
+        if ($record->diseases()->where('recorddata_id', $id)->exists()) {
+            $record->diseases()->where('recorddata_id', $id)->forceDelete();
+        }
+
         if ($record->lifestyleHabits()->where('recorddata_id', $id)->exists()) {
             $record->lifestyleHabits()->where('recorddata_id', $id)->forceDelete();
         }
 
-        // ลบข้อมูลที่เชื่อมโยงในตาราง elderlyInformations
         if ($record->elderlyInformations()->where('recorddata_id', $id)->exists()) {
             $record->elderlyInformations()->where('recorddata_id', $id)->forceDelete();
-        }
-
-        // ลบข้อมูลจากตารางที่เกี่ยวข้องกับ recorddata_id (เช่น diseases)
-        $relatedTable = \DB::table('related_table_name') // เปลี่ยนเป็นชื่อจริงของตารางที่เชื่อมโยง
-                            ->where('recorddata_id', $id);
-        if ($relatedTable->exists()) {
-            $relatedTable->delete();  // ใช้ delete หรือ forceDelete ถ้าคุณต้องการลบจริง
         }
 
         // ลบข้อมูลหลักในตาราง recorddata
         $record->forceDelete();
 
         return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกลบถาวรแล้ว');
-    }catch (\Exception $e) {
-        // ส่งข้อความข้อผิดพลาดไปยัง session
-        return redirect()->route('admin.recently_deleted')->with('error', $e->getMessage());
+    } catch (\Exception $e) {
+        // บันทึกข้อผิดพลาด
+        \Log::error('Error deleting recorddata with ID ' . $id . ': ' . $e->getMessage());
+        return redirect()->route('admin.recently_deleted')->with('error', 'เกิดข้อผิดพลาดในการลบข้อมูล');
     }
 }
-
 
     public function disease()
     {
