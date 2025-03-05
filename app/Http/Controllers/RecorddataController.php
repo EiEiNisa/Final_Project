@@ -196,121 +196,118 @@ public function store(Request $request)
         return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
 
-public function edit($id, Request $request)
-{
-
-    $recorddata = Recorddata::findOrFail($id);
-    $user = User::find($recorddata->user_id);
+    public function edit($id, Request $request)
+    {
     
-    $searchDate = $request->input('search_date');
+        $recorddata = Recorddata::findOrFail($id);
+        $user = User::find($recorddata->user_id);
         
-    if ($searchDate) {
-        $searchDate = \Carbon\Carbon::createFromFormat('Y-m-d', $searchDate)->toDateString();
-        $healthRecordsQuery->whereDate('created_at', $searchDate);
-    }
-
-    $healthRecordsQuery = HealthRecord::where('recorddata_id', $id);
-
-    $extra_fields_recorddata = $recorddata->extra_fields ? json_decode($recorddata->extra_fields, true) : null;
-
-    $healthRecords = $healthRecordsQuery->orderBy('created_at', 'desc')->get();
-    if ($healthRecords->isEmpty()) {
-        return back()->with('error', 'ไม่พบข้อมูล healthRecords');
-    }
-
-    // Filter healthZones by the current recorddata_id
-    $healthZones = HealthZone::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
-    $zones = $healthZones->map(function ($zone) {
-        $zoneData = [];
-        // ตรวจสอบว่าแต่ละ field มีค่าเป็น 1 หรือไม่
-        if ($zone->zone1_normal == 1) $zoneData[] = 'ปกติ';
-        if ($zone->zone1_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
-        if ($zone->zone1_good_control == 1) $zoneData[] = 'คุมได้ดี';
-        if ($zone->zone1_watch_out == 1) $zoneData[] = 'เฝ้าระวัง';
-        if ($zone->zone1_danger == 1) $zoneData[] = 'อันตราย';
-        if ($zone->zone1_critical == 1) $zoneData[] = 'วิกฤต';
-        if ($zone->zone1_complications == 1) $zoneData[] = 'โรคแทรกซ้อน';
-        if ($zone->zone1_heart == 1) $zoneData[] = 'หัวใจ';
-        if ($zone->zone1_cerebrovascular == 1) $zoneData[] = 'หลอดเลือดสมอง';
-        if ($zone->zone1_kidney == 1) $zoneData[] = 'ไต';
-        if ($zone->zone1_eye == 1) $zoneData[] = 'ตา';
-        if ($zone->zone1_foot == 1) $zoneData[] = 'เท้า';
+        $searchDate = $request->input('search_date');
+            
+        if ($searchDate) {
+            $searchDate = \Carbon\Carbon::createFromFormat('Y-m-d', $searchDate)->toDateString();
+            $healthRecordsQuery->whereDate('created_at', $searchDate);
+        }
+    
+        $healthRecordsQuery = HealthRecord::where('recorddata_id', $id);
+    
+        $extra_fields_recorddata = $recorddata->extra_fields ? json_decode($recorddata->extra_fields, true) : null;
+    
+        $healthRecords = $healthRecordsQuery->orderBy('created_at', 'desc')->get();
+        if ($healthRecords->isEmpty()) {
+            return back()->with('error', 'ไม่พบข้อมูล healthRecords');
+        }
+    
+        // Filter healthZones by the current recorddata_id
+        $healthZones = HealthZone::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
+        $zones = $healthZones->map(function ($zone) {
+            $zoneData = [];
+            // ตรวจสอบว่าแต่ละ field มีค่าเป็น 1 หรือไม่
+            if ($zone->zone1_normal == 1) $zoneData[] = 'ปกติ';
+            if ($zone->zone1_risk_group == 1) $zoneData[] = 'กลุ่มเสี่ยง';
+            if ($zone->zone1_good_control == 1) $zoneData[] = 'คุมได้ดี';
+            if ($zone->zone1_watch_out == 1) $zoneData[] = 'เฝ้าระวัง';
+            if ($zone->zone1_danger == 1) $zoneData[] = 'อันตราย';
+            if ($zone->zone1_critical == 1) $zoneData[] = 'วิกฤต';
+            if ($zone->zone1_complications == 1) $zoneData[] = 'โรคแทรกซ้อน';
+            if ($zone->zone1_heart == 1) $zoneData[] = 'หัวใจ';
+            if ($zone->zone1_cerebrovascular == 1) $zoneData[] = 'หลอดเลือดสมอง';
+            if ($zone->zone1_kidney == 1) $zoneData[] = 'ไต';
+            if ($zone->zone1_eye == 1) $zoneData[] = 'ตา';
+            if ($zone->zone1_foot == 1) $zoneData[] = 'เท้า';
+            
+            return $zoneData; // ส่งคืนค่าของ zone ที่มีค่าเป็น 1
+        });
+        //dd($zones);    
+    
+        // Filter healthZones2 by the current recorddata_id
+        $healthZones2 = HealthZone2::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
+        $zones2 = $healthZones2->map(function ($zone2) {
+            $zoneData2 = [];
+            if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
+            if ($zone2->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
+            if ($zone2->zone2_good_control == 1) $zoneData2[] = 'คุมได้ดี';
+            if ($zone2->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
+            if ($zone2->zone2_danger == 1) $zoneData2[] = 'อันตราย';
+            if ($zone2->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
+            if ($zone2->zone2_complications == 1) $zoneData2[] = 'โรคแทรกซ้อน';
+            if ($zone2->zone2_heart == 1) $zoneData2[] = 'หัวใจ';
+            if ($zone2->zone2_eye == 1) $zoneData2[] = 'ตา'; 
+            return $zoneData2;
+        });
+        //dd($zones2); 
+    
+        $diseases = Disease::where('recorddata_id', $recorddata->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+    
+        $diseases = Disease::where('recorddata_id', $recorddata->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        $diseaseNames = $diseases->map(function ($disease) { 
+            $names = [];
+            if ($disease->diabetes == 1) $names[] = 'เบาหวาน';
+            if ($disease->cerebral_artery == 1) $names[] = 'หลอดเลือดสมอง';
+            if ($disease->kidney == 1) $names[] = 'ไต';
+            if ($disease->blood_pressure == 1) $names[] = 'ความดันโลหิตสูง';
+            if ($disease->heart == 1) $names[] = 'หัวใจ';
+            if ($disease->eye == 1) $names[] = 'ตา';
+            if ($disease->other == 1) $names[] = 'อื่น ๆ';
+            return ['id' => $disease->id, 'names' => implode(' ', $names)];
+        });
+        //dd($diseaseNames); 
+    
+        $lifestyles = LifestyleHabit::where('recorddata_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        //dd($lifestyles);
+    
+        $lifestylesHabit = $lifestyles->map(function ($lifestyle) { 
+            $lifestyleshabit = [];
+            if ($lifestyle->drink) $lifestyleshabit[] = 'ดื่มแอลกอฮอล์';
+            if ($lifestyle->drink_sometimes) $lifestyleshabit[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
+            if ($lifestyle->dont_drink) $lifestyleshabit[] = 'ไม่ดื่มแอลกอฮอล์';
+            if ($lifestyle->smoke) $lifestyleshabit[] = 'สูบบุหรี่';
+            if ($lifestyle->sometime_smoke) $lifestyleshabit[] = 'สูบบุหรี่บางครั้ง';
+            if ($lifestyle->dont_smoke) $lifestyleshabit[] = 'ไม่สูบบุหรี่';
+            if ($lifestyle->troubled) $lifestyleshabit[] = 'ทุกข์ใจ ซึม เศร้า';
+            if ($lifestyle->dont_live) $lifestyleshabit[] = 'ไม่อยากมีชีวิตอยู่';
+            if ($lifestyle->bored) $lifestyleshabit[] = 'เบื่อ';
         
-        return $zoneData; // ส่งคืนค่าของ zone ที่มีค่าเป็น 1
-    });
-    //dd($zones);    
-
-    // Filter healthZones2 by the current recorddata_id
-    $healthZones2 = HealthZone2::where('recorddata_id', $id)->orderBy('created_at', 'desc')->get();
-    $zones2 = $healthZones2->map(function ($zone2) {
-        $zoneData2 = [];
-        if ($zone2->zone2_normal == 1) $zoneData2[] = 'ปกติ';
-        if ($zone2->zone2_risk_group == 1) $zoneData2[] = 'กลุ่มเสี่ยง';
-        if ($zone2->zone2_good_control == 1) $zoneData2[] = 'คุมได้ดี';
-        if ($zone2->zone2_watch_out == 1) $zoneData2[] = 'เฝ้าระวัง';
-        if ($zone2->zone2_danger == 1) $zoneData2[] = 'อันตราย';
-        if ($zone2->zone2_critical == 1) $zoneData2[] = 'วิกฤต';
-        if ($zone2->zone2_complications == 1) $zoneData2[] = 'โรคแทรกซ้อน';
-        if ($zone2->zone2_heart == 1) $zoneData2[] = 'หัวใจ';
-        if ($zone2->zone2_eye == 1) $zoneData2[] = 'ตา'; 
-        return $zoneData2;
-    });
-    //dd($zones2); 
-
-    $diseases = Disease::where('recorddata_id', $recorddata->id)
-    ->orderBy('created_at', 'desc')
-    ->get();
-
-    $diseases = Disease::where('recorddata_id', $recorddata->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-    $diseaseNames = $diseases->map(function ($disease) { 
-        $names = [];
-        if ($disease->diabetes == 1) $names[] = 'เบาหวาน';
-        if ($disease->cerebral_artery == 1) $names[] = 'หลอดเลือดสมอง';
-        if ($disease->kidney == 1) $names[] = 'ไต';
-        if ($disease->blood_pressure == 1) $names[] = 'ความดันโลหิตสูง';
-        if ($disease->heart == 1) $names[] = 'หัวใจ';
-        if ($disease->eye == 1) $names[] = 'ตา';
-        if ($disease->other == 1) $names[] = 'อื่น ๆ';
-        return ['id' => $disease->id, 'names' => implode(' ', $names)];
-    });
-    //dd($diseaseNames); 
-    $diseaseGroups = $diseases->groupBy(function ($disease) {
-        return \Carbon\Carbon::parse($disease->created_at)->format('Y-m-d'); // ใช้วัน-เดือน-ปี เพื่อแยกตามการตรวจ
-    });
-
-    $lifestyles = LifestyleHabit::where('recorddata_id', $id)
-        ->orderBy('created_at', 'desc')
-        ->get();
-    //dd($lifestyles);
-
-    $lifestylesHabit = $lifestyles->map(function ($lifestyle) { 
-        $lifestyleshabit = [];
-        if ($lifestyle->drink) $lifestyleshabit[] = 'ดื่มแอลกอฮอล์';
-        if ($lifestyle->drink_sometimes) $lifestyleshabit[] = 'ดื่มแอลกอฮอล์บ้างบางครั้ง';
-        if ($lifestyle->dont_drink) $lifestyleshabit[] = 'ไม่ดื่มแอลกอฮอล์';
-        if ($lifestyle->smoke) $lifestyleshabit[] = 'สูบบุหรี่';
-        if ($lifestyle->sometime_smoke) $lifestyleshabit[] = 'สูบบุหรี่บางครั้ง';
-        if ($lifestyle->dont_smoke) $lifestyleshabit[] = 'ไม่สูบบุหรี่';
-        if ($lifestyle->troubled) $lifestyleshabit[] = 'ทุกข์ใจ ซึม เศร้า';
-        if ($lifestyle->dont_live) $lifestyleshabit[] = 'ไม่อยากมีชีวิตอยู่';
-        if ($lifestyle->bored) $lifestyleshabit[] = 'เบื่อ';
+            return [
+                'id' => $lifestyle->id, 
+                'lifestyleshabit' => implode(' ', $lifestyleshabit)
+            ];
+        });
+        
+        //dd($lifestylesHabit); // Check the output
     
-        return [
-            'id' => $lifestyle->id, 
-            'lifestyleshabit' => implode(' ', $lifestyleshabit)
-        ];
-    });
     
-    //dd($lifestylesHabit); // Check the output
-
-
-    $elderlyInfos = ElderlyInformation::where('recorddata_id', $id)
-        ->orderBy('created_at', 'desc')
-        ->get();
-
+        $elderlyInfos = ElderlyInformation::where('recorddata_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
     $elderlyInfo = $elderlyInfos->map(function ($info) { 
         $elderly = [];
         if ($info->help_yourself) $elderly[] = 'ช่วยเหลือตัวเองได้';
@@ -325,18 +322,18 @@ public function edit($id, Request $request)
         if ($info->house) $elderly[] = 'ติดบ้าน';
         if ($info->society) $elderly[] = 'ติดสังคม';
         if ($info->bed_ridden) $elderly[] = 'ติดเตียง';
-
+    
         return [
             'id' => $info->id, 
             'lifestyleshabit' => implode(' ', $elderly)
         ];
     });
-
-    return view('admin.editrecord', compact(
-        'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases' ,
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 'extra_fields_recorddata', 
-    ));
-}
+    
+        return view('admin.editrecord', compact(
+            'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
+            'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 'extra_fields_recorddata', 
+        ));
+    }
 
 public function view($id, Request $request)
 {
