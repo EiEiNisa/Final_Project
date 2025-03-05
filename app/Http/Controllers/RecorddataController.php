@@ -18,17 +18,20 @@ use Carbon\Carbon;
 class RecorddataController
 {
     public function index()
-{
-    $recorddata = Recorddata::orderBy('id', 'desc')->paginate(10);
-    $disease = Disease::all();
+    {
+        // ดึงข้อมูลเฉพาะที่ is_deleted = 0 เท่านั้น
+        $recorddata = Recorddata::where('is_deleted', false) // เงื่อนไขสำหรับการกรองข้อมูล
+                                ->orderBy('id', 'desc') // เรียงตาม id
+                                ->paginate(10); // การแบ่งหน้า 10 รายการต่อหน้า
     
-    // เช็กว่ามี Pagination ทำงานถูกต้องหรือไม่
-    //dd($recorddata->toArray());
-
-    return view('admin.record', compact('recorddata', 'disease'));
-}
-
+        $disease = Disease::all();
     
+        // เช็กว่ามี Pagination ทำงานถูกต้องหรือไม่
+        //dd($recorddata->toArray());
+    
+        return view('admin.record', compact('recorddata', 'disease'));
+    }
+
     public function create() 
 {
     $users = User::where('role', 'แอดมิน')->get();

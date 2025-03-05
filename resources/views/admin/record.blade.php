@@ -997,7 +997,6 @@ button.btn-primary:hover {
             </thead>
             <tbody>
                 @foreach($recorddata as $key => $data)
-                @if($data->is_deleted === false)
                 <tr>
                     <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>
                     <td><strong>{{ $data['id_card'] }}</strong></td>
@@ -1025,7 +1024,6 @@ button.btn-primary:hover {
                             ->map(fn($key) => $diseaseLabels[$key])
                             ->implode("\n");
 
-                            // ถ้าเลือก 'other' และมีค่า other_text ให้แสดงแค่ other_text
                             if ($data->diseases->other && !empty($data->diseases->other_text)) {
                             $selectedDiseases .= "" . $data->diseases->other_text;
                             }
@@ -1314,7 +1312,6 @@ button.btn-primary:hover {
 
                     </td>
                 </tr>
-                @endif
                 @endforeach
             </tbody>
         </table>
