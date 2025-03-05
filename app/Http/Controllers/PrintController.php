@@ -12,98 +12,100 @@ use App\Models\LifestyleHabit;
 use App\Models\ElderlyInformation;
 use Carbon\Carbon;
 
-public function showPrintPage(Request $request)
+class PrintController extends Controller
 {
-    $ids = $request->input('ids');  // รับค่า ids[] จาก URL
+    public function showPrintPage(Request $request)
+    {
+        $ids = $request->input('ids');  // รับค่า ids[] จาก URL
 
-    // ตรวจสอบว่ามีค่าจาก ids[] หรือไม่
-    if (!$ids) {
-        return redirect()->route('admin.print')->with('error', 'No items selected.');
-    }
-
-    $recorddataList = Recorddata::whereIn('id', $ids)->get();  // Use the selected IDs to filter the records
-
-    $currentYear = Carbon::now()->year;
-
-    $inspections = collect();  // Initialize inspections collection
-
-    foreach ($ids as $id) {
-        // Fetch the specific Recorddata object
-        $recorddata = Recorddata::find($id);  // Fetch the recorddata by ID
-
-        // If recorddata is not found, continue to the next ID
-        if (!$recorddata) {
-            continue; // or you can return an error if necessary
+        // ตรวจสอบว่ามีค่าจาก ids[] หรือไม่
+        if (!$ids) {
+            return redirect()->route('admin.print')->with('error', 'No items selected.');
         }
 
-        // Fetch related models
-        $healthRecords = HealthRecord::where('recorddata_id', $id)
-            ->whereYear('created_at', $currentYear)
-            ->get();
+        $recorddataList = Recorddata::whereIn('id', $ids)->get();  // Use the selected IDs to filter the records
 
-        $healthZones = HealthZone::where('recorddata_id', $id)
-            ->whereYear('created_at', $currentYear)
-            ->get();
+        $currentYear = Carbon::now()->year;
 
-        $healthZones2 = HealthZone2::where('recorddata_id', $id)
-            ->whereYear('created_at', $currentYear)
-            ->get();
+        $inspections = collect();  // Initialize inspections collection
 
-        $diseases = Disease::where('recorddata_id', $id)
-            ->whereYear('created_at', $currentYear)
-            ->get();
+        foreach ($ids as $id) {
+            // Fetch the specific Recorddata object
+            $recorddata = Recorddata::find($id);  // Fetch the recorddata by ID
 
-        $lifestyleHabits = LifestyleHabit::where('recorddata_id', $id)
-            ->whereYear('created_at', $currentYear)
-            ->get();
+            // If recorddata is not found, continue to the next ID
+            if (!$recorddata) {
+                continue; // or you can return an error if necessary
+            }
 
-        $elderlyInformations = ElderlyInformation::where('recorddata_id', $id)
-            ->whereYear('created_at', $currentYear)
-            ->get();
+            // Fetch related models
+            $healthRecords = HealthRecord::where('recorddata_id', $id)
+                ->whereYear('created_at', $currentYear)
+                ->get();
 
-        $inspectionCount = max(
-            $healthRecords->count(),
-            $healthZones->count(),
-            $healthZones2->count(),
-            $diseases->count(),
-            $lifestyleHabits->count(),
-            $elderlyInformations->count()
-        );
+            $healthZones = HealthZone::where('recorddata_id', $id)
+                ->whereYear('created_at', $currentYear)
+                ->get();
 
-        for ($i = 0; $i < $inspectionCount; $i++) {
-            $healthRecord = isset($healthRecords[$i]) ? $healthRecords[$i] : null;
-            $healthZone = isset($healthZones[$i]) ? $healthZones[$i] : null;
-            $healthZone2 = isset($healthZones2[$i]) ? $healthZones2[$i] : null;
-            $disease = isset($diseases[$i]) ? $diseases[$i] : null;
-            $lifestyleHabit = isset($lifestyleHabits[$i]) ? $lifestyleHabits[$i] : null;
-            $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
+            $healthZones2 = HealthZone2::where('recorddata_id', $id)
+                ->whereYear('created_at', $currentYear)
+                ->get();
 
-            // Continue processing each record as per your existing logic
+            $diseases = Disease::where('recorddata_id', $id)
+                ->whereYear('created_at', $currentYear)
+                ->get();
 
-            $inspections->push([  // Push the current inspection data to the inspections collection
-                'inspection_number' => $i + 1,
-                'date' => $recorddata->created_at->format('d/m/Y'), // Use recorddata's created_at
-                'health_record' => $healthRecord ? [
-                    'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',
-                    'dia' => $healthRecord->dia ?? 'ไม่มีข้อมูล',
-                    'pul' => $healthRecord->pul ?? 'ไม่มีข้อมูล',
-                    'body_temp' => $healthRecord->body_temp ?? 'ไม่มีข้อมูล',
-                    'blood_oxygen' => $healthRecord->blood_oxygen ?? 'ไม่มีข้อมูล',
-                    'blood_level' => $healthRecord->blood_level ?? 'ไม่มีข้อมูล',
-                ] : null,
-                'health_zone_id' => $healthZone ? $healthZone->id : 'ไม่มีข้อมูล',
-                'health_zone' => $healthZone ? $this->getHealthZoneData($healthZone) : 'ไม่มีข้อมูล',
-                'health_zone2_id' => $healthZone2 ? $healthZone2->id : 'ไม่มีข้อมูล',
-                'health_zone2' => $healthZone2 ? $this->getHealthZone2Data($healthZone2) : 'ไม่มีข้อมูล',
-                'disease' => $diseaseNames ?: 'ไม่มีข้อมูล',
-                'lifestyle_habits' => $habits ?: 'ไม่มีข้อมูล',
-                'elderly_information' => $elderlyHabits ?: 'ไม่มีข้อมูล',
-            ]);
+            $lifestyleHabits = LifestyleHabit::where('recorddata_id', $id)
+                ->whereYear('created_at', $currentYear)
+                ->get();
+
+            $elderlyInformations = ElderlyInformation::where('recorddata_id', $id)
+                ->whereYear('created_at', $currentYear)
+                ->get();
+
+            $inspectionCount = max(
+                $healthRecords->count(),
+                $healthZones->count(),
+                $healthZones2->count(),
+                $diseases->count(),
+                $lifestyleHabits->count(),
+                $elderlyInformations->count()
+            );
+
+            for ($i = 0; $i < $inspectionCount; $i++) {
+                $healthRecord = isset($healthRecords[$i]) ? $healthRecords[$i] : null;
+                $healthZone = isset($healthZones[$i]) ? $healthZones[$i] : null;
+                $healthZone2 = isset($healthZones2[$i]) ? $healthZones2[$i] : null;
+                $disease = isset($diseases[$i]) ? $diseases[$i] : null;
+                $lifestyleHabit = isset($lifestyleHabits[$i]) ? $lifestyleHabits[$i] : null;
+                $elderlyInformation = isset($elderlyInformations[$i]) ? $elderlyInformations[$i] : null;
+
+                // Continue processing each record as per your existing logic
+
+                $inspections->push([  // Push the current inspection data to the inspections collection
+                    'inspection_number' => $i + 1,
+                    'date' => $recorddata->created_at->format('d/m/Y'), // Use recorddata's created_at
+                    'health_record' => $healthRecord ? [
+                        'sys' => $healthRecord->sys ?? 'ไม่มีข้อมูล',
+                        'dia' => $healthRecord->dia ?? 'ไม่มีข้อมูล',
+                        'pul' => $healthRecord->pul ?? 'ไม่มีข้อมูล',
+                        'body_temp' => $healthRecord->body_temp ?? 'ไม่มีข้อมูล',
+                        'blood_oxygen' => $healthRecord->blood_oxygen ?? 'ไม่มีข้อมูล',
+                        'blood_level' => $healthRecord->blood_level ?? 'ไม่มีข้อมูล',
+                    ] : null,
+                    'health_zone_id' => $healthZone ? $healthZone->id : 'ไม่มีข้อมูล',
+                    'health_zone' => $healthZone ? $this->getHealthZoneData($healthZone) : 'ไม่มีข้อมูล',
+                    'health_zone2_id' => $healthZone2 ? $healthZone2->id : 'ไม่มีข้อมูล',
+                    'health_zone2' => $healthZone2 ? $this->getHealthZone2Data($healthZone2) : 'ไม่มีข้อมูล',
+                    'disease' => $diseaseNames ?: 'ไม่มีข้อมูล',
+                    'lifestyle_habits' => $habits ?: 'ไม่มีข้อมูล',
+                    'elderly_information' => $elderlyHabits ?: 'ไม่มีข้อมูล',
+                ]);
+            }
         }
-    }
 
-    return view('admin.print', compact('recorddataList', 'inspections', 'healthRecords'));
-}
+        return view('admin.print', compact('recorddataList', 'inspections', 'healthRecords'));
+    }
 
 private function getHealthZoneData($healthZone)
 {
