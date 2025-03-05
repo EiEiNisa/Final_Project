@@ -695,9 +695,9 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
-    // ค้นหาข้อมูล healthRecord โดยใช้ recorddata_id และจัดเรียงตาม recorddata_id
+    // ค้นหาข้อมูล healthRecord โดยใช้ recorddata_id และจัดเรียงตามลำดับการตรวจ
     $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
-                                 ->orderBy('id', 'asc') // จัดเรียงตาม ID เพื่อให้เป็นลำดับที่ถูกต้อง
+                                 ->orderBy('created_at', 'asc') // จัดเรียงจากวันที่ที่ตรวจ
                                  ->get();
 
     // ตรวจสอบว่า healthRecords มีข้อมูลหรือไม่
@@ -713,25 +713,25 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
     $healthRecord = $healthRecords[$checkup_index];
 
-    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ recorddata_id และ healthRecord_id
+    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ healthRecord_id
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('health_record_id', $healthRecord->id) // ใช้ healthRecord_id
+                            ->where('id', $healthRecord->id) // ใช้ id ของ healthRecord
                             ->first();
 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('health_record_id', $healthRecord->id) // ใช้ healthRecord_id
+                              ->where('id', $healthRecord->id) // ใช้ id ของ healthRecord
                               ->first();
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                       ->where('health_record_id', $healthRecord->id) // ใช้ healthRecord_id
+                       ->where('id', $healthRecord->id) // ใช้ id ของ healthRecord
                        ->first();
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('health_record_id', $healthRecord->id) // ใช้ healthRecord_id
+                                ->where('id', $healthRecord->id) // ใช้ id ของ healthRecord
                                 ->first();
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                      ->where('health_record_id', $healthRecord->id) // ใช้ healthRecord_id
+                                      ->where('id', $healthRecord->id) // ใช้ id ของ healthRecord
                                       ->first();
 
     // Define $zones and $zones2
