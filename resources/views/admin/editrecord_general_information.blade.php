@@ -2,33 +2,67 @@
 
 @section('content')
 <style>
-<style>.head {
+.card-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    /* เพิ่มเงาให้ดูมีมิติ */
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    /* เงาเข้มขึ้นเมื่อ hover */
+}
+
+.card-header {
     color: #020364;
     padding: 20px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.title {
-    color: #020364;
-    display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 20px;
+    position: relative;
+    /* ใช้สำหรับขีดด้านล่าง */
 }
 
-.rectangle-box {
-    margin-bottom: 50px;
+/* ข้อความ h4 */
+.card-header h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* ปุ่มกลับ */
+.card-header .btn-back {
+    background: rgba(255, 255, 255, 0.3);
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-header .btn-back:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* ขีดเส้นใต้ */
+.card-header::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    /* ขีดอยู่ด้านล่าง */
+    left: 0;
     width: 100%;
+    height: 4px;
+    background-color: #020364;
+    /* สีของเส้น */
+}
+
+.card-body {
     padding: 20px;
-    border-radius: 5px;
-    background-color: #6D91C9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 form {
@@ -290,7 +324,7 @@ form {
 }
 </style>
 
-<div class="container">
+<div class="card-container">
     <br>
     @if(session('success'))
     <div class="alert alert-success">
@@ -303,12 +337,13 @@ form {
         {{ session('error') }}
     </div>
     @endif
-    <div class="title">
+
+    <div class="card-header">
         <h4><strong>แก้ไขข้อมูล</strong></h4>
         <a href="/admin/record" class="btn btn-success">กลับ</a>
     </div>
 
-    <div class="rectangle-box">
+    <div class="card-body">
         <form
             action="{{ route('recorddata.update_form_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $checkup_index]) }}"
             method="POST">
