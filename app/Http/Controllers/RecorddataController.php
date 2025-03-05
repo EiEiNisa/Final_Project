@@ -1000,8 +1000,6 @@ public function edit_form()
     return view('admin.edit_form_record', compact('columns', 'extra_fields', 'recorddata', 'labels'));
 }
 
-
-
 public function update_record(Request $request) 
 {
     $extra_fields = $request->input('extra_fields');
@@ -1119,45 +1117,81 @@ public function deleteExtraField(Request $request)
     return response()->json(['success' => true]);
 }
 
-
-public function edit_form_general_information()
+public function edit_form_general_information(Request $request, $recorddata_id, $checkup_index)
 {
-    // ดึงรายชื่อคอลัมน์จาก health_records
-    $healthRecordColumns = Schema::getColumnListing('health_records');
-    $excludeColumnsHealthRecord = ['recorddata_id', 'created_at', 'updated_at', 'file_name', 'file_path', 'id'];
-    $filteredHealthRecordColumns = array_diff($healthRecordColumns, $excludeColumnsHealthRecord);
+    // ค้นหา recorddata โดยใช้ recorddata_id
+    $recorddata = Recorddata::findOrFail($recorddata_id);
 
+    // ค้นหาข้อมูล healthRecord โดยใช้ recorddata_id
+    // และจัดเรียงลำดับเพื่อเลือกการตรวจตาม index ที่ส่งมา
+    $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
+                                 ->orderBy('created_at', 'desc') // หรือ order อื่น ๆ ที่ต้องการ
+                                 ->get();
+
+    // ตรวจสอบว่า healthRecords มีข้อมูลหรือไม่
+    if ($healthRecords->isEmpty()) {
+        return back()->with('error', 'ไม่พบข้อมูลการตรวจ');
+    }
+
+    // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
+    $healthRecord = $healthRecords[$checkup_index] ?? null;
+    if (!$healthRecord) {
+        return back()->with('error', 'ไม่พบข้อมูลสำหรับการตรวจครั้งที่ ' . ($checkup_index + 1));
+    }
+
+    // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ
+    $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
+                            ->where('created_at', $healthRecord->created_at)
+                            ->first();
+    $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
+                              ->where('created_at', $healthRecord->created_at)
+                              ->first();
+    $diseases = Disease::where('recorddata_id', $recorddata_id)
+                       ->where('created_at', $healthRecord->created_at)
+                       ->first();
+    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
+                                ->where('created_at', $healthRecord->created_at)
+                                ->first();
+    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
+                                      ->where('created_at', $healthRecord->created_at)
+                                      ->first();
+
+    // Define $zones and $zones2
     $zones = [
-        'zone1_normal' => ['value' => 0, 'label' => '≤ 120/80 mmHg'],
-        'zone1_risk_group' => ['value' => 0, 'label' => '120/80 - 139/89 mmHg'],
-        'zone1_good_control' => ['value' => 0, 'label' => '< 139/89 mmHg'],
-        'zone1_watch_out' => ['value' => 0, 'label' => '140/90 - 159/99 mmHg'],
-        'zone1_danger' => ['value' => 0, 'label' => '160/100 - 179/109 mmHg'],
-        'zone1_critical' => ['value' => 0, 'label' => '≥ 180/110 mmHg'],
-        'zone1_complications' => ['value' => 0, 'label' => 'โรคแทรกซ้อน'],
-        'zone1_heart' => ['value' => 0, 'label' => 'หัวใจ'],
-        'zone1_cerebrovascular' => ['value' => 0, 'label' => 'สมอง'],
-        'zone1_kidney' => ['value' => 0, 'label' => 'ไต'],
-        'zone1_eye' => ['value' => 0, 'label' => 'ตา'],
+        'zone1_normal' => ['value' => $healthZone->zone1_normal ?? 0, 'label' => '≤ 120/80 mmHg'],
+        'zone1_risk_group' => ['value' => $healthZone->zone1_risk_group ?? 0, 'label' => '120/80 - 139/89 mmHg'],
+        'zone1_good_control' => ['value' => $healthZone->zone1_good_control ?? 0, 'label' => '< 139/89 mmHg'],
+        'zone1_watch_out' => ['value' => $healthZone->zone1_watch_out ?? 0, 'label' => '140/90 - 159/99 mmHg'],
+        'zone1_danger' => ['value' => $healthZone->zone1_danger ?? 0, 'label' => '160/100 - 179/109 mmHg'],
+        'zone1_critical' => ['value' => $healthZone->zone1_critical ?? 0, 'label' => '≥ 180/110 mmHg'],
+        'zone1_complications' => ['value' => $healthZone->zone1_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
+        'zone1_heart' => ['value' => $healthZone->zone1_heart ?? 0, 'label' => 'โรคหัวใจ'],
+        'zone1_cerebrovascular' => ['value' => $healthZone->zone1_cerebrovascular ?? 0, 'label' => 'โรคหลอดเลือดสมอง'],
+        'zone1_kidney' => ['value' => $healthZone->zone1_kidney ?? 0, 'label' => 'โรคไต'],
+        'zone1_eye' => ['value' => $healthZone->zone1_eye ?? 0, 'label' => 'โรคตา'],
     ];
 
     $zones2 = [
-        'zone2_normal' => ['value' => 0, 'label' => '≥ 180/110 mmHg'],
-        'zone2_risk_group' => ['value' => 0, 'label' => '100-125 mg/dl'],
-        'zone2_good_control' => ['value' => 0, 'label' => '125 mg/dl'],
-        'zone2_watch_out' => ['value' => 0, 'label' => '126-154 mg/dl HbA1c < 7'],
-        'zone2_danger' => ['value' => 0, 'label' => '155-182 mg/dl HbA1c 7-7.9'],
-        'zone2_critical' => ['value' => 0, 'label' => '≥ 183 mg/dl HbA1c 8%'],
-        'zone2_complications' => ['value' => 0, 'label' => 'โรคแทรกซ้อน'],
-        'zone2_heart' => ['value' => 0, 'label' => 'หัวใจ'],
-        'zone2_eye' => ['value' => 0, 'label' => 'ตา'],
+        'zone2_normal' => ['value' => $healthZone2->zone2_normal ?? 0, 'label' => '≥ 180/110 mmHg'],
+        'zone2_risk_group' => ['value' => $healthZone2->zone2_risk_group ?? 0, 'label' => '100-125 mg/dl'],
+        'zone2_good_control' => ['value' => $healthZone2->zone2_good_control ?? 0, 'label' => '125 mg/dl'],
+        'zone2_watch_out' => ['value' => $healthZone2->zone2_watch_out ?? 0, 'label' => '126-154 mg/dl HbA1c < 7'],
+        'zone2_danger' => ['value' => $healthZone2->zone2_danger ?? 0, 'label' => '155-182 mg/dl HbA1c 7-7.9'],
+        'zone2_critical' => ['value' => $healthZone2->zone2_critical ?? 0, 'label' => '≥ 183 mg/dl HbA1c 8%'],
+        'zone2_complications' => ['value' => $healthZone2->zone2_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
+        'zone2_heart' => ['value' => $healthZone2->zone2_heart ?? 0, 'label' => 'โรคหัวใจ'],
+        'zone2_cerebrovascular' => ['value' => $healthZone2->zone2_cerebrovascular ?? 0, 'label' => 'โรคหลอดเลือดสมอง'],
+        'zone2_kidney' => ['value' => $healthZone2->zone2_kidney ?? 0, 'label' => 'โรคไต'],
+        'zone2_eye' => ['value' => $healthZone2->zone2_eye ?? 0, 'label' => 'โรคตา'],
     ];
 
-    // ส่งค่ากลับไปยัง View
-    return view('admin.edit_form_general_information', compact(
-        'filteredHealthRecordColumns', 'zones2' , 'zones'
+    // ส่งข้อมูลไปยังหน้า view
+    return view('admin.editrecord_general_information', compact(
+        'recorddata', 'healthRecord', 'healthZone', 'healthZone2',
+        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
     ));
 }
+
 
 
 public function update_form_general_information(Request $request)

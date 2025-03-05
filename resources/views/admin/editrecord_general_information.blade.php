@@ -309,9 +309,10 @@ form {
     </div>
 
     <div class="rectangle-box">
-    <form action="{{ route('recorddata.update_general_information', ['recorddata_id' => $recorddata->id, 'checkup_index' => $checkup_index]) }}" method="POST">
-    @csrf
-
+        <form
+            action="{{ route('recorddata.update_general_information', ['recorddata_id' => $recorddata->id, 'checkup_index' => $checkup_index]) }}"
+            method="POST">
+            @csrf
             <div class="form-group">
                 <label for="sys" style="margin-bottom: 5px; text-align: left; color: #020364;">SYS
                     (mmHg)</label>
@@ -770,8 +771,8 @@ form {
                     </div>
                 </div>
             </div>
-            
-            
+
+
 
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
@@ -889,7 +890,7 @@ form {
                                 );
                             resetModal
                                 .hide();
-                    );
+                        );
                 </script>
         </form>
     </div>
