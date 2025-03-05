@@ -705,8 +705,14 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         return back()->with('error', 'ไม่พบข้อมูลการตรวจ');
     }
 
+    // ดีบัก: ตรวจสอบจำนวนของ healthRecords
+    \Log::debug('จำนวนการตรวจทั้งหมด: ' . $healthRecords->count());
+
+    // ดีบัก: ตรวจสอบค่าของ checkup_index ที่ได้รับ
+    \Log::debug('checkup_index: ' . $checkup_index);
+
     // ตรวจสอบว่า checkup_index ไม่เกินจำนวนรายการที่มีอยู่
-    if ($checkup_index >= $healthRecords->count() || $checkup_index < 1) {  // ตรวจสอบว่า checkup_index เริ่มจาก 1
+    if ($checkup_index > $healthRecords->count() || $checkup_index < 1) { // ตรวจสอบว่า checkup_index เริ่มจาก 1
         return back()->with('error', 'ไม่พบข้อมูลการตรวจครั้งที่ ' . $checkup_index);
     }
 
