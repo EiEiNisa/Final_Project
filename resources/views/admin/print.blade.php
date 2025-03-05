@@ -130,16 +130,16 @@
                     <div><strong>วันที่ตรวจ:</strong> {{ $singleInspection['date'] }}</div>
                 </div>
 
-
                 <div class="info-box">
                     @if(isset($singleInspection['health_record']))
-                    <div><strong>ความดัน (SYS):
-                        </strong>{{ $singleInspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}</div>
-                    <div><strong>ความดัน (DIA):
-                        </strong>{{ $singleInspection['health_record']['dia'] ?? 'ไม่มีข้อมูล' }}</div>
+                    <div><strong>ความดัน (SYS):</strong>{{ $singleInspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}
+                    </div>
+                    <div><strong>ความดัน (DIA):</strong>{{ $singleInspection['health_record']['dia'] ?? 'ไม่มีข้อมูล' }}
+                    </div>
                     <div><strong>ชีพจร: </strong>{{ $singleInspection['health_record']['pul'] ?? 'ไม่มีข้อมูล' }}</div>
-                    <div><strong>อุณหภูมิร่างกาย:
-                        </strong>{{ $singleInspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}</div>
+                    <div>
+                        <strong>อุณหภูมิร่างกาย:</strong>{{ $singleInspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}
+                    </div>
                     <div>
                         <strong>ออกซิเจนในเลือด:</strong>{{ $singleInspection['health_record']['blood_oxygen'] ?? 'ไม่มีข้อมูล' }}
                     </div>
@@ -213,12 +213,14 @@
             <div class="divider"></div>
             @endforeach
             @endif
+            @endif
             @endforeach
             <br>
             <h2 class="text-center">ข้อมูลบุคคล</h2>
             <div class="page-break"></div>
             @endforeach
     </div>
+
 </body>
 
 </html>
