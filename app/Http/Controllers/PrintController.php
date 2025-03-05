@@ -16,16 +16,9 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    $ids = $request->input('ids');
+    $recorddataList = Recorddata::all();
 
-        if (!$ids) {
-            return redirect()->back()->with('error', 'กรุณาเลือกข้อมูลที่ต้องการพิมพ์');
-        }
-
-        $recorddataList = Recorddata::whereIn('id', $ids)->get(); 
-        $currentYear = Carbon::now()->year;
-
-        dd(Recorddata::whereIn('id', $ids)->get());
+    $currentYear = Carbon::now()->year;
 
     $healthRecords = HealthRecord::where('recorddata_id', $id)
         ->whereYear('created_at', $currentYear)
