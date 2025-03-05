@@ -653,6 +653,45 @@ form {
                                             readonly>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label>โรคประจำตัว</label>
+                                    @if(isset($diseases->keys()[$index]) &&
+                                    isset($diseases[$diseases->keys()[$index]]) &&
+                                    !empty($diseases[$diseases->keys()[$index]]))
+                                    @php
+                                    $diseaseLabels = [
+                                    'diabetes' => 'เบาหวาน',
+                                    'cerebral_artery' => 'หลอดเลือดสมอง',
+                                    'kidney' => 'โรคไต',
+                                    'blood_pressure' => 'ความดันโลหิตสูง',
+                                    'heart' => 'โรคหัวใจ',
+                                    'eye' => 'โรคตา'
+                                    ];
+                                    $selectedDiseases = [];
+                                    foreach ($diseases[$diseases->keys()[$index]] as $disease) {
+                                    if(is_object($disease)) {
+                                    $diseaseArray = collect($disease->toArray())
+                                    ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
+                                    ->keys()
+                                    ->map(fn($key) => $diseaseLabels[$key])
+                                    ->toArray();
+                                    $selectedDiseases = array_merge($selectedDiseases, $diseaseArray);
+                                    if ($disease->other == 1 && !empty($disease->other_text)) {
+                                    $selectedDiseases[] = $disease->other_text;
+                                    }
+                                    }
+                                    }
+                                    $selectedDiseasesString = implode(", ", $selectedDiseases);
+                                    // dd($selectedDiseasesString); // เพิ่มการตรวจสอบตรงนี้
+                                    @endphp
+                                    <input type="text" class="form-control"
+                                        value="{{ $selectedDiseasesString ?: 'ไม่มีโรคประจำตัว' }}" readonly>
+                                    @else
+                                    <input type="text" class="form-control" value="ไม่มีข้อมูลโรคประจำตัว" readonly>
+                                    @endif
+                                </div>
+
                                 <div class="col-md-6">
                                     @if(isset($lifestylesHabit[$index]))
                                     <div class="form-group1">
@@ -664,6 +703,7 @@ form {
                                             value="{{ $lifestylesHabit[$index]['lifestyleshabit'] ?? '' }}" readonly>
                                     </div>
                                     @endif
+
                                     @if(isset($elderlyInfo[$index]))
                                     <div class="form-group1">
                                         <label
@@ -674,40 +714,7 @@ form {
                                             value="{{ $elderlyInfo[$index]['lifestyleshabit'] }}" readonly>
                                     </div>
                                     @endif
-                                    <div class="form-group">
-                                        <label>โรคประจำตัว</label>
-                                        @if(isset($diseases->keys()[$index]))
-                                        @php
-                                        $diseaseLabels = [
-                                        'diabetes' => 'เบาหวาน',
-                                        'cerebral_artery' => 'หลอดเลือดสมอง',
-                                        'kidney' => 'โรคไต',
-                                        'blood_pressure' => 'ความดันโลหิตสูง',
-                                        'heart' => 'โรคหัวใจ',
-                                        'eye' => 'โรคตา'
-                                        ];
-                                        $selectedDiseases = [];
-                                        foreach ($diseases[$diseases->keys()[$index]] as $disease) {
-                                        if(is_object($disease)) { // เพิ่มการตรวจสอบตรงนี้
-                                        $diseaseArray = collect($disease->toArray())
-                                        ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
-                                        ->keys()
-                                        ->map(fn($key) => $diseaseLabels[$key])
-                                        ->toArray();
-                                        $selectedDiseases = array_merge($selectedDiseases, $diseaseArray);
-                                        if ($disease->other == 1 && !empty($disease->other_text)) {
-                                        $selectedDiseases[] = $disease->other_text;
-                                        }
-                                        }
-                                        }
-                                        $selectedDiseasesString = implode(", ", $selectedDiseases);
-                                        @endphp
-                                        <input type="text" class="form-control"
-                                            value="{{ $selectedDiseasesString ?: 'ไม่มีโรคประจำตัว' }}" readonly>
-                                        @else
-                                        <input type="text" class="form-control" value="ไม่มีข้อมูลโรคประจำตัว" readonly>
-                                        @endif
-                                    </div>
+
                                     <div class="form-group">
                                         <label for="user_name">ผู้บันทึกข้อมูล</label>
                                         <input type="text" class="form-control" id="user_name" name="user_name"
