@@ -585,8 +585,7 @@ form {
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{ $index }}" aria-expanded="false"
                             aria-controls="collapse{{ $index }}">
-                            <span class="checkup-title">ตรวจครั้งที่ {{ $index + 1 }}</span>
-                            <!-- เปลี่ยนเป็น index + 1 -->
+                            <span class="checkup-title">ตรวจครั้งที่ {{ count($healthRecords) - $index }}</span>
                             <span class="checkup-date">
                                 {{ \Carbon\Carbon::parse($healthRecord->created_at)->format('d') }}/
                                 {{ \Carbon\Carbon::parse($healthRecord->created_at)->translatedFormat('F') }}/
@@ -685,7 +684,7 @@ form {
                                     </div>
                                 </div>
                             </div>
-                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $index + 1]) }}"
+                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
                                 class="btn btn-secondary" id="#editBtn">
                                 แก้ไขข้อมูล
                             </a>
