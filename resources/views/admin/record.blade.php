@@ -997,14 +997,13 @@ button.btn-primary:hover {
             </thead>
             <tbody>
                 @foreach($recorddata as $key => $data)
+                @if($data->is_deleted === false)
                 <tr>
                     <td><strong>{{ ($recorddata->firstItem() + $loop->index) }}</strong></td>
-                    </td>
                     <td><strong>{{ $data['id_card'] }}</strong></td>
                     <td><strong>{{ $data['name'] }} {{ $data['surname'] }}</strong></td>
                     <td><strong>{{ $data['housenumber'] }}</strong></td>
-                    <td><strong>{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('d') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('F') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->year + 543 }}
-                        </strong>
+                    <td><strong>{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('d') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->translatedFormat('F') }}/{{ \Carbon\Carbon::parse($data['birthdate'])->year + 543 }}</strong>
                     </td>
                     <td><strong>{{ $data['age'] }}</strong></td>
                     <td><strong>{{ $data['phone'] }}</strong></td>
@@ -1060,8 +1059,7 @@ button.btn-primary:hover {
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="deleteModalLabel{{ $data->id }}"
-                                            style="color:#000;">
-                                            ยืนยันการซ่อนข้อมูล</h5>
+                                            style="color:#000;">ยืนยันการซ่อนข้อมูล</h5>
                                         <button type="button" class="btn btn-light rounded-circle shadow-sm close-btn"
                                             data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -1074,24 +1072,18 @@ button.btn-primary:hover {
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">ไม่</button>
                                         <button type="button" class="btn btn-danger confirmDelete"
-                                            data-form-id="deleteForm{{ $data->id }}">
-                                            ยืนยันการซ่อน
-                                        </button>
+                                            data-form-id="deleteForm{{ $data->id }}">ยืนยันการซ่อน</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <script>
-                        // เมื่อกดปุ่ม "ยืนยันการซ่อน"
                         document.querySelectorAll('.confirmDelete').forEach(button => {
                             button.addEventListener('click', function() {
-                                var formId = this.getAttribute(
-                                'data-form-id'); // ดึง ID ของฟอร์มที่ต้องการส่ง
-                                var form = document.getElementById(formId); // หาฟอร์มที่มี ID นี้
-                                console.log('Submitting form with ID: ' +
-                                formId); // เช็คว่า ID ของฟอร์มถูกดึงมาไหม
-                                form.submit(); // ส่งฟอร์ม
+                                var formId = this.getAttribute('data-form-id');
+                                var form = document.getElementById(formId);
+                                form.submit();
                             });
                         });
                         </script>
@@ -1322,6 +1314,7 @@ button.btn-primary:hover {
 
                     </td>
                 </tr>
+                @endif
                 @endforeach
             </tbody>
         </table>
