@@ -110,6 +110,11 @@ button.btn-primary:hover {
     border-color: #0056b3;
 }
 
+.custom-pagination {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .custom-pagination a,
 .custom-pagination span {
     padding: 8px 16px;
@@ -211,6 +216,12 @@ button.btn-primary:hover {
 
 #previewTable th {
     font-weight: bold;
+}
+
+.print-form-check-label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 @media (max-width: 768px) {
@@ -1139,14 +1150,14 @@ button.btn-primary:hover {
                                                                 @foreach ($items as $item)
                                                                 <div class="col-md-6 mb-2">
                                                                     <div class="card p-2">
-                                                                        <div class="form-check">
+                                                                        <div class="form-check print-form-check">
                                                                             <input class="form-check-input data-item"
                                                                                 type="checkbox" name="ids[]"
                                                                                 value="{{ $item->id }}"
                                                                                 id="check{{ $item->id }}"
                                                                                 data-name="{{ $item->name }}"
                                                                                 data-department="{{ $section }}">
-                                                                            <label class="form-check-label"
+                                                                            <label class="print-form-check-label"
                                                                                 for="check{{ $item->id }}">
                                                                                 <i class="fa-solid fa-user"></i>
                                                                                 {{ $item->prefix }} {{ $item->name }}
