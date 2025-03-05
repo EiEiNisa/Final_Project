@@ -72,6 +72,7 @@
     <div class="container mt-5">
         <h2 class="text-center">ข้อมูลบุคคล</h2>
 
+        @foreach($recorddataList as $recorddata)
         <div class="info-box row-1">
             <div class="col">
                 <strong>เลขบัตรประชาชน:</strong> {{ $recorddata->id_card }}
@@ -116,8 +117,6 @@
                 <strong>LINE ID:</strong> {{ $recorddata->idline }}
             </div>
         </div>
-
-
         <div class="divider"></div>
 
         <h3 class="inspection-title">ประวัติการตรวจ</h3>
@@ -128,7 +127,7 @@
             <div class="info-box">
                 <h5><strong>ตรวจครั้งที่ {{ $inspection['inspection_number'] }}</strong></h5>
                 <div><strong>วันที่ตรวจ:</strong> {{ $inspection['date'] }}</div>
-                </div>
+            </div>
 
             <!-- Health Record -->
             <div class="info-box">
@@ -136,12 +135,9 @@
                 <div><strong>ความดัน (SYS): </strong>{{ $inspection['health_record']['sys'] ?? 'ไม่มีข้อมูล' }}</div>
                 <div><strong>ความดัน (DIA): </strong>{{ $inspection['health_record']['dia'] ?? 'ไม่มีข้อมูล' }}</div>
                 <div><strong>ชีพจร: </strong>{{ $inspection['health_record']['pul'] ?? 'ไม่มีข้อมูล' }}</div>
-                <div><strong>อุณหภูมิร่างกาย: </strong>{{ $inspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}
-                </div>
-                <div><strong>ออกซิเจนในเลือด:
-                    </strong>{{ $inspection['health_record']['blood_oxygen'] ?? 'ไม่มีข้อมูล' }}</div>
-                <div><strong>ระดับน้ำตาลในเลือด:
-                    </strong>{{ $inspection['health_record']['blood_level'] ?? 'ไม่มีข้อมูล' }}</div>
+                <div><strong>อุณหภูมิร่างกาย: </strong>{{ $inspection['health_record']['body_temp'] ?? 'ไม่มีข้อมูล' }}</div>
+                <div><strong>ออกซิเจนในเลือด:</strong>{{ $inspection['health_record']['blood_oxygen'] ?? 'ไม่มีข้อมูล' }}</div>
+                <div><strong>ระดับน้ำตาลในเลือด:</strong>{{ $inspection['health_record']['blood_level'] ?? 'ไม่มีข้อมูล' }}</div>
                 @endif
             </div>
 
@@ -150,10 +146,10 @@
                 <p><strong>Blood Pressure Zone:</strong></p>
                 @if(is_array($inspection['health_zone']))
                 @foreach($inspection['health_zone'] as $zone)
-                <div><strong></strong>{{ $zone }}</div>
+                <div>{{ $zone }}</div>
                 @endforeach
                 @else
-                <div><strong></strong>{{ $inspection['health_zone'] }}</div>
+                <div>{{ $inspection['health_zone'] }}</div>
                 @endif
             </div>
 
@@ -162,10 +158,10 @@
                 <p><strong>Blood Pressure Zone2:</strong></p>
                 @if(is_array($inspection['health_zone2']))
                 @foreach($inspection['health_zone2'] as $zone2)
-                <div><strong></strong>{{ $zone2 }}</div>
+                <div>{{ $zone2 }}</div>
                 @endforeach
                 @else
-                <div><strong></strong>{{ $inspection['health_zone2'] }}</div>
+                <div>{{ $inspection['health_zone2'] }}</div>
                 @endif
             </div>
 
@@ -189,7 +185,7 @@
                 @if (is_array($inspection['lifestyle_habits']))
                 <ul>
                     @foreach ($inspection['lifestyle_habits'] as $habit)
-                    <li>{{ $habit  }}</li>
+                    <li>{{ $habit }}</li>
                     @endforeach
                 </ul>
                 @else
@@ -203,7 +199,7 @@
                 @if (is_array($inspection['elderly_information']))
                 <ul>
                     @foreach ($inspection['elderly_information'] as $elderlyHabits)
-                    <li>{{ $elderlyHabits  }}</li>
+                    <li>{{ $elderlyHabits }}</li>
                     @endforeach
                 </ul>
                 @else
@@ -214,8 +210,7 @@
 
         <div class="divider"></div>
         @endforeach
-
-
+        @endforeach
     </div>
 </body>
 
