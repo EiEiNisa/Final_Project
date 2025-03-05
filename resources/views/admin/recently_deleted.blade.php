@@ -16,31 +16,30 @@
     font-weight: bold;
 }
 
-/* ปรับสีตาราง */
-table {
+.table {
+    margin-top: 10px;
+    margin-bottom: 10px;
     width: 100%;
-    border-collapse: collapse;
 }
 
-th, td {
-    border: 1px solid #dee2e6; /* ขอบสีอ่อน */
-    padding: 0.75rem; /* เพิ่มช่องว่างในเซลล์ */
-    font-size: 0.9rem; /* ลดขนาดตัวอักษรในตาราง */
+.table th {
+    background-color: #020364;
+    color: #fff !important;
+    /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
+    text-align: center;
 }
 
-th {
-    background-color: #f8f9fc; /* สีพื้นหลังของหัวตาราง */
-    color: #333; /* สีตัวหนังสือในหัวตาราง */
-    font-weight: bold;
+.table td {
+    background-color: #7DA7D8;
+    color: #fff !important;
+    word-wrap: break-word;
+    max-width: 200px;
+    text-align: center;
 }
 
-td {
-    background-color: #fff; /* สีพื้นหลังของแถวข้อมูล */
-    color: #495057; /* สีตัวหนังสือในแถวข้อมูล */
-}
-
-tr:nth-child(even) td {
-    background-color: #f1f3f5; /* สีพื้นหลังของแถวที่เป็นเลขคู่ */
+.table td:hover,
+.table th:hover {
+    color: #fff !important;
 }
 
 /* ปรับปุ่มให้เล็กลง */
