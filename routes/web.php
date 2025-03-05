@@ -81,7 +81,7 @@ Route::post('/select-recorder', [UserController::class, 'selectRecorder'])->name
 
 Route::post('admin/importfile', [ExcelImportController::class, 'import'])->name('import');
 Route::get('/admin/export', [AdminExportController::class, 'export']);
-Route::get('/admin/print/{id}', [PrintController::class, 'showPrintPage'])->name('admin.print');
+Route::get('/admin/print', [PrintController::class, 'showPrintPage'])->name('admin.print');
 Route::get('/admin/edit_form_record', [RecorddataController::class, 'edit_form'])->name('edit_form_record');
 Route::put('/admin/update-record', [RecorddataController::class, 'update_record'])->name('update_record');
 Route::get('/admin/edit_form_general_information', [RecorddataController::class, 'edit_form_general_information'])->name('edit_form_general_information');

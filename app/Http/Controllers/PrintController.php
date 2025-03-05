@@ -16,10 +16,13 @@ class PrintController extends Controller
 {
     public function showPrintPage($id)
 {
-    // ลบการรับค่า $ids ออก
-    // $ids = $request->input('ids');
+    $ids = $request->input('ids');  // รับค่า ids[] จาก URL
 
-    // ดึงข้อมูลทั้งหมดจากตาราง recorddata
+    // ตรวจสอบว่ามีค่าจาก ids[] หรือไม่
+    if (!$ids) {
+        return redirect()->route('admin.print')->with('error', 'No items selected.');
+    }
+    
     $recorddataList = Recorddata::all();
 
     $currentYear = Carbon::now()->year;
