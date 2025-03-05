@@ -816,7 +816,7 @@ public function update_form_general_information(Request $request, $recorddata_id
 
     // อัปเดตข้อมูล HealthZone โดยใช้ healthRecord_id
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('health_record_id', $healthRecord->id) // ใช้ healthRecord ID
+                            ->where('id', $healthRecord->id) // ใช้ healthRecord ID
                             ->first();
     if ($healthZone) {
         $healthZone->update([
@@ -837,7 +837,7 @@ public function update_form_general_information(Request $request, $recorddata_id
 
     // อัปเดต HealthZone2
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('health_record_id', $healthRecord->id) // ใช้ healthRecord ID
+                              ->where('id', $healthRecord->id) // ใช้ healthRecord ID
                               ->first();
     if ($healthZone2) {
         $healthZone2->update([
@@ -851,6 +851,67 @@ public function update_form_general_information(Request $request, $recorddata_id
             'zone2_heart' => $request->has('zone2_heart') ? 1 : 0,
             'zone2_eye' => $request->has('zone2_eye') ? 1 : 0,
         ]);
+    }
+
+    // อัปเดตข้อมูล diseases
+    $diseases = Disease::where('recorddata_id', $recorddata_id)
+    ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+    ->first();
+    if ($diseases) {
+        $diseases->update([
+            'diabetes' => $request->input('diabetes', 0),
+            'cerebral_artery' => $request->input('cerebral_artery', 0),
+            'kidney' => $request->input('kidney', 0),
+            'blood_pressure' => $request->input('blood_pressure', 0),
+            'heart' => $request->input('heart', 0),
+            'eye' => $request->input('eye', 0),
+            'other' => $request->input('other', 0),
+        ]);
+    } else {
+        return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
+    }
+
+    // อัปเดตข้อมูล lifestyleHabit
+    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
+    ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+    ->first();
+    if ($lifestyles) {
+        $lifestyles->update([
+            'drink' => $request->input('drink', 0),
+            'drink_sometimes' => $request->input('drink_sometimes', 0),
+            'dont_drink' => $request->input('dont_drink', 0),
+            'smoke' => $request->input('smoke', 0),
+            'sometime_smoke' => $request->input('sometime_smoke', 0),
+            'dont_smoke' => $request->input('dont_smoke', 0),
+            'troubled' => $request->input('troubled', 0),
+            'dont_live' => $request->input('dont_live', 0),
+            'bored' => $request->input('bored', 0),
+        ]);
+    } else {
+        return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
+    }
+
+    // อัปเดตข้อมูล elderlyInfos
+    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
+    ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+    ->first();
+    if ($elderlyInfos) {
+        $elderlyInfos->update([
+            'help_yourself' => $request->input('help_yourself', 0),
+            'can_help' => $request->input('can_help', 0),
+            'cant_help' => $request->input('cant_help', 0),
+            'caregiver' => $request->input('caregiver', 0),
+            'have_caregiver' => $request->input('have_caregiver', 0),
+            'no_caregiver' => $request->input('no_caregiver', 0),
+            'group1' => $request->input('group1', 0),
+            'group2' => $request->input('group2', 0),
+            'group3' => $request->input('group3', 0),
+            'house' => $request->input('house', 0),
+            'society' => $request->input('society', 0),
+            'bed_ridden' => $request->input('bed_ridden', 0),
+        ]);
+    } else {
+        return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
     }
 
     return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตข้อมูลสำเร็จเรียบร้อย!');
