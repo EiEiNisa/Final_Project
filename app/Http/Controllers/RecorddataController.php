@@ -723,7 +723,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id)  // ใช้ id ของ healthRecord
                             ->first();
-
+                            dd($healthZone); 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
                               ->where('id', $healthRecord->id)  // ใช้ id ของ healthRecord
                               ->first();
