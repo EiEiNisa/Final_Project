@@ -719,20 +719,26 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
     $healthRecord = $healthRecords[$checkup_index - 1]; // -1 เพื่อให้ตรงกับ index ของ array ที่เริ่มจาก 0
 
+        // ค้นหาข้อมูลตาม recorddata_id และ healthRecord->id สำหรับการตรวจแต่ละครั้ง
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->first(); // ไม่ต้องใช้ healthrecord_id
+    ->where('healthrecord_id', $healthRecord->id)  // ใช้ healthRecord->id
+    ->first();
 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->first(); // ไม่ต้องใช้ healthrecord_id
+    ->where('healthrecord_id', $healthRecord->id)  // ใช้ healthRecord->id
+    ->first();
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                       ->first(); // ไม่ต้องใช้ healthrecord_id
+    ->where('healthrecord_id', $healthRecord->id)  // ใช้ healthRecord->id
+    ->first();
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->first(); // ไม่ต้องใช้ healthrecord_id
+        ->where('healthrecord_id', $healthRecord->id)  // ใช้ healthRecord->id
+        ->first();
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                      ->first(); // ไม่ต้องใช้ healthrecord_i
+            ->where('healthrecord_id', $healthRecord->id)  // ใช้ healthRecord->id
+            ->first();
 
     // ดีบัก: ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
     //dd('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
