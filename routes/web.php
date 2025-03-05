@@ -88,7 +88,7 @@ Route::get('/admin/print', [PrintController::class, 'showPrintPage'])->name('adm
 Route::get('/admin/edit_form_record', [RecorddataController::class, 'edit_form'])->name('edit_form_record');
 Route::put('/admin/update-record', [RecorddataController::class, 'update_record'])->name('update_record');
 Route::get('/admin/edit_form_general_information', [RecorddataController::class, 'edit_form_general_information'])->name('edit_form_general_information');
-Route::put('/admin/update-general_information', [RecorddataController::class, 'update_form_general_information'])->name('update_form_general_information');
+Route::put('/admin/update-general-information/{recorddata_id}/{checkup_id}', [RecorddataController::class, 'update_form_general_information'])->name('update_form_general_information');
 Route::get('/admin/edit_form_disease', [RecorddataController::class, 'edit_form_disease'])->name('edit_form_disease');
 Route::put('/admin/update_disease', [RecorddataController::class, 'update_disease'])->name('update_disease');
 Route::get('recorddata/{recorddata_id}/edit_general_information/{checkup_id}', [RecorddataController::class, 'edit_general_information'])->name('recorddata.edit_general_information');

@@ -767,7 +767,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 }
 
 
-public function update_general_information(Request $request, $recorddata_id = null, $checkup_id = null) 
+public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
 {
     
     //dd($request->all());

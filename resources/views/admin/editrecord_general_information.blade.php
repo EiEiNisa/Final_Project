@@ -310,9 +310,10 @@ form {
 
     <div class="rectangle-box">
         <form
-            action="{{ route('recorddata.update_general_information', ['recorddata_id' => $recorddata->id, 'checkup_index' => $checkup_index]) }}"
+            action="{{ route('recorddata.update_form_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => $checkup_index]) }}"
             method="POST">
             @csrf
+            @method('PUT')
             <div class="form-group">
                 <label for="sys" style="margin-bottom: 5px; text-align: left; color: #020364;">SYS
                     (mmHg)</label>
