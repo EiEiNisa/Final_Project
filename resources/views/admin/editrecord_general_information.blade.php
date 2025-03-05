@@ -292,6 +292,17 @@ form {
 
 <div class="container">
     <br>
+    @if(session('success'))
+    <div class="alert alert-success">
+        {!! session('success') !!}
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
     <div class="title">
         <h4><strong>แก้ไขข้อมูล</strong></h4>
         <a href="/admin/record" class="btn btn-success">กลับ</a>

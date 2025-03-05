@@ -330,7 +330,7 @@ $elderlyInfo = $elderlyInfos->map(function ($info) {
 });
 
     return view('admin.editrecord', compact(
-        'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
+        'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases' ,
         'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 'extra_fields_recorddata', 
     ));
 }
