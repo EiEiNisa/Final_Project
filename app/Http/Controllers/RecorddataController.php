@@ -711,7 +711,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     }
 
     // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
-    // จากนั้นลด index ลง 1 เพราะลำดับที่เราต้องการเริ่มจาก 1
+    // ตอนนี้ index จะเริ่มจาก 0 เช่นกัน
     $healthRecord = $healthRecords[$checkup_index];
 
     // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ healthRecord_id
@@ -770,6 +770,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
     ));
 }
+
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
 {
