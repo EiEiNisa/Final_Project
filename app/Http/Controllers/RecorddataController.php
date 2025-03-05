@@ -784,33 +784,35 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
 {
-    // ตรวจสอบว่ามี recorddata_id และ checkup_id หรือไม่
-    if ($recorddata_id && $checkup_id) {
-        // ค้นหา recorddata โดยใช้ recorddata_id
-        $recorddata = Recorddata::findOrFail($recorddata_id);
+    // ค้นหา recorddata โดยใช้ recorddata_id
+    $recorddata = Recorddata::findOrFail($recorddata_id);
 
-        if (!$recorddata->user_id) {
-            return back()->with('error', 'ไม่พบ user_id');
-        }
+    if (!$recorddata->user_id) {
+        return back()->with('error', 'ไม่พบ user_id');
+    }
 
-        // ค้นหา healthRecord โดยใช้ recorddata_id และ checkup_id
-        $healthRecord = HealthRecord::where('recorddata_id', $recorddata_id)
-                                    ->where('checkup_id', $checkup_id)  // เพิ่มเงื่อนไข checkup_id
-                                    ->first();
+    // ค้นหาข้อมูล healthRecord โดยใช้ recorddata_id
+    $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
+                                 ->orderBy('id', 'asc')
+                                 ->get();
 
-        if (!$healthRecord) {
-            return back()->with('error', 'ไม่พบข้อมูล healthRecords');
-        }
+    // ตรวจสอบว่า healthRecords มีข้อมูลหรือไม่
+    if ($healthRecords->isEmpty()) {
+        return back()->with('error', 'ไม่พบข้อมูล healthRecords');
+    }
 
-        // อัปเดตข้อมูลใน healthRecord
-        $updated = $healthRecord->update([
-            'sys' => $request->input('sys'),
-            'dia' => $request->input('dia'),
-            'pul' => $request->input('pul'),
-            'body_temp' => $request->input('body_temp'),
-            'blood_oxygen' => $request->input('blood_oxygen'),
-            'blood_level' => $request->input('blood_level'),
-        ]);
+    // เลือก healthRecord ที่ต้องการจาก healthRecords โดยใช้ checkup_index
+    $healthRecord = $healthRecords[$request->checkup_index - 1];
+
+    // อัปเดตข้อมูล healthRecord
+    $updated = $healthRecord->update([
+        'sys' => $request->input('sys'),
+        'dia' => $request->input('dia'),
+        'pul' => $request->input('pul'),
+        'body_temp' => $request->input('body_temp'),
+        'blood_oxygen' => $request->input('blood_oxygen'),
+        'blood_level' => $request->input('blood_level'),
+    ]);
 
         // อัปเดตข้อมูล healthZone
         $healthZone = HealthZone::where('recorddata_id', $recorddata_id)->first();
