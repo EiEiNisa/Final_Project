@@ -706,10 +706,10 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     }
 
     // ดีบัก: ตรวจสอบจำนวนของ healthRecords
-    \Log::debug('จำนวนการตรวจทั้งหมด: ' . $healthRecords->count());
+    dd('จำนวนการตรวจทั้งหมด: ' . $healthRecords->count()); // ใช้ dd แทน Log
 
     // ดีบัก: ตรวจสอบค่าของ checkup_index ที่ได้รับ
-    \Log::debug('checkup_index: ' . $checkup_index);
+    dd('checkup_index: ' . $checkup_index); // ใช้ dd แทน Log
 
     // ตรวจสอบว่า checkup_index ไม่เกินจำนวนรายการที่มีอยู่
     if ($checkup_index > $healthRecords->count() || $checkup_index < 1) { // ตรวจสอบว่า checkup_index เริ่มจาก 1
@@ -717,36 +717,34 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     }
 
     // ดึงข้อมูลการตรวจที่ต้องการโดยใช้ index (เช่น checkup_index)
-    // ปรับค่า checkup_index ให้เป็น index ที่ถูกต้อง (เริ่มจาก 0)
     $healthRecord = $healthRecords[$checkup_index - 1]; // -1 เพื่อให้ตรงกับ index ของ array ที่เริ่มจาก 0
 
     // ค้นหาข้อมูล healthZone, healthZone2, Diseases, Lifestyle ฯลฯ โดยใช้ healthRecord_id
-    // ตรวจสอบการค้นหาของ healthZone, healthZone2, Diseases, Lifestyle
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id 
+                            ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
                             ->first() ?? new HealthZone(); // ถ้าไม่พบให้สร้าง HealthZone ใหม่
 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id 
+                              ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
                               ->first() ?? new HealthZone2(); // ถ้าไม่พบให้สร้าง HealthZone2 ใหม่
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-                       ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id
+                       ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
                        ->first() ?? new Disease(); // ถ้าไม่พบให้สร้าง Disease ใหม่
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id
+                                ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
                                 ->first() ?? new LifestyleHabit(); // ถ้าไม่พบให้สร้าง LifestyleHabit ใหม่
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                      ->where('checkup_index', $checkup_index) // ใช้ checkup_index แทน id
+                                      ->where('healthrecord_id', $healthRecord->id) // เชื่อมต่อด้วย healthRecord ID
                                       ->first() ?? new ElderlyInformation(); // ถ้าไม่พบให้สร้าง ElderlyInformation ใหม่
 
-    // ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
-    \Log::debug('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
-    \Log::debug('Diseases: ' . ($diseases ? 'Found' : 'Not Found'));
-    \Log::debug('LifestyleHabit: ' . ($lifestyles ? 'Found' : 'Not Found'));
-    \Log::debug('ElderlyInformation: ' . ($elderlyInfos ? 'Found' : 'Not Found'));
+    // ดีบัก: ตรวจสอบว่าได้ข้อมูลที่ต้องการหรือไม่
+    dd('HealthZone2: ' . ($healthZone2 ? 'Found' : 'Not Found'));
+    dd('Diseases: ' . ($diseases ? 'Found' : 'Not Found'));
+    dd('LifestyleHabit: ' . ($lifestyles ? 'Found' : 'Not Found'));
+    dd('ElderlyInformation: ' . ($elderlyInfos ? 'Found' : 'Not Found'));
 
     // Define $zones and $zones2
     $zones = [
@@ -783,6 +781,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
     ));
 }
+
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_id)
 {
