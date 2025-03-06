@@ -88,14 +88,15 @@
         width: 90px;
     }
 
-    /* ปุ่มเมนู */
+
     .sidebar a {
         color: #ffffff;
         display: flex;
         align-items: center;
         text-decoration: none;
         padding: 10px;
-        font-size: 10px;
+        font-size: 15px;
+        /* ลดขนาดไอคอน */
         border-radius: 5px;
         margin-bottom: 6px;
         text-align: left;
@@ -104,10 +105,15 @@
     }
 
     .sidebar a i {
-        font-size: 15px;
-        width: 28px;
+        font-size: 10px;
+        width: 20px;
         text-align: center;
-        transition: margin-right 0.3s ease;
+        transition: font-size 0.3s ease, width 0.3s ease;
+    }
+
+    .sidebar:hover a i {
+        font-size: 15px;
+        width: 20px;
     }
 
     .sidebar a span {
