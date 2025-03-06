@@ -199,6 +199,15 @@ tr:hover {
                     <th>การจัดการ</th>
                 </tr>
             </thead>
+
+            <form action="{{ route('admin.manageuser') }}" method="GET" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="name" value="{{ request()->input('name') }}" class="form-control"
+                        placeholder="ค้นหาชื่อหรือนามสกุล" aria-label="ค้นหาชื่อหรือนามสกุล">
+                    <button class="btn btn-primary" type="submit">ค้นหา</button>
+                </div>
+            </form>
+
             <tbody>
                 @foreach ($deletedRecords as $record)
                 <tr>
