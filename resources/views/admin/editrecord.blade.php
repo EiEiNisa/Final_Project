@@ -315,14 +315,11 @@ form {
 
     .form-control {
         width: 100%;
-        /* ฟอร์มกรอกข้อมูลให้เต็มพื้นที่ */
         margin-bottom: 10px;
-        /* เพิ่มระยะห่างระหว่างช่องกรอกข้อมูล */
     }
 
     .circle-container {
         font-size: 16px;
-        /* เพิ่มขนาดตัวอักษรเล็กน้อยเพื่อให้เห็นชัดเจน */
     }
 
     .circle {
@@ -352,7 +349,6 @@ form {
     .form-group1 .form-control {
         width: 100%;
         font-size: 14px;
-        /* ปรับขนาดฟอนต์ให้พอเหมาะ */
     }
 
     .accordion-body .form-group1 {
@@ -385,7 +381,7 @@ form {
 
         <script>
         document.addEventListener("DOMContentLoaded", function() {
-            let previousUrl = document.referrer; // ดึง URL ต้นทางที่เข้ามา
+            let previousUrl = document.referrer; 
 
             if (previousUrl.includes("admin/record?page=")) {
                 // ถ้ามี "page" อยู่ใน URL ก่อนหน้า

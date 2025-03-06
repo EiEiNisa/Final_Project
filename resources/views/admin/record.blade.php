@@ -423,7 +423,7 @@ button.btn-primary:hover {
                             <!-- ส่วนแสดงตัวอย่าง -->
                             <div class="mb-4 p-3 border rounded">
                                 <h6 class="mb-3">ตัวอย่างโครงสร้างข้อมูล</h6>
-                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
