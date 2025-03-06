@@ -679,7 +679,7 @@ tbody {
                                 function toggleDescription() {
                                     var description = document.getElementById("columnDescription");
                                     if (description.style.display === "none") {
-                                        description.style.display = "block"; 
+                                        description.style.display = "block";
                                     } else {
                                         description.style.display = "none";
                                     }
@@ -746,10 +746,6 @@ tbody {
             <script>
             let jsonData = [];
             let uploadedFiles = [];
-
-            document.addEventListener('focusin', function(event) {
-                //console.log("Focus event triggered");
-            });
 
             document.getElementById('excelFile').addEventListener('change', function() {
                 let file = this.files[0];
@@ -907,9 +903,7 @@ tbody {
                     if (!response.ok) {
                         const errorResponse = await response.json();
                         throw new Error(errorResponse.error ||
-                            เกิดข้ อผิดพลาดที่ ไม่ รู้ จั ก($ {
-                                response.status
-                            }));
+                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                     }
 
                     const result = await response.json();
