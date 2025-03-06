@@ -6,16 +6,16 @@
         max-width: 800px;
         margin: 50px auto;
         padding: 40px;
-        background-color: #ffffff; /* เปลี่ยนสีพื้นหลัง */
+        background-color: #ffffff; 
         border-radius: 10px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
     }
 
     .profile-title {
         text-align: center;
         margin-bottom: 40px;
         color: #020364;
-        font-size: 28px; /* เพิ่มขนาดตัวอักษร */
+        font-size: 28px;
     }
 
     .form-group {
@@ -23,24 +23,24 @@
     }
 
     .form-label {
-        font-weight: 600; /* ปรับความหนาตัวอักษร */
-        color: #333; /* ปรับสีตัวอักษร */
+        font-weight: 600; 
+        color: #333; 
     }
 
     .form-control {
         border-radius: 5px;
         border: 1px solid #ddd;
-        padding: 12px;
-        font-size: 16px;
+        padding: 8px 12px; /* ลด padding ใน input */
+        font-size: 14px; /* ลดขนาด font ใน input */
     }
 
     .btn-primary {
         background-color: #020364;
         border: none;
-        padding: 12px 25px;
-        font-size: 18px;
+        padding: 10px 25px; /* ลด padding ใน button */
+        font-size: 16px; /* ลดขนาด font ใน button */
         border-radius: 5px;
-        transition: background-color 0.3s ease; /* เพิ่มเอฟเฟกต์ transition */
+        transition: background-color 0.3s ease;
     }
 
     .btn-primary:hover {
