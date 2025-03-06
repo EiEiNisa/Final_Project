@@ -817,7 +817,7 @@ form {
             <div class="form-group-name"
                 style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
 
-                <label for="user_name" style="margin-bottom: 5px; color: #020364;">ผู้บันทึก</label>
+                <label for="user_name" style="margin-bottom: 5px; color: #020364; font-size:15px; font-weight: bold;">ผู้บันทึก</label>
 
                 <div style="display: flex; justify-content: flex-end; width: 100%;">
                     <input type="text" class="form-control" id="user_name" name="user_name"
