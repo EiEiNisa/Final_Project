@@ -583,7 +583,7 @@ form {
                         aria-labelledby="heading{{ $index }}">
                         <div class="accordion-body">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="sys{{ $index }}">ความดัน SYS</label>
@@ -628,14 +628,14 @@ form {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <label for="health_zone_{{ $index }}">blood pressure zone</label>
                                             <input type="text" class="form-control" id="health_zone_{{ $index }}"
                                                 name="health_zone_{{ $index }}"
                                                 value="{{ isset($zones[$index]) ? implode(' ', $zones[$index]) : '' }}"
                                                 readonly>
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-12 mb-3">
                                             <label for="health_zone2">blood pressure zone</label>
                                             <input type="text" class="form-control" id="health_zone2_{{ $index }}"
                                                 name="health_zone2{{ $index }}"
@@ -646,15 +646,17 @@ form {
                                 </div>
 
                                 <div class="col-md-8">
+
                                     <div class="row">
                                         <div class="col-12 mb-3">
-                                            <label for="diseaseNames_{{ $index }}">โรคที่พบ</label>
+                                            <label for="diseaseNames_{{ $index }}">โรคประจำตัว/label>
                                             <input type="text" class="form-control" id="diseaseNames_{{ $index }}"
                                                 name="diseaseNames[{{ $index }}]"
                                                 value="{{ isset($diseaseNames[$index]) ? (isset($diseaseNames[$index]['other']) && $diseaseNames[$index]['other'] == 1 ? $diseaseNames[$index]['other_text'] : $diseaseNames[$index]['names']) : 'ไม่มีข้อมูล' }}"
                                                 readonly>
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         @if(isset($lifestylesHabit[$index]))
                                         <div class="col-12 mb-3">
