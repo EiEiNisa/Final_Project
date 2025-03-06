@@ -815,12 +815,11 @@ form {
             </div>
 
             <div class="form-group-name"
-                style="width: 40%; display: flex; align-items: center; justify-content: flex-end; text-align: right;">
-                <label for="user_name"
-                    style="margin-right: 10px; color: #020364; white-space: nowrap;">ผู้บันทึก</label>
+                style="display: flex; flex-direction: column; align-items: flex-end;">
+                <label for="user_name" style="margin-bottom: 5px; color: #020364;">ผู้บันทึก</label>
                 <input type="text" class="form-control" id="user_name" name="user_name"
                     value="{{ old('user_name', $recorddata->user_name ?? '') }}" placeholder="ผู้บันทึก" readonly
-                    style="width: 60%; text-align: right;">
+                    style="width: 100%; text-align: right;">
             </div>
 
             <div class="save">
