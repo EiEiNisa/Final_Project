@@ -134,7 +134,7 @@ class ExcelImportController extends Controller
                 ]);
             } 
 
-            return redirect()->route('recorddata.index')->with('success', 'นำเข้าข้อมูลสำเร็จ');
+            return response()->json(['success' => true]);
             } catch (\Exception $e) {
                 return response()->json(['error' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
             }

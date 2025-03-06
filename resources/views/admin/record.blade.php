@@ -897,11 +897,9 @@ tbody {
 
                     const result = await response.json();
 
-                    if (response.ok) {
-                        // เมื่อการนำเข้าข้อมูลสำเร็จ จะทำการ redirect ไปหน้า recorddata.index
-                        window.location.href = "{{ route('recorddata.index') }}";
+                    if (response.ok && result.success) {
+                        window.location.replace("{{ route('recorddata.index') }}");
                     } else {
-                        // หากมีข้อผิดพลาด
                         throw new Error(result.error || `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                     }
                 } catch (error) {
