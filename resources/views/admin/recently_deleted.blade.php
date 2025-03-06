@@ -210,32 +210,8 @@ tr:hover {
                     <td>{{ $record->age }}</td>
                     <td>{{ $record->phone }}</td>
                     <td>
-                        @if($record->diseases)
-                        @php
-                        $diseaseLabels = [
-                        'diabetes' => 'เบาหวาน',
-                        'cerebral_artery' => 'หลอดเลือดสมอง',
-                        'kidney' => 'โรคไต',
-                        'blood_pressure' => 'ความดันโลหิตสูง',
-                        'heart' => 'โรคหัวใจ',
-                        'eye' => 'โรคตา'
-                        ];
-
-                        $selectedDiseases = collect($record->diseases->toArray())
-                        ->filter(fn($value, $key) => $value == 1 && isset($diseaseLabels[$key]))
-                        ->keys()
-                        ->map(fn($key) => $diseaseLabels[$key])
-                        ->implode("\n");
-
-                        // ถ้ามีข้อมูล 'other' และ 'other_text' จะเชื่อมต่อโดยไม่เว้นบรรทัด
-                        if ($record->diseases->other && !empty($record->diseases->other_text)) {
-                        $selectedDiseases .= $selectedDiseases ? ' ' . $record->diseases->other_text :
-                        $record->diseases->other_text;
-                        }
-                        @endphp
-                        {!! nl2br(e($selectedDiseases) ?: 'ไม่มีโรคประจำตัว') !!}
-                        @else
-                        -
+                        @if ($record->updated_at)
+                        {{ \Carbon\Carbon::parse($record->updated_at)->translatedFormat('j F') }}/{{ \Carbon\Carbon::parse($record->updated_at)->year + 543 }}
                         @endif
                     </td>
                     <td>
