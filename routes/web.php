@@ -44,6 +44,9 @@ Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('
 
 Route::get('/send-test-email', [MailController::class, 'sendTestEmail']);
 
+Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
+Route::get('/User/homepage', [HomepageController::class, 'userHomepage'])->name('user.homepage');
+
 Route::get('/admin/editprofile', [ProfileController::class, 'edit'])->name('admin.editprofile');
 Route::get('/User/editprofile', [ProfileController::class, 'edit'])->name('user.editprofile'); 
 Route::post('/admin/editprofile', [ProfileController::class, 'update'])->name('admin.updateprofile');
@@ -51,40 +54,30 @@ Route::post('/User/editprofile', [ProfileController::class, 'update'])->name('us
 
 Route::post('/search-id_card', [RecorddataController::class, 'searchIdCard']);
 
-Route::get('/search', [ArticleController::class, 'search'])->name('search');
-
-Route::get('/view', function () {
-    return view('view');
-});
-
-Route::get('/home', [ArticleController::class, 'index'])->name('home');
-
-Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/dashboard/data', [DashboardController::class, 'fetchData'])->name('dashboard.data');
-//
-//
-//
-//admin
-Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
-
 Route::get('admin/manageuser', [AdminController::class, 'manageUsers'])->name('admin.manageuser');
 Route::post('/admin/changeRole/{userId}', [AdminController::class, 'changeRole'])->name('admin.changeRole');
+
 Route::get('/admin/form', function () {
     return view('/admin/form'); 
 });
+
 Route::get('/admin/about', function () {
     return view('/admin/about');
 });
+
 Route::get('/admin/record', [RecorddataController::class, 'index'])->name('recorddata.index');
 Route::get('/admin/addrecord', [RecorddataController::class, 'create'])->name('recorddata.create');
 Route::post('/admin/addrecord', [RecorddataController::class, 'store'])->name('recorddata.store');
+
 Route::get('/admin/editrecord/{id}', [RecordDataController::class, 'edit'])->name('recorddata.edit');
 Route::put('/admin/editrecord/{id}', [RecordDataController::class, 'update'])->name('recorddata.update');
+Route::get('/User/viewrecord/{id}', [RecordDataController::class, 'view'])->name('recorddata.view');
 Route::delete('/admin/record/{id}', [RecordDataController::class, 'destroy'])->name('recorddata.destroy');
 Route::get('/admin/recently_deleted', [RecordDataController::class, 'recentlyDeleted'])->name('admin.recently_deleted');
 Route::delete('/recorddata/{id}/destroy-permanently', [RecordDataController::class, 'destroyPermanently'])->name('recorddata.destroyPermanently');
 Route::patch('/admin/record/restore/{id}', [RecordDataController::class, 'restore'])->name('recorddata.restore');
 Route::get('/admin/search', [RecorddataController::class, 'search'])->name('recorddata.search');
+Route::get('/User/search', [RecorddataController::class, 'Usersearch'])->name('recorddata.Usersearch');
 Route::post('/select-recorder', [UserController::class, 'selectRecorder'])->name('selectRecorder');
 Route::post('admin/importfile', [ExcelImportController::class, 'import'])->name('import');
 Route::get('/admin/export', [AdminExportController::class, 'export']);
@@ -97,41 +90,19 @@ Route::get('/admin/edit_form_disease', [RecorddataController::class, 'edit_form_
 Route::put('/admin/update_disease', [RecorddataController::class, 'update_disease'])->name('update_disease');
 Route::get('recorddata/{recorddata_id}/edit_general_information/{checkup_id}', [RecorddataController::class, 'edit_general_information'])->name('recorddata.edit_general_information');
 Route::delete('/admin/delete_extra_field', [RecorddataController::class, 'deleteExtraField'])->name('delete_extra_field');
-Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
+
 Route::post('/admin/update-general-information/{recorddata_id}/{checkup_id}', [RecorddataController::class, 'update_general_information'])->name('recorddata.update_general_information');
+
 Route::get('/admin/dashboard', function () {
     return view('/admin/dashboard');
 });
-Route::get('/admin/about', [AboutController::class, 'adminIndex'])->name('admin.about');
-Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
-Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
-Route::post('/admin/form', [FormController::class, 'store'])->name('admin.form.submit');
+
 Route::post('/admin/search-by-date', [RecorddataController::class, 'searchByDate'])->name('recorddata.searchByDate');
+
 Route::get('/admin/record_general_information', function () {
     return view('/admin/record_general_information');
-});
-Route::get('/admin/record_general_information', function () {
-    return view('/admin/record_general_information');
-});
-Route::get('/admin/form', function () {
-    return view('/admin/form'); 
 });
 
-Route::get('/admin/about', function () {
-    return view('/admin/about');
-});
-Route::post('/admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
-Route::delete('/admin/slideshow/delete/{id}', [SlideshowController::class, 'delete'])->name('slideshow.delete');
-Route::get('/admin/article/{id}', [AdminArticleController::class, 'show'])->name('admin.article');
-Route::get('/admin/home', [ArticleController::class, 'index'])->name('home');
-Route::get('/admin/homepage', function () {
-    return app(ArticleController::class)->index('homepage');
-})->name('homepage');
-//
-//
-//
-//user
-Route::get('/User/homepage', [HomepageController::class, 'userHomepage'])->name('user.homepage');
 Route::get('/User/dashboard', function () {
     return view('/User/dashboard');
 });
@@ -150,22 +121,44 @@ Route::get('/User/viewrecord', function () {
     return view('User.viewrecord', compact('recorddata')); 
 });
 
+Route::get('/admin/record_general_information', function () {
+    return view('/admin/record_general_information');
+});
+
 Route::get('/User/dashboard', function () {
     return view('User/dashboard');
 });
+
 Route::get('/User/record', function () {
     return view('/User/record');
 });
 
+Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
 Route::get('/User/homepage', [HomepageController::class, 'userHomepage'])->name('User.homepage');
+
+
+Route::get('/admin/form', function () {
+    return view('/admin/form'); 
+});
+
+Route::get('/admin/about', function () {
+    return view('/admin/about');
+});
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data');
+
+Route::post('/admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
+Route::delete('/admin/slideshow/delete/{id}', [SlideshowController::class, 'delete'])->name('slideshow.delete');
 
 Route::post('/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
 Route::delete('/slideshow/delete/{id}', [SlideshowController::class, 'delete'])->name('slideshow.delete');
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
+Route::get('/admin/home', [ArticleController::class, 'index'])->name('home');
+Route::get('/admin/homepage', function () {
+    return app(ArticleController::class)->index('homepage');
+})->name('homepage');
 
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.show');
 Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('article.delete');
@@ -178,13 +171,22 @@ Route::get('/form', [ArticleController::class, 'create'])->name('admin.form');
 //Route::get('/admin/form', [AdminController::class, 'showForm'])->name('admin.form');
 
 //Route::post('/admin/form-submit', [AdminController::class, 'submitForm'])->name('admin.form.submit');
+
+Route::get('/view', function () {
+    return view('view');
+});
+
 Route::get('/User/homepage', [ArticleController::class, 'index'])->name('User.homepage');
+
+Route::get('/home', [ArticleController::class, 'index'])->name('home');
 
 Route::get('/User/homepage', [HomepageuserController::class, 'homepageuser'])->name('User.homepage');
 Route::get('/User/homepage', [HomepageuserController::class, 'showHomepage'])->name('User.homepage');
 
 Route::get('/User/about', [AboutController::class, 'userIndex'])->name('User.about');
 
+Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/dashboard/data', [DashboardController::class, 'fetchData'])->name('dashboard.data');
 
 Route::get('/User/recode', [UserRecordController::class, 'index'])->name('userrecode.index');
 Route::get('/User/recode/search', [UserRecordController::class, 'search'])->name('userrecode.search');
@@ -193,14 +195,19 @@ Route::get('/User/recode', [UserRecordController::class, 'showRecords'])->name('
 
 Route::get('/guest/article/{id}', [GuestArticleController::class, 'show'])->name('guest.article'); 
 Route::get('/User/article/{id}', [UserArticleController::class, 'show'])->name('User.article');
+Route::get('/admin/article/{id}', [AdminArticleController::class, 'show'])->name('admin.article');
+
+Route::get('/search', [ArticleController::class, 'search'])->name('search');
 
 Route::get('/User/record', [RecorddataController::class, 'showUserData'])->name('User.recode');
 Route::get('/User/record', [UserRecordController::class, 'showUserData'])->name('User.record');
 
-Route::get('/User/viewrecord/{id}', [RecordDataController::class, 'view'])->name('recorddata.view');
+Route::get('/admin/about', [AboutController::class, 'adminIndex'])->name('admin.about');
 
-Route::get('/User/search', [RecorddataController::class, 'Usersearch'])->name('recorddata.Usersearch');
+Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
+Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 
+Route::post('/admin/form', [FormController::class, 'store'])->name('admin.form.submit');
 
 
 
