@@ -49,7 +49,7 @@ public function show($id)
             'author' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
             'video_link' => 'nullable|url', // กรอกลิงก์วิดีโอ
-            'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:50000', // ไฟล์วิดีโอ
+            'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:20480', // ไฟล์วิดีโอ
         ]);
     
         $imagePath = null;
