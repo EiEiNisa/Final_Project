@@ -591,7 +591,6 @@ form {
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
             </div>
-
             <div class="accordion custom-accordion" id="accordionExample">
                 @foreach($healthRecords as $index => $healthRecord)
                 <div class="custom-accordion-item mb-3">
