@@ -47,7 +47,15 @@
                     <label for="post_date" class="form-label">วัน/เดือน/ปี ที่โพสต์</label>
                     <input type="date" class="form-control" id="post_date" name="post_date" required>
                 </div>
-
+                <div class="mb-3">
+                    <label for="video_link" class="form-label">ลิงก์วิดีโอ (ถ้ามี)</label>
+                    <input type="url" class="form-control" id="video_link" name="video_link" placeholder="https://youtube.com/..." >
+                </div>
+            
+                <div class="mb-3">
+                    <label for="video_upload" class="form-label">อัปโหลดไฟล์วิดีโอ (ถ้ามี)</label>
+                    <input type="file" class="form-control" id="video_upload" name="video_upload" accept="video/*">
+                </div>
                 <div class="mb-3">
                     <label for="author" class="form-label">ชื่อผู้โพสต์</label>
                     <input type="text" class="form-control" id="author" name="author" required>
