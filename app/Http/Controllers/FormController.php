@@ -74,6 +74,7 @@ if ($request->hasFile('video_upload')) {
     $article->video_link = $videoLink; // เก็บลิงก์ YouTube
     $article->save();
     
-    return redirect()->route('submitform')->with('success', 'บทความถูกบันทึกสำเร็จ');
+   return redirect()->back()->with('success', 'บทความถูกบันทึกสำเร็จ');
+
 }
 }
