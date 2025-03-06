@@ -701,15 +701,6 @@ form {
                     </div>
                 </div>
                 @endforeach
-                @if(count($healthRecords) >= 3)
-                <div class="row mt-3">
-                    <div class="col-12 text-center">
-                        <a href="{{ route('next_page_route') }}" class="btn btn-primary">
-                            ไปหน้าถัดไป
-                        </a>
-                    </div>
-                </div>
-                @endif
             </div>
 
             <script>

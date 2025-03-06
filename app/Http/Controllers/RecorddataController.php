@@ -874,14 +874,6 @@ public function update_form_general_information(Request $request, $recorddata_id
     return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตข้อมูลสำเร็จเรียบร้อย!');
 }
 
-public function nextPage()
-{
-    $healthRecords = HealthRecord::paginate(10);
-    
-    return view('recorddata.edit', compact('record'));
-}
-
-
 public function searchIdCard(Request $request)
 {
     try {
@@ -1020,7 +1012,7 @@ public function update_record(Request $request)
     $deletedFields = $request->input('deleted_fields');
 
     // ตรวจสอบค่าคอลัมน์ที่ลบ
-    dd($deletedFields);  // ตรวจสอบว่าได้ค่าคอลัมน์จริงๆ หรือไม่
+    //dd($deletedFields);  // ตรวจสอบว่าได้ค่าคอลัมน์จริงๆ หรือไม่
 
     // หากมีฟิลด์ที่ต้องการลบ
     if ($deletedFields) {
