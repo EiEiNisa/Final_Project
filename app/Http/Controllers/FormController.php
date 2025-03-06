@@ -7,37 +7,29 @@ use App\Models\Article;
 
 class FormController extends Controller
 {
-    public function store(Request $request) 
+    public function store(Request $request)
 {
+    // เพิ่ม validation สำหรับไฟล์วิดีโอและลิงก์
     $request->validate([
         'title' => 'required',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // ขนาดสูงสุด 2 MB
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif',
         'description' => 'required',
         'post_date' => 'required|date',
         'author' => 'required',
         'video_upload' => 'nullable|mimes:mp4,avi,mov', // Validation สำหรับไฟล์วิดีโอ
         'video_link' => 'nullable|url', // Validation สำหรับลิงก์ YouTube
-    ], [
-        'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB'
     ]);
     
-
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-
-        // สร้างชื่อไฟล์ใหม่
-        $fileName = time() . '.' . $image->getClientOriginalExtension();
-
-        // จัดเก็บไฟล์ไว้ที่ public/images
-        $destinationPath = public_path('images'); // กำหนดที่เก็บไฟล์
-        $image->move($destinationPath, $fileName); // ย้ายไฟล์ไปที่ public/images
-
-        // แปลง path เพื่อใช้ใน Blade
-        $imageUrl = 'images/' . $fileName; 
-    } else {
-        return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
-    }
-       $videoPath = null;
+    // อัปโหลดไฟล์ภาพ
+    $image = $request->file('image');
+    $fileName = time() . '.' . $image->getClientOriginalExtension();
+    $destinationPath = public_path('images'); // เก็บไฟล์ในโฟลเดอร์ public/images
+    $image->move($destinationPath, $fileName); // ย้ายไฟล์ไปที่ public/images/
+    
+    $imagePath = 'images/' . $fileName; // เก็บเส้นทางในฐานข้อมูล
+    
+    // อัปโหลดไฟล์วิดีโอ (ถ้ามี)
+    $videoPath = null;
     if ($request->hasFile('video_upload')) {
         $video = $request->file('video_upload');
         $videoName = time() . '.' . $video->getClientOriginalExtension();
@@ -48,22 +40,18 @@ class FormController extends Controller
     // เก็บลิงก์วิดีโอจาก YouTube (ถ้ามี)
     $videoLink = $request->input('video_link'); // เก็บลิงก์ตรง ๆ ในฐานข้อมูล
 
+    // สร้างบทความใหม่
     $article = new Article();
     $article->title = $request->input('title');
-    $article->image = $imageUrl; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
+    $article->image = $imagePath;
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
+    $article->author = $request->input('author');
     $article->video_upload = $videoPath; // เก็บเส้นทางไฟล์วิดีโอ
     $article->video_link = $videoLink; // เก็บลิงก์ YouTube
-    $article->author = $request->input('author');
-
-    if (!$article->save()) {
-        return redirect()->back()->withErrors(['database' => 'การบันทึกบทความล้มเหลว'])->withInput();
-    }
-
-    return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
+    $article->save();
+    
+    return redirect()->route('submitform')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
-
-
 
 }
