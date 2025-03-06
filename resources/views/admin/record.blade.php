@@ -898,9 +898,15 @@ button.btn-primary:hover {
                             `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                     }
 
-                    const result = await response.json();
-                    console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
-                    window.location.href = "{{ route('recorddata.index') }}";
+                    if (!response.ok) {
+                        const errorResponse = await response.json();
+                        throw new Error(errorResponse.error ||
+                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
+                    }
+
+                    // ✅ ใช้ Form Redirect เพื่อให้ Laravel จัดการ Flash Message
+                    document.getElementById('importForm').submit();
+
                 } catch (error) {
                     console.error("Fetch error:", error);
                     showAlert(error.message);
@@ -976,7 +982,6 @@ button.btn-primary:hover {
             </div>
         </form>
     </div>
-
 
     <script>
     document.addEventListener("DOMContentLoaded", function() {

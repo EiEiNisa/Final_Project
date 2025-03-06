@@ -464,8 +464,6 @@ public function view($id, Request $request)
     ));
 }
 
-
-
 public function searchByDate(Request $request)
 {
     //dd($request->all()); // ตรวจสอบค่าที่ส่งมาจากฟอร์ม
@@ -616,15 +614,12 @@ public function destroyPermanently($id)
     
     public function search(Request $request)
 {
-    // เริ่มสร้าง query สำหรับค้นหาข้อมูล
     $query = Recorddata::query();
 
-    // ค้นหาตามเลขบัตรประจำตัวประชาชน
     if ($request->filled('id_card')) {
         $query->where('id_card', 'like', '%' . $request->input('id_card') . '%');
     }
 
-    // ค้นหาตามชื่อและนามสกุล
     if ($request->filled('name')) {
         $searchTerm = $request->input('name');
         $query->where(function ($q) use ($searchTerm) {
@@ -632,27 +627,22 @@ public function destroyPermanently($id)
         });
     }
 
-    // ค้นหาตามบ้านเลขที่
     if ($request->filled('housenumber')) {
         $query->where('housenumber', '=', $request->input('housenumber'));
     }
 
-    // ค้นหาตามโรคประจำตัว
     if ($request->has('diseases') && $request->diseases != '') {
         $disease = $request->diseases;
         $query->whereHas('diseases', function($query) use ($disease) {
-            $query->where($disease, 1); // เช็คว่าโรคนั้นๆ ถูกเลือก
+            $query->where($disease, 1);
         });
     }
-    $disease = $request->input('diseases');
-    // ทำการค้นหาจาก query ที่กำหนดและทำการแบ่งหน้า
-    $recorddata = $query->orderBy('id', 'desc')->paginate(20);
 
-    // ดึงข้อมูลผู้ใช้และโรคประจำตัว
+    $disease = $request->input('diseases');
+    $recorddata = $query->orderBy('id', 'desc')->paginate(10);
     $users = User::all();
     $diseases = Disease::all();
 
-    // ส่งข้อมูลไปยัง view
     return view('admin.record', compact('recorddata', 'users', 'diseases'));
 }
 
@@ -675,8 +665,7 @@ public function Usersearch(Request $request)
 
     if ($request->filled('diseases')) {
         $query->whereHas('disease', function ($q) use ($request) {
-            // ค้นหาผู้ที่มีโรคนี้ โดยเช็คว่าโรคมีค่าคือ 1 (มีโรค)
-            $q->where($request->input('diseases'), 1); // ค่าของโรคที่เลือก (จากฟอร์ม select)
+            $q->where($request->input('diseases'), 1); 
         });
     }
 
