@@ -81,7 +81,7 @@ Route::patch('/admin/record/restore/{id}', [RecordDataController::class, 'restor
 Route::get('/admin/search', [RecorddataController::class, 'search'])->name('recorddata.search');
 Route::get('/User/search', [RecorddataController::class, 'Usersearch'])->name('recorddata.Usersearch');
 Route::post('/select-recorder', [UserController::class, 'selectRecorder'])->name('selectRecorder');
-
+Route::get('/next-page', [RecorddataController::class, 'nextPage'])->name('next_page_route');
 Route::post('admin/importfile', [ExcelImportController::class, 'import'])->name('import');
 Route::get('/admin/export', [AdminExportController::class, 'export']);
 Route::get('/admin/print', [PrintController::class, 'showPrintPage'])->name('admin.print');

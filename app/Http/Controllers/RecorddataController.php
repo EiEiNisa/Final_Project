@@ -874,6 +874,14 @@ public function update_form_general_information(Request $request, $recorddata_id
     return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตข้อมูลสำเร็จเรียบร้อย!');
 }
 
+public function nextPage()
+{
+    $healthRecords = HealthRecord::paginate(10);
+    
+    return view('your-view-name', compact('healthRecords'));
+}
+
+
 public function searchIdCard(Request $request)
 {
     try {
