@@ -95,7 +95,7 @@
         align-items: center;
         text-decoration: none;
         padding: 10px;
-        font-size: 15px;
+        font-size: 10px;
         border-radius: 5px;
         margin-bottom: 6px;
         text-align: left;
@@ -104,7 +104,7 @@
     }
 
     .sidebar a i {
-        font-size: 20px;
+        font-size: 15px;
         width: 28px;
         text-align: center;
         transition: margin-right 0.3s ease;
@@ -241,27 +241,27 @@
     <div class="sidebar">
         <div class="menu">
             <img class="logo" src="/logo.png" alt="Logo">
-            <a href="/admin/homepage"><i class="fas fa-home fa-sm"></i> <span>หน้าหลัก</span></a>
-            <a href="/admin/form"><i class="fas fa-plus-circle fa-sm"></i> <span>เพิ่มบทความ</span></a>
-            <a href="/admin/addslide"><i class="fas fa-images fa-sm"></i> <span>เพิ่มสไลด์</span></a>
-            <a href="/admin/record"><i class="fas fa-folder fa-sm"></i> <span>บันทึกข้อมูล</span></a>
-            <a href="/admin/addrecord"><i class="fas fa-database fa-sm"></i> <span>เพิ่มข้อมูลใหม่</span></a>
-            <a href="/admin/dashboard"><i class="fas fa-chart-bar fa-sm"></i> <span>แดชบอร์ด</span></a>
-            <a href="/admin/about"><i class="fas fa-info-circle fa-sm"></i> <span>ข้อมูลพื้นฐาน</span></a>
-            <a href="/admin/editprofile"><i class="fas fa-user-edit fa-sm"></i> <span>แก้ไขโปรไฟล์</span></a>
-            <a href="/admin/manageuser"><i class="fas fa-user-shield fa-sm"></i> <span>จัดการสิทธิ์</span></a>
-            <a href="/admin/recently_deleted"><i class="fas fa-trash-restore-alt fa-sm"></i> <span>ลบล่าสุด</span></a>
+            <a href="/admin/homepage"><i class="fas fa-home"></i> <span>หน้าหลัก</span></a>
+            <a href="/admin/form"><i class="fas fa-plus-circle"></i> <span>เพิ่มบทความ</span></a>
+            <a href="/admin/addslide"><i class="fas fa-images"></i> <span>เพิ่มสไลด์</span></a>
+            <a href="/admin/record"><i class="fas fa-folder"></i> <span>บันทึกข้อมูล</span></a>
+            <a href="/admin/addrecord"><i class="fas fa-database"></i> <span>เพิ่มข้อมูลใหม่</span></a>
+            <a href="/admin/dashboard"><i class="fas fa-chart-bar"></i> <span>แดชบอร์ด</span></a>
+            <a href="/admin/about"><i class="fas fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span></a>
+            <a href="/admin/editprofile"><i class="fas fa-user-edit"></i> <span>แก้ไขโปรไฟล์</span></a>
+            <a href="/admin/manageuser"><i class="fas fa-user-shield"></i> <span>จัดการสิทธิ์</span></a>
+            <a href="/admin/recently_deleted"><i class="fas fa-trash-restore-alt"></i> <span>ลบล่าสุด</span></a>
         </div>
 
         <!-- แสดงชื่อผู้ใช้งาน + ปุ่มออกจากระบบ -->
         <div>
             <div class="account">
-                <i class="fas fa-user fa-sm"></i> <span>{{ session('register')->username ?? 'Guest' }}</span>
+                <i class="fas fa-user"></i> <span>{{ session('register')->username ?? 'Guest' }}</span>
             </div>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="logout-btn">
-                    <i class="fas fa-sign-out-alt fa-sm"></i> <span>ออกจากระบบ</span>
+                    <i class="fas fa-sign-out-alt"></i> <span>ออกจากระบบ</span>
                 </button>
             </form>
         </div>
