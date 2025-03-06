@@ -241,6 +241,37 @@ tbody {
     align-items: center;
 }
 
+.custom-bg-light {
+    background-color: #f8f9fa;
+    /* สีพื้นหลังของโมเดล */
+}
+
+/* ปุ่มยกเลิก (สีแดง) */
+.custom-btn-secondary {
+    background-color: #dc3545;
+    /* สีแดง */
+    border: none;
+    color: white;
+}
+
+.custom-btn-secondary:hover {
+    background-color: #c82333;
+    /* สีแดงเข้มเมื่อ hover */
+}
+
+/* ปุ่มพิมพ์ (สีฟ้า) */
+.custom-btn-primary {
+    background-color: #007bff;
+    /* สีฟ้า */
+    border: none;
+    color: white;
+}
+
+.custom-btn-primary:hover {
+    background-color: #0056b3;
+    /* สีฟ้าเข้มเมื่อ hover */
+}
+
 @media (max-width: 768px) {
 
     .title {
@@ -1231,7 +1262,6 @@ tbody {
                                             <i class="fa-solid fa-print"></i> พิมพ์
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

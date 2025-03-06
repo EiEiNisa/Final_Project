@@ -456,7 +456,7 @@ form {
             <div class="form-group1">
                 <label for="bmi" class="form-label">ดัชนีมวล BMI</label>
                 <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi', $recorddata->bmi) }}"
-                    readonly>
+                disabled>
             </div>
 
             <div class="form-group1">
