@@ -16,7 +16,3 @@ require __DIR__.'/../vendor/autoload.php';
 (require_once __DIR__.'/../bootstrap/app.php')
     ->handleRequest(Request::capture());
 
-upload_max_filesize = 20M
-post_max_size = 20M
-max_input_time = 300
-max_execution_time = 300
