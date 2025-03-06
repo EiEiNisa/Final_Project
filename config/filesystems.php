@@ -72,5 +72,7 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
+    
+    'upload_max_size' => 20480, // ขนาดไฟล์สูงสุดที่อนุญาตให้โหลดในระบบ
 
 ];
