@@ -596,14 +596,12 @@ form {
                 @foreach($healthRecords as $index => $healthRecord)
                 <div class="custom-accordion-item mb-3">
                     <h2 class="accordion-header" id="heading{{ $index }}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse{{ $index }}" aria-expanded="false"
+                        <button class="accordion-button collapsed d-flex justify-content-between" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="false"
                             aria-controls="collapse{{ $index }}">
                             <span class="checkup-title">ตรวจครั้งที่ {{ count($healthRecords) - $index }}</span>
                             <span class="checkup-date">
-                                {{ \Carbon\Carbon::parse($healthRecord->created_at)->format('d') }}/
-                                {{ \Carbon\Carbon::parse($healthRecord->created_at)->translatedFormat('F') }}/
-                                {{ \Carbon\Carbon::parse($healthRecord->created_at)->year + 543 }}
+                                {{ \Carbon\Carbon::parse($healthRecord->created_at)->translatedFormat('d F Y') }}
                             </span>
                         </button>
                     </h2>
@@ -680,7 +678,6 @@ form {
                                     </div>
                                 </div>
 
-                                <!-- ข้อมูลเพิ่มเติม -->
                                 <div class="col-md-4">
                                     <div class="row">
                                         @if(isset($lifestylesHabit[$index]))
@@ -715,7 +712,6 @@ form {
                                 </div>
                             </div>
 
-                            <!-- ปุ่มแก้ไข -->
                             <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
                                 class="btn btn-secondary">
                                 แก้ไขข้อมูล
@@ -725,7 +721,6 @@ form {
                 </div>
                 @endforeach
             </div>
-
             <script>
             document.addEventListener("DOMContentLoaded", function() {
                 document.querySelectorAll(".accordion-button").forEach(button => {
