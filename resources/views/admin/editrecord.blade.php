@@ -48,17 +48,14 @@
     background: rgba(255, 255, 255, 0.5);
 }
 
-/* ขีดเส้นใต้ */
 .card-header::after {
     content: "";
     position: absolute;
     bottom: -2px;
-    /* ขีดอยู่ด้านล่าง */
     left: 0;
     width: 100%;
     height: 4px;
     background-color: #020364;
-    /* สีของเส้น */
 }
 
 .card-body {
@@ -166,6 +163,12 @@
 .custom-accordion-item .btn-secondary:hover {
     background-color: #5a6268;
     border-color: #5a6268;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #020364;
 }
 
 .form-group,
