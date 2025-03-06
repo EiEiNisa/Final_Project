@@ -546,11 +546,22 @@ public function destroy($id)
     }
 }
 
-public function recentlyDeleted()
+public function recentlyDeleted(Request $request)
 {
-    $deletedRecords = Recorddata::where('is_deleted', true)
-                                ->orderBy('updated_at', 'desc') // แก้ไขชื่อคอลัมน์
-                                ->paginate(10);
+    // ตรวจสอบว่า user กรอกชื่อหรือนามสกุลหรือไม่
+    $query = Recorddata::where('is_deleted', true)
+                       ->orderBy('updated_at', 'desc'); // แก้ไขชื่อคอลัมน์
+
+    // หากมีการกรอกชื่อหรือนามสกุล ให้กรองข้อมูล
+    if ($request->has('name') && !empty($request->input('name'))) {
+        $query->where(function ($q) use ($request) {
+            $q->where('first_name', 'like', '%' . $request->input('name') . '%')
+              ->orWhere('last_name', 'like', '%' . $request->input('name') . '%');
+        });
+    }
+
+    // ดึงข้อมูลที่กรองแล้ว
+    $deletedRecords = $query->paginate(10);
 
     return view('admin.recently_deleted', compact('deletedRecords'));
 }
