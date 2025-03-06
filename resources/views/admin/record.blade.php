@@ -25,7 +25,6 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    /* เพื่อให้ปุ่มแตกแถวในหน้าจอเล็ก */
 }
 
 .table {
@@ -37,7 +36,6 @@
 .table th {
     background-color: #020364;
     color: #fff !important;
-    /* ใช้ !important เพื่อบังคับให้ตัวหนังสือเป็นสีขาว */
     text-align: center;
 }
 
@@ -70,9 +68,7 @@
 
 .form-group {
     min-width: 200px;
-    /* ขนาดขั้นต่ำของแต่ละฟอร์มกลุ่ม */
     margin-right: 15px;
-    /* เว้นระยะระหว่างฟอร์มกลุ่ม */
 }
 
 button.btn-primary {
@@ -168,7 +164,6 @@ tbody {
     font-size: 14px;
 }
 
-
 .modal-header {
     padding: 15px;
 }
@@ -204,7 +199,6 @@ tbody {
 #previewTable td {
     padding: 8px;
     border: 1px solid #E0E0E0;
-    /* เปลี่ยนสีเส้นขอบเป็นเทาอ่อน */
     text-align: left;
     min-width: 100px;
     word-break: break-word;
@@ -215,7 +209,6 @@ tbody {
     width: 100%;
     table-layout: fixed;
     background-color: #E8F5E9;
-    /* เปลี่ยนสีพื้นหลังหัวตารางเป็นเขียวอ่อน */
 }
 
 #previewTable tbody {
@@ -225,10 +218,8 @@ tbody {
     max-height: 400px;
 }
 
-/* เพิ่มการตกแต่งเพิ่มเติม */
 #previewTable tr:nth-child(even) {
     background-color: #F5F5F5;
-    /* แถวคู่มีพื้นหลังสีเทาอ่อน */
 }
 
 #previewTable th {
@@ -243,33 +234,32 @@ tbody {
 
 .custom-bg-light {
     background-color: #f8f9fa;
-    /* สีพื้นหลังของโมเดล */
 }
 
-/* ปุ่มยกเลิก (สีแดง) */
 .custom-btn-secondary {
     background-color: #dc3545;
-    /* สีแดง */
     border: none;
     color: white;
 }
 
 .custom-btn-secondary:hover {
     background-color: #c82333;
-    /* สีแดงเข้มเมื่อ hover */
 }
 
-/* ปุ่มพิมพ์ (สีฟ้า) */
 .custom-btn-primary {
     background-color: #007bff;
-    /* สีฟ้า */
     border: none;
     color: white;
 }
 
 .custom-btn-primary:hover {
     background-color: #0056b3;
-    /* สีฟ้าเข้มเมื่อ hover */
+}
+
+.btn-close {
+    font-size: 1rem;
+    width: 20px;
+    height: 20px;
 }
 
 @media (max-width: 768px) {
