@@ -68,11 +68,10 @@
 
 <body>
     <div class="container mt-5">
-        @if($index == 0)
-        <!-- แสดงหัวข้อแค่ครั้งแรก -->
+        @if($recorddataList->isNotEmpty())
         <h2 class="text-center">ข้อมูลบุคคล</h2>
         @endif
-        
+
         @foreach($recorddataList as $recorddata)
         <div class="info-box row-1">
             <div class="col">
