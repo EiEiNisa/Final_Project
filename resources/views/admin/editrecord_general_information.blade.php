@@ -814,6 +814,12 @@ form {
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="dia" style="margin-bottom: 5px; text-align: left; color: #020364;">ผู้บันทึก</label>
+                <input type="text" class="form-control" id="user_name" name="user_name"
+                    value="{{ old('user_name', $recorddata->user_name ?? '') }}" placeholder="ผู้บันทึก" readonly>
+            </div>
+
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
                     บันทึก

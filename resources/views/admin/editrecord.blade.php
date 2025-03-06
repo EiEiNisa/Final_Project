@@ -167,7 +167,7 @@
 
 label {
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
     color: #020364;
 }
 
@@ -216,7 +216,6 @@ form {
     font-weight: bold;
     color: #020364;
 }
-
 
 .form-group {
     display: flex;
