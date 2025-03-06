@@ -903,6 +903,7 @@ tbody {
 
                     if (!response.ok) {
                         const errorResponse = await response.json();
+                        console.error("Server Response:", errorResponse);
                         throw new Error(errorResponse.error ||
                             `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                     }
@@ -925,7 +926,6 @@ tbody {
                 }, 100);
             }
 
-            // เพิ่มการจัดการ Focus เพื่อป้องกันการเรียกซ้ำของ Focusin
             document.addEventListener('focusin', function(event) {
                 if (event.target === document.activeElement) {
                     event.stopPropagation();
