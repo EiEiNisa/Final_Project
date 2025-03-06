@@ -134,9 +134,10 @@ class ExcelImportController extends Controller
                 ]);
             } 
 
-            return response()->json(['message' => 'นำเข้าข้อมูลสำเร็จ']);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
-    }
+            return response()->json(['success' => 'นำเข้าข้อมูลสำเร็จ']);
+            
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
+            }
     }
 }

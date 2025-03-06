@@ -404,12 +404,6 @@ tbody {
     </div>
     @endif
 
-    @if(session('message'))
-    <div class="alert alert-danger">
-        {{ session('message') }}
-    </div>
-    @endif
-
     <div class="title">
         <h4><strong>บันทึกข้อมูล</strong></h4>
         <div class="btn-container">
@@ -910,7 +904,7 @@ tbody {
 
                     const result = await response.json();
                     console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
-                    window.location.href = "{{ route('recorddata.index') }}";
+                    window.location.href = "{{ route('recorddata.index') }}?success=true"; 
                 } catch (error) {
                     console.error("Fetch error:", error);
                     showAlert(error.message);
