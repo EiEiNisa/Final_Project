@@ -739,6 +739,10 @@ button.btn-primary:hover {
             let jsonData = [];
             let uploadedFiles = [];
 
+            document.addEventListener('focusin', function(event) {
+                console.log("Focus event triggered");
+            });
+
             document.getElementById('excelFile').addEventListener('change', function() {
                 let file = this.files[0];
                 if (!file) return;
