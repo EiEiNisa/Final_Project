@@ -2,21 +2,67 @@
 
 @section('content')
 <style>
-.title {
+.card-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    /* เพิ่มเงาให้ดูมีมิติ */
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    /* เงาเข้มขึ้นเมื่อ hover */
+}
+
+.card-header {
     color: #020364;
     padding: 20px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    /* เพื่อให้ปุ่มแตกแถวในหน้าจอเล็ก */
+    align-items: center;
+    position: relative;
+    /* ใช้สำหรับขีดด้านล่าง */
 }
 
-.btn-container {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    /* เพื่อให้ปุ่มแตกแถวในหน้าจอเล็ก */
+/* ข้อความ h4 */
+.card-header h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* ปุ่มกลับ */
+.card-header .btn-back {
+    background: rgba(255, 255, 255, 0.3);
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-header .btn-back:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* ขีดเส้นใต้ */
+.card-header::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    /* ขีดอยู่ด้านล่าง */
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #020364;
+    /* สีของเส้น */
+}
+
+.card-body {
+    padding: 20px;
 }
 
 .table {
@@ -43,16 +89,6 @@
 .table td:hover,
 .table th:hover {
     color: #fff !important;
-}
-
-.rectangle-box {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: 20px;
-    overflow-x: auto;
-    /* ทำให้สามารถเลื่อนในแนวนอนได้ */
 }
 
 .form-group-horizontal {
@@ -318,7 +354,7 @@ button.btn-primary:hover {
 </style>
 
 
-<div class="container py-2">
+<div class="card-container">
 
     @if(session('success'))
     <div class="alert alert-success">
@@ -331,11 +367,26 @@ button.btn-primary:hover {
     </div>
     @endif
 
-    <div class="title">
-        <h4><strong>บันทึกข้อมูล</strong></h4>
+    <div class="card-header">
+        <h4><strong>แก้ไขข้อมูล</strong></h4>
+        <a href="#" class="btn btn-secondary btn-back" id="backButton">กลับ</a>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let previousUrl = document.referrer; // ดึง URL ต้นทางที่เข้ามา
+
+            if (previousUrl.includes("admin/record?page=")) {
+                // ถ้ามี "page" อยู่ใน URL ก่อนหน้า
+                document.getElementById("backButton").href = previousUrl;
+            } else {
+                // ถ้าไม่มี "page" ให้กลับไปที่หน้าแรกของ record
+                document.getElementById("backButton").href = "https://thungsetthivhv.pcnone.com/admin/record";
+            }
+        });
+        </script>
     </div>
 
-    <div class="rectangle-box">
+    <div class="card-body">
         <form action="{{ route('recorddata.Usersearch') }}" method="GET">
             <div class="form-group-horizontal">
 

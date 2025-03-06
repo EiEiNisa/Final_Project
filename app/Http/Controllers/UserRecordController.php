@@ -35,30 +35,30 @@ class UserRecordController extends Controller
     }
 
     public function showUserData(Request $request)
-{
-    $query = Recorddata::with('diseases') // ใช้ eager loading เพื่อดึงข้อมูลโรค
-        ->orderBy('created_at', 'desc'); // เรียงข้อมูลจากล่าสุดไปเก่า (ตาม created_at)
+    {
+        $query = Recorddata::with('diseases') // ใช้ eager loading เพื่อดึงข้อมูลโรค
+            ->orderBy('created_at', 'desc'); // เรียงข้อมูลจากล่าสุดไปเก่า (ตาม created_at)
 
-    // กรองข้อมูลตามคำค้นหาหรือเงื่อนไขที่กำหนด
-    if ($request->filled('name')) {
-        $query->where('name', 'like', '%' . $request->input('name') . '%');
+        // กรองข้อมูลตามคำค้นหาหรือเงื่อนไขที่กำหนด
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->filled('housenumber')) {
+            $query->where('housenumber', 'like', '%' . $request->input('housenumber') . '%');
+        }
+        
+        if ($request->has('diseases') && $request->diseases != '') {
+            $disease = $request->diseases;
+            $query->whereHas('diseases', function($query) use ($disease) {
+                $query->where($disease, 1); // เช็คว่าโรคนั้นๆ ถูกเลือก
+            });
+        }
+
+        $recorddata = $query->paginate(10); // หรือใช้ get() แทนถ้าไม่ใช้ pagination
+
+        // ส่งข้อมูลไปยัง View
+        return view('User.record', compact('recorddata'));
     }
-
-    if ($request->filled('housenumber')) {
-        $query->where('housenumber', 'like', '%' . $request->input('housenumber') . '%');
-    }
-    
-    if ($request->has('diseases') && $request->diseases != '') {
-        $disease = $request->diseases;
-        $query->whereHas('diseases', function($query) use ($disease) {
-            $query->where($disease, 1); // เช็คว่าโรคนั้นๆ ถูกเลือก
-        });
-    }
-
-    $recorddata = $query->paginate(10); // หรือใช้ get() แทนถ้าไม่ใช้ pagination
-
-    // ส่งข้อมูลไปยัง View
-    return view('User.record', compact('recorddata'));
-}
-    
+        
 }

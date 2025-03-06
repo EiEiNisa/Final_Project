@@ -648,35 +648,35 @@ public function destroyPermanently($id)
 }
 
 
-public function Usersearch(Request $request)
-{
-    // เริ่มสร้าง query สำหรับค้นหาข้อมูล
-    $query = Recorddata::query();
+    public function Usersearch(Request $request)
+    {
+        // เริ่มสร้าง query สำหรับค้นหาข้อมูล
+        $query = Recorddata::query();
 
-    if ($request->filled('name')) {
-        $searchTerm = $request->input('name');
-        $query->where(function ($q) use ($searchTerm) {
-            $q->whereRaw("CONCAT(name, ' ', surname) LIKE ?", ["%$searchTerm%"]);
-        });
+        if ($request->filled('name')) {
+            $searchTerm = $request->input('name');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->whereRaw("CONCAT(name, ' ', surname) LIKE ?", ["%$searchTerm%"]);
+            });
+        }
+
+        if ($request->filled('housenumber')) {
+            $query->where('housenumber', '=', $request->input('housenumber'));
+        }
+
+        if ($request->filled('diseases')) {
+            $query->whereHas('disease', function ($q) use ($request) {
+                $q->where($request->input('diseases'), 1); 
+            });
+        }
+
+        $recorddata = $query->orderBy('id', 'desc')->paginate(10);
+
+        $users = User::all();
+        $diseases = Disease::all();
+
+        return view('User.record', compact('recorddata', 'users', 'diseases'));
     }
-
-    if ($request->filled('housenumber')) {
-        $query->where('housenumber', '=', $request->input('housenumber'));
-    }
-
-    if ($request->filled('diseases')) {
-        $query->whereHas('disease', function ($q) use ($request) {
-            $q->where($request->input('diseases'), 1); 
-        });
-    }
-
-    $recorddata = $query->orderBy('id', 'desc')->paginate(20);
-
-    $users = User::all();
-    $diseases = Disease::all();
-
-    return view('User.record', compact('recorddata', 'users', 'diseases'));
-}
 
 public function edit_general_information(Request $request, $recorddata_id, $checkup_index)  
 {
