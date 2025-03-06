@@ -606,169 +606,151 @@ form {
                         </button>
                     </h2>
 
-                    <div class="accordion custom-accordion" id="accordionExample">
-                        @foreach($healthRecords as $index => $healthRecord)
-                        <div class="custom-accordion-item mb-3">
-                            <h2 class="accordion-header" id="heading{{ $index }}">
-                                <button class="accordion-button collapsed d-flex justify-content-between" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
-                                    aria-expanded="false" aria-controls="collapse{{ $index }}">
-                                    <span class="checkup-title">ตรวจครั้งที่ {{ count($healthRecords) - $index }}</span>
-                                    <span class="checkup-date">
-                                        {{ \Carbon\Carbon::parse($healthRecord->created_at)->translatedFormat('d F Y') }}
-                                    </span>
-                                </button>
-                            </h2>
-
-                            <div id="collapse{{ $index }}" class="accordion-collapse collapse"
-                                aria-labelledby="heading{{ $index }}">
-                                <div class="accordion-body">
+                    <div id="collapse{{ $index }}" class="accordion-collapse collapse"
+                        aria-labelledby="heading{{ $index }}">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-4">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="sys{{ $index }}">ความดัน SYS</label>
-                                                    <input type="text" class="form-control" id="sys{{ $index }}"
-                                                        name="sys[{{ $index }}]"
-                                                        value="{{ old('sys.' . $index, $healthRecord->sys ?? '') }}"
-                                                        readonly>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="dia{{ $index }}">ความดัน DIA</label>
-                                                    <input type="text" class="form-control" id="dia{{ $index }}"
-                                                        name="dia[{{ $index }}]"
-                                                        value="{{ old('dia.' . $index, $healthRecord->dia ?? '') }}"
-                                                        readonly>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="pul{{ $index }}">ชีพจร</label>
-                                                    <input type="text" class="form-control" id="pul{{ $index }}"
-                                                        name="pul[{{ $index }}]"
-                                                        value="{{ old('pul.' . $index, $healthRecord->pul ?? '') }}"
-                                                        readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="body_temp{{ $index }}">อุณหภูมิร่างกาย</label>
-                                                    <input type="text" class="form-control" id="body_temp{{ $index }}"
-                                                        name="body_temp[{{ $index }}]"
-                                                        value="{{ old('body_temp.' . $index, $healthRecord->body_temp ?? '') }}"
-                                                        readonly>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="blood_oxygen{{ $index }}">ออกซิเจนในเลือด</label>
-                                                    <input type="text" class="form-control"
-                                                        id="blood_oxygen{{ $index }}" name="blood_oxygen[{{ $index }}]"
-                                                        value="{{ old('blood_oxygen.' . $index, $healthRecord->blood_oxygen ?? '') }}"
-                                                        readonly>
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="blood_level{{ $index }}">ระดับน้ำตาลในเลือด</label>
-                                                    <input type="text" class="form-control" id="blood_level{{ $index }}"
-                                                        name="blood_level[{{ $index }}]"
-                                                        value="{{ old('blood_level.' . $index, $healthRecord->blood_level ?? '') }}"
-                                                        readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="health_zone_{{ $index }}">blood pressure zone</label>
-                                                    <input type="text" class="form-control"
-                                                        id="health_zone_{{ $index }}" name="health_zone_{{ $index }}"
-                                                        value="{{ isset($zones[$index]) ? implode(' ', $zones[$index]) : '' }}"
-                                                        readonly>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="health_zone2">blood pressure zone</label>
-                                                    <input type="text" class="form-control"
-                                                        id="health_zone2_{{ $index }}" name="health_zone2{{ $index }}"
-                                                        value="{{ isset($zones2[$index]) ? implode(' ', $zones2[$index]) : '' }}"
-                                                        readonly>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="sys{{ $index }}">ความดัน SYS</label>
+                                            <input type="text" class="form-control" id="sys{{ $index }}"
+                                                name="sys[{{ $index }}]"
+                                                value="{{ old('sys.' . $index, $healthRecord->sys ?? '') }}" readonly>
                                         </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="dia{{ $index }}">ความดัน DIA</label>
+                                            <input type="text" class="form-control" id="dia{{ $index }}"
+                                                name="dia[{{ $index }}]"
+                                                value="{{ old('dia.' . $index, $healthRecord->dia ?? '') }}" readonly>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="pul{{ $index }}">ชีพจร</label>
+                                            <input type="text" class="form-control" id="pul{{ $index }}"
+                                                name="pul[{{ $index }}]"
+                                                value="{{ old('pul.' . $index, $healthRecord->pul ?? '') }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="body_temp{{ $index }}">อุณหภูมิร่างกาย</label>
+                                            <input type="text" class="form-control" id="body_temp{{ $index }}"
+                                                name="body_temp[{{ $index }}]"
+                                                value="{{ old('body_temp.' . $index, $healthRecord->body_temp ?? '') }}"
+                                                readonly>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="blood_oxygen{{ $index }}">ออกซิเจนในเลือด</label>
+                                            <input type="text" class="form-control" id="blood_oxygen{{ $index }}"
+                                                name="blood_oxygen[{{ $index }}]"
+                                                value="{{ old('blood_oxygen.' . $index, $healthRecord->blood_oxygen ?? '') }}"
+                                                readonly>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="blood_level{{ $index }}">ระดับน้ำตาลในเลือด</label>
+                                            <input type="text" class="form-control" id="blood_level{{ $index }}"
+                                                name="blood_level[{{ $index }}]"
+                                                value="{{ old('blood_level.' . $index, $healthRecord->blood_level ?? '') }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="health_zone_{{ $index }}">blood pressure zone</label>
+                                            <input type="text" class="form-control" id="health_zone_{{ $index }}"
+                                                name="health_zone_{{ $index }}"
+                                                value="{{ isset($zones[$index]) ? implode(' ', $zones[$index]) : '' }}"
+                                                readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="health_zone2">blood pressure zone</label>
+                                            <input type="text" class="form-control" id="health_zone2_{{ $index }}"
+                                                name="health_zone2{{ $index }}"
+                                                value="{{ isset($zones2[$index]) ? implode(' ', $zones2[$index]) : '' }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-8">
-                                            <div class="row">
-                                                <div class="col-12 mb-3">
-                                                    <label for="diseaseNames_{{ $index }}">โรคที่พบ</label>
-                                                    <input type="text" class="form-control"
-                                                        id="diseaseNames_{{ $index }}" name="diseaseNames[{{ $index }}]"
-                                                        value="{{ isset($diseaseNames[$index]) ? (isset($diseaseNames[$index]['other']) && $diseaseNames[$index]['other'] == 1 ? $diseaseNames[$index]['other_text'] : $diseaseNames[$index]['names']) : 'ไม่มีข้อมูล' }}"
-                                                        readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                @if(isset($lifestylesHabit[$index]))
-                                                <div class="col-12 mb-3">
-                                                    <label
-                                                        for="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}">พฤติกรรม-สุขภาพจิต</label>
-                                                    <input type="text" class="form-control"
-                                                        id="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}"
-                                                        name="lifestyleshabit[{{ $lifestylesHabit[$index]['id'] }}]"
-                                                        value="{{ $lifestylesHabit[$index]['lifestyleshabit'] ?? '' }}"
-                                                        readonly>
-                                                </div>
-                                                @endif
-                                            </div>
-                                            <div class="row">
-                                                @if(isset($elderlyInfo[$index]))
-                                                <div class="col-12 mb-3">
-                                                    <label
-                                                        for="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}">ข้อมูลผู้สูงอายุ</label>
-                                                    <input type="text" class="form-control"
-                                                        id="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}"
-                                                        name="elderlyhabit[{{ $elderlyInfo[$index]['id'] }}]"
-                                                        value="{{ $elderlyInfo[$index]['lifestyleshabit'] }}" readonly>
-                                                </div>
-                                                @endif
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12 mb-3">
-                                                    <label for="user_name">ผู้บันทึกข้อมูล</label>
-                                                    <input type="text" class="form-control" id="user_name"
-                                                        name="user_name"
-                                                        value="{{ old('user_name', $recorddata->user_name) }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
-                                                        class="btn btn-secondary">
-                                                        แก้ไขข้อมูล
-                                                    </a>
-                                                </div>
-                                            </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label for="diseaseNames_{{ $index }}">โรคที่พบ</label>
+                                            <input type="text" class="form-control" id="diseaseNames_{{ $index }}"
+                                                name="diseaseNames[{{ $index }}]"
+                                                value="{{ isset($diseaseNames[$index]) ? (isset($diseaseNames[$index]['other']) && $diseaseNames[$index]['other'] == 1 ? $diseaseNames[$index]['other_text'] : $diseaseNames[$index]['names']) : 'ไม่มีข้อมูล' }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @if(isset($lifestylesHabit[$index]))
+                                        <div class="col-12 mb-3">
+                                            <label
+                                                for="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}">พฤติกรรม-สุขภาพจิต</label>
+                                            <input type="text" class="form-control"
+                                                id="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}"
+                                                name="lifestyleshabit[{{ $lifestylesHabit[$index]['id'] }}]"
+                                                value="{{ $lifestylesHabit[$index]['lifestyleshabit'] ?? '' }}"
+                                                readonly>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="row">
+                                        @if(isset($elderlyInfo[$index]))
+                                        <div class="col-12 mb-3">
+                                            <label
+                                                for="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}">ข้อมูลผู้สูงอายุ</label>
+                                            <input type="text" class="form-control"
+                                                id="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}"
+                                                name="elderlyhabit[{{ $elderlyInfo[$index]['id'] }}]"
+                                                value="{{ $elderlyInfo[$index]['lifestyleshabit'] }}" readonly>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label for="user_name">ผู้บันทึกข้อมูล</label>
+                                            <input type="text" class="form-control" id="user_name" name="user_name"
+                                                value="{{ old('user_name', $recorddata->user_name) }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
+                                                class="btn btn-secondary">
+                                                แก้ไขข้อมูล
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
                     </div>
-
-                    <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        document.querySelectorAll(".accordion-button").forEach(button => {
-                            button.addEventListener("click", function() {
-                                let target = document.querySelector(this.getAttribute(
-                                    "data-bs-target"));
-                                let collapse = bootstrap.Collapse.getInstance(target);
-                                if (collapse) {
-                                    collapse.toggle();
-                                } else {
-                                    new bootstrap.Collapse(target, {
-                                        toggle: true
-                                    });
-                                }
-                            });
-                        });
-                    });
-                    </script>
-
                 </div>
-        </form>
+                @endforeach
+            </div>
+            
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelectorAll(".accordion-button").forEach(button => {
+                    button.addEventListener("click", function() {
+                        let target = document.querySelector(this.getAttribute(
+                            "data-bs-target"));
+                        let collapse = bootstrap.Collapse.getInstance(target);
+                        if (collapse) {
+                            collapse.toggle();
+                        } else {
+                            new bootstrap.Collapse(target, {
+                                toggle: true
+                            });
+                        }
+                    });
+                });
+            });
+            </script>
+
     </div>
+    </form>
+</div>
 </div>
 @endsection
