@@ -12,7 +12,7 @@ class FormController extends Controller
     // เพิ่ม validation สำหรับไฟล์วิดีโอและลิงก์
     $request->validate([
         'title' => 'required',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         'description' => 'required',
         'post_date' => 'required|date',
         'author' => 'required',
