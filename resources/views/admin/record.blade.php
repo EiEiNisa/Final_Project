@@ -882,38 +882,28 @@ tbody {
             }
 
             document.getElementById('submitDataBtn').addEventListener('click', async function() {
-                console.log("jsonData ก่อนส่งไปบันทึก:", jsonData);
+                const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                    },
+                    body: JSON.stringify({
+                        data: jsonData
+                    })
+                });
 
-                if (!jsonData || jsonData.length === 0) {
-                    showAlert('ไม่มีข้อมูลสำหรับบันทึก');
-                    return;
+                const responseText = await response.text(); // ใช้ text() เพื่อดูว่าเซิร์ฟเวอร์ตอบกลับอะไร
+                console.log("Server Response Text:", responseText);
+                if (!response.ok) {
+                    throw new Error(`เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                 }
 
                 try {
-                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/import", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                        },
-                        body: JSON.stringify({
-                            data: jsonData
-                        })
-                    });
-
-                    if (!response.ok) {
-                        const errorResponse = await response.json();
-                        console.error("Server Response:", errorResponse);
-                        throw new Error(errorResponse.error ||
-                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
-                    }
-
-                    const result = await response.json();
+                    const result = JSON.parse(responseText); // ลองแปลงเป็น JSON
                     console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
-                    window.location.href = "{{ route('recorddata.index') }}";
-                } catch (error) {
-                    console.error("Fetch error:", error);
-                    showAlert(error.message);
+                } catch (err) {
+                    console.error("ไม่สามารถแปลงเป็น JSON ได้:", err);
                 }
             });
 
