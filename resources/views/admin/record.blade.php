@@ -172,23 +172,6 @@ tbody {
     margin: 0;
 }
 
-.close-btn {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.close-btn:hover {
-    background-color: #f8d7da;
-    color: #721c24;
-    transform: scale(1.1);
-    cursor: pointer;
-}
-
 #previewTable {
     width: 100%;
     border-collapse: collapse;

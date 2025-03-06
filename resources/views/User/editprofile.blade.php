@@ -2,108 +2,117 @@
 
 @section('content')
 <style>
+.profile-container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.profile-title {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #020364;
+    font-size: 28px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    /* ลด padding ใน input */
+    font-size: 14px;
+    /* ลดขนาด font ใน input */
+}
+
+.btn-primary {
+    background-color: #020364;
+    border: none;
+    padding: 10px 25px;
+    /* ลด padding ใน button */
+    font-size: 16px;
+    /* ลดขนาด font ใน button */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #000145;
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 14px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 15px;
+    color: #020364;
+}
+
+@media (max-width: 768px) {
     .profile-container {
-        max-width: 700px;
-        margin: 50px auto;
-        padding: 40px;
-        background-color: #ffffff; 
-        border-radius: 10px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
+        max-width: 100%;
+        padding: 20px;
     }
 
     .profile-title {
-        text-align: center;
-        margin-bottom: 40px;
-        color: #020364;
-        font-size: 28px;
-    }
-
-    .form-group {
-        margin-bottom: 25px;
+        font-size: 24px;
     }
 
     .form-label {
-        font-weight: 600; 
-        color: #333; 
+        font-size: 16px;
     }
 
     .form-control {
-        border-radius: 5px;
-        border: 1px solid #ddd;
-        padding: 8px 12px; /* ลด padding ใน input */
-        font-size: 14px; /* ลดขนาด font ใน input */
+        font-size: 16px;
+        padding: 10px;
     }
 
     .btn-primary {
-        background-color: #020364;
-        border: none;
-        padding: 10px 25px; /* ลด padding ใน button */
-        font-size: 16px; /* ลดขนาด font ใน button */
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary:hover {
-        background-color: #000145;
-    }
-
-    .text-danger {
-        color: #dc3545;
+        padding: 8px 20px;
         font-size: 14px;
     }
 
-    @media (max-width: 768px) {
-        .profile-container {
-            max-width: 100%; 
-            padding: 20px;
-        }
+    .text-danger {
+        font-size: 12px;
+    }
+}
 
-        .profile-title {
-            font-size: 24px;
-        }
-
-        .form-label {
-            font-size: 16px;
-        }
-
-        .form-control {
-            font-size: 16px; 
-            padding: 10px; 
-        }
-
-        .btn-primary {
-            padding: 8px 20px; 
-            font-size: 14px; 
-        }
-
-        .text-danger {
-            font-size: 12px; 
-        }
+@media (max-width: 480px) {
+    .profile-title {
+        font-size: 20px;
     }
 
-    @media (max-width: 480px) {
-        .profile-title {
-            font-size: 20px; 
-        }
-
-        .form-label {
-            font-size: 14px; 
-        }
-
-        .form-control {
-            font-size: 14px; 
-        }
-
-        .btn-primary {
-            font-size: 12px; 
-            padding: 8px 15px; 
-        }
-
-        .text-danger {
-            font-size: 12px; 
-        }
+    .form-label {
+        font-size: 14px;
     }
 
+    .form-control {
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+
+    .text-danger {
+        font-size: 12px;
+    }
+}
 </style>
 
 <div class="container">
@@ -139,19 +148,21 @@
 
             <div class="form-group">
                 <label for="email" class="form-label">อีเมล</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $user->email) }}"
-                    placeholder="กรอกอีเมล" required>
+                <input type="email" class="form-control" id="email" name="email"
+                    value="{{ old('email', $user->email) }}" placeholder="กรอกอีเมล" required>
                 @error('email') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
 
             <div class="form-group">
-                <label class="form-label">รหัสผ่านใหม่ <span style="color:red;">(ถ้าไม่ต้องการเปลี่ยนให้เว้นว่างไว้)</span></label>
+                <label class="form-label">รหัสผ่านใหม่ <span
+                        style="color:red;">(ถ้าไม่ต้องการเปลี่ยนให้เว้นว่างไว้)</span></label>
                 <input type="password" name="password" class="form-control" placeholder="กรอกรหัสผ่านใหม่">
                 @error('password') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
 
             <div class="form-group">
-                <label class="form-label">ยืนยันรหัสผ่าน <span style="color:red;">(ถ้าไม่ต้องการเปลี่ยนให้เว้นว่างไว้)</span></label>
+                <label class="form-label">ยืนยันรหัสผ่าน <span
+                        style="color:red;">(ถ้าไม่ต้องการเปลี่ยนให้เว้นว่างไว้)</span></label>
                 <input type="password" name="password_confirmation" class="form-control" placeholder="กรอกรหัสผ่าน">
             </div>
 
@@ -162,7 +173,8 @@
                 @error('current_password') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save"></i> บันทึกการเปลี่ยนแปลง</button>
+            <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save"></i>
+                บันทึกการเปลี่ยนแปลง</button>
         </form>
     </div>
 </div>
