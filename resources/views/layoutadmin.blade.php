@@ -68,7 +68,6 @@
         display: none;
     }
 
-    /* โลโก้ให้อยู่ตรงกลาง */
     .sidebar .logo-container {
         display: flex;
         flex-direction: column;
@@ -81,13 +80,11 @@
         width: 50px;
         transition: width 0.3s ease;
         margin-bottom: 10px;
-        /* เพิ่มระยะห่างด้านล่าง */
     }
 
     .sidebar:hover img.logo {
         width: 90px;
     }
-
 
     .sidebar a {
         color: #ffffff;
@@ -96,7 +93,6 @@
         text-decoration: none;
         padding: 10px;
         font-size: 15px;
-        /* ลดขนาดไอคอน */
         border-radius: 5px;
         margin-bottom: 6px;
         text-align: left;
@@ -131,7 +127,6 @@
         background-color: #020364;
     }
 
-    /* กล่องข้อมูลผู้ใช้และปุ่มออกจากระบบ */
     .sidebar .account,
     .logout-btn {
         display: flex;
