@@ -128,10 +128,12 @@
 .custom-accordion-item .accordion-body {
     padding: 1.5rem;
     background-color: #fff;
+    display: block;
 }
 
 .custom-accordion-item .form-group {
     margin-bottom: 1.2rem;
+    display: block;
 }
 
 .custom-accordion-item .form-group label {
@@ -149,6 +151,7 @@
     box-sizing: border-box;
     color: #333;
     background-color: #f9f9f9;
+    display: block;
 }
 
 .custom-accordion-item .btn-secondary {
