@@ -16,7 +16,7 @@ class ExcelImportController extends Controller
 {
     public function import(Request $request)
     {
-        $data = $request->json()->all()['data']; // รับข้อมูล JSON จาก request
+        $data = $request->json()->all()['data']; 
 
         try {
             foreach ($data as $row) {
@@ -54,7 +54,6 @@ class ExcelImportController extends Controller
                     'user_id' => $row['user_id'],
                 ]);
 
-                // บันทึกข้อมูลลงในตารางอื่นๆ
                 HealthRecord::create([
                     'recorddata_id' => $recorddata->id,
                     'sys' => isset($row['sys']) ? $row['sys'] : null,
@@ -133,7 +132,7 @@ class ExcelImportController extends Controller
                     'society' => filter_var($row['society'], FILTER_VALIDATE_BOOLEAN),
                     'bed_ridden' => filter_var($row['bed_ridden'], FILTER_VALIDATE_BOOLEAN),
                 ]);
-            } // ปิด foreach
+            } 
 
             return response()->json(['message' => 'นำเข้าข้อมูลสำเร็จ']);
     } catch (\Exception $e) {

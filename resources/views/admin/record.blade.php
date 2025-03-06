@@ -890,7 +890,7 @@ tbody {
                 }
 
                 try {
-                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
+                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/import", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
