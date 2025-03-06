@@ -904,7 +904,7 @@ tbody {
 
                     const result = await response.json();
                     console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
-                    window.location.href = "{{ route('recorddata.index') }}?success=true"; 
+                    window.location.href = "{{ route('recorddata.index') }}";
                 } catch (error) {
                     console.error("Fetch error:", error);
                     showAlert(error.message);
