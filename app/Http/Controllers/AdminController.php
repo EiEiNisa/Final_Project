@@ -66,19 +66,24 @@ public function submitForm(Request $request)
         $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'video_link' => 'nullable|url', // กรอกลิงก์วิดีโอ
+            'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:50000', // ไฟล์วิดีโอ
             'description' => 'required|string',
             'post_date' => 'required|date',
             'author' => 'required|string|max:255',
         ]);
     
         $imagePath = $request->file('image')->store('images', 'public');
-    
+        $videoPath = $request->hasFile('video_upload') ? $request->file('video_upload')->store('videos', 'public') : null;
+        
         Article::create([
             'title' => $request->input('title'),
             'image' => $imagePath,
             'description' => $request->input('description'),
             'post_date' => $request->input('post_date'),
             'author' => $request->input('author'),
+            'video_link' => $request->input('video_link'),  // ถ้ามีลิงก์วิดีโอให้ใช้ค่า
+            'video_upload' => $videoPath,  // ถ้ามีไฟล์วิดีโอให้ใช้ค่า
         ]);
     
         return redirect()->route('admin.homepage')->with('success', 'บทความใหม่ได้ถูกเพิ่ม');
