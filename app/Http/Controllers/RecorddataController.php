@@ -549,8 +549,8 @@ public function destroy($id)
 public function recentlyDeleted()
 {
     $deletedRecords = Recorddata::where('is_deleted', true)
-                                ->orderBy('update_at', 'desc') 
-                                ->paginate(10); 
+                                ->orderBy('updated_at', 'desc') // แก้ไขชื่อคอลัมน์
+                                ->paginate(10);
 
     return view('admin.recently_deleted', compact('deletedRecords'));
 }
