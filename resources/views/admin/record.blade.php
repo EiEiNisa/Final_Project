@@ -407,7 +407,7 @@ button.btn-primary:hover {
         <div class="btn-container">
             <!-- Import File -->
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#importModal">
-                นำเข้าข้อมูล
+                <i class="fas fa-upload"></i> นำเข้าข้อมูล
             </button>
 
             <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel"
@@ -913,7 +913,9 @@ button.btn-primary:hover {
             </script>
 
             <!--  Export File -->
-            <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
+            <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">
+                <i class="fas fa-download"></i> ส่งออกข้อมูล
+            </a>
 
             <a type="button" class="btn btn-success" href="/admin/addrecord"><i
                     class="fa-solid fa-plus"></i>&nbsp;เพิ่มข้อมูล</a>
