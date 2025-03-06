@@ -40,13 +40,25 @@ class FormController extends Controller
         return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
         // อัปโหลดไฟล์วิดีโอ (ถ้ามี)
-    $videoPath = null;
-    if ($request->hasFile('video_upload')) {
-        $video = $request->file('video_upload');
-        $videoName = time() . '.' . $video->getClientOriginalExtension();
-        $video->move(public_path('videos'), $videoName); // เก็บไฟล์วิดีโอในโฟลเดอร์ public/videos
-        $videoPath = 'videos/' . $videoName;
+$videoPath = null;
+if ($request->hasFile('video_upload')) {
+    $video = $request->file('video_upload');
+
+    // ตรวจสอบขนาดไฟล์ (สูงสุด 50MB)
+    if ($video->getSize() > 50 * 1024 * 1024) {
+        return redirect()->back()->withErrors(['video_upload' => 'ไฟล์วิดีโอใหญ่เกินไป (สูงสุด 50MB)'])->withInput();
     }
+
+    // สร้างชื่อไฟล์ใหม่
+    $videoName = time() . '.' . $video->getClientOriginalExtension();
+
+    // บันทึกไฟล์ลงในโฟลเดอร์ public/
+    $video->move(public_path(), $videoName);
+
+    // เก็บพาธของไฟล์
+    $videoPath = $videoName;
+}
+
     
     // เก็บลิงก์วิดีโอจาก YouTube (ถ้ามี)
     $videoLink = $request->input('video_link'); // เก็บลิงก์ตรง ๆ ในฐานข้อมูล
