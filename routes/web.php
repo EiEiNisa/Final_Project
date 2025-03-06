@@ -94,16 +94,13 @@ Route::put('/admin/update_disease', [RecorddataController::class, 'update_diseas
 Route::get('recorddata/{recorddata_id}/edit_general_information/{checkup_id}', [RecorddataController::class, 'edit_general_information'])->name('recorddata.edit_general_information');
 Route::delete('/admin/delete_extra_field', [RecorddataController::class, 'deleteExtraField'])->name('delete_extra_field');
 
-// ตัวอย่างใน routes/web.php
 Route::post('/admin/update-general-information/{recorddata_id}/{checkup_id}', [RecorddataController::class, 'update_general_information'])->name('recorddata.update_general_information');
-
 
 Route::get('/admin/dashboard', function () {
     return view('/admin/dashboard');
 });
 
 Route::post('/admin/search-by-date', [RecorddataController::class, 'searchByDate'])->name('recorddata.searchByDate');
-
 
 Route::get('/admin/record_general_information', function () {
     return view('/admin/record_general_information');
@@ -114,11 +111,9 @@ Route::get('/User/dashboard', function () {
 });
 
 Route::get('/User/record', function () {
-    // ดึงข้อมูลจาก Recorddata ทั้งหมด
     $recorddata = \App\Models\Recorddata::orderBy('id', 'desc')->paginate(20); 
 
-    // ใช้งาน Carbon
-    $now = Carbon::now(); // จะได้เวลาและวันที่ปัจจุบัน
+    $now = Carbon::now(); 
     $formattedDate = $now->format('Y-m-d H:i:s'); 
 
     return view('User.record', compact('recorddata', 'formattedDate'));
@@ -128,10 +123,6 @@ Route::get('/User/viewrecord', function () {
     $recorddata = \App\Models\Recorddata::orderBy('id', 'desc')->paginate(20); 
     return view('User.viewrecord', compact('recorddata')); 
 });
-
-//Route::get('/admin/dashboard', function () {
-  //  return view('/admin/dashboard');
-//});
 
 Route::get('/admin/record_general_information', function () {
     return view('/admin/record_general_information');
@@ -144,10 +135,6 @@ Route::get('/User/dashboard', function () {
 Route::get('/User/record', function () {
     return view('/User/record');
 });
-
-//Route::get('/User/about', function () {
- //   return view('/User/about');
-//});
 
 Route::get('/admin/homepage', [HomepageController::class, 'adminHomepage'])->name('admin.homepage');
 Route::get('/User/homepage', [HomepageController::class, 'userHomepage'])->name('User.homepage');
