@@ -646,7 +646,7 @@ form {
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
                                         <label for="diseaseNames_{{ $index }}">โรคประจำตัว</label>
                                         <input type="text" class="form-control" id="diseaseNames_{{ $index }}"
                                             name="diseaseNames[{{ $index }}]"
@@ -657,7 +657,7 @@ form {
 
                                 <div class="row">
                                     @if(isset($lifestylesHabit[$index]))
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
                                         <label
                                             for="lifestyleshabit_{{ $lifestylesHabit[$index]['id'] }}">พฤติกรรม-สุขภาพจิต</label>
                                         <input type="text" class="form-control"
@@ -667,10 +667,10 @@ form {
                                     </div>
                                     @endif
                                 </div>
-                                
+
                                 <div class="row">
                                     @if(isset($elderlyInfo[$index]))
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
                                         <label
                                             for="elderlyhabit_{{ $elderlyInfo[$index]['id'] }}">ข้อมูลผู้สูงอายุ</label>
                                         <input type="text" class="form-control"
@@ -682,7 +682,7 @@ form {
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
                                         <label for="user_name">ผู้บันทึกข้อมูล</label>
                                         <input type="text" class="form-control" id="user_name" name="user_name"
                                             value="{{ old('user_name', $recorddata->user_name) }}" readonly>
@@ -690,7 +690,7 @@ form {
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
                                         <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
                                             class="btn btn-secondary">
                                             แก้ไขข้อมูล
