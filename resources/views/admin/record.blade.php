@@ -165,7 +165,7 @@ td,
 li,
 thead,
 tbody {
-    font-size: 15px;
+    font-size: 10px;
 }
 
 
@@ -674,6 +674,17 @@ tbody {
                                         </div>
                                     </div>
                                 </div>
+
+                                <script>
+                                function toggleDescription() {
+                                    var description = document.getElementById("columnDescription");
+                                    if (description.style.display === "none") {
+                                        description.style.display = "block"; 
+                                    } else {
+                                        description.style.display = "none";
+                                    }
+                                }
+                                </script>
 
                                 <!-- ส่วนอัปโหลดไฟล์ -->
                                 <div class="mb-4 p-3 border rounded">
