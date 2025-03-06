@@ -65,81 +65,101 @@
     padding: 20px;
 }
 
-#accordionExample {
+.custom-accordion {
     width: 100%;
-    max-width: 1000px;
-    margin: 20px auto;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: min-height 0.4s ease-out;
 }
 
-.accordion-item {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
+.custom-accordion-item {
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    margin: 0 auto;
 }
 
-.accordion-header {
-    background-color: #4a90e2;
-    color: white;
-    padding: 10px 10px;
-    cursor: pointer;
-    font-weight: bold;
-    border-bottom: 1px solid #ddd;
-    transition: background-color 0.3s ease;
+.custom-accordion-item .accordion-header {
+    background-color: #f0f8ff;
 }
 
-.accordion-button {
+.custom-accordion-item .accordion-button {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 15px;
-    background: #4a90e2;
-    color: white;
-    border: none;
     width: 100%;
+    text-align: left;
+    padding: 1.2rem 1.5rem;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    color: #333;
 }
 
-.checkup-title {
+.custom-accordion-item .accordion-button:focus {
+    box-shadow: none;
+}
+
+.custom-accordion-item .accordion-button:not(.collapsed) {
+    background-color: #e0f2fe;
+}
+
+.custom-accordion-item .checkup-title {
+    font-weight: 600;
+    color: #020364;
+}
+
+.custom-accordion-item .checkup-date {
+    color: #555;
+    margin-left: 1rem;
+}
+
+.custom-accordion-item .accordion-body {
+    padding: 1.5rem;
+    background-color: #fff;
+    display: block;
+}
+
+.custom-accordion-item .form-group {
+    margin-bottom: 1.2rem;
+    display: block;
+}
+
+.custom-accordion-item .form-group label {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+    color: #444;
+}
+
+.custom-accordion-item .form-group .form-control {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    color: #333;
+    background-color: #f9f9f9;
+    display: block;
+}
+
+.custom-accordion-item .btn-secondary {
+    margin-top: 1.5rem;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+}
+
+.custom-accordion-item .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+}
+
+label {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
+    color: #020364;
 }
-
-.checkup-date {
-    font-size: 14px;
-    color: #ddd;
-    margin-left: 10px;
-}
-
-
-.accordion-collapse {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.1s ease-out;
-}
-
-.accordion-collapse.show {
-    max-height: 1000px;
-}
-
-.accordion-body {
-    background-color: #f1f9ff;
-    padding: 15px;
-    border-top: 1px solid #ddd;
-    border-radius: 0 0 8px 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
 
 .form-group,
 .form-group1 {
