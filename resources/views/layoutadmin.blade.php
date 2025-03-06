@@ -106,14 +106,14 @@
 
     .sidebar a i {
         font-size: 18px;
-        width: 20px;
+        width: 28px;
         text-align: center;
         transition: font-size 0.3s ease, width 0.3s ease;
     }
 
     .sidebar:hover a i {
         font-size: 15px;
-        width: 20px;
+        width: 28px;
     }
 
     .sidebar a span {
