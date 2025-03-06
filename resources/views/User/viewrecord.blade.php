@@ -323,7 +323,7 @@ form {
                 document.getElementById("backButton").href = previousUrl;
             } else {
                 // ถ้าไม่มี "page" ให้กลับไปที่หน้าแรกของ record
-                document.getElementById("backButton").href = "https://thungsetthivhv.pcnone.com/admin/record";
+                document.getElementById("backButton").href = "https://thungsetthivhv.pcnone.com/User/record";
             }
         });
         </script>
