@@ -37,7 +37,6 @@ class UserRecordController extends Controller
 // ตัวอย่างการใช้งานใน UserRecordController
 public function showUserData(Request $request)
 {
-    // ดึงข้อมูลจากฐานข้อมูล พร้อมโหลดข้อมูลโรคที่สัมพันธ์กับ Recorddata
     $query = Recorddata::with('disease'); // ใช้ eager loading เพื่อดึงข้อมูลโรค
 
     // กรองข้อมูลตามคำค้นหาหรือเงื่อนไขที่กำหนด
