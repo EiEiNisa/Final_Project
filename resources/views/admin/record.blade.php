@@ -895,9 +895,7 @@ button.btn-primary:hover {
                     if (!response.ok) {
                         const errorResponse = await response.json();
                         throw new Error(errorResponse.error ||
-                            เกิดข้ อผิดพลาดที่ ไม่ รู้ จั ก($ {
-                                response.status
-                            }));
+                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                     }
 
                     const result = await response.json();
