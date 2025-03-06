@@ -51,6 +51,59 @@
         color: #dc3545;
         font-size: 14px;
     }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            max-width: 100%; 
+            padding: 20px;
+        }
+
+        .profile-title {
+            font-size: 24px;
+        }
+
+        .form-label {
+            font-size: 16px;
+        }
+
+        .form-control {
+            font-size: 16px; 
+            padding: 10px; 
+        }
+
+        .btn-primary {
+            padding: 8px 20px; 
+            font-size: 14px; 
+        }
+
+        .text-danger {
+            font-size: 12px; 
+        }
+    }
+
+    @media (max-width: 480px) {
+        .profile-title {
+            font-size: 20px; 
+        }
+
+        .form-label {
+            font-size: 14px; 
+        }
+
+        .form-control {
+            font-size: 14px; 
+        }
+
+        .btn-primary {
+            font-size: 12px; 
+            padding: 8px 15px; 
+        }
+
+        .text-danger {
+            font-size: 12px; 
+        }
+    }
+
 </style>
 
 <div class="container">
