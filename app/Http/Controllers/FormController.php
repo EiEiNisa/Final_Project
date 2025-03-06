@@ -11,15 +11,15 @@ class FormController extends Controller
 {
   $request->validate([
     'title' => 'required',
-    'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024',
+    'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     'description' => 'required',
     'post_date' => 'required|date',
     'author' => 'required',
-    'video_upload' => 'nullable|mimes:mp4,avi,mov|max:5120', // ขนาดไฟล์วิดีโอไม่เกิน 20 MB
+    'video_upload' => 'nullable|mimes:mp4,avi,mov|max:50000', // ขนาดไฟล์วิดีโอไม่เกิน 20 MB
     'video_link' => 'nullable|url', // Validation สำหรับลิงก์ YouTube
 ], [
-    'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 1 MB',
-    'video_upload.max' => 'ไฟล์วิดีโอใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 5 MB',
+    'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB',
+    'video_upload.max' => 'ไฟล์วิดีโอใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 50 MB',
 ]);
 
 
