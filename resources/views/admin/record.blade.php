@@ -723,14 +723,14 @@ button.btn-primary:hover {
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            
+
             <script>
             document.addEventListener('DOMContentLoaded', function() {
                 let jsonData = [];
                 let uploadedFiles = [];
 
                 document.addEventListener('focusin', function(event) {
-                    console.log("Focus event triggered");
+                    // console.log("Focus event triggered");
                 });
 
                 document.getElementById('excelFile').addEventListener('change', function() {
@@ -871,6 +871,7 @@ button.btn-primary:hover {
                 document.getElementById('submitDataBtn').addEventListener('click', async function() {
                     console.log("jsonData ก่อนส่งไปบันทึก:", jsonData);
 
+                    // ตรวจสอบว่า jsonData มีข้อมูล
                     if (!jsonData || jsonData.length === 0) {
                         showAlert('ไม่มีข้อมูลสำหรับบันทึก');
                         return;
@@ -890,6 +891,7 @@ button.btn-primary:hover {
                                 })
                             });
 
+                        // ตรวจสอบการตอบกลับจากเซิร์ฟเวอร์
                         if (!response.ok) {
                             const errorResponse = await response.json();
                             throw new Error(errorResponse.error ||
@@ -904,6 +906,7 @@ button.btn-primary:hover {
                         showAlert(error.message);
                     }
                 });
+
 
                 function showAlert(message) {
                     console.log("แจ้งเตือน:", message);
