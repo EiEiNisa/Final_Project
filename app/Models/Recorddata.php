@@ -29,9 +29,10 @@ class Recorddata extends Model
         'user_name',
     ];
 
+    // เชื่อมกับตาราง diseases
     public function diseases()
     {
-        return $this->belongsToMany(Disease::class, 'recorddata_disease', 'recorddata_id', 'disease_id');
+        return $this->hasOne(Disease::class, 'recorddata_id', 'id');
     }
 
     // เชื่อมกับ elderly_information (เปลี่ยนชื่อให้ถูกต้อง)
