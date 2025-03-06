@@ -9,17 +9,18 @@ class FormController extends Controller
 {
     public function store(Request $request) 
 {
-    $request->validate([
-        'title' => 'required',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // ขนาดสูงสุด 2 MB
-        'description' => 'required',
-        'post_date' => 'required|date',
-        'author' => 'required',
-        'video_upload' => 'nullable|mimes:mp4,avi,mov', // Validation สำหรับไฟล์วิดีโอ
-        'video_link' => 'nullable|url', // Validation สำหรับลิงก์ YouTube
-    ], [
-        'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB'
-    ]);
+  $request->validate([
+    'title' => 'required',
+    'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240', // ขนาดสูงสุด 10 MB
+    'description' => 'required',
+    'post_date' => 'required|date',
+    'author' => 'required',
+    'video_upload' => 'nullable|mimes:mp4,avi,mov|max:20480', // ขนาดไฟล์วิดีโอไม่เกิน 20 MB
+    'video_link' => 'nullable|url', // Validation สำหรับลิงก์ YouTube
+], [
+    'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 10 MB',
+    'video_upload.max' => 'ไฟล์วิดีโอใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 20 MB',
+]);
 
 
     if ($request->hasFile('image')) {
