@@ -65,7 +65,7 @@ public function submitForm(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_link' => 'nullable|url', // กรอกลิงก์วิดีโอ
             'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:50000', // ไฟล์วิดีโอ
             'description' => 'required|string',
