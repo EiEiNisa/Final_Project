@@ -895,19 +895,28 @@ tbody {
                         })
                     });
 
-                    if (!response.ok) {
-                        const errorResponse = await response.json();
-                        console.error("Server Response:", errorResponse);
-                        throw new Error(errorResponse.error ||
-                            `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
-                    }
-
+                    // ตรวจสอบว่าการตอบกลับจากเซิร์ฟเวอร์สำเร็จหรือไม่
                     const result = await response.json();
-                    console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
-                    window.location.href = "{{ route('recorddata.index') }}";
+                    if (response.ok) {
+                        // ถ้าการส่งข้อมูลสำเร็จ ทำการ redirect ไปหน้า recorddata.index
+                        console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
+                        window.location.href =
+                            "{{ route('recorddata.index') }}?success=true"; // ส่ง query string สำหรับ success
+                    } else {
+                        // ถ้ามีข้อผิดพลาดจากเซิร์ฟเวอร์
+                        throw new Error(result.error || `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
+                    }
                 } catch (error) {
                     console.error("Fetch error:", error);
                     showAlert(error.message);
+                }
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const urlParams = new URLSearchParams(window.location.search);
+
+                if (urlParams.has('success')) {
+                    showAlert('นำเข้าข้อมูลสำเร็จ');
                 }
             });
 
