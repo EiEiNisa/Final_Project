@@ -3,7 +3,7 @@
 @section('content')
 <style>
 .profile-container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 50px auto;
     padding: 30px;
     background-color: #f8f9fa;
@@ -99,7 +99,7 @@
                 @error('current_password') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
             <br>
-            <button type="submit">บันทึกการเปลี่ยนแปลง</button>
+            <button type="submit" class="btn btn-primary btn-block">บันทึกการเปลี่ยนแปลง</button>
         </form>
     </div>
 </div>
