@@ -555,8 +555,8 @@ public function recentlyDeleted(Request $request)
     // หากมีการกรอกชื่อหรือนามสกุล ให้กรองข้อมูล
     if ($request->has('name') && !empty($request->input('name'))) {
         $query->where(function ($q) use ($request) {
-            $q->where('first_name', 'like', '%' . $request->input('name') . '%')
-              ->orWhere('last_name', 'like', '%' . $request->input('name') . '%');
+            $q->where('name', 'like', '%' . $request->input('name') . '%')
+              ->orWhere('surname', 'like', '%' . $request->input('name') . '%');
         });
     }
 
