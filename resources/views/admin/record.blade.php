@@ -910,14 +910,6 @@ tbody {
                 }
             });
 
-            document.addEventListener("DOMContentLoaded", function() {
-                const urlParams = new URLSearchParams(window.location.search);
-
-                if (urlParams.has('success')) {
-                    showAlert('นำเข้าข้อมูลสำเร็จ');
-                }
-            });
-
             function showAlert(message) {
                 console.log("แจ้งเตือน:", message);
                 document.getElementById('alertMessage').textContent = message;
