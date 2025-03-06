@@ -635,7 +635,7 @@ form {
                                                 value="{{ isset($zones[$index]) ? implode(' ', $zones[$index]) : '' }}"
                                                 readonly>
                                         </div>
-                                        <div class="col-12 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <label for="health_zone2">blood pressure zone</label>
                                             <input type="text" class="form-control" id="health_zone2_{{ $index }}"
                                                 name="health_zone2{{ $index }}"
@@ -690,7 +690,7 @@ form {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-12 mb-3">
                                             <a href="{{ route('recorddata.edit_general_information', ['recorddata_id' => $recorddata->id, 'checkup_id' => count($healthRecords) - $index]) }}"
                                                 class="btn btn-secondary">
                                                 แก้ไขข้อมูล
