@@ -406,7 +406,16 @@ form {
 
     <div class="card-header">
         <h4><strong>แก้ไขข้อมูล</strong></h4>
-        <a href="/admin/record" class="btn btn-secondary btn-back">กลับ</a>
+        <a href="#" class="btn btn-secondary btn-back" id="backButton">กลับ</a>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = urlParams.get("page") || 1; 
+            document.getElementById("backButton").href =
+                `https://thungsetthivhv.pcnone.com/admin/record?page=${page}`;
+        });
+        </script>
     </div>
 
     <div class="card-body">

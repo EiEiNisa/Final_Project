@@ -33,25 +33,42 @@
         font-size: 14px;
     }
 
-    .sidebar:hover {
-        width: 200px;
-        background-color: #020364;
-    }
-
+    /* Sidebar */
     .sidebar {
+        width: 80px;
+        /* ขยายความกว้างเริ่มต้น */
+        background-color: #020364;
+        /* สีใหม่ที่สว่างขึ้น */
+        padding: 10px;
+        position: fixed;
+        height: 100vh;
+        top: 0;
+        left: 0;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        transition: width 0.3s ease;
+        overflow: hidden;
+        align-items: center;
+    }
+
+    .sidebar:hover {
+        width: 200px;
+        /* ขยาย Sidebar */
+        background-color: #020364;
+        /* สีสว่างขึ้นเมื่อ Hover */
     }
 
     .sidebar .menu {
         flex-grow: 1;
+        overflow-y: auto;
+        scrollbar-width: none;
     }
 
     .sidebar .menu::-webkit-scrollbar {
         display: none;
     }
 
+    /* โลโก้ให้อยู่ตรงกลาง */
     .sidebar .logo-container {
         display: flex;
         flex-direction: column;
@@ -64,11 +81,13 @@
         width: 50px;
         transition: width 0.3s ease;
         margin-bottom: 10px;
+        /* เพิ่มระยะห่างด้านล่าง */
     }
 
     .sidebar:hover img.logo {
         width: 90px;
     }
+
 
     .sidebar a {
         color: #ffffff;
@@ -77,6 +96,7 @@
         text-decoration: none;
         padding: 10px;
         font-size: 15px;
+        /* ลดขนาดไอคอน */
         border-radius: 5px;
         margin-bottom: 6px;
         text-align: left;
@@ -111,6 +131,7 @@
         background-color: #020364;
     }
 
+    /* กล่องข้อมูลผู้ใช้และปุ่มออกจากระบบ */
     .sidebar .account,
     .logout-btn {
         display: flex;
@@ -159,6 +180,15 @@
         background-color: #C9302C;
     }
 
+    .content {
+        margin-left: 80px;
+        padding: 20px;
+        flex-grow: 1;
+        width: calc(100% - 80px);
+        transition: margin-left 0.3s ease, width 0.3s ease;
+        background-color: #7DA7D8;
+    }
+
     .sidebar:hover~.content {
         margin-left: 200px;
         width: calc(100% - 200px);
@@ -171,6 +201,11 @@
 
         .sidebar:hover {
             width: 160px;
+        }
+
+        .content {
+            margin-left: 60px;
+            width: calc(100% - 60px);
         }
 
         .sidebar:hover~.content {
@@ -186,6 +221,11 @@
 
         .sidebar:hover {
             width: 140px;
+        }
+
+        .content {
+            margin-left: 50px;
+            width: calc(100% - 50px);
         }
 
         .sidebar:hover~.content {
