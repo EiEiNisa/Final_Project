@@ -924,6 +924,13 @@ tbody {
                     alertModal.show();
                 }, 100);
             }
+
+            // เพิ่มการจัดการ Focus เพื่อป้องกันการเรียกซ้ำของ Focusin
+            document.addEventListener('focusin', function(event) {
+                if (event.target === document.activeElement) {
+                    event.stopPropagation();
+                }
+            });
             </script>
 
             <!--  Export File -->
