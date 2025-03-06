@@ -750,27 +750,18 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_index)
 {
-    // ค้นหา recorddata โดยใช้ recorddata_id
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
-    if (!$recorddata->user_id) {
-        return back()->with('error', 'ไม่พบ user_id');
-    }
-
-    // ค้นหาข้อมูล healthRecords ทั้งหมดของ recorddata_id นี้
     $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
                                  ->orderBy('id', 'asc')
                                  ->get();
 
-    // ตรวจสอบว่า checkup_index ถูกต้องหรือไม่
     if ($checkup_index > $healthRecords->count() || $checkup_index < 1) {
         return back()->with('error', 'ไม่พบข้อมูลการตรวจครั้งที่ ' . $checkup_index);
     }
 
-    // ดึง HealthRecord ที่ตรงกับ checkup_index
     $healthRecord = $healthRecords[$checkup_index - 1];
 
-    // อัปเดตข้อมูล HealthRecord
     $healthRecord->update([
         'sys' => $request->input('sys'),
         'dia' => $request->input('dia'),
@@ -780,7 +771,6 @@ public function update_form_general_information(Request $request, $recorddata_id
         'blood_level' => $request->input('blood_level'),
     ]);
 
-    // อัปเดตข้อมูล HealthZone โดยใช้ healthRecord_id
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id) // ใช้ healthRecord ID
                             ->first();
@@ -801,7 +791,6 @@ public function update_form_general_information(Request $request, $recorddata_id
         ]);
     }
 
-    // อัปเดต HealthZone2
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
                               ->where('id', $healthRecord->id) // ใช้ healthRecord ID
                               ->first();
@@ -819,7 +808,6 @@ public function update_form_general_information(Request $request, $recorddata_id
         ]);
     }
 
-    // อัปเดตข้อมูล diseases
     $diseases = Disease::where('recorddata_id', $recorddata_id)
     ->where('id', $healthRecord->id) // ใช้ healthRecord ID
     ->first();
@@ -837,7 +825,6 @@ public function update_form_general_information(Request $request, $recorddata_id
         return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
     }
 
-    // อัปเดตข้อมูล lifestyleHabit
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
     ->where('id', $healthRecord->id) // ใช้ healthRecord ID
     ->first();
@@ -857,7 +844,6 @@ public function update_form_general_information(Request $request, $recorddata_id
         return back()->with('error', 'ไม่พบข้อมูล LifestyleHabit');
     }
 
-    // อัปเดตข้อมูล elderlyInfos
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
     ->where('id', $healthRecord->id) // ใช้ healthRecord ID
     ->first();
