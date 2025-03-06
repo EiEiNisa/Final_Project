@@ -895,15 +895,13 @@ tbody {
                         })
                     });
 
-                    // ตรวจสอบว่าการตอบกลับจากเซิร์ฟเวอร์สำเร็จหรือไม่
                     const result = await response.json();
+
                     if (response.ok) {
-                        // ถ้าการส่งข้อมูลสำเร็จ ทำการ redirect ไปหน้า recorddata.index
-                        console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
-                        window.location.href =
-                            "{{ route('recorddata.index') }}?success=true"; // ส่ง query string สำหรับ success
+                        // เมื่อการนำเข้าข้อมูลสำเร็จ จะทำการ redirect ไปหน้า recorddata.index
+                        window.location.href = "{{ route('recorddata.index') }}";
                     } else {
-                        // ถ้ามีข้อผิดพลาดจากเซิร์ฟเวอร์
+                        // หากมีข้อผิดพลาด
                         throw new Error(result.error || `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
                     }
                 } catch (error) {
