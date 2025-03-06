@@ -384,10 +384,8 @@ form {
             let previousUrl = document.referrer; 
 
             if (previousUrl.includes("admin/record?page=")) {
-                // ถ้ามี "page" อยู่ใน URL ก่อนหน้า
                 document.getElementById("backButton").href = previousUrl;
             } else {
-                // ถ้าไม่มี "page" ให้กลับไปที่หน้าแรกของ record
                 document.getElementById("backButton").href = "https://thungsetthivhv.pcnone.com/admin/record";
             }
         });
@@ -405,7 +403,7 @@ form {
             <div class="form-group1">
                 <label for="id_card" class="form-label">เลขบัตรประจำตัวประชาชน</label>
                 <input type="text" class="form-control" id="id_card" name="id_card"
-                    value="{{ old('id_card', $recorddata->id_card) }}" maxlength="13" readonly>
+                    value="{{ old('id_card', $recorddata->id_card) }}" maxlength="13" disabled>
             </div>
 
             <div class="form-group1">
@@ -443,13 +441,13 @@ form {
             <div class="form-group1">
                 <label for="birthdate" class="form-label">วัน / เดือน / ปีเกิด</label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate"
-                    value="{{ old('birthdate', $recorddata->birthdate) }}" readonly>
+                    value="{{ old('birthdate', $recorddata->birthdate) }}" disabled>
             </div>
 
             <div class="form-group1">
                 <label for="age" class="form-label">อายุ</label>
                 <input type="number" class="form-control" id="age" name="age" value="{{ old('age', $recorddata->age) }}"
-                    readonly>
+                disabled>
             </div>
 
             <script>

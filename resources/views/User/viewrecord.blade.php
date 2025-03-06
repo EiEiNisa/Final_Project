@@ -353,31 +353,31 @@ form {
             <div class="form-group1">
                 <label for="name" class="form-label">ชื่อ</label>
                 <input type="text" class="form-control" id="name" name="name"
-                    value="{{ old('name', $recorddata->name) }}" readonly>
+                    value="{{ old('name', $recorddata->name) }}" disabled>
             </div>
 
             <div class="form-group1">
                 <label for="surname" class="form-label">นามสกุล</label>
                 <input type="text" class="form-control" id="surname" name="surname"
-                    value="{{ old('surname', $recorddata->surname) }}" readonly>
+                    value="{{ old('surname', $recorddata->surname) }}" disabled>
             </div>
 
             <div class="form-group1">
                 <label for="housenumber" class="form-label">บ้านเลขที่</label>
                 <input type="text" class="form-control" id="housenumber" name="housenumber"
-                    value="{{ old('housenumber', $recorddata->housenumber) }}" readonly>
+                    value="{{ old('housenumber', $recorddata->housenumber) }}" disabled>
             </div>
 
             <div class="form-group1">
                 <label for="birthdate" class="form-label">วัน / เดือน / ปีเกิด</label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate"
-                    value="{{ old('birthdate', $recorddata->birthdate) }}" readonly>
+                    value="{{ old('birthdate', $recorddata->birthdate) }}" disabled>
             </div>
 
             <div class="form-group1">
                 <label for="age" class="form-label">อายุ</label>
                 <input type="number" class="form-control" id="age" name="age" value="{{ old('age', $recorddata->age) }}"
-                    readonly>
+                disabled>
             </div>
 
             <script>
@@ -418,19 +418,19 @@ form {
             <div class="form-group1">
                 <label for="weight" class="form-label">น้ำหนัก</label>
                 <input type="number" class="form-control" id="weight" name="weight"
-                    value="{{ old('weight', $recorddata->weight) }}" readonly>
+                    value="{{ old('weight', $recorddata->weight) }}" disabled>
             </div>
 
             <div class="form-group1">
                 <label for="height" class="form-label">ส่วนสูง</label>
                 <input type="number" class="form-control" id="height" name="height"
-                    value="{{ old('height', $recorddata->height) }}" readonly>
+                    value="{{ old('height', $recorddata->height) }}" disabled>
             </div>
 
             <div class="form-group1">
                 <label for="waistline" class="form-label">รอบเอว</label>
                 <input type="number" class="form-control" id="waistline" name="waistline"
-                    value="{{ old('waistline', $recorddata->waistline) }}" readonly>
+                    value="{{ old('waistline', $recorddata->waistline) }}" disabled>
             </div>
 
             <div class="form-group1">
@@ -442,12 +442,12 @@ form {
             <div class="form-group1">
                 <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" id="phone" name="phone"
-                    value="{{ old('phone', $recorddata->phone) }}" readonly>
+                    value="{{ old('phone', $recorddata->phone) }}" disabled>
             </div>
             <div class="form-group1">
                 <label for="idline" class="form-label">ID Line</label>
                 <input type="text" class="form-control" id="idline" name="idline"
-                    value="{{ old('idline', $recorddata->idline) }}" readonly>
+                    value="{{ old('idline', $recorddata->idline) }}" disabled>
             </div>
 
             <div class="form-group3">
