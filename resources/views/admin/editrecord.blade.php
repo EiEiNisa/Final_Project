@@ -381,7 +381,7 @@ form {
 
         <script>
         document.addEventListener("DOMContentLoaded", function() {
-            let previousUrl = document.referrer; 
+            let previousUrl = document.referrer;
 
             if (previousUrl.includes("admin/record?page=")) {
                 document.getElementById("backButton").href = previousUrl;
@@ -447,7 +447,7 @@ form {
             <div class="form-group1">
                 <label for="age" class="form-label">อายุ</label>
                 <input type="number" class="form-control" id="age" name="age" value="{{ old('age', $recorddata->age) }}"
-                disabled>
+                    disabled>
             </div>
 
             <script>
@@ -701,6 +701,15 @@ form {
                     </div>
                 </div>
                 @endforeach
+                @if(count($healthRecords) >= 3)
+                <div class="row mt-3">
+                    <div class="col-12 text-center">
+                        <a href="{{ route('next_page_route') }}" class="btn btn-primary">
+                            ไปหน้าถัดไป
+                        </a>
+                    </div>
+                </div>
+                @endif
             </div>
 
             <script>

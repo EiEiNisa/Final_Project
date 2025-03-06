@@ -285,16 +285,13 @@ tbody {
     .form-group-horizontal {
         display: flex;
         flex-direction: column;
-        /* จัดให้อยู่ในแนวตั้ง */
         gap: 10px;
-        /* เพิ่มระยะห่าง */
     }
 
     .form-group {
         display: flex;
         flex-direction: column;
         width: 100%;
-        /* ให้ input ขยายเต็ม div */
         min-width: 200px;
     }
 
@@ -302,20 +299,16 @@ tbody {
         width: 100%;
     }
 
-    /* ปรับขนาด label และ input */
     .form-group label {
         font-size: 12px;
-        /* ขนาดฟอนต์เล็กลง */
     }
 
     .input-group .form-control {
         padding: 8px 15px;
-        /* เพิ่มการเติมภายใน */
     }
 
     .input-group-text {
         padding: 8px;
-        /* เพิ่มการเติมภายใน */
     }
 
     .table,
