@@ -878,7 +878,7 @@ public function nextPage()
 {
     $healthRecords = HealthRecord::paginate(10);
     
-    return view('recorddata.edit', compact('healthRecords'));
+    return view('recorddata.edit', compact('record'));
 }
 
 

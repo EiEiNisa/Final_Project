@@ -207,12 +207,9 @@ Route::get('/User/record', [UserRecordController::class, 'showUserData'])->name(
 
 Route::get('/admin/about', [AboutController::class, 'adminIndex'])->name('admin.about');
 
-//Route::post('/submit-form', [FormController::class, 'store'])->name('submitform');
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 
-
-// เส้นทางสำหรับส่งข้อมูลฟอร์ม
 Route::post('/admin/form', [FormController::class, 'store'])->name('admin.form.submit');
 
 
