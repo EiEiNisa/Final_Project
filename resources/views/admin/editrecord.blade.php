@@ -410,10 +410,15 @@ form {
 
         <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const page = urlParams.get("page") || 1; 
-            document.getElementById("backButton").href =
-                `https://thungsetthivhv.pcnone.com/admin/record?page=${page}`;
+            let previousUrl = document.referrer; // ดึง URL ต้นทางที่เข้ามา
+
+            if (previousUrl.includes("admin/record?page=")) {
+                // ถ้ามี "page" อยู่ใน URL ก่อนหน้า
+                document.getElementById("backButton").href = previousUrl;
+            } else {
+                // ถ้าไม่มี "page" ให้กลับไปที่หน้าแรกของ record
+                document.getElementById("backButton").href = "https://thungsetthivhv.pcnone.com/admin/record";
+            }
         });
         </script>
     </div>
