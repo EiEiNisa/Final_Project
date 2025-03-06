@@ -596,7 +596,7 @@ form {
                 @foreach($healthRecords as $index => $healthRecord)
                 <div class="custom-accordion-item mb-3">
                     <h2 class="accordion-header" id="heading{{ $index }}">
-                        <button class="accordion-button collapsed d-flex justify-content-between" type="button"
+                        <button class="accordion-button collapsed" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="false"
                             aria-controls="collapse{{ $index }}">
                             <span class="checkup-title">ตรวจครั้งที่ {{ count($healthRecords) - $index }}</span>
@@ -729,7 +729,7 @@ form {
                 </div>
                 @endforeach
             </div>
-            
+
             <script>
             document.addEventListener("DOMContentLoaded", function() {
                 document.querySelectorAll(".accordion-button").forEach(button => {
