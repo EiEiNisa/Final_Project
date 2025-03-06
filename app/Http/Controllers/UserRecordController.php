@@ -32,34 +32,32 @@ class UserRecordController extends Controller
         $records = $query->paginate(10);
     
         return view('User.record', compact('records'));
+    }
+    
+    public function showUserData(Request $request)
+    {
+        $query = Recorddata::with('diseases'); // ใช้ eager loading เพื่อดึงข้อมูลโรค
+    
+        // กรองข้อมูลตามคำค้นหาหรือเงื่อนไขที่กำหนด
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+    
+        if ($request->filled('housenumber')) {
+            $query->where('housenumber', 'like', '%' . $request->input('housenumber') . '%');
+        }
         
+        if ($request->has('diseases') && $request->diseases != '') {
+            $disease = $request->diseases;
+            $query->whereHas('diseases', function($query) use ($disease) {
+                $query->where($disease, 1); // เช็คว่าโรคนั้นๆ ถูกเลือก
+            });
+        }
+    
+        $recorddata = $query->paginate(10); // หรือใช้ get() แทนถ้าไม่ใช้ pagination
+    
+        // ส่งข้อมูลไปยัง View
+        return view('User.record', compact('recorddata'));
     }
-// ตัวอย่างการใช้งานใน UserRecordController
-public function showUserData(Request $request)
-{
-    $query = Recorddata::with('disease'); // ใช้ eager loading เพื่อดึงข้อมูลโรค
-
-    // กรองข้อมูลตามคำค้นหาหรือเงื่อนไขที่กำหนด
-    if ($request->filled('name')) {
-        $query->where('name', 'like', '%' . $request->input('name') . '%');
-    }
-
-    if ($request->filled('housenumber')) {
-        $query->where('housenumber', 'like', '%' . $request->input('housenumber') . '%');
-    }
-    if ($request->has('diseases') && $request->diseases != '') {
-        $disease = $request->diseases;
-        $query->whereHas('diseases', function($query) use ($disease) {
-            $query->where($disease, 1); // เช็คว่าโรคนั้นๆ ถูกเลือก
-        });
-    }
-    $disease = $request->input('diseases');
-
-    // ดึงข้อมูลจากฐานข้อมูล (เช่น paginate หรือ get)
-    $recorddata = $query->paginate(10); // หรือใช้ get() แทนถ้าไม่ใช้ pagination
-
-    // ส่งข้อมูลไปยัง View
-    return view('User.record', compact('recorddata'));
-}
-
+    
 }
