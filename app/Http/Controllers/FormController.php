@@ -15,6 +15,8 @@ class FormController extends Controller
         'description' => 'required',
         'post_date' => 'required|date',
         'author' => 'required',
+        'video_upload' => 'nullable|mimes:mp4,avi,mov', // Validation สำหรับไฟล์วิดีโอ
+        'video_link' => 'nullable|url', // Validation สำหรับลิงก์ YouTube
     ], [
         'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB'
     ]);
@@ -35,12 +37,24 @@ class FormController extends Controller
     } else {
         return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
+       $videoPath = null;
+    if ($request->hasFile('video_upload')) {
+        $video = $request->file('video_upload');
+        $videoName = time() . '.' . $video->getClientOriginalExtension();
+        $video->move(public_path('videos'), $videoName); // เก็บไฟล์วิดีโอในโฟลเดอร์ public/videos
+        $videoPath = 'videos/' . $videoName;
+    }
+    
+    // เก็บลิงก์วิดีโอจาก YouTube (ถ้ามี)
+    $videoLink = $request->input('video_link'); // เก็บลิงก์ตรง ๆ ในฐานข้อมูล
 
     $article = new Article();
     $article->title = $request->input('title');
     $article->image = $imageUrl; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
+    $article->video_upload = $videoPath; // เก็บเส้นทางไฟล์วิดีโอ
+    $article->video_link = $videoLink; // เก็บลิงก์ YouTube
     $article->author = $request->input('author');
 
     if (!$article->save()) {
