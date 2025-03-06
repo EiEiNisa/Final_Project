@@ -819,7 +819,7 @@ form {
                 <label for="user_name" style="margin-bottom: 5px; color: #020364;">ผู้บันทึก</label>
                 <input type="text" class="form-control" id="user_name" name="user_name"
                     value="{{ old('user_name', $recorddata->user_name ?? '') }}" placeholder="ผู้บันทึก" readonly
-                    style="width: 100%; text-align: right;">
+                    style="width: auto; min-width: 200px; text-align: right; align-self: flex-end;">
             </div>
 
             <div class="save">
