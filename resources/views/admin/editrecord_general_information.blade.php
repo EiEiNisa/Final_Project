@@ -640,9 +640,33 @@ form {
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="other" value="0">
                         <input class="form-check-input" type="checkbox" name="other" id="other" value="1"
-                            {{ isset($diseases['other']) && $diseases['other'] == 1 ? 'checked' : '' }}>
+                            {{ isset($diseases['other']) && $diseases['other'] == 1 ? 'checked' : '' }}
+                            onchange="toggleOtherInput()">
                         <label class="form-check-label" for="other">อื่น ๆ</label>
                     </div>
+
+                    <div id="other_input" style="display: none;">
+                        <input type="text" class="form-control" name="other_text" placeholder="กรุณาระบุอื่น ๆ"
+                            value="{{ isset($diseases['other_text']) ? $diseases['other_text'] : '' }}">
+                    </div>
+
+                    <script>
+                    function toggleOtherInput() {
+                        var checkbox = document.getElementById("other");
+                        var otherInputDiv = document.getElementById("other_input");
+
+                        if (checkbox.checked) {
+                            otherInputDiv.style.display = "block"; 
+                        } else {
+                            otherInputDiv.style.display = "none";
+                        }
+                    }
+
+                    window.onload = function() {
+                        toggleOtherInput();
+                    };
+                    </script>
+
                 </div>
             </div>
 
@@ -817,15 +841,16 @@ form {
             <div class="form-group-name"
                 style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
 
-                <label for="user_name" style="margin-bottom: 5px; color: #020364; font-size:15px; font-weight: bold;">ผู้บันทึก</label>
+                <label for="user_name"
+                    style="margin-bottom: 5px; color: #020364; font-size:15px; font-weight: bold;">ผู้บันทึก</label>
 
                 <div style="display: flex; justify-content: flex-end; width: 100%;">
                     <input type="text" class="form-control" id="user_name" name="user_name"
-                        value="{{ old('user_name', $recorddata->user_name ?? '') }}" placeholder="ผู้บันทึก" 
+                        value="{{ old('user_name', $recorddata->user_name ?? '') }}" placeholder="ผู้บันทึก"
                         style="width: 50%; min-width: 200px; text-align: right;">
                 </div>
             </div>
-            
+
             <div class="save">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveModal">
                     บันทึก

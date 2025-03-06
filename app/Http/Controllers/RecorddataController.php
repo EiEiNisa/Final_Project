@@ -772,7 +772,7 @@ public function update_form_general_information(Request $request, $recorddata_id
     ]);
 
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
-                            ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+                            ->where('id', $healthRecord->id) 
                             ->first();
     if ($healthZone) {
         $healthZone->update([
@@ -792,7 +792,7 @@ public function update_form_general_information(Request $request, $recorddata_id
     }
 
     $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                              ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+                              ->where('id', $healthRecord->id) 
                               ->first();
     if ($healthZone2) {
         $healthZone2->update([
@@ -809,7 +809,7 @@ public function update_form_general_information(Request $request, $recorddata_id
     }
 
     $diseases = Disease::where('recorddata_id', $recorddata_id)
-    ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+    ->where('id', $healthRecord->id)
     ->first();
     if ($diseases) {
         $diseases->update([
@@ -820,13 +820,14 @@ public function update_form_general_information(Request $request, $recorddata_id
             'heart' => $request->input('heart', 0),
             'eye' => $request->input('eye', 0),
             'other' => $request->input('other', 0),
+            'other_text' => $request->input('other_text', '') ,
         ]);
     } else {
         return back()->with('error', 'ไม่พบข้อมูลโรคประจำตัว');
     }
 
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-    ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+    ->where('id', $healthRecord->id) 
     ->first();
     if ($lifestyles) {
         $lifestyles->update([
@@ -845,7 +846,7 @@ public function update_form_general_information(Request $request, $recorddata_id
     }
 
     $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-    ->where('id', $healthRecord->id) // ใช้ healthRecord ID
+    ->where('id', $healthRecord->id) 
     ->first();
     if ($elderlyInfos) {
         $elderlyInfos->update([
@@ -865,6 +866,10 @@ public function update_form_general_information(Request $request, $recorddata_id
     } else {
         return back()->with('error', 'ไม่พบข้อมูล Elderly Information');
     }
+
+    $recorddata->user_name = $request->input('user_name');
+    $recorddata->save();
+
 
     return redirect()->route('recorddata.edit', ['id' => $recorddata->id])->with('success', 'อัปเดตข้อมูลสำเร็จเรียบร้อย!');
 }
