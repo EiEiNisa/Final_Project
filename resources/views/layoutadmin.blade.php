@@ -105,7 +105,7 @@
     }
 
     .sidebar a i {
-        font-size: 10px;
+        font-size: 20px;
         width: 20px;
         text-align: center;
         transition: font-size 0.3s ease, width 0.3s ease;
