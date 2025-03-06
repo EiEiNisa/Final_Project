@@ -23,8 +23,9 @@
 }
 
 .form-label {
-    font-weight: 600;
-    color: #333;
+    font-weight: bold;
+    font-size: 15px;
+    color: #020364;
 }
 
 .form-control {
@@ -54,12 +55,6 @@
 .text-danger {
     color: #dc3545;
     font-size: 14px;
-}
-
-label {
-    font-weight: bold;
-    font-size: 15px;
-    color: #020364;
 }
 
 @media (max-width: 768px) {
