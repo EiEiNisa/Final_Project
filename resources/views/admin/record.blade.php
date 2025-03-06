@@ -725,200 +725,192 @@ button.btn-primary:hover {
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
             <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                let jsonData = [];
-                let uploadedFiles = [];
+            let jsonData = [];
+            let uploadedFiles = [];
 
-                document.addEventListener('focusin', function(event) {
-                    // console.log("Focus event triggered");
-                });
+            document.addEventListener('focusin', function(event) {
+                //console.log("Focus event triggered");
+            });
 
-                document.getElementById('excelFile').addEventListener('change', function() {
-                    let file = this.files[0];
-                    if (!file) return;
+            document.getElementById('excelFile').addEventListener('change', function() {
+                let file = this.files[0];
+                if (!file) return;
 
-                    if (uploadedFiles.includes(file.name)) {
-                        showAlert("ไฟล์ " + file.name + " ถูกอัปโหลดไปแล้ว");
-                        this.value = "";
-                        return;
-                    }
-
-                    let allowedExtensions = ['xlsx', 'xls', 'csv'];
-                    let fileExtension = file.name.split('.').pop().toLowerCase();
-
-                    if (!allowedExtensions.includes(fileExtension)) {
-                        showAlert("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
-                        this.value = "";
-                        return;
-                    }
-
-                    handleFile(file);
-                    uploadedFiles.push(file.name);
-                });
-
-                function handleFile(file) {
-                    let reader = new FileReader();
-                    reader.onload = function(e) {
-                        try {
-                            if (file.name.endsWith(".csv")) {
-                                let decoder = new TextDecoder("windows-874");
-                                let textData = decoder.decode(e.target.result);
-                                parseCSV(textData);
-                            } else {
-                                parseExcel(e.target.result);
-                            }
-                        } catch (error) {
-                            console.error("Error reading file:", error);
-                            showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์");
-                        }
-                    };
-
-                    if (file.name.endsWith(".csv")) {
-                        reader.readAsArrayBuffer(file);
-                    } else {
-                        reader.readAsBinaryString(file);
-                    }
+                if (uploadedFiles.includes(file.name)) {
+                    showAlert("ไฟล์ " + file.name + " ถูกอัปโหลดไปแล้ว");
+                    this.value = "";
+                    return;
                 }
 
-                function parseCSV(data) {
-                    Papa.parse(data, {
-                        header: true,
-                        skipEmptyLines: true,
-                        complete: function(results) {
-                            jsonData = results.data.map(obj => {
-                                let formattedObj = {};
-                                Object.keys(obj).forEach(key => {
-                                    formattedObj[key] = decodeText(obj[key]);
-                                });
-                                return formattedObj;
-                            });
-                            displayPreview([Object.keys(jsonData[0]), ...jsonData.map(Object
-                                .values)]);
-                        },
-                        error: function(error) {
-                            console.error("CSV parsing error:", error);
-                            showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์ CSV");
-                        }
-                    });
+                let allowedExtensions = ['xlsx', 'xls', 'csv'];
+                let fileExtension = file.name.split('.').pop().toLowerCase();
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    showAlert("ไฟล์ที่อัปโหลดต้องเป็น .xlsx, .xls หรือ .csv เท่านั้น!");
+                    this.value = "";
+                    return;
                 }
 
-                function parseExcel(data) {
-                    let workbook = XLSX.read(data, {
-                        type: 'binary'
-                    });
-                    let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    jsonData = XLSX.utils.sheet_to_json(firstSheet, {
-                        header: 1
-                    });
-                    let headers = jsonData[0];
-                    jsonData = jsonData.slice(1).map(row => {
-                        let obj = {};
-                        headers.forEach((key, index) => {
-                            obj[key] = key === 'birthdate' ? formatExcelDate(row[index]) : row[
-                                index];
-                        });
-                        return obj;
-                    });
-                    displayPreview([headers, ...jsonData.map(Object.values)]);
-                }
+                handleFile(file);
+                uploadedFiles.push(file.name);
+            });
 
-                function formatExcelDate(serial) {
-                    if (!serial || isNaN(serial)) return serial;
-                    let excelDate = Math.floor(serial);
-                    let unixTimestamp = (excelDate - 25569) * 86400;
-                    let date = new Date(unixTimestamp * 1000);
-                    return date.toISOString().slice(0, 10);
-                }
-
-                function decodeText(text) {
-                    if (!text) return "";
+            function handleFile(file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
                     try {
-                        return decodeURIComponent(escape(text));
-                    } catch (e) {
-                        return text;
-                    }
-                }
-
-                function displayPreview(data) {
-                    let tableHead = document.getElementById('tableHead');
-                    let tableBody = document.getElementById('tableBody');
-                    tableHead.innerHTML = "";
-                    tableBody.innerHTML = "";
-
-                    if (data.length === 0) return;
-
-                    let headers = data[0];
-                    let headerRow = document.createElement('tr');
-                    headers.forEach(header => {
-                        let th = document.createElement('th');
-                        th.textContent = header;
-                        headerRow.appendChild(th);
-                    });
-                    tableHead.appendChild(headerRow);
-
-                    data.slice(1).forEach(rowData => {
-                        let row = document.createElement('tr');
-                        rowData.forEach(cell => {
-                            let td = document.createElement('td');
-                            td.textContent = cell !== undefined ? cell : "";
-                            row.appendChild(td);
-                        });
-                        tableBody.appendChild(row);
-                    });
-                    document.getElementById('submitDataBtn').disabled = false;
-                }
-
-                document.getElementById('submitDataBtn').addEventListener('click', async function() {
-                    console.log("jsonData ก่อนส่งไปบันทึก:", jsonData);
-
-                    // ตรวจสอบว่า jsonData มีข้อมูล
-                    if (!jsonData || jsonData.length === 0) {
-                        showAlert('ไม่มีข้อมูลสำหรับบันทึก');
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch(
-                            "https://thungsetthivhv.pcnone.com/admin/importfile", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-CSRF-TOKEN": document.querySelector(
-                                        'input[name="_token"]').value
-                                },
-                                body: JSON.stringify({
-                                    data: jsonData
-                                })
-                            });
-
-                        // ตรวจสอบการตอบกลับจากเซิร์ฟเวอร์
-                        if (!response.ok) {
-                            const errorResponse = await response.json();
-                            throw new Error(errorResponse.error ||
-                                `เกิดข้อผิดพลาดที่ไม่รู้จัก (${response.status})`);
+                        if (file.name.endsWith(".csv")) {
+                            let decoder = new TextDecoder("windows-874");
+                            let textData = decoder.decode(e.target.result);
+                            parseCSV(textData);
+                        } else {
+                            parseExcel(e.target.result);
                         }
-
-                        const result = await response.json();
-                        console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
-                        window.location.href = "{{ route('recorddata.index') }}";
                     } catch (error) {
-                        console.error("Fetch error:", error);
-                        showAlert(error.message);
+                        console.error("Error reading file:", error);
+                        showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์");
+                    }
+                };
+
+                if (file.name.endsWith(".csv")) {
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    reader.readAsBinaryString(file);
+                }
+            }
+
+            function parseCSV(data) {
+                Papa.parse(data, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        jsonData = results.data.map(obj => {
+                            let formattedObj = {};
+                            Object.keys(obj).forEach(key => {
+                                formattedObj[key] = decodeText(obj[key]);
+                            });
+                            return formattedObj;
+                        });
+                        displayPreview([Object.keys(jsonData[0]), ...jsonData.map(Object.values)]);
+                    },
+                    error: function(error) {
+                        console.error("CSV parsing error:", error);
+                        showAlert("เกิดข้อผิดพลาดในการอ่านไฟล์ CSV");
                     }
                 });
+            }
 
+            function parseExcel(data) {
+                let workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
+                let firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+                    header: 1
+                });
+                let headers = jsonData[0];
+                jsonData = jsonData.slice(1).map(row => {
+                    let obj = {};
+                    headers.forEach((key, index) => {
+                        obj[key] = key === 'birthdate' ? formatExcelDate(row[index]) : row[index];
+                    });
+                    return obj;
+                });
+                displayPreview([headers, ...jsonData.map(Object.values)]);
+            }
 
-                function showAlert(message) {
-                    console.log("แจ้งเตือน:", message);
-                    document.getElementById('alertMessage').textContent = message;
-                    setTimeout(() => {
-                        let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
-                        alertModal.show();
-                    }, 100);
+            function formatExcelDate(serial) {
+                if (!serial || isNaN(serial)) return serial;
+                let excelDate = Math.floor(serial);
+                let unixTimestamp = (excelDate - 25569) * 86400;
+                let date = new Date(unixTimestamp * 1000);
+                return date.toISOString().slice(0, 10);
+            }
+
+            function decodeText(text) {
+                if (!text) return "";
+                try {
+                    return decodeURIComponent(escape(text));
+                } catch (e) {
+                    return text;
+                }
+            }
+
+            function displayPreview(data) {
+                let tableHead = document.getElementById('tableHead');
+                let tableBody = document.getElementById('tableBody');
+                tableHead.innerHTML = "";
+                tableBody.innerHTML = "";
+
+                if (data.length === 0) return;
+
+                let headers = data[0];
+                let headerRow = document.createElement('tr');
+                headers.forEach(header => {
+                    let th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                tableHead.appendChild(headerRow);
+
+                data.slice(1).forEach(rowData => {
+                    let row = document.createElement('tr');
+                    rowData.forEach(cell => {
+                        let td = document.createElement('td');
+                        td.textContent = cell !== undefined ? cell : "";
+                        row.appendChild(td);
+                    });
+                    tableBody.appendChild(row);
+                });
+                document.getElementById('submitDataBtn').disabled = false;
+            }
+
+            document.getElementById('submitDataBtn').addEventListener('click', async function() {
+                console.log("jsonData ก่อนส่งไปบันทึก:", jsonData);
+
+                if (!jsonData || jsonData.length === 0) {
+                    showAlert('ไม่มีข้อมูลสำหรับบันทึก');
+                    return;
+                }
+
+                try {
+                    const response = await fetch("https://thungsetthivhv.pcnone.com/admin/importfile", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                        },
+                        body: JSON.stringify({
+                            data: jsonData
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorResponse = await response.json();
+                        throw new Error(errorResponse.error ||
+                            เกิดข้ อผิดพลาดที่ ไม่ รู้ จั ก($ {
+                                response.status
+                            }));
+                    }
+
+                    const result = await response.json();
+                    console.log("ผลลัพธ์จากเซิร์ฟเวอร์:", result);
+                    window.location.href = "{{ route('recorddata.index') }}";
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    showAlert(error.message);
                 }
             });
-            </script>
 
+            function showAlert(message) {
+                console.log("แจ้งเตือน:", message);
+                document.getElementById('alertMessage').textContent = message;
+                setTimeout(() => {
+                    let alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                    alertModal.show();
+                }, 100);
+            }
+            </script>
 
             <!--  Export File -->
             <a type="button" class="btn btn-secondary" href="{{ url('/admin/export') }}">ส่งออกข้อมูล</a>
