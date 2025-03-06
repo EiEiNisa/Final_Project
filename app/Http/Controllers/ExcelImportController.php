@@ -51,7 +51,7 @@ class ExcelImportController extends Controller
                     'bmi' => $row['bmi'],
                     'phone' => $row['phone'],
                     'idline' => $row['idline'],
-                    'user_id' => $row['user_id'],
+                    'user_name' => $row['user_name'],
                 ]);
 
                 HealthRecord::create([
