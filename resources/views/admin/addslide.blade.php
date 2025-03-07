@@ -44,52 +44,69 @@
 <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
 
-    <!-- ปุ่มเพิ่มสไลด์ใหม่ -->
     <button class="btn btn-success mb-3" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
 
-    <!-- ฟอร์มเพิ่มสไลด์ใหม่ที่ซ่อน -->
-    <form id="add-slide-form" action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data" style="display: none;">
-        @csrf
-        <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
-        <button type="submit" class="btn btn-primary">อัปโหลด</button>
-    </form>
-
-    <div class="slide-container" id="slide-container">
-        <!-- ดึงสไลด์ทั้งหมดจากฐานข้อมูล -->
-        @foreach ($slides as $slide)
-            <div class="slide-item">
-                @php
-                    // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
-                    $slideImage = $slide->path ? asset($slide->path) : asset('images/default.png');
-                @endphp
-
-                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
-
-                <div class="slide-controls">
-                    <!-- ฟอร์มอัปเดตสไลด์ -->
-                    <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" name="slide" class="form-control mb-2" accept="image/*">
-                        <button type="submit" class="btn btn-primary">อัปโหลด</button>
-                    </form>
-
-                    <!-- ฟอร์มลบสไลด์ -->
-                    <form action="{{ route('slideshow.destroy', $slide->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
-                    </form>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    <div class="slide-container" id="slide-container"></div>
 </div>
 
 <script>
-    // เมื่อกดปุ่ม "เพิ่มสไลด์ใหม่"
+document.addEventListener('DOMContentLoaded', function () {
+    loadSlides();
+
     document.getElementById('add-slide-btn').addEventListener('click', function () {
-        document.getElementById('add-slide-form').style.display = 'block';  // แสดงฟอร์มการอัปโหลด
+        let slideContainer = document.getElementById('slide-container');
+        let newSlide = document.createElement('div');
+        newSlide.classList.add('slide-item');
+
+        newSlide.innerHTML = `
+            <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                <button type="submit" class="btn btn-primary">อัปโหลด</button>
+            </form>
+        `;
+
+        slideContainer.appendChild(newSlide);
     });
+});
+
+function loadSlides() {
+    fetch('/api/slides')
+        .then(response => response.json())
+        .then(slides => {
+            let slideContainer = document.getElementById('slide-container');
+            slideContainer.innerHTML = '';
+
+            slides.forEach(slide => {
+                let slideItem = document.createElement('div');
+                slideItem.classList.add('slide-item');
+                slideItem.innerHTML = `
+                    <img src="${slide.path}" alt="Slide ${slide.order}">
+                    <div class="slide-controls">
+                        <form action="/admin/slideshow/update/${slide.id}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                            <button type="submit" class="btn btn-primary">อัปโหลด</button>
+                        </form>
+                        <button class="btn btn-danger" onclick="deleteSlide(${slide.id})">ลบ</button>
+                    </div>
+                `;
+                slideContainer.appendChild(slideItem);
+            });
+        });
+}
+
+function deleteSlide(slideId) {
+    if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
+        fetch(`/admin/slideshow/delete/${slideId}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            loadSlides();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
 </script>
 
 @endsection
