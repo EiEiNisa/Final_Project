@@ -46,27 +46,28 @@
 
     <button class="btn btn-success mb-3" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
 
-    <div class="slide-container" id="slide-container">
-        @foreach ($slides as $slide)
-            <div class="slide-item">
-                <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
+   <div class="slide-container" id="slide-container">
+    @foreach ($slides as $slide)
+        <div class="slide-item">
+            <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
 
-                <div class="slide-controls">
-                    <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <input type="file" name="slide" class="form-control mb-2" accept="image/*">
-                        <button type="submit" class="btn btn-primary">อัปโหลด</button>
-                    </form>
-                    <form action="{{ route('slideshow.delete', $slide->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
-                    </form>
-                </div>
+            <div class="slide-controls">
+                <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                    <button type="submit" class="btn btn-primary">อัปเดต</button>
+                </form>
+                <form action="{{ route('slideshow.delete', $slide->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
+                </form>
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endforeach
+</div>
+
 </div>
 
 <script>
