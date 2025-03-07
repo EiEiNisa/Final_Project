@@ -5,9 +5,9 @@ use Illuminate\Http\Request;
 use App\Models\Slideshow;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+
 class SlideshowController extends Controller
 {
-    
     // แสดงหน้าจัดการสไลด์
     public function index()
     {
@@ -27,11 +27,12 @@ class SlideshowController extends Controller
         $destinationPath = public_path('images');
         $file->move($destinationPath, $filename);
 
+        // ตรวจสอบลำดับการเพิ่มสไลด์
         $lastOrder = Slideshow::max('order') ?? 0;
 
         Slideshow::create([
             'order' => $lastOrder + 1,
-            'path' => 'images' . $filename
+            'path' => 'images/' . $filename, // ควรเก็บ path ที่มีชื่อ folder
         ]);
 
         return back()->with('success', 'เพิ่มสไลด์สำเร็จ!');
@@ -58,7 +59,8 @@ class SlideshowController extends Controller
         $destinationPath = public_path('images');
         $file->move($destinationPath, $filename);
 
-        $slide->update(['path' => 'images' . $filename]);
+        // อัปเดตข้อมูล path ของสไลด์
+        $slide->update(['path' => 'images/' . $filename]);
 
         return back()->with('success', 'อัปโหลดสไลด์สำเร็จ!');
     }
@@ -67,10 +69,16 @@ class SlideshowController extends Controller
     public function destroy($id)
     {
         $slide = Slideshow::findOrFail($id);
-        File::delete(public_path($slide->path));
+        
+        // ลบไฟล์จาก public/images
+        $oldImagePath = public_path($slide->path);
+        if (File::exists($oldImagePath)) {
+            File::delete($oldImagePath);
+        }
+
+        // ลบข้อมูลในฐานข้อมูล
         $slide->delete();
     
         return response()->json(['message' => 'ลบสไลด์สำเร็จ!']);
     }
-    
 }
