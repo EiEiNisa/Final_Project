@@ -54,6 +54,7 @@
         height: auto;
         background-color: #020364;
         color: #fff;
+        margin-top: 30px;
     }
 
     .no-underline-link {
