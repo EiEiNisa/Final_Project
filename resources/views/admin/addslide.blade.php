@@ -70,50 +70,42 @@ document.addEventListener('DOMContentLoaded', function () {
         slideContainer.appendChild(newSlide);
     });
 });
+    <div class="container py-5">
+    <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
+    <div class="slide-container">
+        @for ($i = 1; $i <= 6; $i++)
+            <div class="slide-item">
+                @php
+                    // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
+                    $slideImage = null;
+                    foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+                        if (file_exists(public_path("images/slide$i.$ext"))) {
+                            $slideImage = asset("images/slide$i.$ext");
+                            break;
+                        }
+                    }
+                    $slideImage = $slideImage ?? asset('images/default.png');
+                @endphp
 
-function loadSlides() {
-    fetch('/admin/slideshow')  // ดึงข้อมูลสไลด์จาก Controller
-        .then(response => response.json())
-        .then(slides => {
-            let slideContainer = document.getElementById('slide-container');
-            slideContainer.innerHTML = '';  // เคลียร์คอนเทนต์เก่า
+                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
 
-            slides.forEach(slide => {
-                let slideItem = document.createElement('div');
-                slideItem.classList.add('slide-item');
-                slideItem.innerHTML = `
-                    <img src="${slide.path}" alt="Slide ${slide.order}">
-                    <div class="slide-controls">
-                        <form action="/admin/slideshow/update/${slide.id}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')  <!-- ใช้ PUT ในการอัปเดต -->
-                            <input type="file" name="slide" class="form-control mb-2" accept="image/*">
-                            <button type="submit" class="btn btn-primary">อัปโหลด</button>
-                        </form>
-                        <button class="btn btn-danger" onclick="deleteSlide(${slide.id})">ลบ</button>
-                    </div>
-                `;
-                slideContainer.appendChild(slideItem);
-            });
-        });
-}
+                <div class="slide-controls">
+                    <form action="{{ route('slideshow.update', $i) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                        <button type="submit" class="btn btn-primary">อัปโหลด</button>
+                    </form>
+                    <form action="{{ route('slideshow.delete', $i) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
+                    </form>
+                </div>
+            </div>
+        @endfor
+    </div>
+</div>
 
-function deleteSlide(slideId) {
-    if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
-        fetch(`/admin/slideshow/delete/${slideId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            loadSlides();  // รีเฟรชสไลด์หลังจากลบ
-        })
-        .catch(error => console.error('Error:', error));
-    }
-}
 </script>
 
 @endsection
