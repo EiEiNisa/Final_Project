@@ -164,7 +164,7 @@
                     <ul class="list-unstyled">
                         <li>
                             <p><i class="fas fa-map-marker-alt pe-2" style="font-size: 15px;"></i>227/521 หมู่ 6 ถนนประชาสโมสร
-                                ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น<br>40000</p>
+                            <br>ตำบลในเมือง อำเภอเมือง จังหวัดขอนแก่น<br>40000</p>
                         </li>
                         <li>
                             <p><i class="fas fa-envelope pe-2 mb-0"style="font-size: 15px;"></i>vlt227.521@gmail.com</p>

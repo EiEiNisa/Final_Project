@@ -24,7 +24,7 @@
 
 .form-label {
     font-weight: bold;
-    font-size: 15px;
+    font-size: 18px;
     color: #020364;
 }
 
@@ -32,18 +32,14 @@
     border-radius: 5px;
     border: 1px solid #ddd;
     padding: 8px 12px;
-    /* ลด padding ใน input */
-    font-size: 14px;
-    /* ลดขนาด font ใน input */
+    font-size: 15px;
 }
 
 .btn-primary {
     background-color: #020364;
     border: none;
     padding: 10px 25px;
-    /* ลด padding ใน button */
     font-size: 16px;
-    /* ลดขนาด font ใน button */
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
