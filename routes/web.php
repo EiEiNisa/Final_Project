@@ -211,7 +211,7 @@ Route::post('/admin/form', [FormController::class, 'store'])->name('admin.form.s
 Route::get('/admin/addslide', function () {
     return view('/admin/addslide');
 });
-
+Route::get('/admin/slideshow', [SlideshowController::class, 'index'])->name('slideshow.index');
 Route::get('/api/slides', [SlideshowController::class, 'getSlides']);
 Route::post('/admin/slideshow/store', [SlideshowController::class, 'store'])->name('slideshow.store');
 Route::post('/admin/slideshow', [SlideshowController::class, 'store'])->name('slideshow.store');
