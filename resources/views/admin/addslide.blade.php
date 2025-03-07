@@ -53,13 +53,15 @@
 document.addEventListener('DOMContentLoaded', function () {
     loadSlides();
 
+    // เพิ่ม Event Listener ให้ปุ่มเพิ่มสไลด์
     document.getElementById('add-slide-btn').addEventListener('click', function () {
         let slideContainer = document.getElementById('slide-container');
         let newSlide = document.createElement('div');
         newSlide.classList.add('slide-item');
 
+        // เพิ่มฟอร์มการอัปโหลดสไลด์ใหม่
         newSlide.innerHTML = `
-            <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="add-slide-form" action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                 <button type="submit" class="btn btn-primary">อัปโหลด</button>
@@ -67,8 +69,30 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
 
         slideContainer.appendChild(newSlide);
+
+        // กำหนด Event Listener ใหม่สำหรับฟอร์มเพื่อไม่ให้มีการ submit แบบปกติ
+        newSlide.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault(); // ป้องกันการ submit แบบปกติ
+
+            const formData = new FormData(this);
+
+            fetch("{{ route('slideshow.store') }}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('เพิ่มสไลด์สำเร็จ');
+                loadSlides(); // รีเฟรชสไลด์
+            })
+            .catch(error => console.error('Error:', error));
+        });
     });
 });
+
 
 function loadSlides() {
     fetch('/api/slides')
