@@ -98,7 +98,13 @@ function loadSlides() {
 
 function deleteSlide(slideId) {
     if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
-        fetch(`/admin/slideshow/delete/${slideId}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } })
+        // ใช้ fetch API เพื่อส่งคำขอ DELETE ไปยังเซิร์ฟเวอร์
+        fetch(`/admin/slideshow/delete/${slideId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
         .then(response => response.json())
         .then(data => {
             alert(data.message);
