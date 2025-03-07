@@ -24,7 +24,7 @@ class SlideshowController extends Controller
     ]);
 
     $file = $request->file('slide');
-    $filename = time() . '.' . $file->getClientOriginalExtension();
+    $filename = uniqid() . '.' . $file->getClientOriginalExtension(); // ใช้ uniqid()
     $destinationPath = public_path('images');
     $file->move($destinationPath, $filename);
 
@@ -40,15 +40,15 @@ class SlideshowController extends Controller
 
 public function update(Request $request, $id)
 {
-    if ($request->hasFile('slide')) {
-        $slide = Slideshow::findOrFail($id);
+    $slide = Slideshow::findOrFail($id);
 
+    if ($request->hasFile('slide')) {
         if ($slide->path && file_exists(public_path($slide->path))) {
             unlink(public_path($slide->path));
         }
 
         $file = $request->file('slide');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $filename = uniqid() . '.' . $file->getClientOriginalExtension(); // ใช้ uniqid()
         $destinationPath = public_path('images');
         $file->move($destinationPath, $filename);
 
@@ -72,5 +72,6 @@ public function destroy($id)
 
     return redirect()->route('addslide');
 }
+
 
 }
