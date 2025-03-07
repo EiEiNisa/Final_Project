@@ -7,12 +7,23 @@ use Illuminate\Support\Facades\File;
 
 class SlideshowController extends Controller
 {
-   public function index()
-    {
-        // ดึงข้อมูลสไลด์ทั้งหมดจากฐานข้อมูล
-        $slides = slideshow::orderBy('order')->get(); // สามารถเปลี่ยน 'order' ตามต้องการ
-        return view('admin.slideshow', compact('slides'));  // ส่งตัวแปร $slides ไปยัง view
+  public function index()
+{
+    // ดึงข้อมูลสไลด์ทั้งหมดจากฐานข้อมูลและเรียงลำดับ
+    $slides = Slideshow::orderBy('order')->get();
+
+    // ตรวจสอบข้อมูลที่ได้
+    if ($slides->isEmpty()) {
+        // ถ้าไม่มีข้อมูล ให้แสดงข้อความหรือค่าที่ต้องการ
+        \Log::info('ไม่มีสไลด์');
+    } else {
+        \Log::info('ข้อมูลสไลด์: ', $slides->toArray());
     }
+
+    // ส่งข้อมูลไปยัง View
+    return view('admin.addslide', compact('slides'));
+}
+
 
     // เพิ่มสไลด์ใหม่
     public function store(Request $request)
