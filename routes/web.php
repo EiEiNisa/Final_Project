@@ -212,11 +212,11 @@ Route::get('/admin/addslide', function () {
     return view('/admin/addslide');
 });
 Route::get('/admin/addslide', [SlideshowController::class, 'index']);
-Route::get('/api/slides', [SlideshowController::class, 'getSlides']);
-Route::post('/admin/slideshow/store', [SlideshowController::class, 'store'])->name('slideshow.store');
-Route::post('/admin/slideshow', [SlideshowController::class, 'store'])->name('slideshow.store');
-Route::post('/admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
-Route::delete('/admin/slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.destroy');
+Route::get('admin/addslide', [SlideshowController::class, 'index'])->name('addslide');
+Route::post('admin/slideshow/store', [SlideshowController::class, 'store'])->name('slideshow.store');
+Route::put('admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
+Route::delete('admin/slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.delete');
+
 
 
 
