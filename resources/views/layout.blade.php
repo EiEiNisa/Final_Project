@@ -125,7 +125,7 @@
                         <img src="/logo.png" alt="Logo" loading="Logo" style="width: 150px; height: 150px;"/>
                     </div>
 
-                    <p class="text-center" style="font-size: 15px;">อาสาสมัครสาธารณสุข ประจำหมู่บ้านทุ่งเศรษฐี</p>
+                    <p class="text-center" style="font-size: 15px;">อาสาสมัครสาธารณสุข<br>ประจำหมู่บ้านทุ่งเศรษฐี</p>
 
                     <ul class="list-unstyled d-flex flex-row justify-content-center">
                         <li>
