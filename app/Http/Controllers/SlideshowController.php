@@ -67,7 +67,7 @@ class SlideshowController extends Controller
     public function destroy($id)
     {
         $slide = Slideshow::findOrFail($id);
-        File::delete(public_path($slide->path))
+        File::delete(public_path($slide->path));
         $slide->delete();
     
         return response()->json(['message' => 'ลบสไลด์สำเร็จ!']);
