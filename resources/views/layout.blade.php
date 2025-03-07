@@ -88,7 +88,7 @@
 
     footer iframe {
         width: 100%;
-        height: 300px;
+        height: 200px;
         max-width: 500px;
         margin: 0 auto;
         display: block;
@@ -131,7 +131,7 @@
     </div>
 
     <!-- footer -->
-    <footer class="bg-primary text-center text-lg-start text-white">
+    <footer>
         <!-- Grid container -->
         <div class="container p-4">
             <!--Grid row-->
@@ -139,7 +139,7 @@
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
 
-                    <div class="rounded-circle bg-white shadow-1-strong d-flex align-items-center justify-content-center mb-4 mx-auto"
+                    <div class="d-flex align-items-center justify-content-center mb-4 mx-auto"
                         style="width: 150px; height: 150px;">
                         <img src="/logo.png" height="70"  alt="Logo" loading="Logo" />
                     </div>
@@ -167,10 +167,10 @@
 
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a href="/login" class="text-white"><i class="fas fa-paw pe-3"></i>เข้าสู่ระบบ</a>
+                            <a href="/login" class="text-white">เข้าสู่ระบบ</a>
                         </li>
                         <li class="mb-2">
-                            <a href="/register" class="text-white"><i class="fas fa-paw pe-3"></i>ลงทะเบียน</a>
+                            <a href="/register" class="text-white">ลงทะเบียน</a>
                         </li>
                     </ul>
                 </div>
