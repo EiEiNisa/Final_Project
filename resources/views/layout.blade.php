@@ -67,27 +67,9 @@
         }
     }
 
-    .footer-col {
-        margin-bottom: 30px;
-    }
-
-    .footer-col h4 {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .footer-col a {
-        color: #fff;
-        text-decoration: none;
-    }
-
-    .footer-col a:hover {
-        text-decoration: underline;
-    }
-
     footer iframe {
         width: 100%;
-        height: 300px;
+        height: 250px;
         max-width: 500px;
         margin: 0 auto;
         display: block;
@@ -139,7 +121,7 @@
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
 
                     <div class="d-flex align-items-center justify-content-center mb-4 mx-auto">
-                        <img src="/logo.png" alt="Logo" loading="Logo" style="width: 300px; height: 300px;"/>
+                        <img src="/logo.png" alt="Logo" loading="Logo" style="width: 150px; height: 150px;"/>
                     </div>
 
                     <p class="text-center" style="font-size: 15px;">อาสาสมัครสาธารณสุข ประจำหมู่บ้านทุ่งเศรษฐี</p>
@@ -197,7 +179,7 @@
                     <ul class="list-unstyled">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!4v1732121802730!6m8!1m7!1sXVIYDk14khUq5Us2LVmU-A!2m2!1d16.43429993272521!2d102.8685188069868!3f105.96647009275887!4f11.296777919927024!5f0.7820865974627469"
-                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                            width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </ul>
                 </div>
