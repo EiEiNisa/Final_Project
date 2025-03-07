@@ -51,8 +51,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    loadSlides();
+    loadSlides();  // โหลดสไลด์ที่มีอยู่จากฐานข้อมูล
 
+    // เพิ่ม Event Listener ให้ปุ่มเพิ่มสไลด์
     document.getElementById('add-slide-btn').addEventListener('click', function () {
         let slideContainer = document.getElementById('slide-container');
         let newSlide = document.createElement('div');
@@ -75,7 +76,7 @@ function loadSlides() {
         .then(response => response.json())
         .then(slides => {
             let slideContainer = document.getElementById('slide-container');
-            slideContainer.innerHTML = '';
+            slideContainer.innerHTML = '';  // เคลียร์คอนเทนต์เก่า
 
             slides.forEach(slide => {
                 let slideItem = document.createElement('div');
