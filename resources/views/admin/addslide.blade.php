@@ -70,7 +70,49 @@ document.addEventListener('DOMContentLoaded', function () {
         slideContainer.appendChild(newSlide);
     });
 });
-    <div class="container py-5">
+    function loadSlides() {
+    fetch('/admin/slideshow')  // ดึงข้อมูลสไลด์จาก Controller
+        .then(response => response.json())
+        .then(slides => {
+            let slideContainer = document.getElementById('slide-container');
+            slideContainer.innerHTML = '';  // เคลียร์คอนเทนต์เก่า
+            slides.forEach(slide => {
+                let slideItem = document.createElement('div');
+                slideItem.classList.add('slide-item');
+                slideItem.innerHTML = `
+                    <img src="${slide.path}" alt="Slide ${slide.order}">
+                    <div class="slide-controls">
+                        <form action="/admin/slideshow/update/${slide.id}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')  <!-- ใช้ PUT ในการอัปเดต -->
+                            <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                            <button type="submit" class="btn btn-primary">อัปโหลด</button>
+                        </form>
+                        <button class="btn btn-danger" onclick="deleteSlide(${slide.id})">ลบ</button>
+                    </div>
+                `;
+                slideContainer.appendChild(slideItem);
+            });
+        });
+}
+function deleteSlide(slideId) {
+    if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
+        fetch(`/admin/slideshow/delete/${slideId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            loadSlides();  // รีเฟรชสไลด์หลังจากลบ
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+</script>
+ <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
     <div class="slide-container">
         @for ($i = 1; $i <= 6; $i++)
@@ -105,7 +147,5 @@ document.addEventListener('DOMContentLoaded', function () {
         @endfor
     </div>
 </div>
-
-</script>
 
 @endsection
