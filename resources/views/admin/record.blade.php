@@ -286,7 +286,6 @@ tbody {
         display: none;
     }
 
-
     .form-group-horizontal {
         display: flex;
         flex-direction: column;
@@ -387,6 +386,18 @@ tbody {
     .modal-body .btn-primary {
         padding: 10px;
         font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .rectangle-box {
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none; 
+    }
+
+    .rectangle-box::-webkit-scrollbar {
+        display: none; 
     }
 }
 </style>
