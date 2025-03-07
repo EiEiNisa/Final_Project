@@ -10,7 +10,7 @@ class SlideshowController extends Controller
    public function index()
     {
         // ดึงข้อมูลสไลด์ทั้งหมดจากฐานข้อมูล
-        $slides = Slideshow::orderBy('order')->get(); // สามารถเปลี่ยน 'order' ตามต้องการ
+        $slides = slideshow::orderBy('order')->get(); // สามารถเปลี่ยน 'order' ตามต้องการ
         return view('admin.slideshow', compact('slides'));  // ส่งตัวแปร $slides ไปยัง view
     }
 
