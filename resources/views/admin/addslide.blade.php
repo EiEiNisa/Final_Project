@@ -44,34 +44,37 @@
 <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
 
+    <!-- ปุ่มเพิ่มสไลด์ใหม่ -->
     <button class="btn btn-success mb-3" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
 
-   <div class="slide-container" id="slide-container">
-    @foreach ($slides as $slide)
-        <div class="slide-item">
-            <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
-
-            <div class="slide-controls">
-                <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <input type="file" name="slide" class="form-control mb-2" accept="image/*">
-                    <button type="submit" class="btn btn-primary">อัปเดต</button>
-                </form>
-                <form action="{{ route('slideshow.delete', $slide->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
-                </form>
+    <div class="slide-container" id="slide-container">
+        @foreach ($slides as $slide)
+            <div class="slide-item">
+                <img src="{{ asset($slide->path) }}" alt="Slide {{ $slide->order }}">
+                <div class="slide-controls">
+                    <!-- ฟอร์มสำหรับอัปเดตสไลด์ -->
+                    <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                        <button type="submit" class="btn btn-primary">อัปโหลด</button>
+                    </form>
+                    <!-- ฟอร์มสำหรับลบสไลด์ -->
+                    <form action="{{ route('slideshow.delete', $slide->id) }}" method="POST" class="mt-2">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach
+    </div>
 </div>
 
-</div>
-
+<!-- ฟอร์มเพิ่มสไลด์ -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // เมื่อคลิกที่ปุ่มเพิ่มสไลด์
         document.getElementById('add-slide-btn').addEventListener('click', function () {
             let slideContainer = document.getElementById('slide-container');
             let newSlide = document.createElement('div');
@@ -89,4 +92,5 @@
         });
     });
 </script>
+
 @endsection
