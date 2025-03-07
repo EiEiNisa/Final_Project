@@ -273,14 +273,19 @@ tbody {
         display: flex;
         flex-direction: column;
         max-height: 400px;
-        /* กำหนดความสูงสูงสุด */
-        overflow-y: auto;
-        /* ให้เลื่อนในแนวตั้งได้ */
+        overflow-x: auto;
         padding: 15px;
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
+
+    .rectangle-box::-webkit-scrollbar {
+        display: none;
+    }
+
 
     .form-group-horizontal {
         display: flex;
@@ -1258,12 +1263,6 @@ tbody {
                                     const allItems = document.querySelectorAll(
                                         '.data-item'); // ใช้ข้อมูลที่แสดงทั้งหมด
                                     allItems.forEach(item => item.checked = this.checked);
-
-                                    // ถ้าคุณต้องการเลือกข้อมูลทั้งหมดจากเซิร์ฟเวอร์จริง ๆ (28 รายการ)
-                                    // คำสั่ง AJAX จะไปดึงข้อมูลทั้งหมดจากเซิร์ฟเวอร์
-                                    // fetchAllCheckboxes().then(allItems => {
-                                    //     allItems.forEach(item => item.checked = selectAllCheckbox.checked);
-                                    // });
                                 });
                             }
 
