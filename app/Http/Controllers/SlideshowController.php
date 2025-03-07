@@ -7,6 +7,15 @@ use Illuminate\Support\Facades\File;
 
 class SlideshowController extends Controller
 {
+    public function index()
+{
+    // ดึงข้อมูลทั้งหมดของสไลด์จากฐานข้อมูล
+    $slides = Slideshow::orderBy('order')->get();
+
+    // ส่งตัวแปร $slides ไปยัง view
+    return view('admin.slideshow', compact('slides'));
+}
+
   public function store(Request $request)
 {
     $request->validate([
