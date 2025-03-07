@@ -35,7 +35,7 @@ class SlideshowController extends Controller
         'path' => 'images/' . $filename,
     ]);
 
-    return redirect()->route('slideshow.index');
+    return redirect()->route('addslide');
 }
 
 public function update(Request $request, $id)
@@ -56,7 +56,7 @@ public function update(Request $request, $id)
         $slide->save();
     }
 
-    return redirect()->route('slideshow.index');
+    return redirect()->route('addslide');
 }
 
 public function destroy($id)
@@ -70,7 +70,7 @@ public function destroy($id)
 
     $slide->delete();
 
-    return redirect()->route('slideshow.index');
+    return redirect()->route('addslide');
 }
 
 }
