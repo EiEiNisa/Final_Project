@@ -98,7 +98,6 @@ function loadSlides() {
 
 function deleteSlide(slideId) {
     if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
-        // ใช้ fetch API เพื่อส่งคำขอ DELETE ไปยังเซิร์ฟเวอร์
         fetch(`/admin/slideshow/delete/${slideId}`, {
             method: 'DELETE',
             headers: {
@@ -111,7 +110,6 @@ function deleteSlide(slideId) {
             loadSlides();
         })
         .catch(error => console.error('Error:', error));
-    }
 }
 </script>
 
