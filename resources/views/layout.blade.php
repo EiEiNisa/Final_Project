@@ -87,7 +87,7 @@
 
     footer iframe {
         width: 100%;
-        height: 200px;
+        height: 300px;
         max-width: 500px;
         margin: 0 auto;
         display: block;
@@ -138,9 +138,8 @@
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
 
-                    <div class="d-flex align-items-center justify-content-center mb-4 mx-auto"
-                        style="width: 300px; height: 300px;">
-                        <img src="/logo.png" height="70"  alt="Logo" loading="Logo" />
+                    <div class="d-flex align-items-center justify-content-center mb-4 mx-auto">
+                        <img src="/logo.png" alt="Logo" loading="Logo" style="width: 300px; height: 300px;"/>
                     </div>
 
                     <p class="text-center" style="font-size: 15px;">อาสาสมัครสาธารณสุข ประจำหมู่บ้านทุ่งเศรษฐี</p>
