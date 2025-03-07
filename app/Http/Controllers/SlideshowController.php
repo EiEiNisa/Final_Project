@@ -11,11 +11,10 @@ class SlideshowController extends Controller
     // แสดงหน้าจัดการสไลด์
 public function index()
 {
-    $slides = Slideshow::orderBy('order')->get();
-    return view('admin.slideshow.index', compact('slides'));
+    // ดึงข้อมูลสไลด์ทั้งหมดจากฐานข้อมูล
+    $slides = Slideshow::orderBy('order')->get(); // คุณสามารถเปลี่ยน 'order' ตามที่ต้องการ
+    return view('admin.slideshow.index', compact('slides'));  // ส่งตัวแปร $slides ไปยัง view
 }
-
-
     // เพิ่มสไลด์ใหม่
     public function store(Request $request)
 {
