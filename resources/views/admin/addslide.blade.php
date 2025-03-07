@@ -44,100 +44,52 @@
 <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
 
+    <!-- ปุ่มเพิ่มสไลด์ใหม่ -->
     <button class="btn btn-success mb-3" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
 
-    <div class="slide-container" id="slide-container"></div>
+    <!-- ฟอร์มเพิ่มสไลด์ใหม่ที่ซ่อน -->
+    <form id="add-slide-form" action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data" style="display: none;">
+        @csrf
+        <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
+        <button type="submit" class="btn btn-primary">อัปโหลด</button>
+    </form>
+
+    <div class="slide-container" id="slide-container">
+        <!-- ดึงสไลด์ทั้งหมดจากฐานข้อมูล -->
+        @foreach ($slides as $slide)
+            <div class="slide-item">
+                @php
+                    // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
+                    $slideImage = $slide->path ? asset($slide->path) : asset('images/default.png');
+                @endphp
+
+                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
+
+                <div class="slide-controls">
+                    <!-- ฟอร์มอัปเดตสไลด์ -->
+                    <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                        <button type="submit" class="btn btn-primary">อัปโหลด</button>
+                    </form>
+
+                    <!-- ฟอร์มลบสไลด์ -->
+                    <form action="{{ route('slideshow.destroy', $slide->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    </div>
 </div>
 
 <script>
-// ตรวจสอบเมื่อโหลดหน้าจอแล้ว
-document.addEventListener('DOMContentLoaded', function () {
-    loadSlides();  // โหลดสไลด์ที่มีอยู่จาก API
-
-    // เพิ่ม Event Listener ให้ปุ่มเพิ่มสไลด์
+    // เมื่อกดปุ่ม "เพิ่มสไลด์ใหม่"
     document.getElementById('add-slide-btn').addEventListener('click', function () {
-        let slideContainer = document.getElementById('slide-container');
-        let newSlide = document.createElement('div');
-        newSlide.classList.add('slide-item');
-        
-        // เพิ่มฟอร์มการอัปโหลดสไลด์ใหม่
-        newSlide.innerHTML = `
-            <form id="add-slide-form" action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
-                <button type="submit" class="btn btn-primary">อัปโหลด</button>
-            </form>
-        `;
-        slideContainer.appendChild(newSlide);
-
-        // ใช้ event listener ในการส่งฟอร์มผ่าน fetch API
-        newSlide.querySelector('form').addEventListener('submit', function (e) {
-            e.preventDefault();  // ป้องกันการ submit แบบปกติ
-            
-            const formData = new FormData(this);
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            // ส่งคำขอ POST ผ่าน fetch API พร้อม CSRF token
-            fetch("{{ route('slideshow.store') }}", {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': token,
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('เพิ่มสไลด์สำเร็จ');
-                loadSlides();  // รีเฟรชสไลด์หลังจากอัปโหลด
-            })
-            .catch(error => console.error('Error:', error));
-        });
+        document.getElementById('add-slide-form').style.display = 'block';  // แสดงฟอร์มการอัปโหลด
     });
-});
-
-// ฟังก์ชันโหลดสไลด์จาก API
-function loadSlides() {
-    fetch('/api/slides')
-        .then(response => response.json())
-        .then(slides => {
-            let slideContainer = document.getElementById('slide-container');
-            slideContainer.innerHTML = '';
-            slides.forEach(slide => {
-                let slideItem = document.createElement('div');
-                slideItem.classList.add('slide-item');
-                slideItem.innerHTML = `
-                    <img src="/${slide.path}" alt="Slide ${slide.order}">  <!-- เปลี่ยนจาก ${slide.path} เป็น /${slide.path} -->
-                    <div class="slide-controls">
-                        <form action="/admin/slideshow/update/${slide.id}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="file" name="slide" class="form-control mb-2" accept="image/*">
-                            <button type="submit" class="btn btn-primary">อัปโหลด</button>
-                        </form>
-                        <button class="btn btn-danger" onclick="deleteSlide(${slide.id})">ลบ</button>
-                    </div>
-                `;
-                slideContainer.appendChild(slideItem);
-            });
-        });
-}
-
-// ฟังก์ชันลบสไลด์
-function deleteSlide(slideId) {
-    if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
-        fetch(`/admin/slideshow/delete/${slideId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            loadSlides();  // รีเฟรชหลังจากลบสไลด์
-        })
-        .catch(error => console.error('Error:', error));
-    }
-}
 </script>
 
 @endsection
