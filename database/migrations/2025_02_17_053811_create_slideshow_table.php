@@ -13,20 +13,16 @@ return new class extends Migration
     {
         Schema::create('slideshows', function (Blueprint $table) {
             $table->id();
-            $table->string('slide1')->nullable();
-            $table->string('slide2')->nullable();
-            $table->string('slide3')->nullable();
-            $table->string('slide4')->nullable();
-            $table->string('slide5')->nullable();
-            $table->string('slide6')->nullable();
+            $table->integer('order')->default(0); // ลำดับของสไลด์
+            $table->string('path'); // ที่อยู่ไฟล์รูป
             $table->timestamps();
         });
     }
 
-    /**
+    /*
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('slideshows');
     }
