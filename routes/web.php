@@ -211,11 +211,12 @@ Route::post('/admin/form', [FormController::class, 'store'])->name('admin.form.s
 Route::get('/admin/addslide', function () {
     return view('/admin/addslide');
 });
-Route::get('/admin/addslide', [SlideshowController::class, 'index']);
-Route::get('admin/addslide', [SlideshowController::class, 'index'])->name('addslide');
-Route::post('admin/slideshow/store', [SlideshowController::class, 'store'])->name('slideshow.store');
-Route::put('admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
-Route::delete('admin/slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.delete');
+Route::prefix('admin')->group(function() {
+    Route::get('addslide', [SlideshowController::class, 'index'])->name('addslide');
+    Route::post('slideshow/store', [SlideshowController::class, 'store'])->name('slideshow.store');
+    Route::put('slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
+    Route::delete('slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.delete');
+});
 
 
 
