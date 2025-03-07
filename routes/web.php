@@ -206,8 +206,16 @@ Route::get('/admin/about', [AboutController::class, 'adminIndex'])->name('admin.
 
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
 Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
-
+//
 Route::post('/admin/form', [FormController::class, 'store'])->name('admin.form.submit');
+Route::get('/admin/addslide', function () {
+    return view('/admin/addslide');
+});
+
+Route::get('/admin/slideshow', [SlideshowController::class, 'index'])->name('slideshow.index');
+Route::post('/admin/slideshow/store', [SlideshowController::class, 'store'])->name('slideshow.store');
+Route::post('/admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
+Route::delete('/admin/slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.delete');
 
 
 
