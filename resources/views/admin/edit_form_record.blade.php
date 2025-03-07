@@ -2,40 +2,66 @@
 
 @section('content')
 <style>
-.head {
+.card-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
     color: #020364;
     padding: 20px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: space-between;
+    position: relative;
 }
 
-.head {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+.card-header h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
 }
 
-.rectangle-box {
-    background: #6D91C9;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
+.card-header .btn-back {
+    background: rgba(255, 255, 255, 0.3);
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-header .btn-back:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.card-header::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
     width: 100%;
+    height: 4px;
+    background-color: #020364;
+}
+
+.card-body {
     padding: 20px;
-    border-radius: 5px;
-    background-color: #6D91C9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-/* ปรับขนาด input */
 .custom-input {
     height: 38px;
     border-radius: 6px;
 }
 
-/* ปรับปุ่มลบให้สวย */
 .removeField {
     height: 38px;
     display: flex;
@@ -43,42 +69,29 @@
     justify-content: center;
 }
 
-/* ปรับให้ label อยู่ข้างบน input */
 .form-group {
     display: flex;
-    /* ใช้ Flexbox สำหรับจัดการ layout */
     align-items: center;
-    /* จัดตำแหน่งให้อยู่กลางแนวนอน */
     gap: 10px;
-    /* เพิ่มช่องว่างระหว่าง input และปุ่ม */
 }
 
 .form-control.custom-input {
     flex: 1;
-    /* ให้ input ขยายตัวจนเต็มช่อง */
     font-size: 0.875rem;
-    /* ขนาดตัวอักษรใน input */
     padding: 0.5rem;
-    /* เพิ่ม padding ให้กับ input */
     height: 38px;
-    /* ความสูงของ input */
 }
 
 .btn-danger {
     padding: 0.3rem 0.5rem;
-    /* ปรับขนาดปุ่มให้เล็กลง */
     font-size: 1rem;
-    /* ขนาดตัวอักษรของปุ่ม */
     display: flex;
-    /* ใช้ flex สำหรับจัดการ layout ของ icon */
     align-items: center;
-    /* จัดให้อิคอนอยู่กลางปุ่ม */
     justify-content: center;
 }
 
 .fas.fa-trash-alt {
     font-size: 1.2rem;
-    /* ขยายขนาดของไอคอนให้พอดี */
 }
 
 /* Responsive */
@@ -90,23 +103,32 @@
 }
 </style>
 
-<div class="container py-3">
+<div class="card-container">
+
     @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-    @if(session('warning'))
-    <div class="alert alert-warning">{{ session('warning') }}</div>
-    @endif
-    @if(session('error'))
-    <div class="alert alert-warning">{{ session('error') }}</div>
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
     @endif
 
-    <div class="head">
-        <h4 class="text-center fw-bold mb-4">แก้ไขฟอร์มข้อมูลส่วนตัว</h4>
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    @if(session('warning'))
+    <div class="alert alert-warning">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    <div class="card-header">
+        <h4><strong>แก้ไขฟอร์มข้อมูลส่วนตัว</strong></h4>
         <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary px-4">กลับ</a>
     </div>
 
-    <div class="rectangle-box p-4">
+    <div class="card-body">
         <form action="{{ route('update_record') }}" method="POST" class="container">
             @csrf
             @method('PUT')

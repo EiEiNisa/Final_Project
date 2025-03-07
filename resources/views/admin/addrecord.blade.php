@@ -5,14 +5,14 @@
 .card-container {
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้ดูมีมิติ */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     padding: 25px 30px;
     margin-bottom: 30px;
     transition: all 0.3s ease-in-out;
 }
 
 .card-container:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* เงาเข้มขึ้นเมื่อ hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
@@ -21,17 +21,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative; /* ใช้สำหรับขีดด้านล่าง */
+    position: relative;
 }
 
-/* ข้อความ h4 */
 .card-header h4 {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
 }
 
-/* ปุ่มกลับ */
 .card-header .btn-back {
     background: rgba(255, 255, 255, 0.3);
     color: #000;
@@ -45,15 +43,14 @@
     background: rgba(255, 255, 255, 0.5);
 }
 
-/* ขีดเส้นใต้ */
 .card-header::after {
     content: "";
     position: absolute;
-    bottom: -2px; /* ขีดอยู่ด้านล่าง */
+    bottom: -2px;
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: #020364; /* สีของเส้น */
+    background-color: #020364;
 }
 
 .card-body {
@@ -87,7 +84,6 @@ form {
     font-weight: bold;
     color: #020364;
 }
-
 
 .form-group {
     display: flex;
@@ -201,7 +197,6 @@ form {
     font-weight: bold;
     color: #020364;
     text-align: left;
-    /* Ensure text is aligned left */
 }
 
 .condition-checks {
@@ -243,10 +238,8 @@ form {
     display: flex;
     flex-wrap: wrap;
     gap: 60px;
-    /* Add spacing between groups */
     justify-content: space-between;
     width: 100%;
-    /* Ensure it takes up full width */
 }
 
 
@@ -378,10 +371,10 @@ form {
     </div>
     @endif
 
-    <div class="card-header"> 
-    <h4><strong>HEALTH CARD</strong></h4>
-    <a href="/admin/record" class="btn btn-secondary btn-back">กลับ</a>
-</div>
+    <div class="card-header">
+        <h4><strong>HEALTH CARD</strong></h4>
+        <a href="/admin/record" class="btn btn-secondary btn-back">กลับ</a>
+    </div>
 
 
     <div class="card-body">
