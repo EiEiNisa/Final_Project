@@ -8,8 +8,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    /* เพื่อให้ปุ่มแตกแถวในหน้าจอเล็ก */
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 3px solid #020364;
+    margin-bottom: 20px;
 }
 
 .btn-container {
