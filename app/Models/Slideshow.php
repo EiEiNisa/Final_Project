@@ -9,7 +9,7 @@ class Slideshow extends Model
 {
     use HasFactory;
 
-    protected $table = 'slideshows'; 
-
-    protected $fillable = ['slide1', 'slide2', 'slide3', 'slide4', 'slide5', 'slide6']; // เพิ่มฟิลด์ที่ต้องการอนุญาตให้ mass assignment
+    protected $table = 'slideshows'; // ระบุชื่อ Table
+    protected $fillable = ['order', 'path']; // อนุญาตให้เพิ่มข้อมูลในคอลัมน์นี้ได้
 }
+
