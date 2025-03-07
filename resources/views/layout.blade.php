@@ -130,24 +130,84 @@
         @yield('content')
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-col">
-            <h4>ที่อยู่</h4>
-            <p>227/521 หมู่ 6 ถนนประชาสโมสร ตำบลในเมือง<br>อำเภอเมือง ขอนแก่น จังหวัดขอนแก่น 40000</p>
-            <h4>ช่องทางการติดต่อ</h4>
-            <a href="https://www.facebook.com/profile.php?id=100089961199904">Facebook : จิตอาสา ชุมชน
-                ทุ่งเศรษฐี</a><br>
-            <a href="mailto:vlt227.521@gmail.com">Email : vlt227.521@gmail.com</a>
-        </div>
-        <div class="footer-col">
-            <h4>แผนที่</h4>
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!4v1732121802730!6m8!1m7!1sXVIYDk14khUq5Us2LVmU-A!2m2!1d16.43429993272521!2d102.8685188069868!3f105.96647009275887!4f11.296777919927024!5f0.7820865974627469"
-                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <!-- footer -->
+    <footer class="bg-primary text-center text-lg-start text-white">
+        <!-- Grid container -->
+        <div class="container p-4">
+            <!--Grid row-->
+            <div class="row my-4">
+                <!--Grid column-->
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+
+                    <div class="rounded-circle bg-white shadow-1-strong d-flex align-items-center justify-content-center mb-4 mx-auto"
+                        style="width: 150px; height: 150px;">
+                        <img src="/logo.png" height="70"  alt="Logo" loading="Logo" />
+                    </div>
+
+                    <p class="text-center">อาสาสมัครสาธารณสุข ประจำหมู่บ้านทุ่งเศรษฐี</p>
+
+                    <ul class="list-unstyled d-flex flex-row justify-content-center">
+                        <li>
+                            <a class="text-white px-2" href="https://www.facebook.com/profile.php?id=100089961199904">
+                                <i class="fab fa-facebook-square"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="text-white px-2" href="mailto:vlt227.521@gmail.com">
+                                <i class="fab fa-google-plus-g"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">เมนู</h5>
+
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="/login" class="text-white"><i class="fas fa-paw pe-3"></i>เข้าสู่ระบบ</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="/register" class="text-white"><i class="fas fa-paw pe-3"></i>ลงทะเบียน</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">ช่องทางการติดต่อ</h5>
+
+                    <ul class="list-unstyled">
+                        <li>
+                            <p><i class="fas fa-map-marker-alt pe-2"></i>227/521 หมู่ 6 ถนนประชาสโมสร
+                                ตำบลในเมือง<br>อำเภอเมือง ขอนแก่น จังหวัดขอนแก่น 40000</p>
+                        </li>
+                        <li>
+                            <p><i class="fas fa-envelope pe-2 mb-0"></i>vlt227.521@gmail.com</p>
+                        </li>
+                    </ul>
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">แผนที่</h5>
+
+                    <ul class="list-unstyled">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!4v1732121802730!6m8!1m7!1sXVIYDk14khUq5Us2LVmU-A!2m2!1d16.43429993272521!2d102.8685188069868!3f105.96647009275887!4f11.296777919927024!5f0.7820865974627469"
+                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </ul>
+                </div>
+            </div>
         </div>
     </footer>
+
+    </div>
 
 </body>
 
