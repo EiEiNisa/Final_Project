@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         newSlide.innerHTML = `
             <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
                 <button type="submit" class="btn btn-primary">อัปโหลด</button>
             </form>
         `;
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function loadSlides() {
-    fetch('/api/slides')
+    fetch('/admin/slideshow')  // ดึงข้อมูลสไลด์จาก Controller
         .then(response => response.json())
         .then(slides => {
             let slideContainer = document.getElementById('slide-container');
@@ -85,6 +85,7 @@ function loadSlides() {
                     <div class="slide-controls">
                         <form action="/admin/slideshow/update/${slide.id}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')  <!-- ใช้ PUT ในการอัปเดต -->
                             <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                             <button type="submit" class="btn btn-primary">อัปโหลด</button>
                         </form>
@@ -98,11 +99,16 @@ function loadSlides() {
 
 function deleteSlide(slideId) {
     if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
-        fetch(`/admin/slideshow/delete/${slideId}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } })
+        fetch(`/admin/slideshow/delete/${slideId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
         .then(response => response.json())
         .then(data => {
             alert(data.message);
-            loadSlides();
+            loadSlides();  // รีเฟรชสไลด์หลังจากลบ
         })
         .catch(error => console.error('Error:', error));
     }
