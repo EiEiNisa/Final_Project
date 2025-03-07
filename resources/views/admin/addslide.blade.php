@@ -101,15 +101,12 @@ function loadSlides() {
         .then(response => response.json())
         .then(slides => {
             let slideContainer = document.getElementById('slide-container');
-            slideContainer.innerHTML = '';  // เคลียร์เนื้อหาก่อน
-
+            slideContainer.innerHTML = '';
             slides.forEach(slide => {
                 let slideItem = document.createElement('div');
                 slideItem.classList.add('slide-item');
-                
-                // ใช้ฟังก์ชัน escape() เพื่อป้องกัน XSS
                 slideItem.innerHTML = `
-                    <img src="${encodeURIComponent(slide.path)}" alt="Slide ${slide.order}">
+                    <img src="/${slide.path}" alt="Slide ${slide.order}">  <!-- เปลี่ยนจาก ${slide.path} เป็น /${slide.path} -->
                     <div class="slide-controls">
                         <form action="/admin/slideshow/update/${slide.id}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -121,8 +118,7 @@ function loadSlides() {
                 `;
                 slideContainer.appendChild(slideItem);
             });
-        })
-        .catch(error => console.error('Error:', error));
+        });
 }
 
 // ฟังก์ชันลบสไลด์
