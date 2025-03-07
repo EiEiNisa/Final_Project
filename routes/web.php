@@ -214,7 +214,9 @@ Route::get('/admin/addslide', function () {
 
 Route::get('/api/slides', [SlideshowController::class, 'getSlides']);
 Route::post('/admin/slideshow/store', [SlideshowController::class, 'store'])->name('slideshow.store');
-Route::delete('/admin/slideshow/delete/{id}', [SlideshowController::class, 'destroy']);
+Route::post('/admin/slideshow', [SlideshowController::class, 'store'])->name('slideshow.store');
+Route::post('/admin/slideshow/update/{id}', [SlideshowController::class, 'update'])->name('slideshow.update');
+Route::delete('/admin/slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.destroy');
 
 
 
