@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Storage;
 class SlideshowController extends Controller
 {
     // แสดงหน้าจัดการสไลด์
-    public function index()
-    {
-        $slides = Slideshow::orderBy('order')->get();
-        return view('admin.slideshow.index', compact('slides'));
-    }
+public function index()
+{
+    $slides = Slideshow::orderBy('order')->get();
+    return view('admin.slideshow.index', compact('slides'));
+}
+
 
     // เพิ่มสไลด์ใหม่
     public function store(Request $request)
