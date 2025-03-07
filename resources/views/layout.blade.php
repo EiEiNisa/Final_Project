@@ -125,17 +125,17 @@
                         <img src="/logo.png" alt="Logo" loading="Logo" style="width: 150px; height: 150px;"/>
                     </div>
 
-                    <p class="text-center" style="font-size: 20px;">อาสาสมัครสาธารณสุข<br>ประจำหมู่บ้านทุ่งเศรษฐี</p>
+                    <p class="text-center" style="font-size: 18px;">อาสาสมัครสาธารณสุข<br>ประจำหมู่บ้านทุ่งเศรษฐี</p>
 
                     <ul class="list-unstyled d-flex flex-row justify-content-center">
                         <li>
                             <a class="text-white px-2" href="https://www.facebook.com/profile.php?id=100089961199904">
-                                <i class="fab fa-facebook-square fa-2x"></i>
+                                <i class="fab fa-facebook-square fa-lg"></i>
                             </a>
                         </li>
                         <li>
                             <a class="text-white px-2" href="mailto:vlt227.521@gmail.com">
-                                <i class="fab fa-google-plus-g fa-2x"></i>
+                                <i class="fab fa-google-plus-g fa-lg"></i>
                             </a>
                         </li>
                     </ul>
