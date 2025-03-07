@@ -52,7 +52,6 @@
         align-items: flex-start;
         justify-content: space-between;
         height: auto;
-        padding: 40px;
         background-color: #020364;
         color: #fff;
     }
@@ -140,11 +139,11 @@
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
 
                     <div class="d-flex align-items-center justify-content-center mb-4 mx-auto"
-                        style="width: 150px; height: 150px;">
+                        style="width: 300px; height: 300px;">
                         <img src="/logo.png" height="70"  alt="Logo" loading="Logo" />
                     </div>
 
-                    <p class="text-center">อาสาสมัครสาธารณสุข ประจำหมู่บ้านทุ่งเศรษฐี</p>
+                    <p class="text-center" style="font-size: 15px;">อาสาสมัครสาธารณสุข ประจำหมู่บ้านทุ่งเศรษฐี</p>
 
                     <ul class="list-unstyled d-flex flex-row justify-content-center">
                         <li>
@@ -167,10 +166,10 @@
 
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a href="/login" class="text-white">เข้าสู่ระบบ</a>
+                            <a href="/login" class="text-white" style="font-size: 15px;">เข้าสู่ระบบ</a>
                         </li>
                         <li class="mb-2">
-                            <a href="/register" class="text-white">ลงทะเบียน</a>
+                            <a href="/register" class="text-white" style="font-size: 15px;">ลงทะเบียน</a>
                         </li>
                     </ul>
                 </div>
@@ -182,11 +181,11 @@
 
                     <ul class="list-unstyled">
                         <li>
-                            <p><i class="fas fa-map-marker-alt pe-2"></i>227/521 หมู่ 6 ถนนประชาสโมสร
+                            <p><i class="fas fa-map-marker-alt pe-2" style="font-size: 15px;"></i>227/521 หมู่ 6 ถนนประชาสโมสร
                                 ตำบลในเมือง<br>อำเภอเมือง ขอนแก่น จังหวัดขอนแก่น 40000</p>
                         </li>
                         <li>
-                            <p><i class="fas fa-envelope pe-2 mb-0"></i>vlt227.521@gmail.com</p>
+                            <p><i class="fas fa-envelope pe-2 mb-0"style="font-size: 15px;"></i>vlt227.521@gmail.com</p>
                         </li>
                     </ul>
                 </div>
