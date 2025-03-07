@@ -13,7 +13,7 @@ public function index()
 {
     // ดึงข้อมูลสไลด์ทั้งหมดจากฐานข้อมูล
     $slides = Slideshow::orderBy('order')->get(); // คุณสามารถเปลี่ยน 'order' ตามที่ต้องการ
-    return view('admin.slideshow.index', compact('slides'));  // ส่งตัวแปร $slides ไปยัง view
+    return view('admin.slideshow', compact('slides'));  // ส่งตัวแปร $slides ไปยัง view
 }
     // เพิ่มสไลด์ใหม่
     public function store(Request $request)
