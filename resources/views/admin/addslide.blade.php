@@ -101,7 +101,9 @@ function loadSlides() {
         .then(response => response.json())
         .then(slides => {
             let slideContainer = document.getElementById('slide-container');
-            slideContainer.innerHTML = '';
+            slideContainer.innerHTML = '';  // เคลียร์สไลด์เก่า
+
+            // แสดงสไลด์ที่ดึงจาก API
             slides.forEach(slide => {
                 let slideItem = document.createElement('div');
                 slideItem.classList.add('slide-item');
