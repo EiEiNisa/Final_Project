@@ -7,11 +7,10 @@ use Illuminate\Support\Facades\File;
 
 class SlideshowController extends Controller
 {
-    // แสดงหน้าจัดการสไลด์
-    public function index()
+   public function index()
     {
         // ดึงข้อมูลสไลด์ทั้งหมดจากฐานข้อมูล
-        $slides = Slideshow::orderBy('order')->get(); // คุณสามารถเปลี่ยน 'order' ตามที่ต้องการ
+        $slides = Slideshow::orderBy('order')->get(); // สามารถเปลี่ยน 'order' ตามต้องการ
         return view('admin.slideshow', compact('slides'));  // ส่งตัวแปร $slides ไปยัง view
     }
 
@@ -25,8 +24,6 @@ class SlideshowController extends Controller
         // อัปโหลดไฟล์
         $file = $request->file('slide');
         $filename = time() . '.' . $file->getClientOriginalExtension();
-
-        // เก็บไฟล์ใน public/images
         $destinationPath = public_path('images'); // ใช้ public_path เพื่อชี้ไปที่โฟลเดอร์ public/images
         $file->move($destinationPath, $filename); // ย้ายไฟล์ไปยังโฟลเดอร์นี้
 
