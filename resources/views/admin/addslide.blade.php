@@ -50,62 +50,66 @@
 </div>
 
 <script>
+// ตรวจสอบเมื่อโหลดหน้าจอแล้ว
 document.addEventListener('DOMContentLoaded', function () {
-    loadSlides();
+    loadSlides();  // โหลดสไลด์ที่มีอยู่จาก API
 
     // เพิ่ม Event Listener ให้ปุ่มเพิ่มสไลด์
     document.getElementById('add-slide-btn').addEventListener('click', function () {
         let slideContainer = document.getElementById('slide-container');
         let newSlide = document.createElement('div');
         newSlide.classList.add('slide-item');
-
+        
         // เพิ่มฟอร์มการอัปโหลดสไลด์ใหม่
         newSlide.innerHTML = `
             <form id="add-slide-form" action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="slide" class="form-control mb-2" accept="image/*">
+                <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
                 <button type="submit" class="btn btn-primary">อัปโหลด</button>
             </form>
         `;
-
         slideContainer.appendChild(newSlide);
 
-        // กำหนด Event Listener ใหม่สำหรับฟอร์มเพื่อไม่ให้มีการ submit แบบปกติ
+        // ใช้ event listener ในการส่งฟอร์มผ่าน fetch API
         newSlide.querySelector('form').addEventListener('submit', function (e) {
-            e.preventDefault(); // ป้องกันการ submit แบบปกติ
-
+            e.preventDefault();  // ป้องกันการ submit แบบปกติ
+            
             const formData = new FormData(this);
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+            // ส่งคำขอ POST ผ่าน fetch API พร้อม CSRF token
             fetch("{{ route('slideshow.store') }}", {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': token,
                 }
             })
             .then(response => response.json())
             .then(data => {
                 alert('เพิ่มสไลด์สำเร็จ');
-                loadSlides(); // รีเฟรชสไลด์
+                loadSlides();  // รีเฟรชสไลด์หลังจากอัปโหลด
             })
             .catch(error => console.error('Error:', error));
         });
     });
 });
 
-
+// ฟังก์ชันโหลดสไลด์จาก API
 function loadSlides() {
     fetch('/api/slides')
         .then(response => response.json())
         .then(slides => {
             let slideContainer = document.getElementById('slide-container');
-            slideContainer.innerHTML = '';
+            slideContainer.innerHTML = '';  // เคลียร์เนื้อหาก่อน
 
             slides.forEach(slide => {
                 let slideItem = document.createElement('div');
                 slideItem.classList.add('slide-item');
+                
+                // ใช้ฟังก์ชัน escape() เพื่อป้องกัน XSS
                 slideItem.innerHTML = `
-                    <img src="${slide.path}" alt="Slide ${slide.order}">
+                    <img src="${encodeURIComponent(slide.path)}" alt="Slide ${slide.order}">
                     <div class="slide-controls">
                         <form action="/admin/slideshow/update/${slide.id}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -117,9 +121,11 @@ function loadSlides() {
                 `;
                 slideContainer.appendChild(slideItem);
             });
-        });
+        })
+        .catch(error => console.error('Error:', error));
 }
 
+// ฟังก์ชันลบสไลด์
 function deleteSlide(slideId) {
     if (confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')) {
         fetch(`/admin/slideshow/delete/${slideId}`, {
@@ -131,9 +137,10 @@ function deleteSlide(slideId) {
         .then(response => response.json())
         .then(data => {
             alert(data.message);
-            loadSlides();
+            loadSlides();  // รีเฟรชหลังจากลบสไลด์
         })
         .catch(error => console.error('Error:', error));
+    }
 }
 </script>
 
