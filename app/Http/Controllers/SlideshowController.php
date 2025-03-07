@@ -9,12 +9,13 @@ class SlideshowController extends Controller
 {
     public function index()
 {
-    // ดึงข้อมูลทั้งหมดของสไลด์จากฐานข้อมูล
-    $slides = Slideshow::orderBy('order')->get();
+    // ดึงข้อมูลทั้งหมดจากฐานข้อมูล โดยเรียงตาม 'order'
+    $slides = Slideshow::orderBy('order')->get();  // ดึงข้อมูลสไลด์ทั้งหมดที่จัดเรียงตาม 'order'
 
-    // ส่งตัวแปร $slides ไปยัง view
-    return view('admin.slideshow', compact('slides'));
+    // ส่งตัวแปร $slides ไปยัง view 'admin.addslide'
+    return view('admin.addslide', compact('slides'));
 }
+
 
   public function store(Request $request)
 {
