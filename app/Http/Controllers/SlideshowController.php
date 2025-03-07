@@ -17,49 +17,55 @@ class SlideshowController extends Controller
 
     // เพิ่มสไลด์ใหม่
     public function store(Request $request)
-    {
-        $request->validate([
-            'slide' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
-        ]);
+{
+    $request->validate([
+        'slide' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+    ]);
 
-        $file = $request->file('slide');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $destinationPath = public_path('images');
-        $file->move($destinationPath, $filename);
+    $file = $request->file('slide');
+    $filename = time() . '.' . $file->getClientOriginalExtension();
+    $destinationPath = public_path('images'); // เก็บใน public/images
+    $file->move($destinationPath, $filename);
 
-        $lastOrder = Slideshow::max('order') ?? 0;
+    $lastOrder = Slideshow::max('order') ?? 0;
 
-        Slideshow::create([
-            'order' => $lastOrder + 1,
-            'path' => 'images/' . $filename
-        ]);
+    Slideshow::create([
+        'order' => $lastOrder + 1,
+        'path' => 'images/' . $filename  // เก็บ path ที่ต้องการ
+    ]);
 
-        return response()->json(['message' => 'เพิ่มสไลด์สำเร็จ!']);
-    }
+    return response()->json(['message' => 'เพิ่มสไลด์สำเร็จ!']);
+}
+
 public function update(Request $request, $id)
-    {
-        // ตรวจสอบว่ามีไฟล์อัปโหลดหรือไม่
-        if ($request->hasFile('slide')) {
-            // ค้นหาสไลด์จากฐานข้อมูล
-            $slide = Slideshow::findOrFail($id);
+{
+    // ตรวจสอบว่ามีไฟล์อัปโหลดหรือไม่
+    if ($request->hasFile('slide')) {
+        // ค้นหาสไลด์จากฐานข้อมูล
+        $slide = Slideshow::findOrFail($id);
 
-            // ลบไฟล์เก่าออกหากมี
-            if ($slide->path && file_exists(public_path($slide->path))) {
-                unlink(public_path($slide->path));
-            }
-
-            // อัปโหลดไฟล์ใหม่
-            $path = $request->file('slide')->store('slides', 'public');
-            $slide->path = $path;
-
-            // บันทึกการอัปเดต
-            $slide->save();
-
-            return response()->json(['message' => 'สไลด์ถูกอัปเดตแล้ว'], 200);
+        // ลบไฟล์เก่าออกหากมี
+        if ($slide->path && file_exists(public_path($slide->path))) {
+            unlink(public_path($slide->path));
         }
 
-        return response()->json(['message' => 'ไม่พบไฟล์ที่อัปโหลด'], 400);
+        // อัปโหลดไฟล์ใหม่
+        $file = $request->file('slide');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = public_path('images'); // เก็บใน public/images
+        $file->move($destinationPath, $filename);
+
+        $slide->path = 'images/' . $filename; // บันทึก path ใหม่
+
+        // บันทึกการอัปเดต
+        $slide->save();
+
+        return response()->json(['message' => 'สไลด์ถูกอัปเดตแล้ว'], 200);
     }
+
+    return response()->json(['message' => 'ไม่พบไฟล์ที่อัปโหลด'], 400);
+}
+
     // ลบสไลด์
     public function destroy($id)
     {
@@ -73,10 +79,5 @@ public function update(Request $request, $id)
         return response()->json(['message' => 'ลบสไลด์สำเร็จ!']);
     }
 
-    // API สำหรับดึงข้อมูลสไลด์ทั้งหมด
-    public function getSlides()
-    {
-        return response()->json(Slideshow::orderBy('order')->get());
-    }
 }
 
