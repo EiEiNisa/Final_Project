@@ -125,7 +125,7 @@
 
     <div class="card-header">
         <h4><strong>แก้ไขฟอร์มข้อมูลส่วนตัว</strong></h4>
-        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary px-4">กลับ</a>
+        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back">กลับ</a>
     </div>
 
     <div class="card-body">

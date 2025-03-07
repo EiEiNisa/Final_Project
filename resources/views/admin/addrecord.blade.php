@@ -299,21 +299,15 @@ form {
     .circle-container {
         display: flex;
         flex-direction: column;
-        /* วงกลมจะเรียงแนวตั้ง */
         align-items: flex-start;
-        /* ชิดซ้าย */
     }
 
     .circle-group {
         display: flex;
         flex-direction: row;
-        /* เรียงวงกลม, label, และ checkbox เป็นแนวนอน */
         align-items: center;
-        /* ให้วงกลม, label, และ checkbox อยู่ในแนวเดียวกัน */
         margin-bottom: 20px;
-        /* ระยะห่างระหว่างกลุ่ม */
         width: 100%;
-        /* ให้ใช้พื้นที่ทั้งหมด */
     }
 
     .circle {
@@ -321,22 +315,17 @@ form {
         height: 50px;
         border-radius: 50%;
         margin-right: 10px;
-        /* ระยะห่างระหว่างวงกลมกับข้อความ */
     }
 
     label {
         margin-right: 10px;
-        /* ระยะห่างระหว่าง label กับ checkbox */
         text-align: left;
-        /* ให้ข้อความชิดซ้าย */
     }
 
     .form-check {
         display: flex;
         align-items: center;
-        /* จัดให้ checkbox อยู่ในแนวเดียวกับ label */
         margin-right: 10px;
-        /* ระยะห่างระหว่าง checkbox กับกลุ่มถัดไป */
     }
 
     .form-check-input {
@@ -351,9 +340,7 @@ form {
 
     .elderly-checkbox-container {
         flex-direction: column;
-        /* Stack groups vertically on smaller screens */
         gap: 10px;
-        /* Reduce the gap between groups */
     }
 }
 </style>
