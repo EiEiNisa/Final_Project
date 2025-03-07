@@ -43,23 +43,17 @@
 
 <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
-
-    <!-- ปุ่มเพิ่มสไลด์ใหม่ -->
-    <button class="btn btn-success mb-3" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
-
-    <div class="slide-container" id="slide-container">
+<div class="slide-container">
         @foreach ($slides as $slide)
             <div class="slide-item">
                 <img src="{{ asset($slide->path) }}" alt="Slide {{ $slide->order }}">
                 <div class="slide-controls">
-                    <!-- ฟอร์มสำหรับอัปเดตสไลด์ -->
                     <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                         <button type="submit" class="btn btn-primary">อัปโหลด</button>
                     </form>
-                    <!-- ฟอร์มสำหรับลบสไลด์ -->
                     <form action="{{ route('slideshow.delete', $slide->id) }}" method="POST" class="mt-2">
                         @csrf
                         @method('DELETE')
@@ -69,8 +63,10 @@
             </div>
         @endforeach
     </div>
-</div>
 
+    <!-- ปุ่มเพิ่มสไลด์ -->
+    <button class="btn btn-success" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
+</div>
 <!-- ฟอร์มเพิ่มสไลด์ -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
