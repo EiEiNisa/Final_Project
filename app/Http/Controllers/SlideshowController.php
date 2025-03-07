@@ -36,7 +36,30 @@ class SlideshowController extends Controller
 
         return response()->json(['message' => 'เพิ่มสไลด์สำเร็จ!']);
     }
+public function update(Request $request, $id)
+    {
+        // ตรวจสอบว่ามีไฟล์อัปโหลดหรือไม่
+        if ($request->hasFile('slide')) {
+            // ค้นหาสไลด์จากฐานข้อมูล
+            $slide = Slideshow::findOrFail($id);
 
+            // ลบไฟล์เก่าออกหากมี
+            if ($slide->path && file_exists(public_path($slide->path))) {
+                unlink(public_path($slide->path));
+            }
+
+            // อัปโหลดไฟล์ใหม่
+            $path = $request->file('slide')->store('slides', 'public');
+            $slide->path = $path;
+
+            // บันทึกการอัปเดต
+            $slide->save();
+
+            return response()->json(['message' => 'สไลด์ถูกอัปเดตแล้ว'], 200);
+        }
+
+        return response()->json(['message' => 'ไม่พบไฟล์ที่อัปโหลด'], 400);
+    }
     // ลบสไลด์
     public function destroy($id)
     {
