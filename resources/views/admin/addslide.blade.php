@@ -43,7 +43,7 @@
 
 <div class="container py-5">
     <h2 class="text-center mb-4">จัดการสไลด์โชว์</h2>
-<div class="slide-container">
+    <div class="slide-container" id="slide-container">
         @foreach ($slides as $slide)
             <div class="slide-item">
                 <img src="{{ asset($slide->path) }}" alt="Slide {{ $slide->order }}">
@@ -67,6 +67,7 @@
     <!-- ปุ่มเพิ่มสไลด์ -->
     <button class="btn btn-success" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
 </div>
+
 <!-- ฟอร์มเพิ่มสไลด์ -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -88,5 +89,4 @@
         });
     });
 </script>
-
 @endsection
