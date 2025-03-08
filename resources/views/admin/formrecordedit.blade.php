@@ -481,6 +481,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         event.target.closest('.custom-field-group').remove();
                         // ปิด Modal ยืนยันการลบ
                         deleteConfirmationModal.hide();
+
+                        // รีเฟรชหน้าเพื่อแสดงข้อความจาก session
+                        window.location.reload();
                     } else {
                         // หากไม่สามารถลบฟิลด์ได้ แสดง Modal แจ้งเตือน
                         let errorModal = new bootstrap.Modal(document.getElementById(
