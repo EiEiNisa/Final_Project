@@ -327,7 +327,7 @@ label {
             </div>
         </div>
 
-        <div class="personal-info-group">
+        <div class="contact-info-group">
             <div class="input-container">
                 <label class="input-label">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
@@ -473,7 +473,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                     <br>
                     <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
-                    <hr>
                 </div>
             `;
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
@@ -516,59 +515,71 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
-    if (event.target && event.target.classList.contains("delete-field-btn")) {
-        let fieldId = event.target.getAttribute("data-id");
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            let fieldId = event.target.getAttribute("data-id");
 
-        // แสดง Modal ยืนยันการลบ
-        let deleteConfirmationModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
-        deleteConfirmationModal.show();
+            // แสดง Modal ยืนยันการลบ
+            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
+                'deleteConfirmationModal'));
+            deleteConfirmationModal.show();
 
-        // เมื่อกดปุ่ม "ลบ" ใน Modal ยืนยันการลบ
-        document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
-            // ส่งคำขอลบไปยัง Controller
-            fetch(`/delete-custom-field/${fieldId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json()) // แปลงเป็น JSON
-            .then(data => {
-                if (data.success) {
-                    // ลบฟิลด์จากหน้า
-                    event.target.closest('.custom-field-group').remove();
-                    
-                    // แสดงข้อความ success บนหน้า
-                    let successAlert = document.createElement('div');
-                    successAlert.classList.add('alert', 'alert-success');
-                    successAlert.innerText = data.message || 'ลบฟิลด์สำเร็จ';
-                    document.querySelector('body').insertBefore(successAlert, document.querySelector('#existing-fields'));
+            // เมื่อกดปุ่ม "ลบ" ใน Modal ยืนยันการลบ
+            document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
+                // ส่งคำขอลบไปยัง Controller
+                fetch(`/delete-custom-field/${fieldId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector(
+                                'meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json()) // แปลงเป็น JSON
+                    .then(data => {
+                        if (data.success) {
+                            // ลบฟิลด์จากหน้า
+                            event.target.closest('.custom-field-group').remove();
 
-                    // ปิด Modal ยืนยันการลบ
-                    deleteConfirmationModal.hide();
-                } else {
-                    // หากไม่สามารถลบฟิลด์ได้ แสดง Modal แจ้งเตือน
-                    let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-                    document.querySelector("#errorModal .modal-body").innerHTML = data.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง";
-                    errorModal.show();
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);  // log for debugging
-                let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-                document.querySelector("#errorModal .modal-body").innerHTML = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
-                errorModal.show();
+                            // แสดงข้อความ success บนหน้า
+                            let successAlert = document.createElement('div');
+                            successAlert.classList.add('alert', 'alert-success');
+                            successAlert.innerText = data.message || 'ลบฟิลด์สำเร็จ';
+                            document.querySelector('body').insertBefore(successAlert,
+                                document.querySelector('#existing-fields'));
+
+                            // ปิด Modal ยืนยันการลบ
+                            deleteConfirmationModal.hide();
+
+                            // ทำให้ข้อความ success หายไปหลังจาก 3 วินาที
+                            setTimeout(() => {
+                                successAlert.remove();
+                            }, 3000);
+                        } else {
+                            // หากไม่สามารถลบฟิลด์ได้ แสดง Modal แจ้งเตือน
+                            let errorModal = new bootstrap.Modal(document.getElementById(
+                                'errorModal'));
+                            document.querySelector("#errorModal .modal-body").innerHTML =
+                                data.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง";
+                            errorModal.show();
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error); // log for debugging
+                        let errorModal = new bootstrap.Modal(document.getElementById(
+                            'errorModal'));
+                        document.querySelector("#errorModal .modal-body").innerHTML =
+                            "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
+                        errorModal.show();
+                    });
             });
-        });
 
-        // เมื่อกดปุ่ม "ยกเลิก" ใน Modal ยืนยันการลบ
-        document.querySelector(".btn-secondary").addEventListener("click", function() {
-            // ปิด Modal ยืนยันการลบ
-            deleteConfirmationModal.hide();
-        });
-    }
-});
+            // เมื่อกดปุ่ม "ยกเลิก" ใน Modal ยืนยันการลบ
+            document.querySelector(".btn-secondary").addEventListener("click", function() {
+                // ปิด Modal ยืนยันการลบ
+                deleteConfirmationModal.hide();
+            });
+        }
+    });
 });
 </script>
 @endsection

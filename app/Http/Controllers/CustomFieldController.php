@@ -55,21 +55,15 @@ class CustomFieldController extends Controller
     }
 
     public function delete($id)
-{
-    try {
-        $customField = CustomField::findOrFail($id);
-        $customField->delete();
+    {
+        try {
+            $customField = CustomField::findOrFail($id);
+            $customField->delete();
 
-        // ส่งข้อความ success ผ่าน JSON response
-        return response()->json([
-            'success' => true,
-            'message' => 'ลบฟิลด์สำเร็จ'
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'
-        ], 500);
+            session()->flash('success', 'นำเข้าข้อมูลสำเร็จ');
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
+        }
     }
-}
 }
