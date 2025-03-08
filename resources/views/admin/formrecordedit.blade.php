@@ -335,23 +335,20 @@
         });
 
 
-        // ฟังก์ชันสำหรับเพิ่มตัวเลือกของ Select, Checkbox, Radio
         fieldContainer.addEventListener("click", function(event) {
             if (event.target && event.target.classList.contains("add-option-btn")) {
                 let optionContainer = event.target.closest('.form-group').querySelector(
                     '.option-container');
+                let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
+                    '.custom-field-group'));
+
                 let newOption = document.createElement("input");
                 newOption.type = "text";
                 newOption.className = "form-control option-input rounded-pill mt-2";
-                newOption.name = "options[]";
+                newOption.name = `options[${fieldIndex}][]`; // ✅ เปลี่ยนตรงนี้ให้ใช้ index
                 newOption.placeholder = "เพิ่มค่าตัวเลือก";
-                optionContainer.appendChild(newOption);
-            }
 
-            // ฟังก์ชันลบฟิลด์
-            if (event.target && event.target.classList.contains("delete-field-btn")) {
-                let fieldGroup = event.target.closest('.custom-field-group');
-                fieldGroup.remove();
+                optionContainer.appendChild(newOption);
             }
         });
 
