@@ -342,7 +342,6 @@ label {
                     <label>ชื่อหัวข้อ</label>
                     <input type="text" class="form-control field-label" name="label[]" value="{{ $field->label }}"
                         required>
-
                     <label>ชื่อตัวแปร</label>
                     <input type="text" class="form-control field-name" name="name[]" value="{{ $field->name }}"
                         required>
@@ -356,8 +355,7 @@ label {
                         <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
                         </option>
                         <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>
-                            ช่องทำเครื่องหมาย
-                            (เลือกได้หลายรายการ)</option>
+                            ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
                         <option value="radio" {{ $field->field_type == 'radio' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
                             (เลือกได้รายการเดียว)</option>
                     </select>
@@ -376,13 +374,15 @@ label {
                         </div>
                     </div>
                 </div>
+
                 <br>
                 <button type="button" class="btn btn-danger delete-field-btn"
                     data-id="{{ $field->id }}">ลบฟิลด์</button>
             </div>
+            @endforeach
         </div>
 
-        <!-- Modal สำหรับยืนยันการลบ -->
+        <!-- Modal for Delete Confirmation -->
         <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
             aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -402,7 +402,7 @@ label {
             </div>
         </div>
 
-        <!-- Modal สำหรับแจ้งเตือนข้อผิดพลาด -->
+        <!-- Modal for Error -->
         <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -429,8 +429,7 @@ label {
                 <div id="field-container">
                 </div>
 
-                <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+
-                    เพิ่มรายการ</button>
+                <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+ เพิ่มรายการ</button>
 
                 <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
             </form>
@@ -486,7 +485,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fieldContainer.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
-            '.option-container');
+                '.option-container');
             let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
                 '.custom-field-group'));
 
@@ -560,7 +559,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                 existingFields);
                         } else {
                             document.body.appendChild(
-                            successAlert); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
+                                successAlert
+                            ); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
                         }
 
                         // ปิด Modal ยืนยันการลบ
