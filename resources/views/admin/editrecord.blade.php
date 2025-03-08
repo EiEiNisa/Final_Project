@@ -641,14 +641,18 @@ form {
                                         </div>
                                     </div>
 
-
-                                    <input type="text" class="form-control" id="diseaseNames_{{ $index }}"
-                                        name="diseaseNames[{{ $index }}]"
-                                        value="{{ isset($diseaseNames[$index]) ? (
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label for="diseaseNames_{{ $index }}">โรคประจำตัว</label>
+                                            <input type="text" class="form-control" id="diseaseNames_{{ $index }}"
+                                                name="diseaseNames[{{ $index }}]"
+                                                value="{{ isset($diseaseNames[$index]) ? (
                                         isset($diseaseNames[$index]['other']) && $diseaseNames[$index]['other'] == 1 
                                             ? $diseaseNames[$index]['other_text'] 
                                             : (!empty($diseaseNames[$index]['names']) ? $diseaseNames[$index]['names'] : 'ไม่มีโรคประจำตัว')) : 'ไม่มีโรคประจำตัว' }}"
-                                        readonly>
+                                                readonly>
+                                        </div>
+                                    </div>
 
                                     <div class="row">
                                         @if(isset($lifestylesHabit[$index]))
