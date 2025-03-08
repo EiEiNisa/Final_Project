@@ -8,10 +8,11 @@ use App\Models\CustomField;
 class CustomFieldController extends Controller
 {
     public function index()
-    {
-        $fields = CustomField::all();
-        return view('custom_fields.index', compact('fields'));
-    }
+{
+    $fields = CustomField::all(); // ดึงข้อมูลทั้งหมดจากฐานข้อมูล
+    return view('admin.formrecordedit', compact('fields')); // ส่งข้อมูลไปยัง view 'admin.formrecordedit'
+}
+
 
     public function create()
     {
