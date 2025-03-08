@@ -136,7 +136,6 @@
     text-align: left;
 }
 
-
 /* Mobile Friendly */
 @media (max-width: 768px) {
     .card-container {
@@ -265,11 +264,11 @@
         </div>
 
         <div class="form-group1">
-            <div class="input-container">
+            <div>
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
             </div>
-            <div class="input-container">
+            <div>
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">ID Line</label>
                 <input type="text" class="form-control" placeholder="กรอกไอดีไลน์" disabled>
             </div>
@@ -326,10 +325,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         <div class="option-container">
                             <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
                         </div>
-                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                        <div class="button-group">
+                            <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                            <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+                        </div>
                     </div>
-
-                    <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
                     <hr>
                 </div>
             `;
