@@ -657,14 +657,16 @@ form {
                 <input type="text" class="form-control" name="{{ $field->name }}">
 
                 @elseif($field->field_type == 'select')
+                @php $options = json_decode($field->options, true) ?? []; @endphp
                 <select class="form-control" name="{{ $field->name }}">
-                    @foreach(json_decode($field->options) as $option)
+                    @foreach($options as $option)
                     <option value="{{ $option }}">{{ $option }}</option>
                     @endforeach
                 </select>
 
                 @elseif($field->field_type == 'checkbox')
-                @foreach(json_decode($field->options) as $option)
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                @foreach($options as $option)
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
                     <label class="form-check-label">{{ $option }}</label>
@@ -672,7 +674,8 @@ form {
                 @endforeach
 
                 @elseif($field->field_type == 'radio')
-                @foreach(json_decode($field->options) as $option)
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                @foreach($options as $option)
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}">
                     <label class="form-check-label">{{ $option }}</label>
