@@ -9,13 +9,13 @@ class CustomFieldController extends Controller
 {
     public function index()
     {
-        $recordDataColumns = Schema::getColumnListing('recorddata'); 
         $fields = CustomField::all(); // ดึงข้อมูลทั้งหมดจากฐานข้อมูล
         return view('admin.formrecordedit', compact('fields')); // ส่งข้อมูลไปยัง view 'admin.formrecordedit'
     }
 
     public function edit()
     {
+        $recordDataColumns = Schema::getColumnListing('recorddata'); 
         $fields = CustomField::all(); 
         return view('admin.formrecordedit', compact('fields'));
     }
