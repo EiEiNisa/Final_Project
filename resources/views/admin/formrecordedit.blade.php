@@ -206,11 +206,11 @@
         <div class="personal-info-group">
             <div class="input-container">
                 <label>เลขบัตรประจำตัวประชาชน</label>
-                <input type="text" class="input-field" placeholder="กรอกเลขบัตรประจำตัวประชาชน" disabled>
+                <input type="number" class="form-control" placeholder="กรอกเลขบัตรประจำตัวประชาชน" disabled>
             </div>
             <div class="input-container">
                 <label>คำนำหน้าชื่อ</label>
-                <select class="input-field" disabled>
+                <select class="form-control" disabled>
                     <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
                     </option>
                     <option value="ด.ช.">ด.ช.</option>
@@ -222,14 +222,14 @@
             </div>
             <div class="input-container">
                 <label>ชื่อ</label>
-                <input type="text" class="input-field" placeholder="กรอกชื่อ" disabled>
+                <input type="text" class="form-control" placeholder="กรอกชื่อ" disabled>
             </div>
         </div>
 
         <div class="personal-info-group">
             <div class="input-container">
                 <label>นามสกุล</label>
-                <input type="text" class="input-field" placeholder="กรอกนามสกุล" disabled>
+                <input type="text" class="form-control" placeholder="กรอกนามสกุล" disabled>
             </div>
             <div class="input-container">
                 <label>บ้านเลขที่</label>
@@ -238,18 +238,18 @@
             </div>
             <div class="input-container">
                 <label>วัน / เดือน / ปีเกิด</label>
-                <input type="date" class="input-field" placeholder="วัน/เดือน/ปีเกิด" disabled>
+                <input type="date" class="form-control" placeholder="วัน/เดือน/ปีเกิด" disabled>
             </div>
         </div>
 
         <div class="personal-info-group">
             <div class="input-container">
                 <label>อายุ</label>
-                <input type="number" class="input-field" placeholder="กรอกอายุ" disabled>
+                <input type="number" class="form-control" placeholder="กรอกอายุ" disabled>
             </div>
             <div class="input-container">
                 <label>กรุ๊ปเลือด</label>
-                <select class="input-field" disabled>
+                <select class="form-control" disabled>
                     <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>กรุณาเลือกกรุ๊ปเลือด
                     </option>
                     <option value="A" {{ old('blood_group') == 'A' ? 'selected' : '' }}>A</option>
@@ -260,31 +260,31 @@
             </div>
             <div class="input-container">
                 <label class="input-label">น้ำหนัก</label>
-                <input type="number" class="input-field" placeholder="กรอกน้ำหนัก" step="0.1" disabled>
+                <input type="number" class="form-control" placeholder="กรอกน้ำหนัก" step="0.1" disabled>
             </div>
         </div>
 
         <div class="contact-info-group">
             <div class="input-container">
                 <label class="input-label">เบอร์โทรศัพท์</label>
-                <input type="tel" class="input-field" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
+                <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
             </div>
             <div class="input-container">
                 <label class="input-label">ID Line</label>
-                <input type="text" class="input-field" placeholder="กรอกไอดีไลน์" disabled>
+                <input type="text" class="form-control" placeholder="กรอกไอดีไลน์" disabled>
             </div>
         </div>
 
         @foreach($customFields as $field)
-        <div class="custom-form-group">
-            <label>{{ $field->label }}</label>
+        <div class="form-group1">
+            <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
             @if($field->field_type == 'text')
-            <input type="text" class="input-field" name="{{ $field->name }}">
+            <input type="text" class="form-control" name="{{ $field->name }}">
 
             @elseif($field->field_type == 'select')
             @php $options = json_decode($field->options, true) ?? []; @endphp
-            <select class="input-field" name="{{ $field->name }}">
+            <select class="form-control" name="{{ $field->name }}">
                 @foreach($options as $option)
                 <option value="{{ $option }}">{{ $option }}</option>
                 @endforeach
@@ -295,8 +295,8 @@
             <div class="checkbox-group">
                 @foreach($options as $option)
                 <div class="form-check">
-                    <input class="checkbox-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
-                    <label class="form-check-label">{{ $option }}</label>
+                    <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
+                    <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                 </div>
                 @endforeach
             </div>
@@ -307,7 +307,7 @@
                 @foreach($options as $option)
                 <div class="form-check">
                     <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}">
-                    <label class="form-check-label">{{ $option }}</label>
+                    <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                 </div>
                 @endforeach
             </div>

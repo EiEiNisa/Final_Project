@@ -659,7 +659,7 @@ form {
             </div>
 
             @foreach($customFields as $field)
-            <div class="custom-form-group">
+            <div class="form-group1">
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
                 @if($field->field_type == 'text')

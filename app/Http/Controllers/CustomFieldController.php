@@ -27,9 +27,9 @@ class CustomFieldController extends Controller
 {
     $validatedData = $request->validate([
         'label.*' => 'required|string',
-        'name.*' => 'required|string|distinct', // เพิ่ม distinct เพื่อป้องกัน name ซ้ำกันใน request เดียวกัน
+        'name.*' => 'required|string|distinct', 
         'field_type.*' => 'required|in:text,select,checkbox,radio',
-        'options.*.*' => 'nullable|string', // แก้ไขการ validate options ให้รองรับ array
+        'options.*.*' => 'nullable|string', 
     ]);
 
     foreach ($request->label as $index => $label) {
