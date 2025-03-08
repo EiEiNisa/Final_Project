@@ -24,38 +24,25 @@ class CustomFieldController extends Controller
     }
 
     public function store(Request $request)
-{
-    // ตรวจสอบข้อมูลที่รับมา
-    dd($request->all());
+    {
+        dd($request->all());
+        $validatedData = $request->validate([
+            'label' => 'required|string',
+            'name' => 'required|string|unique:custom_fields,name',
+            'field_type' => 'required|in:text,select,checkbox,radio',
+            'options' => 'nullable|array', // ตัวเลือกของ Checkbox, Select, Radio
+        ]);
 
-    // ตรวจสอบว่า request มีข้อมูลที่ต้องการครบถ้วน
-    $validatedData = $request->validate([
-        'label' => 'required|array',
-        'label.*' => 'required|string',
-        'name' => 'required|array',
-        'name.*' => 'required|string|unique:custom_fields,name',
-        'field_type' => 'required|array',
-        'field_type.*' => 'required|in:text,select,checkbox,radio',
-        'options' => 'nullable|array',
-        'options.*' => 'nullable',
-    ]);
+        // แปลงค่าของ options เป็น JSON ถ้ามีตัวเลือก
+        $options = $request->has('options') ? json_encode($request->options, JSON_UNESCAPED_UNICODE) : null;
 
-    // วนลูปเพื่อบันทึก Custom Fields ทีละตัว
-    foreach ($request->label as $index => $label) {
-        // ทำให้ options เป็น array ที่ไม่มีการซ้อน
-        $options = isset($request->options[$index]) 
-            ? json_encode(collect($request->options[$index])->flatten()->all(), JSON_UNESCAPED_UNICODE) 
-            : null;
-    
         CustomField::create([
-            'label' => $label,
-            'name' => $request->name[$index],
-            'field_type' => $request->field_type[$index],
+            'label' => $validatedData['label'],
+            'name' => $validatedData['name'],
+            'field_type' => $validatedData['field_type'],
             'options' => $options,
         ]);
+
+        return redirect()->route('customfields.store')->with('success', 'ฟิลด์ถูกสร้างเรียบร้อย');
     }
-
-    return redirect()->route('customfields.store')->with('success', 'ฟิลด์ถูกสร้างเรียบร้อย');
-}
-
 }
