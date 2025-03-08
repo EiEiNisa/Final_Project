@@ -66,6 +66,11 @@ public function store(Request $request)
         $existing_extra_fields = json_decode($request->input('existing_extra_fields'), true);
     }
 
+    $recorddata = Recorddata::firstOrCreate(
+        ['id_card' => $request->input('id_card')],
+        $request->except(['custom_fields']) // ไม่บันทึก custom_fields ลงตารางหลัก
+    );
+
     $formatted_extra_fields = [];
 
     if (isset($extra_fields) && is_array($extra_fields)) {
@@ -105,13 +110,17 @@ public function store(Request $request)
 
     $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
     $recorddata->save();
-
-        
-        if (!$recorddata) {
-            return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
+    
+    if ($request->has('custom_fields')) {
+        foreach ($request->input('custom_fields') as $field) {
+            CustomField::create([
+                'recorddata_id' => $recorddata->id,
+                'label' => $field['label'],
+                'value' => $field['value'],
+                'type' => 'text', // สามารถทำให้ dynamic ได้
+            ]);
         }
-        //$table->unsignedBigInteger('user_id')->nullable(false);
-
+    }
 
         $healthRecord = HealthRecord::create([
             'recorddata_id' => $recorddata->id,
@@ -201,7 +210,7 @@ public function store(Request $request)
     
         $recorddata = Recorddata::findOrFail($id);
         $user = User::find($recorddata->user_id);
-        
+        $customFields = CustomField::where('recorddata_id', $id)->get();
         $searchDate = $request->input('search_date');
             
         if ($searchDate) {
@@ -328,7 +337,7 @@ public function store(Request $request)
     });
     
         return view('admin.editrecord', compact(
-            'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases' ,
+            'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases' , 'customFields',
             'diseaseNames', 'lifestylesHabit','elderlyInfo', 'user' , 'extra_fields_recorddata', 
         ));
     }
@@ -509,6 +518,18 @@ public function update(Request $request, $id)
         }
     }
 
+    $recorddata->update($request->except(['custom_fields']));
+
+    // อัปเดตค่าฟิลด์เพิ่มเติม
+    if ($request->has('custom_fields')) {
+        foreach ($request->input('custom_fields') as $field) {
+            CustomField::updateOrCreate(
+                ['recorddata_id' => $recorddata->id, 'label' => $field['label']],
+                ['value' => $field['value']]
+            );
+        }
+    }
+    
     // แปลงกลับเป็น JSON และบันทึกลงในฐานข้อมูล
     $data->extra_fields = json_encode($existing_extra_fields, JSON_UNESCAPED_UNICODE);
 

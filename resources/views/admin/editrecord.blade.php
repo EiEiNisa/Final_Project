@@ -548,6 +548,14 @@ form {
             </div>
             @endif
 
+            @foreach ($customFields as $field)
+            <div>
+                <label>{{ $field->label }}</label>
+                <input type="text" name="custom_fields[{{ $loop->index }}][value]" value="{{ $field->value }}">
+                <input type="hidden" name="custom_fields[{{ $loop->index }}][label]" value="{{ $field->label }}">
+            </div>
+            @endforeach
+
             <button type="submit" class="custom-btn-small" id="saveBtn">
                 <i class="fas fa-save"></i> บันทึกข้อมูล
             </button>
