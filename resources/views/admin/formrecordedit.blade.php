@@ -115,8 +115,8 @@
 .form-group1 {
     display: flex;
     justify-content: space-between;
-    gap: 5px;
-    margin-bottom: 10px;
+    gap: 2px; /* ลด gap เหลือ 2px */
+    margin-bottom: 5px; /* ลด margin-bottom เหลือ 5px */
     flex-wrap: wrap;
 }
 
@@ -131,9 +131,14 @@
 }
 
 .form-group1 label {
-    margin-bottom: 5px;
+    margin-bottom: 3px; /* ลด margin-bottom ของ label เหลือ 3px */
     color: #020364;
     text-align: left;
+    font-size: 14px; /* ปรับขนาด font label */
+}
+
+.form-group1 .input-container {
+    margin-bottom: 5px; /* ระยะห่าง input-container */
 }
 
 /* Mobile Friendly */
@@ -327,8 +332,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
                         <div class="button-group">
                             <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-                            <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
                         </div>
+                        <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
                     </div>
                     <hr>
                 </div>
