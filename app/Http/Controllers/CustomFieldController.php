@@ -24,7 +24,7 @@ class CustomFieldController extends Controller
     public function store(Request $request)
 {
     // ตรวจสอบข้อมูลที่ส่งมาจากฟอร์ม
-    //dd($request->all()); // ตรวจสอบข้อมูลทั้งหมดที่ได้รับจากฟอร์ม
+    dd($request->all()); // ตรวจสอบข้อมูลทั้งหมดที่ได้รับจากฟอร์ม
 
     // ตรวจสอบว่า request มีข้อมูลที่ต้องการครบถ้วน
     $validatedData = $request->validate([
