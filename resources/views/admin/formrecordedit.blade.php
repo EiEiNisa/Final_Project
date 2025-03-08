@@ -228,7 +228,7 @@
             </div>
             <div class="input-container">
                 <label>บ้านเลขที่</label>
-                <input type="text" class="input-field" value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
+                <input type="text" class="form-control"  value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
                     disabled>
             </div>
             <div class="input-container">
@@ -259,7 +259,7 @@
             </div>
         </div>
 
-        <div class="personal-info-group">
+        <div class="contact-info-group">
             <div class="input-container">
                 <label class="input-label">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
@@ -271,7 +271,7 @@
         </div>
 
         @foreach($customFields as $field)
-        <div class="form-group1">
+        <div class="personal-info-group">
             <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
             @if($field->field_type == 'text')
