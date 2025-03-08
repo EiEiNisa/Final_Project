@@ -113,11 +113,13 @@ class RecorddataController
         
         foreach ($customFields as $field) {
             if ($request->has($field->name)) {
-                // เช็คว่าเป็น checkbox หรือไม่
+                // ตรวจสอบว่าฟิลด์เป็น checkbox หรือ select หรือไม่
                 if ($field->field_type == 'checkbox' || $field->field_type == 'select') {
-                    $value = json_encode($request->input($field->name)); // เก็บค่าแบบ array หรือ object
+                    $value = $request->input($field->name);
+                    // แปลงค่าเป็น JSON ที่อ่านง่ายก่อนบันทึก
+                    $value = json_encode($value, JSON_UNESCAPED_UNICODE);
                 } else {
-                    $value = $request->input($field->name); // ค่าแบบปกติ เช่น text, radio
+                    $value = $request->input($field->name); // ค่าที่กรอกจากฟอร์ม
                 }
 
                 \App\Models\CustomFieldData::create([
