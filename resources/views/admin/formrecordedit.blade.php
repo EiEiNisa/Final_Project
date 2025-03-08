@@ -312,28 +312,26 @@
             @endforeach
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
-            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <!-- Modal สำหรับแจ้งเตือนข้อผิดพลาด -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
+                        <h5 class="modal-title" id="errorModalLabel">เกิดข้อผิดพลาด</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        คุณต้องการลบฟิลด์นี้หรือไม่?
+                        ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <br>
-        <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom Field</button>
+        <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่มรายการ</button>
 
         <div id="custom-field-form" style="display: none;">
             <form action="{{ route('customfields.store') }}" method="POST">
@@ -341,8 +339,7 @@
                 <div id="field-container">
                 </div>
 
-                <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+ เพิ่ม Custom
-                    Field</button>
+                <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+ เพิ่มรายการ</button>
 
                 <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
             </form>
@@ -436,12 +433,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");
 
-            // แสดง Modal
+            // แสดง Modal ยืนยันการลบ
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
                 'deleteConfirmationModal'));
             deleteConfirmationModal.show();
 
-            // เมื่อกดปุ่ม "ลบ"
+            // เมื่อกดปุ่ม "ลบ" ใน Modal ยืนยันการลบ
             document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
                 // ส่งคำขอลบไปยัง Controller
                 fetch(`/delete-custom-field/${fieldId}`, {
@@ -456,17 +453,20 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (response.ok) {
                         // ลบฟิลด์จากหน้า
                         event.target.closest('.custom-field-group').remove();
+                        // ปิด Modal ยืนยันการลบ
+                        deleteConfirmationModal.hide();
                     } else {
-                        alert('ไม่สามารถลบฟิลด์ได้');
+                        // หากไม่สามารถลบฟิลด์ได้ แสดง Modal แจ้งเตือน
+                        let errorModal = new bootstrap.Modal(document.getElementById(
+                            'errorModal'));
+                        errorModal.show();
                     }
-                    // ปิด Modal หลังจากลบ
-                    deleteConfirmationModal.hide();
                 });
             });
 
-            // เมื่อกดปุ่ม "ยกเลิก"
+            // เมื่อกดปุ่ม "ยกเลิก" ใน Modal ยืนยันการลบ
             document.querySelector(".btn-secondary").addEventListener("click", function() {
-                // ปิด Modal
+                // ปิด Modal ยืนยันการลบ
                 deleteConfirmationModal.hide();
             });
         }
