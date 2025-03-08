@@ -24,7 +24,7 @@ class CustomFieldController extends Controller
     public function store(Request $request)
 {
     // ตรวจสอบข้อมูลทั้งหมดที่ได้รับจากฟอร์ม
-    dd($request->all());
+    dd($request->all()); // ตรวจสอบข้อมูลที่ส่งมา
 
     // ตรวจสอบว่า request มีข้อมูลที่ต้องการครบถ้วน
     $validatedData = $request->validate([
@@ -52,11 +52,11 @@ class CustomFieldController extends Controller
             'label' => $label,
             'name' => $request->name[$index],
             'field_type' => $request->field_type[$index],
-            'options' => $options,
+            'options' => $options,  // ใช้ options ที่ได้แปลงเป็น JSON
         ]);
     }
 
     return redirect()->route('customfields.store')->with('success', 'ฟิลด์ถูกสร้างเรียบร้อย');
 }
-    
+
 }
