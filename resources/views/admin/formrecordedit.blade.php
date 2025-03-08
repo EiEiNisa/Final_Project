@@ -2,103 +2,124 @@
 
 @section('content')
 <style>
+/* การตั้งค่าพื้นฐานของฟอร์ม */
 .card-container {
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    padding: 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    padding: 30px 35px;
     margin-bottom: 30px;
     transition: all 0.3s ease-in-out;
+    max-width: 900px;
+    margin: 40px auto;
 }
 
+/* เอฟเฟกต์ hover */
 .card-container:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* การตั้งค่าส่วนหัว */
 .card-header {
-    color: #020364;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
+    color: #1d3557;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f1f1f1;
 }
 
 .card-header h4 {
-    font-size: 24px;
-    font-weight: bold;
     margin: 0;
+    font-size: 28px;
 }
 
 .card-header .btn-back {
-    background: rgba(255, 255, 255, 0.3);
-    color: #000;
+    background: #f0f4f8;
+    color: #1d3557;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 30px;
     text-decoration: none;
-    transition: all 0.3s ease-in-out;
+    transition: background 0.3s ease;
+    font-size: 16px;
 }
 
 .card-header .btn-back:hover {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.card-header::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background-color: #020364;
+    background: #a8dadc;
 }
 
 .card-body {
     padding: 20px;
 }
 
-.custom-input {
-    height: 38px;
-    border-radius: 6px;
+/* ปรับแต่ง Input Fields */
+.form-control {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
-.removeField {
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.form-control:focus {
+    border-color: #1d3557;
+    box-shadow: 0 0 5px rgba(29, 53, 87, 0.3);
 }
 
-.form-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* ปุ่ม */
+.btn-primary {
+    background-color: #1d3557;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
 }
 
-.form-control.custom-input {
-    flex: 1;
-    font-size: 0.875rem;
-    padding: 0.5rem;
-    height: 38px;
+.btn-primary:hover {
+    background-color: #457b9d;
 }
 
-.btn-danger {
-    padding: 0.3rem 0.5rem;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* การปรับแต่งกล่องตัวเลือก */
+#options-group {
+    margin-top: 20px;
 }
 
-.fas.fa-trash-alt {
-    font-size: 1.2rem;
+#option-container input {
+    border-radius: 30px;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    width: 100%;
 }
 
-/* Responsive */
+#option-container button {
+    background-color: #a8dadc;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    width: 100%;
+}
+
+#option-container button:hover {
+    background-color: #457b9d;
+}
+
+/* Mobile Friendly */
 @media (max-width: 768px) {
-    .col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
+    .card-container {
+        padding: 20px;
+    }
+
+    .form-control {
+        padding: 12px;
+    }
+
+    .btn-primary {
+        padding: 10px;
     }
 }
 </style>
@@ -119,7 +140,7 @@
 
     @if(session('warning'))
     <div class="alert alert-warning">
-        {{ session('error') }}
+        {{ session('warning') }}
     </div>
     @endif
 
@@ -155,22 +176,17 @@
 
             <!-- ส่วนสำหรับการเพิ่มตัวเลือกของ Select, Radio, Checkbox -->
             <div class="form-group" id="options-group" style="display: none;">
-                <label for="options" class="font-weight-bold text-dark">ตัวเลือก (ใช้สำหรับ Select,
-                    Radio, Checkbox):</label>
+                <label for="options" class="font-weight-bold text-dark">ตัวเลือก (ใช้สำหรับ Select, Radio, Checkbox):</label>
                 <div id="option-container">
                     <input type="text" class="form-control option-input rounded-pill" name="options[]"
                         placeholder="เพิ่มค่าตัวเลือก">
                 </div>
-                <button type="button" class="btn btn-outline-secondary mt-2 rounded-pill" id="add-option">+
-                    เพิ่มตัวเลือก</button>
+                <button type="button" class="btn btn-outline-secondary mt-2 rounded-pill" id="add-option">+ เพิ่มตัวเลือก</button>
             </div>
 
             <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
         </form>
     </div>
-</div>
-</div>
-</div>
 </div>
 
 <script>
