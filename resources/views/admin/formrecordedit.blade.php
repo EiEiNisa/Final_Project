@@ -346,7 +346,7 @@
     <hr>
 </div>
 `;
-            `;
+           
             fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
         });
 
