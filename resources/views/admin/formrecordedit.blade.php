@@ -2,57 +2,61 @@
 
 @section('content')
 <style>
-/* การตั้งค่าพื้นฐานของฟอร์ม */
 .card-container {
     background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    padding: 30px 35px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px 30px;
     margin-bottom: 30px;
     transition: all 0.3s ease-in-out;
-    max-width: 900px;
-    margin: 40px auto;
 }
 
-/* เอฟเฟกต์ hover */
 .card-container:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* การตั้งค่าส่วนหัว */
 .card-header {
-    color: #1d3557;
-    font-weight: bold;
-    font-size: 28px;
-    text-align: center;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f1f1f1;
+    color: #020364;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
 }
 
 .card-header h4 {
+    font-size: 24px;
+    font-weight: bold;
     margin: 0;
-    font-size: 28px;
 }
 
 .card-header .btn-back {
-    background: #f0f4f8;
-    color: #1d3557;
+    background: rgba(255, 255, 255, 0.3);
+    color: #000;
     padding: 8px 16px;
-    border-radius: 30px;
+    border-radius: 8px;
     text-decoration: none;
-    transition: background 0.3s ease;
-    font-size: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
 .card-header .btn-back:hover {
-    background: #a8dadc;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.card-header::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #020364;
 }
 
 .card-body {
     padding: 20px;
 }
 
-/* ปรับแต่ง Input Fields */
 .form-control {
     border-radius: 30px;
     padding: 10px 20px;
