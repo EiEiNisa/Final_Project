@@ -265,10 +265,14 @@
         </div>
 
         <div class="form-group1">
-            <label style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์</label>
-            <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
-            <label style="margin-bottom: 5px; text-align: left; color: #020364;">ID Line</label>
-            <input type="text" class="form-control" placeholder="กรอกไอดีไลน์" disabled>
+            <div class="input-container">
+                <label style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์</label>
+                <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
+            </div>
+            <div class="input-container">
+                <label style="margin-bottom: 5px; text-align: left; color: #020364;">ID Line</label>
+                <input type="text" class="form-control" placeholder="กรอกไอดีไลน์" disabled>
+            </div>
         </div>
 
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom
