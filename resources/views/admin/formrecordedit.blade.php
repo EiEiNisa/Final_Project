@@ -164,6 +164,66 @@ label {
     font-weight: bold;
 }
 
+#existing-fields {
+    margin-top: 20px;
+}
+
+.custom-field-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* ปรับขนาดให้ responsive */
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.custom-field-group label {
+    grid-column: 1 / -1;
+    /* ให้ label เต็มความกว้าง */
+}
+
+.custom-field-group input,
+.custom-field-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.options-group {
+    grid-column: 1 / -1;
+    /* ให้ options-group เต็มความกว้าง */
+    margin-top: 10px;
+}
+
+.option-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.option-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.delete-field-btn {
+    grid-column: 1 / -1;
+    /* ให้ปุ่มลบเต็มความกว้าง */
+    margin-top: 10px;
+}
+
 /* Mobile Friendly */
 @media (max-width: 768px) {
     .card-container {
@@ -282,10 +342,10 @@ label {
             @foreach($customFields as $field)
             <div class="form-group custom-field-group" data-id="{{ $field->id }}">
                 <label>ชื่อหัวข้อ</label>
-                <input type="text" class="form-control" name="label[]" value="{{ $field->label }}" required>
+                <input type="text" class="form-control field-label" name="label[]" value="{{ $field->label }}" required>
 
                 <label>ชื่อตัวแปร</label>
-                <input type="text" class="form-control" name="name[]" value="{{ $field->name }}" required>
+                <input type="text" class="form-control field-name" name="name[]" value="{{ $field->name }}" required>
 
                 <label>รูปแบบข้อมูล</label>
                 <select class="form-control field-type" name="field_type[]" required>
@@ -314,7 +374,6 @@ label {
                 <br>
                 <button type="button" class="btn btn-danger delete-field-btn"
                     data-id="{{ $field->id }}">ลบฟิลด์</button>
-                <hr>
             </div>
             @endforeach
         </div>
@@ -474,7 +533,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
-            .then(response => response.json())  // แปลงเป็น JSON
+            .then(response => response.json()) // แปลงเป็น JSON
             .then(data => {
                 if (data.success) {
                     // ลบฟิลด์จากหน้า
@@ -495,7 +554,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     errorModal.show();
                 }
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error('Error:', error);  // log for debugging
                 let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
                 document.querySelector("#errorModal .modal-body").innerHTML = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
                 errorModal.show();
@@ -509,7 +569,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-
 });
 </script>
 @endsection
