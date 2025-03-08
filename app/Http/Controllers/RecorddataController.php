@@ -111,13 +111,12 @@ public function store(Request $request)
     $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
     $recorddata->save();
     
-    if ($request->has('custom_fields')) {
-        foreach ($request->input('custom_fields') as $field) {
-            CustomField::create([
-                'recorddata_id' => $recorddata->id,
-                'label' => $field['label'],
-                'value' => $field['value'],
-                'type' => 'text', // สามารถทำให้ dynamic ได้
+    $customFields = \App\Models\CustomField::all();
+    foreach ($customFields as $field) {
+        if ($request->has($field->name)) {
+            $recorddata->customFields()->create([
+                'name' => $field->name,
+                'value' => $request->input($field->name),
             ]);
         }
     }
@@ -529,7 +528,7 @@ public function update(Request $request, $id)
             );
         }
     }
-    
+
     // แปลงกลับเป็น JSON และบันทึกลงในฐานข้อมูล
     $data->extra_fields = json_encode($existing_extra_fields, JSON_UNESCAPED_UNICODE);
 

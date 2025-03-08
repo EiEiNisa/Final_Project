@@ -649,6 +649,27 @@ form {
             <p class="text-danger"></p>
             @endif
 
+            @foreach($customFields as $field)
+            <div class="form-group">
+                <label for="{{ $field->name }}">{{ $field->label }}:</label>
+                @if($field->field_type == 'text')
+                <input type="text" class="form-control" name="{{ $field->name }}">
+                @elseif($field->field_type == 'select')
+                <select class="form-control" name="{{ $field->name }}">
+                    @foreach(explode(',', $field->options) as $option)
+                    <option value="{{ $option }}">{{ $option }}</option>
+                    @endforeach
+                </select>
+                @elseif($field->field_type == 'checkbox')
+                <input type="checkbox" name="{{ $field->name }}">
+                @elseif($field->field_type == 'radio')
+                @foreach(explode(',', $field->options) as $option)
+                <input type="radio" name="{{ $field->name }}" value="{{ $option }}"> {{ $option }}
+                @endforeach
+                @endif
+            </div>
+            @endforeach
+
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
             </div>

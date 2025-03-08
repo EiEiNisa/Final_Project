@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomField extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['recorddata_id', 'label', 'type', 'value'];
+    protected $fillable = ['name', 'label', 'field_type', 'options'];
 }
+

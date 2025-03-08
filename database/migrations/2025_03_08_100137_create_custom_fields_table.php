@@ -1,58 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Http\Request;
-use App\Models\CustomField;
-
-class CustomFieldController extends Controller
+return new class extends Migration
 {
-    public function index()
-    {
-        $fields = CustomField::all();
-        return view('admin.formrecordedit', compact('fields'));
-    }
-
-    public function create()
-    {
-        return view('admin.formrecordedit_create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'label' => 'required|string|max:255',
-            'type' => 'required|string',
-            'value' => 'nullable|string',
-        ]);
-
-        CustomField::create($request->all());
-
-        return redirect()->route('custom-fields.index')->with('success', 'Custom field created successfully!');
-    }
-
-    public function edit(CustomField $customField)
-    {
-        return view('admin.formrecordedit_edit', compact('customField'));
-    }
-
-    public function update(Request $request, CustomField $customField)
-    {
-        $request->validate([
-            'label' => 'required|string|max:255',
-            'type' => 'required|string',
-            'value' => 'nullable|string',
-        ]);
-
-        $customField->update($request->all());
-
-        return redirect()->route('custom-fields.index')->with('success', 'Custom field updated successfully!');
-    }
-
-    public function destroy(CustomField $customField)
-    {
-        $customField->delete();
-        return redirect()->route('custom-fields.index')->with('success', 'Custom field deleted successfully!');
-    }
+    /**
+     * Run the migrations.
+     */
+    public function up()
+{
+    Schema::create('custom_fields', function (Blueprint $table) {
+        $table->id();
+        $table->string('name'); // ชื่อของฟิลด์ เช่น 'married_status'
+        $table->string('label'); // ชื่อแสดงใน UI เช่น 'คุณแต่งงานหรือยัง'
+        $table->enum('field_type', ['text', 'select', 'checkbox', 'radio']); // ชนิดของฟิลด์
+        $table->text('options')->nullable(); // ตัวเลือกถ้ามี เช่น สำหรับ 'select' หรือ 'radio'
+        $table->timestamps();
+    });
 }
 
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('custom_fields');
+    }
+};
