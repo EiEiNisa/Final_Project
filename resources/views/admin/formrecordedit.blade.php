@@ -57,25 +57,12 @@
     padding: 20px;
 }
 
-.form-control {
-    border-radius: 30px;
-    padding: 12px 20px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-}
-
-.form-control:focus {
-    border-color: #1d3557;
-    box-shadow: 0 0 5px rgba(29, 53, 87, 0.3);
-}
-
 /* ปุ่ม */
 .btn-primary {
     background-color: #1d3557;
     border: none;
     padding: 12px 20px;
-    border-radius: 30px;
+    border-radius: 10px;
     font-size: 16px;
     width: 100%;
     transition: background-color 0.3s ease;
@@ -159,6 +146,14 @@
 
 .contact-info-group .input-container {
     max-width: calc(50% - 20px);
+}
+
+.form-check {
+    margin-bottom: 10px; 
+}
+
+.checkbox-input, .radio-input {
+    margin-right: 5px;
 }
 
 /* Mobile Friendly */
@@ -264,7 +259,7 @@
             </div>
         </div>
 
-        <div class="contact-info-group">
+        <div class="personal-info-group">
             <div class="input-container">
                 <label class="input-label">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>

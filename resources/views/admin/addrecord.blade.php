@@ -216,7 +216,6 @@ form {
     margin-right: 5px;
 }
 
-
 .form-check-container label {
     font-size: 15px;
     font-weight: bold;
