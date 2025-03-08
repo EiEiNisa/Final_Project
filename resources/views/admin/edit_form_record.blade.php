@@ -177,16 +177,16 @@
                             value="" placeholder="กรอก{{ $label }}" readonly>
 
                         <!-- ปุ่มลบ -->
-                        <button type="button" class="btn btn-danger btn-sm ml-2" onclick="showDeleteModal('{{ $label }}', '{{ $recorddata->id }}')">
-    <i class="fas fa-trash-alt"></i>
-</button>
+                        <button type="button" class="btn btn-danger btn-sm ml-2"
+                            onclick="showDeleteModal('{{ $label }}', '{{ $recorddata->id }}')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
 
                     </div>
                 </div>
                 @endif
                 @endforeach
             </div>
-
 
             <!-- Extra fields container -->
             <div id="extraFieldsContainer" class="mt-4">
@@ -239,14 +239,15 @@ function deleteField() {
         return;
     }
 
-    console.log('Deleting field with label: ', labelToDelete); 
+    console.log('Deleting field with label: ', labelToDelete);
 
     $.ajax({
-        url: '{{ route('delete_extra_field') }}',
+        url: '{{ route('
+        delete_extra_field ') }}',
         method: 'DELETE',
         data: {
             label: labelToDelete,
-            _token: '{{ csrf_token() }}' 
+            _token: '{{ csrf_token() }}'
         },
         success: function(response) {
             $('#confirmDeleteModal').modal('hide');
