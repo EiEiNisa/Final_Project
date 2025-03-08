@@ -169,15 +169,15 @@ label {
 }
 
 .custom-field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* ทำให้มี 2 คอลัมน์ */
+    gap: 20px;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
+    background-color: #f9f9f9;  /* เพิ่มสีพื้นหลังให้ดูสะอาด */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* เพิ่มเงาให้ดูดี */
+    margin-bottom: 20px;
 }
 
 .custom-field-group .left-column,
@@ -185,33 +185,32 @@ label {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 100%;
 }
 
 label {
     font-weight: bold;
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
 }
 
-input[type="text"],
-select {
-    padding: 8px;
+input[type="text"], select {
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
-.field-label,
-.field-name,
+.field-label, .field-name {
+    background-color: #fff;
+}
+
 .field-type {
     background-color: #fff;
 }
 
 .options-group {
-    display: none;
-    /* ซ่อนตัวเลือกเริ่มต้น */
-    margin-top: 10px;
+    grid-column: 1 / -1;
+    margin-top: 15px;
 }
 
 .option-container {
@@ -221,25 +220,25 @@ select {
 }
 
 .option-input {
-    padding: 6px;
+    padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .button-group {
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
-    margin-top: 5px;
+    gap: 15px;
+    margin-top: 10px;
 }
 
 .add-option-btn {
     background-color: #6c757d;
     color: white;
-    padding: 6px 10px;
+    padding: 8px 12px;
     border-radius: 5px;
-    font-size: 13px;
+    font-size: 14px;
     border: none;
     cursor: pointer;
 }
@@ -249,14 +248,14 @@ select {
 }
 
 .delete-field-btn {
+    grid-column: 1 / -1;
     background-color: #dc3545;
     color: white;
-    padding: 8px 12px;
+    padding: 10px;
     border-radius: 5px;
-    font-size: 13px;
+    font-size: 14px;
     border: none;
     cursor: pointer;
-    align-self: flex-start;
 }
 
 .delete-field-btn:hover {
@@ -278,8 +277,7 @@ select {
     }
 
     .custom-field-group {
-        grid-template-columns: 1fr;
-        /* ให้แสดงเป็น 1 คอลัมน์เมื่อหน้าจอเล็ก */
+        grid-template-columns: 1fr;  /* ให้แสดงเป็น 1 คอลัมน์เมื่อหน้าจอเล็ก */
     }
 }
 </style>
@@ -428,6 +426,7 @@ select {
             </div>
             @endforeach
         </div>
+
 
         <!-- Modal for Delete Confirmation -->
         <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
@@ -633,26 +632,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 deleteConfirmationModal.hide();
             });
         }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const fieldTypes = document.querySelectorAll('.field-type');
-
-        fieldTypes.forEach(function(select) {
-            select.addEventListener('change', function() {
-                const optionsGroup = select.closest('.custom-field-group')
-                    .querySelector('.options-group');
-                const selectedType = select.value;
-
-                // ซ่อน/แสดงตัวเลือก
-                if (selectedType === 'select' || selectedType === 'radio' ||
-                    selectedType === 'checkbox') {
-                    optionsGroup.style.display = 'block';
-                } else {
-                    optionsGroup.style.display = 'none';
-                }
-            });
-        });
     });
 });
 </script>
