@@ -36,7 +36,9 @@ class CustomFieldController extends Controller
         foreach ($request->label as $index => $label) {
             // ทำให้ options เป็น array ที่ไม่มีการซ้อน
             $options = isset($request->options[$index]) 
-                ? array_values(array_flatten((array) $request->options[$index])) 
+                ? array_merge(...array_map(function($option) {
+                    return is_array($option) ? $option : [$option];
+                }, $request->options[$index])) 
                 : [];
         
             CustomField::create([
