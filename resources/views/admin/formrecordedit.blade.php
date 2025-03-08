@@ -183,7 +183,7 @@
             <div class="input-container">
                 <label for="id_card">เลขบัตรประจำตัวประชาชน <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="id_card" name="id_card" pattern="^[1-9]\d{12}$"
-                    maxlength="13" placeholder="กรอกเลขบัตรประจำตัวประชาชน" readonly>
+                    maxlength="13" placeholder="กรอกเลขบัตรประจำตัวประชาชน" disabled>
             </div>
             <div class="input-container">
                 <label for="prefix">คำนำหน้าชื่อ <span style="color: red;">*</span></label>
@@ -200,7 +200,7 @@
             <div class="input-container">
                 <label for="xx">ชื่อ <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="xx" name="xx" value="{{ old('xx') }}" placeholder="กรอกชื่อ"
-                    readonly>
+                disabled>
             </div>
         </div>
 
@@ -208,17 +208,17 @@
             <div class="input-container">
                 <label for="surname">นามสกุล <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="surname" name="surname" value="{{ old('surname') }}"
-                    placeholder="กรอกนามสกุล" readonly>
+                    placeholder="กรอกนามสกุล" disabled>
             </div>
             <div class="input-container">
                 <label for="housenumber">บ้านเลขที่ <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="housenumber" name="housenumber"
-                    value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่" readonly>
+                    value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่" disabled>
             </div>
             <div class="input-container">
                 <label for="birthdate">วัน / เดือน / ปีเกิด <span style="color: red;">*</span></label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
-                    placeholder="วัน/เดือน/ปีเกิด" readonly>
+                    placeholder="วัน/เดือน/ปีเกิด" disabled>
             </div>
         </div>
 
@@ -226,11 +226,11 @@
             <div class="input-container">
                 <label for="age">อายุ <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="age" name="age" value="{{ old('age') }}"
-                    placeholder="กรอกอายุ" readonly>
+                    placeholder="กรอกอายุ" disabled>
             </div>
             <div class="input-container">
                 <label for="blood_group">กรุ๊ปเลือด <span style="color: red;">*</span></label>
-                <select name="blood_group" id="blood_group" class="form-control" readonly>
+                <select name="blood_group" id="blood_group" class="form-control" disabled>
                     <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>
                         กรุณาเลือกกรุ๊ปเลือด
                     </option>
@@ -248,7 +248,7 @@
                 <label for="weight" style="margin-bottom: 5px; text-align: left; color: #020364;">น้ำหนัก
                     <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="weight" name="weight" value="{{ old('weight') }}"
-                    placeholder="กรอกน้ำหนัก" step="0.1" readonly>
+                    placeholder="กรอกน้ำหนัก" step="0.1" disabled>
             </div>
         </div>
 
@@ -257,19 +257,19 @@
                 <label for="height" style="margin-bottom: 5px; text-align: left; color: #020364;">ส่วนสูง
                     <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="height" name="height" value="{{ old('height') }}"
-                    placeholder="กรอกส่วนสูง" step="0.1" readonly>
+                    placeholder="กรอกส่วนสูง" step="0.1" disabled>
             </div>
             <div class="input-container">
                 <label for="waistline" style="margin-bottom: 5px; text-align: left; color: #020364;">รอบเอว
                     (ซม.) <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="waistline" name="waistline" value="{{ old('waistline') }}"
-                    placeholder="กรอกรอบเอว" step="0.1" readonly>
+                    placeholder="กรอกรอบเอว" step="0.1" disabled>
             </div>
             <div class="input-container">
                 <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล
                     BMI <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi') }}"
-                    placeholder="กรอกดัชนีมวล BMI" step="0.1" readonly>
+                    placeholder="กรอกดัชนีมวล BMI" step="0.1" disabled>
             </div>
         </div>
 
@@ -277,12 +277,12 @@
 
             <label for="phone">เบอร์โทรศัพท์ <span style="color: red;">*</span></label>
             <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value="{{ old('phone') }}"
-                placeholder="กรอกหมายเลขโทรศัพท์" readonly>
+                placeholder="กรอกหมายเลขโทรศัพท์" disabled>
 
 
             <label for="idline">ID Line <span style="color: red;">*</span></label>
             <input type="text" class="form-control" id="idline" name="idline" value="{{ old('idline') }}"
-                placeholder="กรอกไอดีไลน์" readonly>
+                placeholder="กรอกไอดีไลน์" disabled>
 
         </div>
 
@@ -319,34 +319,33 @@
         // ฟังก์ชันสำหรับเพิ่มฟิลด์ใหม่ในฟอร์ม
         addFieldBtn.addEventListener("click", function() {
             let fieldHTML = `
-<div class="form-group custom-field-group">
-    <label>Label:</label>
-    <input type="text" class="form-control" name="label[]" required>
+            <div class="form-group custom-field-group">
+                <label>Label:</label>
+                <input type="text" class="form-control" name="label[]" required>
 
-    <label>Field Name:</label>
-    <input type="text" class="form-control" name="name[]" required>
+                <label>Field Name:</label>
+                <input type="text" class="form-control" name="name[]" required>
 
-    <label>Field Type:</label>
-    <select class="form-control field-type" name="field_type[]" required>
-        <option value="text">Text</option>
-        <option value="select">Select</option>
-        <option value="checkbox">Checkbox</option>
-        <option value="radio">Radio</option>
-    </select>
+                <label>Field Type:</label>
+                <select class="form-control field-type" name="field_type[]" required>
+                    <option value="text">Text</option>
+                    <option value="select">Select</option>
+                    <option value="checkbox">Checkbox</option>
+                    <option value="radio">Radio</option>
+                </select>
 
-    <div class="form-group options-group" style="display: none;">
-        <label>Options:</label>
-        <div class="option-container">
-            <input type="text" class="form-control option-input" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
-        </div>
-        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-    </div>
+                <div class="form-group options-group" style="display: none;">
+                    <label>Options:</label>
+                    <div class="option-container">
+                        <input type="text" class="form-control option-input" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
+                    </div>
+                    <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                </div>
 
-    <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
-    <hr>
-</div>
-`;
-           
+                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+                <hr>
+            </div>
+            `;
             fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
         });
 
