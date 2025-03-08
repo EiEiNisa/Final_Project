@@ -114,17 +114,14 @@ class RecorddataController
         $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
         $recorddata->save();
         
-        // ดึงข้อมูล custom_fields
         $customFields = \App\Models\CustomField::all();
 
-        // บันทึกค่าฟิลด์ลงในตารางที่เกี่ยวข้อง
         foreach ($customFields as $field) {
             if (isset($data[$field->name])) {
-                // สร้าง record สำหรับแต่ละฟิลด์
                 \App\Models\CustomFieldData::create([
-                    'recorddata_id' => $recorddata_id,  // เชื่อมโยงกับ recorddata_id
-                    'custom_field_id' => $field->id,    // เชื่อมโยงกับฟิลด์ใน custom_fields
-                    'value' => $data[$field->name],     // เก็บค่าที่ผู้ใช้กรอก
+                    'recorddata_id' => $recorddata_id,  
+                    'custom_field_id' => $field->id,
+                    'value' => $data[$field->name], 
                 ]);
             }
         }
@@ -217,7 +214,7 @@ class RecorddataController
     
         $recorddata = Recorddata::findOrFail($id);
         $user = User::find($recorddata->user_id);
-        $customFields = CustomField::where('recorddata_id', $id)->get();
+        //$customFields = CustomField::where('recorddata_id', $id)->get();
         $searchDate = $request->input('search_date');
             
         if ($searchDate) {
