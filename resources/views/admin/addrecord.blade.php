@@ -377,8 +377,8 @@ form {
 
             <div class="form-group1">
                 <label for="id_card">เลขบัตรประจำตัวประชาชน <span style="color: red;">*</span></label>
-                <input type="number" class="form-control" id="id_card" name="id_card" maxlength="13"
-                    value="{{ old('id_card') }}" placeholder="กรอกเลขบัตรประจำตัวประชาชน" required>
+                <input type="text" class="form-control" id="id_card" name="id_card" pattern="^[1-9]\d{12}$"
+                    maxlength="13" placeholder="กรอกเลขบัตรประจำตัวประชาชน" required>
             </div>
 
             <script>
