@@ -51,7 +51,7 @@ class CustomFieldController extends Controller
         ]);
     }
 
-    return redirect()->back()->with('success', 'เพิ่มฟิลด์สำเร็จ');
+    return redirect()->back()->with('success', 'เพิ่มรายการสำเร็จ');
 }
 
 public function delete($id)
@@ -59,7 +59,7 @@ public function delete($id)
     $customField = CustomField::findOrFail($id);
     $customField->delete();
 
-    return response()->json(['success' => true]);
+    return redirect()->back()->with('success', 'ลบรายการสำเร็จ');
 }
 
 }
