@@ -259,7 +259,7 @@
             </div>
         </div>
 
-        <div class="contact-info-group">
+        <div class="personal-info-group">
             <div class="input-container">
                 <label class="input-label">เบอร์โทรศัพท์</label>
                 <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
