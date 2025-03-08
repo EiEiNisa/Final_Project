@@ -33,16 +33,15 @@ class CustomFieldController extends Controller
             'options' => 'nullable|array', // ตัวเลือกของ Checkbox, Select, Radio
         ]);
 
-        // แปลงค่าของ options เป็น JSON ถ้ามีตัวเลือก
-        $options = $request->has('options') ? json_encode($request->options, JSON_UNESCAPED_UNICODE) : null;
-
-        CustomField::create([
-            'label' => $validatedData['label'],
-            'name' => $validatedData['name'],
-            'field_type' => $validatedData['field_type'],
-            'options' => $options,
-        ]);
-
-        return redirect()->route('customfields.store')->with('success', 'ฟิลด์ถูกสร้างเรียบร้อย');
-    }
+        foreach ($request->label as $index => $label) {
+            // ทำให้ options เป็น array ที่ไม่มีการซ้อน
+            $options = collect($request->input('options'))->flatten()->toArray();
+        
+            CustomField::create([
+                'label' => $label,
+                'name' => $request->name[$index],
+                'field_type' => $request->field_type[$index],
+                'options' => $options,
+            ]);
+        }
 }

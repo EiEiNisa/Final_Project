@@ -349,7 +349,7 @@
                 let newOption = document.createElement("input");
                 newOption.type = "text";
                 newOption.className = "form-control option-input rounded-pill mt-2";
-                newOption.name = `options[${fieldIndex}][]`; // ✅ เปลี่ยนตรงนี้ให้ใช้ index
+                newOption.name = "options[" + fieldContainer.children.length + "]"; 
                 newOption.placeholder = "เพิ่มค่าตัวเลือก";
 
                 optionContainer.appendChild(newOption);
