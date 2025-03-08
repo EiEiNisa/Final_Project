@@ -183,11 +183,11 @@
             <div class="input-container">
                 <label for="id_card">เลขบัตรประจำตัวประชาชน <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="id_card" name="id_card" pattern="^[1-9]\d{12}$"
-                    maxlength="13" placeholder="กรอกเลขบัตรประจำตัวประชาชน" required>
+                    maxlength="13" placeholder="กรอกเลขบัตรประจำตัวประชาชน" readonly>
             </div>
             <div class="input-container">
                 <label for="prefix">คำนำหน้าชื่อ <span style="color: red;">*</span></label>
-                <select class="form-control" id="prefix" name="prefix" required>
+                <select class="form-control" id="prefix" name="prefix" readonly>
                     <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
                     </option>
                     <option value="ด.ช.">ด.ช.</option>
@@ -200,7 +200,7 @@
             <div class="input-container">
                 <label for="name">ชื่อ <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
-                    placeholder="กรอกชื่อ" required>
+                    placeholder="กรอกชื่อ" readonly>
             </div>
         </div>
 
@@ -208,17 +208,17 @@
             <div class="input-container">
                 <label for="surname">นามสกุล <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="surname" name="surname" value="{{ old('surname') }}"
-                    placeholder="กรอกนามสกุล" required>
+                    placeholder="กรอกนามสกุล" readonly>
             </div>
             <div class="input-container">
                 <label for="housenumber">บ้านเลขที่ <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="housenumber" name="housenumber"
-                    value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่" required>
+                    value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่" readonly>
             </div>
             <div class="input-container">
                 <label for="birthdate">วัน / เดือน / ปีเกิด <span style="color: red;">*</span></label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
-                    placeholder="วัน/เดือน/ปีเกิด" required>
+                    placeholder="วัน/เดือน/ปีเกิด" readonly>
             </div>
         </div>
 
@@ -230,7 +230,7 @@
             </div>
             <div class="input-container">
                 <label for="blood_group">กรุ๊ปเลือด <span style="color: red;">*</span></label>
-                <select name="blood_group" id="blood_group" class="form-control" required>
+                <select name="blood_group" id="blood_group" class="form-control" readonly>
                     <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>
                         กรุณาเลือกกรุ๊ปเลือด
                     </option>
@@ -248,7 +248,7 @@
                 <label for="weight" style="margin-bottom: 5px; text-align: left; color: #020364;">น้ำหนัก
                     <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="weight" name="weight" value="{{ old('weight') }}"
-                    placeholder="กรอกน้ำหนัก" step="0.1" required>
+                    placeholder="กรอกน้ำหนัก" step="0.1" readonly>
             </div>
         </div>
 
@@ -257,13 +257,13 @@
                 <label for="height" style="margin-bottom: 5px; text-align: left; color: #020364;">ส่วนสูง
                     <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="height" name="height" value="{{ old('height') }}"
-                    placeholder="กรอกส่วนสูง" step="0.1" required>
+                    placeholder="กรอกส่วนสูง" step="0.1" readonly>
             </div>
             <div class="input-container">
                 <label for="waistline" style="margin-bottom: 5px; text-align: left; color: #020364;">รอบเอว
                     (ซม.) <span style="color: red;">*</span></label>
                 <input type="number" class="form-control" id="waistline" name="waistline" value="{{ old('waistline') }}"
-                    placeholder="กรอกรอบเอว" step="0.1" required>
+                    placeholder="กรอกรอบเอว" step="0.1" readonly>
             </div>
             <div class="input-container">
                 <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล
@@ -274,16 +274,16 @@
         </div>
 
         <div class="form-group1">
-            <div class="input-container">
+            
                 <label for="phone">เบอร์โทรศัพท์ <span style="color: red;">*</span></label>
                 <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value="{{ old('phone') }}"
-                    placeholder="กรอกหมายเลขโทรศัพท์" required>
-            </div>
-            <div class="input-container">
+                    placeholder="กรอกหมายเลขโทรศัพท์" readonly>
+            
+            
                 <label for="idline">ID Line <span style="color: red;">*</span></label>
                 <input type="text" class="form-control" id="idline" name="idline" value="{{ old('idline') }}"
-                    placeholder="กรอกไอดีไลน์" required>
-            </div>
+                    placeholder="กรอกไอดีไลน์" readonly>
+            
         </div>
 
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom
