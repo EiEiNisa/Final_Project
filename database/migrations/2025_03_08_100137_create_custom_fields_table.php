@@ -28,4 +28,9 @@ return new class extends Migration
     {
         Schema::dropIfExists('custom_fields');
     }
+
+    public function customFields(): HasMany
+    {
+        return $this->hasMany(CustomField::class, 'recorddata_id'); 
+    }
 };

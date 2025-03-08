@@ -64,6 +64,11 @@ class Recorddata extends Model
     {
         return $this->hasMany(LifestyleHabit::class, 'recorddata_id', 'id');
     }
+
+    public function customFields(): HasMany
+    {
+        return $this->hasMany(CustomField::class, 'recorddata_id'); 
+    }
 }
 
 
