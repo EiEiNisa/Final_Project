@@ -452,41 +452,41 @@ document.addEventListener("DOMContentLoaded", function() {
     addFieldBtn.addEventListener("click", function() {
         let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
         let fieldHTML = `
-                <div class="form-group custom-field-group">
-                    <label>ชื่อหัวข้อ (เช่น ชื่อ)</label>
-                    <input type="text" class="form-control" name="label[]" required>
+            <div class="form-group custom-field-group">
+                <label>ชื่อหัวข้อ (เช่น ชื่อ)</label>
+                <input type="text" class="form-control" name="label[]" required>
 
-                    <label>ชื่อตัวแปร (เช่น name)</label>
-                    <input type="text" class="form-control" name="name[]" required>
+                <label>ชื่อตัวแปร (เช่น name)</label>
+                <input type="text" class="form-control" name="name[]" required>
 
-                    <label>รูปแบบข้อมูล</label>
-                    <select class="form-control field-type" name="field_type[]" required>
-                        <option value="text">ช่องกรอกข้อความ</option>
-                        <option value="select">เลือกจากรายการ</option>
-                        <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
-                        <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
-                    </select>
+                <label>รูปแบบข้อมูล</label>
+                <select class="form-control field-type" name="field_type[]" required>
+                    <option value="text">ช่องกรอกข้อความ</option>
+                    <option value="select">เลือกจากรายการ</option>
+                    <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
+                    <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
+                </select>
 
-                    <div class="form-group options-group" style="display: none;">
-                        <label>ตัวเลือก</label>
-                        <div class="option-container">
-                            <input type="text" class="form-control" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
-                        </div>
-                        <div class="button-group">
-                            <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-                        </div>
+                <div class="form-group options-group" style="display: none;">
+                    <label>ตัวเลือก</label>
+                    <div class="option-container">
+                        <input type="text" class="form-control" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
                     </div>
-                    <br>
-                    <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                    </div>
                 </div>
-            `;
+                <br>
+                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+            </div>
+        `;
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
     });
 
     fieldContainer.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
-                '.option-container');
+            '.option-container');
             let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
                 '.custom-field-group'));
 
@@ -560,8 +560,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 existingFields);
                         } else {
                             document.body.appendChild(
-                                successAlert
-                            ); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
+                            successAlert); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
                         }
 
                         // ปิด Modal ยืนยันการลบ
@@ -593,7 +592,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
     });
-
 });
 </script>
 @endsection
