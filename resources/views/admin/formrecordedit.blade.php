@@ -115,14 +115,20 @@
 .form-group1 {
     display: flex;
     justify-content: space-between;
-    gap: 2px; /* ลด gap เหลือ 2px */
-    margin-bottom: 5px; /* ลด margin-bottom เหลือ 5px */
+    gap: 0;
+    /* ลด gap เหลือ 0 */
+    margin-bottom: 3px;
+    /* ลด margin-bottom เหลือ 3px */
     flex-wrap: wrap;
 }
 
 .form-group1 .form-control {
     flex: 1;
     margin-bottom: 0;
+    padding: 4px 8px;
+    /* ลด padding */
+    font-size: 12px;
+    /* ลด font-size */
 }
 
 .form-group1 .form-control,
@@ -131,14 +137,19 @@
 }
 
 .form-group1 label {
-    margin-bottom: 3px; /* ลด margin-bottom ของ label เหลือ 3px */
+    margin-bottom: 2px;
+    /* ลด margin-bottom ของ label เหลือ 2px */
     color: #020364;
     text-align: left;
-    font-size: 14px; /* ปรับขนาด font label */
+    font-size: 12px;
+    /* ลด font-size label */
 }
 
 .form-group1 .input-container {
-    margin-bottom: 5px; /* ระยะห่าง input-container */
+    margin-bottom: 2px;
+    /* ลด margin-bottom ของ input-container */
+    padding: 0 2px;
+    /* เพิ่ม padding เล็กน้อย */
 }
 
 /* Mobile Friendly */
@@ -278,7 +289,7 @@
                 <input type="text" class="form-control" placeholder="กรอกไอดีไลน์" disabled>
             </div>
         </div>
-
+        <br>
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom Field</button>
 
         <div id="custom-field-form" style="display: none;">
@@ -311,13 +322,13 @@ document.addEventListener("DOMContentLoaded", function() {
         let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
         let fieldHTML = `
                 <div class="form-group custom-field-group">
-                    <label>Label:</label>
+                    <label>ชื่อหัวข้อ (เช่น ชื่อ)</label>
                     <input type="text" class="form-control" name="label[]" required>
 
-                    <label>Field Name:</label>
+                    <label>ชื่อตัวแปร (เช่น name)</label>
                     <input type="text" class="form-control" name="name[]" required>
 
-                    <label>Field Type:</label>
+                    <label>รูปแบบข้อมูล</label>
                     <select class="form-control field-type" name="field_type[]" required>
                         <option value="text">Text</option>
                         <option value="select">Select</option>
@@ -326,15 +337,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     </select>
 
                     <div class="form-group options-group" style="display: none;">
-                        <label>Options:</label>
+                        <label>ตัวเลือก</label>
                         <div class="option-container">
                             <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
                         </div>
                         <div class="button-group">
                             <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
                         </div>
-                        <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
                     </div>
+                    <br>
+                    <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
                     <hr>
                 </div>
             `;
