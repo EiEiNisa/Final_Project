@@ -273,6 +273,7 @@ form {
     background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     border: none;
+    padding: 5px 12px;
     font-size: 14px;
     border-radius: 6px;
     cursor: pointer;
@@ -293,21 +294,17 @@ form {
     .accordion-button {
         padding: 10px 15px;
         width: 100%;
-        /* ให้ปุ่มกว้างเต็มพื้นที่ในมือถือ */
         box-sizing: border-box;
     }
 
     .accordion-body {
         padding: 15px;
         max-height: 400px;
-        /* กำหนดความสูงสูงสุด */
         overflow-y: auto;
-        /* เพิ่มแถบเลื่อนแนวตั้ง */
     }
 
     .form-group {
         margin-bottom: 10px;
-        /* ลดระยะห่างระหว่างฟอร์ม */
     }
 
     .form-control {
