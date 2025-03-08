@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomField;
+use App\Models\Recorddata;
+use App\Http\Controllers\Schema;
 
 class CustomFieldController extends Controller
 {
@@ -26,10 +28,9 @@ class CustomFieldController extends Controller
             'label' => 'required|string',
             'name' => 'required|string|unique:custom_fields,name',
             'field_type' => 'required|in:text,select,checkbox,radio',
-            'options' => 'nullable|array', // ตัวเลือกของ Checkbox, Select, Radio
+            'options' => 'nullable|array',
         ]);
 
-        // แปลงค่าของ options เป็น JSON ถ้ามีตัวเลือก
         $options = $request->has('options') ? json_encode($request->options, JSON_UNESCAPED_UNICODE) : null;
 
         CustomField::create([
