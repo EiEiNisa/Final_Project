@@ -16,7 +16,7 @@ class CustomFieldController extends Controller
 
     public function create()
     {
-        return view('custom_fields.create');
+        return view('admin.formrecordedit.create');
     }
 
     public function store(Request $request)
