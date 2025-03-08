@@ -312,6 +312,26 @@
             @endforeach
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        คุณต้องการลบฟิลด์นี้หรือไม่?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <br>
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom Field</button>
 
@@ -415,23 +435,40 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");
-            if (confirm('คุณต้องการลบฟิลด์นี้หรือไม่?')) {
+
+            // แสดง Modal
+            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
+                'deleteConfirmationModal'));
+            deleteConfirmationModal.show();
+
+            // เมื่อกดปุ่ม "ลบ"
+            document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
                 // ส่งคำขอลบไปยัง Controller
                 fetch(`/delete-custom-field/${fieldId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                        'X-CSRF-TOKEN': document.querySelector(
+                                'meta[name="csrf-token"]')
                             .getAttribute('content')
                     }
                 }).then(response => {
                     if (response.ok) {
+                        // ลบฟิลด์จากหน้า
                         event.target.closest('.custom-field-group').remove();
                     } else {
                         alert('ไม่สามารถลบฟิลด์ได้');
                     }
+                    // ปิด Modal หลังจากลบ
+                    deleteConfirmationModal.hide();
                 });
-            }
+            });
+
+            // เมื่อกดปุ่ม "ยกเลิก"
+            document.querySelector(".btn-secondary").addEventListener("click", function() {
+                // ปิด Modal
+                deleteConfirmationModal.hide();
+            });
         }
     });
 });
