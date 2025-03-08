@@ -541,16 +541,13 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                     });
 
-                    const data = await response.json();
+                    const result = await response.json();
 
-                    if (response.ok && data.success) {
-                        // ลบฟิลด์จากหน้า
-                        event.target.closest('.custom-field-group').remove();
-
+                    if (response.ok && result.success) {
                         // แสดงข้อความ success บนหน้า
                         let successAlert = document.createElement('div');
                         successAlert.classList.add('alert', 'alert-success');
-                        successAlert.innerText = data.message || 'ลบฟิลด์สำเร็จ';
+                        successAlert.innerText = result.message || 'ลบฟิลด์สำเร็จ';
 
                         // เช็คว่า #existing-fields อยู่ใน DOM ก่อนจะเพิ่มข้อความ success
                         let existingFields = document.querySelector('#existing-fields');
@@ -559,19 +556,21 @@ document.addEventListener("DOMContentLoaded", function() {
                                 existingFields);
                         } else {
                             document.body.appendChild(
-                                successAlert
-                            ); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
+                            successAlert); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
                         }
 
                         // ปิด Modal ยืนยันการลบ
                         deleteConfirmationModal.hide();
+
+                        // รีเฟรชหน้าไปยัง URL ใหม่
+                        window.location.replace("{{ route('admin.formrecordedit') }}");
 
                         // ทำให้ข้อความ success หายไปหลังจาก 3 วินาที
                         setTimeout(() => {
                             successAlert.remove();
                         }, 3000);
                     } else {
-                        throw new Error(data.message ||
+                        throw new Error(result.message ||
                             "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
                     }
                 } catch (error) {
