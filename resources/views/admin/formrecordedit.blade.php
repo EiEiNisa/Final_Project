@@ -112,44 +112,29 @@
     background-color: #457b9d;
 }
 
-.form-group1 {
-    display: flex;
-    justify-content: space-between;
-    gap: 0;
-    /* ลด gap เหลือ 0 */
-    margin-bottom: 3px;
-    /* ลด margin-bottom เหลือ 3px */
-    flex-wrap: wrap;
-}
-
-.form-group1 .form-control {
-    flex: 1;
-    margin-bottom: 0;
-    padding: 4px 8px;
-    /* ลด padding */
-    font-size: 12px;
-    /* ลด font-size */
-}
-
-.form-group1 .form-control,
-.form-group1 label {
+/* General Styles */
+.input-field {
     width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
 }
 
-.form-group1 label {
-    margin-bottom: 2px;
-    /* ลด margin-bottom ของ label เหลือ 2px */
-    color: #020364;
+.input-container {
+    margin-bottom: 15px;
+}
+
+.input-label {
+    margin-bottom: 5px;
     text-align: left;
-    font-size: 12px;
-    /* ลด font-size label */
+    color: #020364;
 }
 
-.form-group1 .input-container {
-    margin-bottom: 2px;
-    /* ลด margin-bottom ของ input-container */
-    padding: 0 2px;
-    /* เพิ่ม padding เล็กน้อย */
+/* Group Styles */
+.personal-info-group, .contact-info-group {
+    margin-bottom: 30px;
 }
 
 /* Mobile Friendly */
@@ -194,14 +179,14 @@
     </div>
 
     <div class="card-body">
-        <div class="form-group1">
+        <div class="personal-info-group">
             <div class="input-container">
                 <label>เลขบัตรประจำตัวประชาชน</label>
-                <input type="text" class="form-control" placeholder="กรอกเลขบัตรประจำตัวประชาชน" disabled>
+                <input type="text" class="input-field" placeholder="กรอกเลขบัตรประจำตัวประชาชน" disabled>
             </div>
             <div class="input-container">
                 <label>คำนำหน้าชื่อ</label>
-                <select class="form-control" disabled>
+                <select class="input-field" disabled>
                     <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
                     </option>
                     <option value="ด.ช.">ด.ช.</option>
@@ -213,82 +198,74 @@
             </div>
             <div class="input-container">
                 <label>ชื่อ</label>
-                <input type="text" class="form-control" placeholder="กรอกชื่อ" disabled>
+                <input type="text" class="input-field" placeholder="กรอกชื่อ" disabled>
             </div>
         </div>
 
-        <div class="form-group1">
+        <div class="personal-info-group">
             <div class="input-container">
                 <label>นามสกุล</label>
-                <input type="text" class="form-control" placeholder="กรอกนามสกุล" disabled>
+                <input type="text" class="input-field" placeholder="กรอกนามสกุล" disabled>
             </div>
             <div class="input-container">
                 <label>บ้านเลขที่</label>
-                <input type="text" class="form-control" value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
+                <input type="text" class="input-field" value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
                     disabled>
             </div>
             <div class="input-container">
                 <label>วัน / เดือน / ปีเกิด</label>
-                <input type="date" class="form-control" placeholder="วัน/เดือน/ปีเกิด" disabled>
+                <input type="date" class="input-field" placeholder="วัน/เดือน/ปีเกิด" disabled>
             </div>
         </div>
 
-        <div class="form-group1">
+        <div class="personal-info-group">
             <div class="input-container">
                 <label>อายุ</label>
-                <input type="number" class="form-control" placeholder="กรอกอายุ" disabled>
+                <input type="number" class="input-field" placeholder="กรอกอายุ" disabled>
             </div>
             <div class="input-container">
-                <label>กรุ๊ปเลือด </label>
-                <select class="form-control" disabled>
-                    <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>
-                        กรุณาเลือกกรุ๊ปเลือด
+                <label>กรุ๊ปเลือด</label>
+                <select class="input-field" disabled>
+                    <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>กรุณาเลือกกรุ๊ปเลือด
                     </option>
-                    <option value="A" {{ old('blood_group') == 'A' ? 'selected' : '' }}>
-                        A</option>
-                    <option value="B" {{ old('blood_group') == 'B' ? 'selected' : '' }}>
-                        B</option>
-                    <option value="AB" {{ old('blood_group') == 'AB' ? 'selected' : '' }}>AB
-                    </option>
-                    <option value="O" {{ old('blood_group') == 'O' ? 'selected' : '' }}>
-                        O</option>
+                    <option value="A" {{ old('blood_group') == 'A' ? 'selected' : '' }}>A</option>
+                    <option value="B" {{ old('blood_group') == 'B' ? 'selected' : '' }}>B</option>
+                    <option value="AB" {{ old('blood_group') == 'AB' ? 'selected' : '' }}>AB</option>
+                    <option value="O" {{ old('blood_group') == 'O' ? 'selected' : '' }}>O</option>
                 </select>
             </div>
             <div class="input-container">
-                <label style="margin-bottom: 5px; text-align: left; color: #020364;">น้ำหนัก
-                </label>
-                <input type="number" class="form-control" placeholder="กรอกน้ำหนัก" step="0.1" disabled>
+                <label class="input-label">น้ำหนัก</label>
+                <input type="number" class="input-field" placeholder="กรอกน้ำหนัก" step="0.1" disabled>
             </div>
         </div>
 
-        <div class="form-group1">
+        <div class="personal-info-group">
             <div class="input-container">
-                <label style="margin-bottom: 5px; text-align: left; color: #020364;">ส่วนสูง
-                </label>
-                <input type="number" class="form-control" placeholder="กรอกส่วนสูง" step="0.1" disabled>
+                <label class="input-label">ส่วนสูง</label>
+                <input type="number" class="input-field" placeholder="กรอกส่วนสูง" step="0.1" disabled>
             </div>
             <div class="input-container">
-                <label style="margin-bottom: 5px; text-align: left; color: #020364;">รอบเอว
-                    (ซม.)</label>
-                <input type="number" class="form-control" placeholder="กรอกรอบเอว" step="0.1" disabled>
+                <label class="input-label">รอบเอว (ซม.)</label>
+                <input type="number" class="input-field" placeholder="กรอกรอบเอว" step="0.1" disabled>
             </div>
             <div class="input-container">
-                <label style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล
-                    BMI </label>
-                <input type="number" class="form-control" placeholder="กรอกดัชนีมวล BMI" step="0.1" disabled>
+                <label class="input-label">ดัชนีมวล BMI</label>
+                <input type="number" class="input-field" placeholder="กรอกดัชนีมวล BMI" step="0.1" disabled>
             </div>
         </div>
 
-        <div class="form-group1">
-            <div>
-                <label style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์</label>
-                <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
+        <div class="contact-info-group">
+            <div class="input-container">
+                <label class="input-label">เบอร์โทรศัพท์</label>
+                <input type="tel" class="input-field" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
             </div>
-            <div>
-                <label style="margin-bottom: 5px; text-align: left; color: #020364;">ID Line</label>
-                <input type="text" class="form-control" placeholder="กรอกไอดีไลน์" disabled>
+            <div class="input-container">
+                <label class="input-label">ID Line</label>
+                <input type="text" class="input-field" placeholder="กรอกไอดีไลน์" disabled>
             </div>
         </div>
+
         <br>
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom Field</button>
 
@@ -330,10 +307,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     <label>รูปแบบข้อมูล</label>
                     <select class="form-control field-type" name="field_type[]" required>
-                        <option value="text">Text</option>
-                        <option value="select">Select</option>
-                        <option value="checkbox">Checkbox</option>
-                        <option value="radio">Radio</option>
+                        <option value="text">ช่องกรอกข้อความ</option>
+                        <option value="select">เลือกจากรายการ</option>
+                        <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
+                        <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
                     </select>
 
                     <div class="form-group options-group" style="display: none;">
