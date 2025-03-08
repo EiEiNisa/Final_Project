@@ -19,8 +19,9 @@ class CustomFieldController extends Controller
 
     public function edit()
     {
+        $customFields = CustomField::all(); 
         $fields = CustomField::all(); 
-        return view('admin.formrecordedit', compact('fields'));
+        return view('admin.formrecordedit', compact('fields','customFields'));
     }
 
     public function store(Request $request)
