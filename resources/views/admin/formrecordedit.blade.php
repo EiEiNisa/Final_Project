@@ -115,10 +115,9 @@
 .form-group1 {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 20px;
+    gap: 5px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
-    /* รองรับการแสดงผลที่ดีขึ้นในกรณีที่หน้าจอเล็ก */
 }
 
 .form-group1 .form-control {
