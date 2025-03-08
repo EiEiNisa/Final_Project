@@ -544,8 +544,16 @@ document.addEventListener("DOMContentLoaded", function() {
                             let successAlert = document.createElement('div');
                             successAlert.classList.add('alert', 'alert-success');
                             successAlert.innerText = data.message || 'ลบฟิลด์สำเร็จ';
-                            document.querySelector('body').insertBefore(successAlert,
-                                document.querySelector('#existing-fields'));
+
+                            // เช็คว่า #existing-fields อยู่ใน DOM ก่อนจะเพิ่มข้อความ success
+                            let existingFields = document.querySelector('#existing-fields');
+                            if (existingFields) {
+                                document.querySelector('body').insertBefore(successAlert,
+                                    existingFields);
+                            } else {
+                                document.body.appendChild(
+                                successAlert); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
+                            }
 
                             // ปิด Modal ยืนยันการลบ
                             deleteConfirmationModal.hide();
@@ -580,6 +588,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
     });
+
 });
 </script>
 @endsection
