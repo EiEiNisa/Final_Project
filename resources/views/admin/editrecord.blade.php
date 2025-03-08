@@ -554,9 +554,10 @@ form {
             </div>
             @endif
 
-            <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-lg" id="saveBtn">
+            <button type="submit" class="btn btn-primary btn-sm px-3 py-1 rounded-pill shadow-sm" id="saveBtn">
                 <i class="fas fa-save"></i> บันทึกข้อมูล
             </button>
+
 
             <!--ข้อมูลทั่วไป-->
             <div class="form-group3">
