@@ -149,10 +149,11 @@
 }
 
 .form-check {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
-.checkbox-input, .radio-input {
+.checkbox-input,
+.radio-input {
     margin-right: 5px;
 }
 
@@ -228,7 +229,7 @@
             </div>
             <div class="input-container">
                 <label>บ้านเลขที่</label>
-                <input type="text" class="form-control"  value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
+                <input type="text" class="form-control" value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
                     disabled>
             </div>
             <div class="input-container">
@@ -270,45 +271,46 @@
             </div>
         </div>
 
-        @foreach($customFields as $field)
-        <div class="personal-info-group">
-            <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
+        <div id="existing-fields">
+            @foreach($customFields as $field)
+            <div class="form-group custom-field-group" data-id="{{ $field->id }}">
+                <label>ชื่อหัวข้อ</label>
+                <input type="text" class="form-control" name="label[]" value="{{ $field->label }}" required>
 
-            @if($field->field_type == 'text')
-            <input type="text" class="form-control" name="{{ $field->name }}">
+                <label>ชื่อตัวแปร</label>
+                <input type="text" class="form-control" name="name[]" value="{{ $field->name }}" required>
 
-            @elseif($field->field_type == 'select')
-            @php $options = json_decode($field->options, true) ?? []; @endphp
-            <select class="form-control" name="{{ $field->name }}">
-                @foreach($options as $option)
-                <option value="{{ $option }}">{{ $option }}</option>
-                @endforeach
-            </select>
+                <label>รูปแบบข้อมูล</label>
+                <select class="form-control field-type" name="field_type[]" required>
+                    <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ</option>
+                    <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
+                    </option>
+                    <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
+                        (เลือกได้หลายรายการ)</option>
+                    <option value="radio" {{ $field->field_type == 'radio' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
+                        (เลือกได้รายการเดียว)</option>
+                </select>
 
-            @elseif($field->field_type == 'checkbox')
-            @php $options = json_decode($field->options, true) ?? []; @endphp
-            <div class="checkbox-group">
-                @foreach($options as $option)
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
-                    <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                <div class="form-group options-group"
+                    style="{{ $field->field_type === 'select' || $field->field_type === 'radio' || $field->field_type === 'checkbox' ? 'display: block;' : 'display: none;' }}">
+                    <label>ตัวเลือก</label>
+                    <div class="option-container">
+                        @foreach(json_decode($field->options) as $option)
+                        <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
+                            value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
+                        @endforeach
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                    </div>
                 </div>
-                @endforeach
+                <br>
+                <button type="button" class="btn btn-danger delete-field-btn"
+                    data-id="{{ $field->id }}">ลบฟิลด์</button>
+                <hr>
             </div>
-
-            @elseif($field->field_type == 'radio')
-            @php $options = json_decode($field->options, true) ?? []; @endphp
-            <div class="radio-group">
-                @foreach($options as $option)
-                <div class="form-check">
-                    <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}">
-                    <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
-                </div>
-                @endforeach
-            </div>
-            @endif
+            @endforeach
         </div>
-        @endforeach
 
         <br>
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom Field</button>

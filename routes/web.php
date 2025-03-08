@@ -222,5 +222,6 @@ Route::prefix('admin')->group(function() {
 
 Route::get('/admin/formrecordedit', [CustomFieldController::class, 'edit'])->name('customfields.edit');
 Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('customfields.store');
+Route::delete('/admin/delete-custom-field/{id}', [CustomFieldController::class, 'delete']);
 
 

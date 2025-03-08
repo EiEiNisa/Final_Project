@@ -53,4 +53,13 @@ class CustomFieldController extends Controller
 
     return redirect()->back()->with('success', 'เพิ่มฟิลด์สำเร็จ');
 }
+
+public function delete($id)
+{
+    $customField = CustomField::findOrFail($id);
+    $customField->delete();
+
+    return response()->json(['success' => true]);
+}
+
 }
