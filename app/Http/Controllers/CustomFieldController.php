@@ -25,7 +25,7 @@ class CustomFieldController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         $validatedData = $request->validate([
             'label' => 'required|string',
             'name' => 'required|string|unique:custom_fields,name',
