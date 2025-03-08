@@ -179,7 +179,7 @@
     </div>
 
     <div class="card-body">
-        <form action="#" method="POST">
+        <form action="{{ route('customfields.store') }}" method="POST">
             @csrf
             <div class="form-group1">
                 <div class="input-container">
@@ -304,100 +304,90 @@
                     <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
                 </form>
             </div>
+        </form>
+    </div>
 
-            <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                let showFormBtn = document.getElementById("show-form-btn");
-                let customFieldForm = document.getElementById(
-                    "custom-field-form");
-                let addFieldBtn = document.getElementById("add-field-btn");
-                let fieldContainer = document.getElementById(
-                    "field-container");
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let showFormBtn = document.getElementById("show-form-btn");
+        let customFieldForm = document.getElementById("custom-field-form");
+        let addFieldBtn = document.getElementById("add-field-btn");
+        let fieldContainer = document.getElementById("field-container");
 
-                // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
-                showFormBtn.addEventListener("click", function() {
-                    customFieldForm.style.display = customFieldForm
-                        .style.display === "none" ? "block" :
-                        "none";
-                });
+        // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
+        showFormBtn.addEventListener("click", function() {
+            customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
+        });
 
-                // ฟังก์ชันสำหรับเพิ่มฟิลด์ใหม่ในฟอร์ม
-                addFieldBtn.addEventListener("click", function() {
-                    let fieldHTML = `
-                    <div class="form-group custom-field-group">
-                        <label for="label" class="font-weight-bold text-dark">Label (ชื่อที่แสดง):</label>
-                        <input type="text" class="form-control rounded-pill" name="label[]" required>
-                        
-                        <label for="name" class="font-weight-bold text-dark">Field Name (ชื่อฟิลด์):</label>
-                        <input type="text" class="form-control rounded-pill" name="name[]" required>
+        // ฟังก์ชันสำหรับเพิ่มฟิลด์ใหม่ในฟอร์ม
+        addFieldBtn.addEventListener("click", function() {
+            let fieldHTML = `
+        <div class="form-group custom-field-group">
+            <label for="label" class="font-weight-bold text-dark">Label (ชื่อที่แสดง):</label>
+            <input type="text" class="form-control rounded-pill" name="label[]" required>
+            
+            <label for="name" class="font-weight-bold text-dark">Field Name (ชื่อฟิลด์):</label>
+            <input type="text" class="form-control rounded-pill" name="name[]" required>
 
-                        <label for="field_type" class="font-weight-bold text-dark">Field Type:</label>
-                        <select class="form-control rounded-pill" name="field_type[]" required>
-                            <option value="text">Text</option>
-                            <option value="select">Select</option>
-                            <option value="checkbox">Checkbox</option>
-                            <option value="radio">Radio</option>
-                        </select>
+            <label for="field_type" class="font-weight-bold text-dark">Field Type:</label>
+            <select class="form-control rounded-pill" name="field_type[]" required>
+                <option value="text">Text</option>
+                <option value="select">Select</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="radio">Radio</option>
+            </select>
 
-                        <div class="form-group options-group" style="display: none;">
-                            <label for="options" class="font-weight-bold text-dark">ตัวเลือก (ใช้สำหรับ Select, Radio, Checkbox):</label>
-                            <div class="option-container">
-                                <input type="text" class="form-control option-input rounded-pill" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
-                            </div>
-                            <button type="button" class="btn btn-outline-secondary mt-2 rounded-pill add-option-btn">+ เพิ่มตัวเลือก</button>
-                        </div>
+            <div class="form-group options-group" style="display: none;">
+                <label for="options" class="font-weight-bold text-dark">ตัวเลือก (ใช้สำหรับ Select, Radio, Checkbox):</label>
+                <div class="option-container">
+                    <input type="text" class="form-control option-input rounded-pill" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
+                </div>
+                <button type="button" class="btn btn-outline-secondary mt-2 rounded-pill add-option-btn">+ เพิ่มตัวเลือก</button>
+            </div>
 
-                        <!-- ปุ่มลบฟิลด์ -->
-                        <button type="button" class="btn btn-danger mt-2 rounded-pill delete-field-btn">ลบฟิลด์</button>
+            <!-- ปุ่มลบฟิลด์ -->
+            <button type="button" class="btn btn-danger mt-2 rounded-pill delete-field-btn">ลบฟิลด์</button>
 
-                        <hr>
-                    </div>
-                    `;
-                    fieldContainer.insertAdjacentHTML('beforeend',
-                        fieldHTML);
-                });
+            <hr>
+        </div>
+        `;
+            fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
+        });
 
-                // ฟังก์ชันสำหรับเพิ่มตัวเลือกของ Select, Checkbox, Radio
-                fieldContainer.addEventListener("click", function(event) {
-                    if (event.target && event.target.classList
-                        .contains("add-option-btn")) {
-                        let optionContainer = event.target.closest(
-                            '.form-group').querySelector(
-                            '.option-container');
-                        let newOption = document.createElement(
-                            "input");
-                        newOption.type = "text";
-                        newOption.className =
-                            "form-control option-input rounded-pill mt-2";
-                        newOption.name = "options[]";
-                        newOption.placeholder = "เพิ่มค่าตัวเลือก";
-                        optionContainer.appendChild(newOption);
-                    }
+        // ฟังก์ชันสำหรับเพิ่มตัวเลือกของ Select, Checkbox, Radio
+        fieldContainer.addEventListener("click", function(event) {
+            if (event.target && event.target.classList.contains("add-option-btn")) {
+                let optionContainer = event.target.closest('.form-group').querySelector(
+                    '.option-container');
+                let newOption = document.createElement("input");
+                newOption.type = "text";
+                newOption.className = "form-control option-input rounded-pill mt-2";
+                newOption.name = "options[]";
+                newOption.placeholder = "เพิ่มค่าตัวเลือก";
+                optionContainer.appendChild(newOption);
+            }
 
-                    // ฟังก์ชันลบฟิลด์
-                    if (event.target && event.target.classList
-                        .contains("delete-field-btn")) {
-                        let fieldGroup = event.target.closest(
-                            '.custom-field-group');
-                        fieldGroup.remove();
-                    }
-                });
+            // ฟังก์ชันลบฟิลด์
+            if (event.target && event.target.classList.contains("delete-field-btn")) {
+                let fieldGroup = event.target.closest('.custom-field-group');
+                fieldGroup.remove();
+            }
+        });
 
-                // ฟังก์ชันเพื่อแสดง/ซ่อนตัวเลือกเมื่อเลือก field type
-                fieldContainer.addEventListener("change", function(event) {
-                    if (event.target && event.target.name ===
-                        "field_type[]") {
-                        let optionsGroup = event.target.closest(
-                            '.form-group').nextElementSibling;
-                        if (event.target.value === "select" || event
-                            .target.value === "radio" || event
-                            .target.value === "checkbox") {
-                            optionsGroup.style.display = "block";
-                        } else {
-                            optionsGroup.style.display = "none";
-                        }
-                    }
-                });
-            });
-            </script>
-            @endsection
+        // ฟังก์ชันเพื่อแสดง/ซ่อนตัวเลือกเมื่อเลือก field type
+        fieldContainer.addEventListener("change", function(event) {
+            if (event.target && event.target.name === "field_type[]") {
+                // หาตำแหน่งของ options-group ในฟอร์มที่เลือก
+                let optionsGroup = event.target.closest('.custom-field-group').querySelector(
+                    '.options-group');
+                if (event.target.value === "select" || event.target.value === "radio" || event.target
+                    .value === "checkbox") {
+                    optionsGroup.style.display = "block"; // แสดงตัวเลือก
+                } else {
+                    optionsGroup.style.display = "none"; // ซ่อนตัวเลือก
+                }
+            }
+        });
+    });
+    </script>
+    @endsection
