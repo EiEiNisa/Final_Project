@@ -6,7 +6,6 @@
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    /* เพิ่มเงาให้ดูมีมิติ */
     padding: 25px 30px;
     margin-bottom: 30px;
     transition: all 0.3s ease-in-out;
@@ -14,7 +13,6 @@
 
 .card-container:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    /* เงาเข้มขึ้นเมื่อ hover */
 }
 
 .card-header {
@@ -24,17 +22,14 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
-    /* ใช้สำหรับขีดด้านล่าง */
 }
 
-/* ข้อความ h4 */
 .card-header h4 {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
 }
 
-/* ปุ่มกลับ */
 .card-header .btn-back {
     background: rgba(255, 255, 255, 0.3);
     color: #000;
@@ -197,9 +192,7 @@ label {
 .accordion-button:focus,
 .accordion-button:active {
     width: 100%;
-    /* กำหนดความกว้างให้เต็มที่เมื่อกดปุ่ม */
     transition: width 0.3s ease;
-    /* เพิ่มการเปลี่ยนแปลงความกว้าง */
 }
 
 form {
@@ -276,20 +269,25 @@ form {
     padding-bottom: 10px;
 }
 
-#saveBtn {
-    border: none;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: bold;
+.custom-btn-small {
+    background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-#editBtn {
-    border: none;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
+.custom-btn-small:hover {
+    background: linear-gradient(135deg, #0056b3, #003d80);
+    transform: scale(1.03);
+}
+
+.custom-btn-small:active {
+    transform: scale(0.97);
 }
 
 @media (max-width: 768px) {
@@ -554,10 +552,9 @@ form {
             </div>
             @endif
 
-            <button type="submit" class="btn btn-primary btn-sm px-3 py-1 rounded-pill shadow-sm" id="saveBtn">
+            <button type="submit" class="custom-btn-small" id="saveBtn">
                 <i class="fas fa-save"></i> บันทึกข้อมูล
             </button>
-
 
             <!--ข้อมูลทั่วไป-->
             <div class="form-group3">
