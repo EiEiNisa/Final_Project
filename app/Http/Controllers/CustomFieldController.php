@@ -25,7 +25,7 @@ class CustomFieldController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        dd($request->options);
         $validatedData = $request->validate([
             'label' => 'required|string',
             'name' => 'required|string|unique:custom_fields,name',
@@ -35,14 +35,17 @@ class CustomFieldController extends Controller
 
         foreach ($request->label as $index => $label) {
             // ทำให้ options เป็น array ที่ไม่มีการซ้อน
-            $options = isset($request->options[$index]) ? array_values($request->options[$index]) : [];
-            
+            $options = isset($request->options[$index]) 
+                ? array_values(array_flatten((array) $request->options[$index])) 
+                : [];
+        
             CustomField::create([
                 'label' => $label,
                 'name' => $request->name[$index],
                 'field_type' => $request->field_type[$index],
                 'options' => json_encode($options), // บันทึกเป็น JSON
             ]);
-        }        
+        }
+        
 }
 }
