@@ -23,8 +23,8 @@ class CustomFieldController extends Controller
 
     public function store(Request $request)
 {
-    // ตรวจสอบข้อมูลที่ส่งมาจากฟอร์ม
-    dd($request->all()); // ตรวจสอบข้อมูลทั้งหมดที่ได้รับจากฟอร์ม
+    // ตรวจสอบข้อมูลทั้งหมดที่ได้รับจากฟอร์ม
+    dd($request->all());
 
     // ตรวจสอบว่า request มีข้อมูลที่ต้องการครบถ้วน
     $validatedData = $request->validate([
@@ -42,9 +42,9 @@ class CustomFieldController extends Controller
     // วนลูปเพื่อบันทึก Custom Fields ทีละตัว
     foreach ($request->label as $index => $label) {
         // ตรวจสอบการมี options ถ้า field_type เป็น select, checkbox หรือ radio
-        // แปลง options ให้เป็น array เดียว
+        // ทำการ flat และรวม options ให้เป็น array เดียว
         $options = isset($request->options[$index]) 
-            ? json_encode(array_merge(...$request->options[$index]), JSON_UNESCAPED_UNICODE) 
+            ? json_encode(array_merge(...array_map('array_values', $request->options[$index])), JSON_UNESCAPED_UNICODE) 
             : null;
 
         // บันทึก Custom Field ใหม่
