@@ -411,6 +411,28 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
+
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            let fieldId = event.target.getAttribute("data-id");
+            if (confirm('คุณต้องการลบฟิลด์นี้หรือไม่?')) {
+                // ส่งคำขอลบไปยัง Controller
+                fetch(`/delete-custom-field/${fieldId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        event.target.closest('.custom-field-group').remove();
+                    } else {
+                        alert('ไม่สามารถลบฟิลด์ได้');
+                    }
+                });
+            }
+        }
+    });
 });
 </script>
 @endsection
