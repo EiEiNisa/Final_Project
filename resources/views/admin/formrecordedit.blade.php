@@ -563,7 +563,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         deleteConfirmationModal.hide();
 
                         // รีเฟรชหน้าไปยัง URL ใหม่
-                        window.location.replace("{{ route('admin.formrecordedit') }}");
+                        window.location.replace("{{ route('customfields.edit') }}");
 
                         // ทำให้ข้อความ success หายไปหลังจาก 3 วินาที
                         setTimeout(() => {
