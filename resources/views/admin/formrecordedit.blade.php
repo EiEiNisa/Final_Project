@@ -295,7 +295,7 @@
                     style="{{ $field->field_type === 'select' || $field->field_type === 'radio' || $field->field_type === 'checkbox' ? 'display: block;' : 'display: none;' }}">
                     <label>ตัวเลือก</label>
                     <div class="option-container">
-                        @foreach(json_decode($field->options) as $option)
+                        @foreach(json_decode($field->options) ?? [] as $option)
                         <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
                             value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
                         @endforeach
@@ -421,7 +421,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
                     }
                 }).then(response => {
                     if (response.ok) {
