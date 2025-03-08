@@ -56,10 +56,15 @@ class CustomFieldController extends Controller
 
 public function delete($id)
 {
-    $customField = CustomField::findOrFail($id);
-    $customField->delete();
+    try {
+        $customField = CustomField::findOrFail($id);
+        $customField->delete();
 
-    return redirect()->back()->with('success', 'ลบรายการสำเร็จ');
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
+    }
 }
+
 
 }
