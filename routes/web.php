@@ -220,11 +220,7 @@ Route::prefix('admin')->group(function() {
     Route::delete('slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.delete');
 });
 
-Route::get('/admin/formrecordedit', [CustomFieldController::class, 'index'])->name('custom-fields.index'); 
-Route::get('/admin/formrecordedit/create', [CustomFieldController::class, 'create'])->name('custom-fields.create');
-Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('custom-fields.store');
-Route::get('/admin/formrecordedit/{id}/edit', [CustomFieldController::class, 'edit'])->name('custom-fields.edit'); 
-Route::put('/admin/formrecordedit/{id}', [CustomFieldController::class, 'update'])->name('custom-fields.update'); 
-Route::delete('/admin/formrecordedit/{id}', [CustomFieldController::class, 'destroy'])->name('custom-fields.destroy');
+Route::get('/admin/formrecordedit', [CustomFieldController::class, 'edit'])->name('customfields.edit');
+Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('customfields.store');
 
 

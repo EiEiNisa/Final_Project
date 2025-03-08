@@ -13,47 +13,31 @@ class CustomFieldController extends Controller
     return view('admin.formrecordedit', compact('fields')); // ส่งข้อมูลไปยัง view 'admin.formrecordedit'
 }
 
-
-    public function create()
+    // แสดงฟอร์มเพิ่ม/แก้ไขฟิลด์
+    public function edit()
     {
-        return view('admin.formrecordedit.create');
+        $fields = CustomField::all(); // ดึงข้อมูลฟิลด์ที่มีอยู่
+        return view('admin.formrecordedit', compact('fields'));
     }
 
+    // บันทึกฟิลด์ที่ผู้ใช้เพิ่มหรือแก้ไข
     public function store(Request $request)
     {
+        // ตรวจสอบและบันทึกฟิลด์ที่เพิ่มเข้ามา
         $request->validate([
-            'label' => 'required|string|max:255',
-            'type' => 'required|string',
-            'value' => 'nullable|string',
+            'name' => 'required|unique:custom_fields',
+            'label' => 'required',
+            'field_type' => 'required',
         ]);
 
-        CustomField::create($request->all());
-
-        return redirect()->route('custom-fields.index')->with('success', 'Custom field created successfully!');
-    }
-
-    public function edit(CustomField $customField)
-    {
-        return view('custom_fields.edit', compact('customField'));
-    }
-
-    public function update(Request $request, CustomField $customField)
-    {
-        $request->validate([
-            'label' => 'required|string|max:255',
-            'type' => 'required|string',
-            'value' => 'nullable|string',
+        CustomField::create([
+            'name' => $request->input('name'),
+            'label' => $request->input('label'),
+            'field_type' => $request->input('field_type'),
+            'options' => $request->input('options') ?? null,
         ]);
 
-        $customField->update($request->all());
-
-        return redirect()->route('custom-fields.index')->with('success', 'Custom field updated successfully!');
-    }
-
-    public function destroy(CustomField $customField)
-    {
-        $customField->delete();
-        return redirect()->route('custom-fields.index')->with('success', 'Custom field deleted successfully!');
+        return redirect()->route('customfields.edit')->with('success', 'บันทึกฟิลด์สำเร็จ');
     }
 }
 
