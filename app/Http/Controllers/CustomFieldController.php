@@ -20,24 +20,26 @@ class CustomFieldController extends Controller
         return view('admin.formrecordedit', compact('fields'));
     }
 
-    // บันทึกฟิลด์ที่ผู้ใช้เพิ่มหรือแก้ไข
     public function store(Request $request)
-    {
-        // ตรวจสอบและบันทึกฟิลด์ที่เพิ่มเข้ามา
-        $request->validate([
-            'name' => 'required|unique:custom_fields',
-            'label' => 'required',
-            'field_type' => 'required',
-        ]);
+{
+    $validatedData = $request->validate([
+        'label' => 'required|string',
+        'name' => 'required|string|unique:custom_fields,name',
+        'field_type' => 'required|in:text,select,checkbox,radio',
+        'options' => 'nullable|array', // ตัวเลือกของ Checkbox, Select, Radio
+    ]);
 
-        CustomField::create([
-            'name' => $request->input('name'),
-            'label' => $request->input('label'),
-            'field_type' => $request->input('field_type'),
-            'options' => $request->input('options') ?? null,
-        ]);
+    // แปลงค่าของ options เป็น JSON ถ้ามีตัวเลือก
+    $options = $request->has('options') ? json_encode($request->options, JSON_UNESCAPED_UNICODE) : null;
 
-        return redirect()->route('customfields.edit')->with('success', 'บันทึกฟิลด์สำเร็จ');
-    }
+    CustomField::create([
+        'label' => $validatedData['label'],
+        'name' => $validatedData['name'],
+        'field_type' => $validatedData['field_type'],
+        'options' => $options,
+    ]);
+
+    return redirect()->route('formrecordedit')->with('success', 'ฟิลด์ถูกสร้างเรียบร้อย');
+}
 }
 
