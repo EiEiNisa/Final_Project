@@ -60,7 +60,7 @@ class CustomFieldController extends Controller
             $customField = CustomField::findOrFail($id);
             $customField->delete();
 
-            session()->flash('success', 'นำเข้าข้อมูลสำเร็จ');
+            session()->flash('success', 'ลบรายการสำเร็จ');
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
