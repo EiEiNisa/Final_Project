@@ -485,15 +485,22 @@ document.addEventListener("DOMContentLoaded", function() {
                         // รีเฟรชหน้าเพื่อแสดงข้อความจาก session
                         window.location.reload();
                     } else {
-                        // หากไม่สามารถลบฟิลด์ได้ แสดง Modal แจ้งเตือน
-                        let errorModal = new bootstrap.Modal(document.getElementById(
-                            'errorModal'));
-                        errorModal.show();
+                        // ถ้า response ไม่ใช่ ok, แสดงโมเดลแจ้งเตือนข้อผิดพลาด
+                        response.json().then(data => {
+                            let errorModal = new bootstrap.Modal(document
+                                .getElementById('errorModal'));
+                            document.querySelector("#errorModal .modal-body")
+                                .innerHTML = data.message ||
+                                "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง";
+                            errorModal.show();
+                        });
                     }
                 }).catch(() => {
                     // ถ้ามีข้อผิดพลาดในการส่งคำขอ
                     let errorModal = new bootstrap.Modal(document.getElementById(
                         'errorModal'));
+                    document.querySelector("#errorModal .modal-body").innerHTML =
+                        "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
                     errorModal.show();
                 });
             });
