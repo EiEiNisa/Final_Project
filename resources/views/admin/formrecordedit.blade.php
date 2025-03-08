@@ -319,32 +319,33 @@
         // ฟังก์ชันสำหรับเพิ่มฟิลด์ใหม่ในฟอร์ม
         addFieldBtn.addEventListener("click", function() {
             let fieldHTML = `
-            <div class="form-group custom-field-group">
-                <label for="label">Label:</label>
-                <input type="text" class="form-control" name="label[]" required>
+<div class="form-group custom-field-group">
+    <label>Label:</label>
+    <input type="text" class="form-control" name="label[]" required>
 
-                <label for="name">Field Name:</label>
-                <input type="text" class="form-control" name="name[]" required>
+    <label>Field Name:</label>
+    <input type="text" class="form-control" name="name[]" required>
 
-                <label for="field_type">Field Type:</label>
-                <select class="form-control field-type" name="field_type[]" required>
-                    <option value="text">Text</option>
-                    <option value="select">Select</option>
-                    <option value="checkbox">Checkbox</option>
-                    <option value="radio">Radio</option>
-                </select>
+    <label>Field Type:</label>
+    <select class="form-control field-type" name="field_type[]" required>
+        <option value="text">Text</option>
+        <option value="select">Select</option>
+        <option value="checkbox">Checkbox</option>
+        <option value="radio">Radio</option>
+    </select>
 
-                <div class="form-group options-group" style="display: none;">
-                    <label>Options:</label>
-                    <div class="option-container">
-                        <input type="text" class="form-control option-input" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
-                    </div>
-                    <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-                </div>
+    <div class="form-group options-group" style="display: none;">
+        <label>Options:</label>
+        <div class="option-container">
+            <input type="text" class="form-control option-input" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
+        </div>
+        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+    </div>
 
-                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
-                <hr>
-            </div>
+    <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+    <hr>
+</div>
+`;
             `;
             fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
         });

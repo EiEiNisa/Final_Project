@@ -42,12 +42,11 @@ class CustomFieldController extends Controller
 
     // วนลูปเพื่อบันทึก Custom Fields ทีละตัว
     foreach ($request->label as $index => $label) {
-        // ตรวจสอบและทำให้ options เป็น array ที่ไม่มีการซ้อน
+        // ทำให้ options เป็น array ที่ไม่มีการซ้อน
         $options = isset($request->options[$index]) 
-        ? json_encode(collect($request->options[$index])->flatten()->all(), JSON_UNESCAPED_UNICODE) 
-        : null;
-
-        // บันทึก Custom Field ใหม่
+            ? json_encode(collect($request->options[$index])->flatten()->all(), JSON_UNESCAPED_UNICODE) 
+            : null;
+    
         CustomField::create([
             'label' => $label,
             'name' => $request->name[$index],
