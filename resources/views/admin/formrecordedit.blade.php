@@ -187,7 +187,7 @@
             </div>
             <div class="input-container">
                 <label for="prefix">คำนำหน้าชื่อ <span style="color: red;">*</span></label>
-                <select class="form-control" id="prefix" name="prefix" readonly>
+                <select class="form-control" id="prefix" name="prefix" disabled>
                     <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
                     </option>
                     <option value="ด.ช.">ด.ช.</option>
@@ -199,8 +199,8 @@
             </div>
             <div class="input-container">
                 <label for="xx">ชื่อ <span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="xx" name="xx" value="{{ old('xx') }}"
-                    placeholder="กรอกชื่อ" readonly>
+                <input type="text" class="form-control" id="xx" name="xx" value="{{ old('xx') }}" placeholder="กรอกชื่อ"
+                    readonly>
             </div>
         </div>
 
@@ -274,16 +274,16 @@
         </div>
 
         <div class="form-group1">
-            
-                <label for="phone">เบอร์โทรศัพท์ <span style="color: red;">*</span></label>
-                <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value="{{ old('phone') }}"
-                    placeholder="กรอกหมายเลขโทรศัพท์" readonly>
-            
-            
-                <label for="idline">ID Line <span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="idline" name="idline" value="{{ old('idline') }}"
-                    placeholder="กรอกไอดีไลน์" readonly>
-            
+
+            <label for="phone">เบอร์โทรศัพท์ <span style="color: red;">*</span></label>
+            <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value="{{ old('phone') }}"
+                placeholder="กรอกหมายเลขโทรศัพท์" readonly>
+
+
+            <label for="idline">ID Line <span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="idline" name="idline" value="{{ old('idline') }}"
+                placeholder="กรอกไอดีไลน์" readonly>
+
         </div>
 
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom
