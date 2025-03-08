@@ -570,7 +570,7 @@ public function restore($id)
 {
     try {
         $recorddata = Recorddata::findOrFail($id);
-        $recorddata->is_deleted = false; // เปลี่ยนสถานะกลับมาเป็นไม่ถูกซ่อน
+        $recorddata->is_deleted = false; 
         $recorddata->save();
 
         return redirect()->route('admin.recently_deleted')->with('success', 'ข้อมูลถูกกู้คืนแล้ว คุณสามารถดูข้อมูลที่กู้คืนได้ที่<a href="/admin/record">บันทึกข้อมูล</a>');
@@ -716,6 +716,16 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     $diseases = Disease::where('recorddata_id', $recorddata_id)
                         ->where('id', $healthRecord->id) 
                         ->first();
+
+    $diseaseNamesFormatted = [];
+
+        foreach ($diseases as $index => $disease) {
+            if (!isset($disease['other']) || $disease['other'] != 1) {
+                $diseaseNamesFormatted[$index] = !empty($disease['names']) ? $disease['names'] : 'ไม่มีโรคประจำตัว';
+            } else {
+                $diseaseNamesFormatted[$index] = $disease['other_text'];
+            }
+        }                        
     
     $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
                                 ->where('id', $healthRecord->id)
@@ -755,7 +765,7 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
     // ส่งข้อมูลไปยังหน้า view
     return view('admin.editrecord_general_information', compact(
         'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'recorddata_id' ,
-        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2'
+        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2', 'diseaseNamesFormatted'
     ));
 }
 
