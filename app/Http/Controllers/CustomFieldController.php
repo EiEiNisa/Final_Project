@@ -43,8 +43,8 @@ class CustomFieldController extends Controller
     foreach ($request->label as $index => $label) {
         // ตรวจสอบและทำให้ options เป็น array ที่ไม่มีการซ้อน
         $options = isset($request->options[$index]) 
-            ? json_encode(Arr::flatten((array) $request->options[$index]), JSON_UNESCAPED_UNICODE)
-            : null;
+        ? json_encode(Arr::flatten( (array) ($request->options[$index] ?? [])), JSON_UNESCAPED_UNICODE) 
+        : null;
 
         // บันทึก Custom Field ใหม่
         CustomField::create([
