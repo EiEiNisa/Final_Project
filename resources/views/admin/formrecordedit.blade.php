@@ -1,3 +1,4 @@
+<!-- resources/views/custom_fields/index.blade.php -->
 @extends('layoutadmin') 
 
 @section('content')
