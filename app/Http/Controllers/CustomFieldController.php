@@ -10,12 +10,12 @@ class CustomFieldController extends Controller
     public function index()
     {
         $fields = CustomField::all();
-        return view('admin.formrecordedit', compact('fields'));
+        return view('custom_fields.index', compact('fields'));
     }
 
     public function create()
     {
-        return view('admin.formrecordedit_create');
+        return view('custom_fields.create');
     }
 
     public function store(Request $request)
@@ -33,7 +33,7 @@ class CustomFieldController extends Controller
 
     public function edit(CustomField $customField)
     {
-        return view('admin.formrecordedit_edit', compact('customField'));
+        return view('custom_fields.edit', compact('customField'));
     }
 
     public function update(Request $request, CustomField $customField)

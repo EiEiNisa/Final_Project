@@ -25,6 +25,8 @@ use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\UserArticleController;
 use App\Http\Controllers\GuestArticleController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\CustomFieldController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -218,6 +220,11 @@ Route::prefix('admin')->group(function() {
     Route::delete('slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.delete');
 });
 
-
+Route::get('/admin/formrecordedit', [CustomFieldController::class, 'index'])->name('custom-fields.index'); // แสดงรายการฟิลด์ทั้งหมด
+Route::get('/admin/formrecordedit/create', [CustomFieldController::class, 'create'])->name('custom-fields.create'); // แสดงฟอร์มสร้างฟิลด์ใหม่
+Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('custom-fields.store'); // บันทึกฟิลด์ใหม่
+Route::get('/admin/formrecordedit/{id}/edit', [CustomFieldController::class, 'edit'])->name('custom-fields.edit'); // แก้ไขฟิลด์
+Route::put('/admin/formrecordedit/{id}', [CustomFieldController::class, 'update'])->name('custom-fields.update'); // อัปเดตฟิลด์
+Route::delete('/admin/formrecordedit/{id}', [CustomFieldController::class, 'destroy'])->name('custom-fields.destroy'); // ลบฟิลด์
 
 
