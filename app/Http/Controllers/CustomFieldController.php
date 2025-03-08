@@ -7,6 +7,7 @@ use App\Models\CustomField;
 use App\Models\Recorddata;
 use App\Http\Controllers\Schema;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class CustomFieldController extends Controller
 {
