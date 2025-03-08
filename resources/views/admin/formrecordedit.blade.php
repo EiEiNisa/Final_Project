@@ -319,35 +319,33 @@
         // ฟังก์ชันสำหรับเพิ่มฟิลด์ใหม่ในฟอร์ม
         addFieldBtn.addEventListener("click", function() {
             let fieldHTML = `
-        <div class="form-group custom-field-group">
-            <label for="label" class="font-weight-bold text-dark">Label (ชื่อที่แสดง):</label>
-            <input type="text" class="form-control rounded-pill" name="label[]" required>
-            
-            <label for="name" class="font-weight-bold text-dark">Field Name (ชื่อฟิลด์):</label>
-            <input type="text" class="form-control rounded-pill" name="name[]" required>
+            <div class="form-group custom-field-group">
+                <label for="label">Label:</label>
+                <input type="text" class="form-control" name="label[]" required>
 
-            <label for="field_type" class="font-weight-bold text-dark">Field Type:</label>
-            <select class="form-control rounded-pill" name="field_type[]" required>
-                <option value="text">Text</option>
-                <option value="select">Select</option>
-                <option value="checkbox">Checkbox</option>
-                <option value="radio">Radio</option>
-            </select>
+                <label for="name">Field Name:</label>
+                <input type="text" class="form-control" name="name[]" required>
 
-            <div class="form-group options-group" style="display: none;">
-                <label for="options" class="font-weight-bold text-dark">ตัวเลือก (ใช้สำหรับ Select, Radio, Checkbox):</label>
-                <div class="option-container">
-                    <input type="text" class="form-control option-input rounded-pill" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
+                <label for="field_type">Field Type:</label>
+                <select class="form-control field-type" name="field_type[]" required>
+                    <option value="text">Text</option>
+                    <option value="select">Select</option>
+                    <option value="checkbox">Checkbox</option>
+                    <option value="radio">Radio</option>
+                </select>
+
+                <div class="form-group options-group" style="display: none;">
+                    <label>Options:</label>
+                    <div class="option-container">
+                        <input type="text" class="form-control option-input" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
+                    </div>
+                    <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
                 </div>
-                <button type="button" class="btn btn-outline-secondary mt-2 rounded-pill add-option-btn">+ เพิ่มตัวเลือก</button>
+
+                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+                <hr>
             </div>
-
-            <!-- ปุ่มลบฟิลด์ -->
-            <button type="button" class="btn btn-danger mt-2 rounded-pill delete-field-btn">ลบฟิลด์</button>
-
-            <hr>
-        </div>
-    `;
+            `;
             fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
         });
 
