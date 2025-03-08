@@ -441,13 +441,13 @@ form {
             <div class="form-group1">
                 <label for="birthdate" class="form-label">วัน / เดือน / ปีเกิด</label>
                 <input type="date" class="form-control" id="birthdate" name="birthdate"
-                    value="{{ old('birthdate', $recorddata->birthdate) }}" disabled>
+                    value="{{ old('birthdate', $recorddata->birthdate) }}" readonly>
             </div>
 
             <div class="form-group1">
                 <label for="age" class="form-label">อายุ</label>
                 <input type="number" class="form-control" id="age" name="age" value="{{ old('age', $recorddata->age) }}"
-                    disabled>
+                    readonly>
             </div>
 
             <script>
@@ -554,7 +554,9 @@ form {
             </div>
             @endif
 
-            <button type="submit" class="btn btn-primary" id="saveBtn">บันทึกข้อมูล</button>
+            <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-lg" id="saveBtn">
+                <i class="fas fa-save"></i> บันทึกข้อมูล
+            </button>
 
             <!--ข้อมูลทั่วไป-->
             <div class="form-group3">
