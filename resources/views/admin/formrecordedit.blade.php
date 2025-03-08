@@ -162,6 +162,7 @@ label {
     margin-bottom: 5px;
     text-align: left;
     color: #020364;
+    font-weight: bold;
 }
 
 /* Mobile Friendly */

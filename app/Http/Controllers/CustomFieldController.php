@@ -60,11 +60,11 @@ public function delete($id)
         $customField = CustomField::findOrFail($id);
         $customField->delete();
 
-        return response()->json(['success' => true]);
+        // ส่งข้อความ success ไปยัง session
+        return redirect()->back()->with('success', 'ลบฟิลด์สำเร็จ');
     } catch (\Exception $e) {
         return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
     }
 }
-
 
 }
