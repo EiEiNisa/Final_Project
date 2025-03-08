@@ -39,7 +39,7 @@ class CustomFieldController extends Controller
         'options' => $options,
     ]);
 
-    return redirect()->route('admin.formrecordedit')->with('success', 'ฟิลด์ถูกสร้างเรียบร้อย');
+    return redirect()->route('customfields.store')->with('success', 'ฟิลด์ถูกสร้างเรียบร้อย');
 }
 }
 
