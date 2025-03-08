@@ -347,9 +347,10 @@
 
             <hr>
         </div>
-        `;
+    `;
             fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
         });
+
 
         // ฟังก์ชันสำหรับเพิ่มตัวเลือกของ Select, Checkbox, Radio
         fieldContainer.addEventListener("click", function(event) {
