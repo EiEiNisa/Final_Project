@@ -24,29 +24,32 @@ class CustomFieldController extends Controller
     }
 
     public function store(Request $request)
-    {
-        
-        $validatedData = $request->validate([
-            'label' => 'required|string',
-            'name' => 'required|string|unique:custom_fields,name',
-            'field_type' => 'required|in:text,select,checkbox,radio',
-            'options' => 'nullable|array', // ตัวเลือกของ Checkbox, Select, Radio
-        ]);
+{
+    $validatedData = $request->validate([
+        'label.*' => 'required|string',
+        'name.*' => 'required|string|distinct', // เพิ่ม distinct เพื่อป้องกัน name ซ้ำกันใน request เดียวกัน
+        'field_type.*' => 'required|in:text,select,checkbox,radio',
+        'options.*.*' => 'nullable|string', // แก้ไขการ validate options ให้รองรับ array
+    ]);
 
-        foreach ($request->label as $index => $label) {
-            // ทำให้ options เป็น array ที่ไม่มีการซ้อน
-            $options = isset($request->options[$index]) 
-                ? array_merge(...array_map('array_values', $request->options[$index])) 
-                : [];
-        
-            CustomField::create([
-                'label' => $label,
-                'name' => $request->name[$index],
-                'field_type' => $request->field_type[$index],
-                'options' => json_encode($options), // บันทึกเป็น JSON
-            ]);
-            dd($options);
-        }        
-    
+    foreach ($request->label as $index => $label) {
+        $options = [];
+        if (isset($request->options[$index]) && is_array($request->options[$index])) {
+            foreach ($request->options[$index] as $option) {
+                if (!empty($option)) {
+                    $options[] = $option;
+                }
+            }
+        }
+
+        CustomField::create([
+            'label' => $label,
+            'name' => $request->name[$index],
+            'field_type' => $request->field_type[$index],
+            'options' => json_encode($options),
+        ]);
+    }
+
+    return redirect()->back()->with('success', 'Custom fields saved successfully.');
 }
 }

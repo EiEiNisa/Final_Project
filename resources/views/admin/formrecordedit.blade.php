@@ -275,8 +275,7 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom
-            Field</button>
+        <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom Field</button>
 
         <div id="custom-field-form" style="display: none;">
             <form action="{{ route('customfields.store') }}" method="POST">
@@ -284,15 +283,14 @@
                 <div id="field-container">
                 </div>
 
-                <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+ เพิ่ม
-                    Custom
+                <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+ เพิ่ม Custom
                     Field</button>
 
                 <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
             </form>
         </div>
     </div>
-
+</div>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         let showFormBtn = document.getElementById("show-form-btn");
@@ -305,39 +303,38 @@
             customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
         });
 
-        // ฟังก์ชันสำหรับเพิ่มฟิลด์ใหม่ในฟอร์ม
         addFieldBtn.addEventListener("click", function() {
+            let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
             let fieldHTML = `
-            <div class="form-group custom-field-group">
-                <label>Label:</label>
-                <input type="text" class="form-control" name="label[]" required>
+                <div class="form-group custom-field-group">
+                    <label>Label:</label>
+                    <input type="text" class="form-control" name="label[]" required>
 
-                <label>Field Name:</label>
-                <input type="text" class="form-control" name="name[]" required>
+                    <label>Field Name:</label>
+                    <input type="text" class="form-control" name="name[]" required>
 
-                <label>Field Type:</label>
-                <select class="form-control field-type" name="field_type[]" required>
-                    <option value="text">Text</option>
-                    <option value="select">Select</option>
-                    <option value="checkbox">Checkbox</option>
-                    <option value="radio">Radio</option>
-                </select>
+                    <label>Field Type:</label>
+                    <select class="form-control field-type" name="field_type[]" required>
+                        <option value="text">Text</option>
+                        <option value="select">Select</option>
+                        <option value="checkbox">Checkbox</option>
+                        <option value="radio">Radio</option>
+                    </select>
 
-                <div class="form-group options-group" style="display: none;">
-                    <label>Options:</label>
-                    <div class="option-container">
-                        <input type="text" class="form-control option-input" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
+                    <div class="form-group options-group" style="display: none;">
+                        <label>Options:</label>
+                        <div class="option-container">
+                            <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
+                        </div>
+                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
                     </div>
-                    <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-                </div>
 
-                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
-                <hr>
-            </div>
+                    <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+                    <hr>
+                </div>
             `;
             fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
         });
-
 
         fieldContainer.addEventListener("click", function(event) {
             if (event.target && event.target.classList.contains("add-option-btn")) {
@@ -349,7 +346,7 @@
                 let newOption = document.createElement("input");
                 newOption.type = "text";
                 newOption.className = "form-control option-input rounded-pill mt-2";
-                newOption.name = "options[" + fieldContainer.children.length + "]"; 
+                newOption.name = `options[${fieldIndex}][]`; // แก้ไข name ให้ถูกต้อง
                 newOption.placeholder = "เพิ่มค่าตัวเลือก";
 
                 optionContainer.appendChild(newOption);
