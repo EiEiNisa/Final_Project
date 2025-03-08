@@ -157,6 +157,13 @@
     margin-right: 5px;
 }
 
+label {
+    font-size: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+    color: #020364;
+}
+
 /* Mobile Friendly */
 @media (max-width: 768px) {
     .card-container {
@@ -312,6 +319,26 @@
             @endforeach
         </div>
 
+        <!-- Modal สำหรับยืนยันการลบ -->
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
+            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        คุณต้องการลบฟิลด์นี้หรือไม่?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal สำหรับแจ้งเตือนข้อผิดพลาด -->
         <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -446,8 +473,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector(
-                                'meta[name="csrf-token"]')
-                            .getAttribute('content')
+                            'meta[name="csrf-token"]').getAttribute('content')
                     }
                 }).then(response => {
                     if (response.ok) {
@@ -461,6 +487,11 @@ document.addEventListener("DOMContentLoaded", function() {
                             'errorModal'));
                         errorModal.show();
                     }
+                }).catch(() => {
+                    // ถ้ามีข้อผิดพลาดในการส่งคำขอ
+                    let errorModal = new bootstrap.Modal(document.getElementById(
+                        'errorModal'));
+                    errorModal.show();
                 });
             });
 
