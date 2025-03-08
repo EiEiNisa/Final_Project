@@ -154,15 +154,119 @@
     </div>
 
     <div class="card-body">
-        <div>
-            <h5>คอลัมน์ที่มีใน RecordData</h5>
-            <ul>
-                @foreach($recordDataColumns as $column)
-                <li>{{ $column }}</li>
-                @endforeach
-            </ul>
+        <div class="form-group1">
+            <label for="id_card">เลขบัตรประจำตัวประชาชน <span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="id_card" name="id_card" pattern="^[1-9]\d{12}$" maxlength="13"
+                placeholder="กรอกเลขบัตรประจำตัวประชาชน" required>
         </div>
-        
+
+        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoModalLabel">ข้อมูลในระบบ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ข้อมูลนี้มีอยู่ในระบบ
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group1">
+            <label for="prefix">คำนำหน้าชื่อ <span style="color: red;">*</span></label>
+            <select class="form-control" id="prefix" name="prefix" required>
+                <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
+                </option>
+                <option value="ด.ช.">ด.ช.</option>
+                <option value="ด.ญ.">ด.ญ.</option>
+                <option value="นาย">นาย</option>
+                <option value="นาง">นาง</option>
+                <option value="นางสาว">นางสาว</option>
+            </select>
+        </div>
+
+        <div class="form-group1">
+            <label for="name">ชื่อ <span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
+                placeholder="กรอกชื่อ" required>
+        </div>
+
+        <div class="form-group1">
+            <label for="surname">นามสกุล <span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="surname" name="surname" value="{{ old('surname') }}"
+                placeholder="กรอกนามสกุล" required>
+        </div>
+
+        <div class="form-group1">
+            <label for="housenumber">บ้านเลขที่ <span style="color: red;">*</span></label>
+            <input type="text" class="form-control" id="housenumber" name="housenumber" value="{{ old('housenumber') }}"
+                placeholder="กรอกบ้านเลขที่" required>
+        </div>
+
+        <div class="form-group1">
+            <label for="birthdate">วัน / เดือน / ปีเกิด <span style="color: red;">*</span></label>
+            <input type="date" class="form-control" id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
+                placeholder="วัน/เดือน/ปีเกิด" required>
+        </div>
+
+        <div class="form-group1">
+            <label for="age">อายุ <span style="color: red;">*</span></label>
+            <input type="number" class="form-control" id="age" name="age" value="{{ old('age') }}"
+                placeholder="กรอกอายุ" readonly>
+        </div>
+
+        <div class="form-group1">
+            <label for="blood_group">กรุ๊ปเลือด <span style="color: red;">*</span></label>
+            <select name="blood_group" id="blood_group" class="form-control" required>
+                <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>กรุณาเลือกกรุ๊ปเลือด
+                </option>
+                <option value="A" {{ old('blood_group') == 'A' ? 'selected' : '' }}>A</option>
+                <option value="B" {{ old('blood_group') == 'B' ? 'selected' : '' }}>B</option>
+                <option value="AB" {{ old('blood_group') == 'AB' ? 'selected' : '' }}>AB</option>
+                <option value="O" {{ old('blood_group') == 'O' ? 'selected' : '' }}>O</option>
+            </select>
+        </div>
+
+        <div class="form-group1">
+            <label for="weight" style="margin-bottom: 5px; text-align: left; color: #020364;">น้ำหนัก <span
+                    style="color: red;">*</span></label>
+            <input type="number" class="form-control" id="weight" name="weight" value="{{ old('weight') }}"
+                placeholder="กรอกน้ำหนัก" step="0.1" required>
+        </div>
+
+        <div class="form-group1">
+            <label for="height" style="margin-bottom: 5px; text-align: left; color: #020364;">ส่วนสูง <span
+                    style="color: red;">*</span></label>
+            <input type="number" class="form-control" id="height" name="height" value="{{ old('height') }}"
+                placeholder="กรอกส่วนสูง" step="0.1" required>
+        </div>
+
+        <div class="form-group1">
+            <label for="waistline" style="margin-bottom: 5px; text-align: left; color: #020364;">รอบเอว
+                (ซม.) <span style="color: red;">*</span></label>
+            <input type="number" class="form-control" id="waistline" name="waistline" value="{{ old('waistline') }}"
+                placeholder="กรอกรอบเอว" step="0.1" required>
+        </div>
+
+        <div class="form-group1">
+            <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI <span
+                    style="color: red;">*</span></label>
+            <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi') }}"
+                placeholder="กรอกดัชนีมวล BMI" step="0.1" readonly>
+        </div>
+
+        <div class="form-group1">
+            <label for="phone" style="margin-bottom: 5px; text-align: left; color: #020364;">เบอร์โทรศัพท์ <span
+                    style="color: red;">*</span></label>
+            <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" value="{{ old('phone') }}"
+                placeholder="กรอกหมายเลขโทรศัพท์" required>
+        </div>
+
         <h2 class="text-primary mb-4">เพิ่ม Custom Field</h2>
 
         <form action="{{ route('customfields.store') }}" method="POST">
