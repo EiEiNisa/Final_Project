@@ -50,6 +50,6 @@ class CustomFieldController extends Controller
         ]);
     }
 
-    return redirect()->back()->with('success', 'Custom fields saved successfully.');
+    return redirect()->back()->with('success', 'เพิ่มฟิลด์สำเร็จ');
 }
 }

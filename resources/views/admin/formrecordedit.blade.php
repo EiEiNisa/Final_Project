@@ -291,21 +291,21 @@
         </div>
     </div>
 </div>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let showFormBtn = document.getElementById("show-form-btn");
-        let customFieldForm = document.getElementById("custom-field-form");
-        let addFieldBtn = document.getElementById("add-field-btn");
-        let fieldContainer = document.getElementById("field-container");
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let showFormBtn = document.getElementById("show-form-btn");
+    let customFieldForm = document.getElementById("custom-field-form");
+    let addFieldBtn = document.getElementById("add-field-btn");
+    let fieldContainer = document.getElementById("field-container");
 
-        // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
-        showFormBtn.addEventListener("click", function() {
-            customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
-        });
+    // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
+    showFormBtn.addEventListener("click", function() {
+        customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
+    });
 
-        addFieldBtn.addEventListener("click", function() {
-            let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
-            let fieldHTML = `
+    addFieldBtn.addEventListener("click", function() {
+        let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
+        let fieldHTML = `
                 <div class="form-group custom-field-group">
                     <label>Label:</label>
                     <input type="text" class="form-control" name="label[]" required>
@@ -333,40 +333,44 @@
                     <hr>
                 </div>
             `;
-            fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
-        });
-
-        fieldContainer.addEventListener("click", function(event) {
-            if (event.target && event.target.classList.contains("add-option-btn")) {
-                let optionContainer = event.target.closest('.form-group').querySelector(
-                    '.option-container');
-                let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
-                    '.custom-field-group'));
-
-                let newOption = document.createElement("input");
-                newOption.type = "text";
-                newOption.className = "form-control option-input rounded-pill mt-2";
-                newOption.name = `options[${fieldIndex}][]`; // แก้ไข name ให้ถูกต้อง
-                newOption.placeholder = "เพิ่มค่าตัวเลือก";
-
-                optionContainer.appendChild(newOption);
-            }
-        });
-
-        // ฟังก์ชันเพื่อแสดง/ซ่อนตัวเลือกเมื่อเลือก field type
-        fieldContainer.addEventListener("change", function(event) {
-            if (event.target && event.target.name === "field_type[]") {
-                // หาตำแหน่งของ options-group ในฟอร์มที่เลือก
-                let optionsGroup = event.target.closest('.custom-field-group').querySelector(
-                    '.options-group');
-                if (event.target.value === "select" || event.target.value === "radio" || event.target
-                    .value === "checkbox") {
-                    optionsGroup.style.display = "block"; // แสดงตัวเลือก
-                } else {
-                    optionsGroup.style.display = "none"; // ซ่อนตัวเลือก
-                }
-            }
-        });
+        fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
     });
-    </script>
-    @endsection
+
+    fieldContainer.addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("add-option-btn")) {
+            let optionContainer = event.target.closest('.form-group').querySelector(
+                '.option-container');
+            let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
+                '.custom-field-group'));
+
+            let newOption = document.createElement("input");
+            newOption.type = "text";
+            newOption.className = "form-control option-input rounded-pill mt-2";
+            newOption.name = `options[${fieldIndex}][]`; // แก้ไข name ให้ถูกต้อง
+            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+
+            optionContainer.appendChild(newOption);
+        }
+
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            event.target.closest('.custom-field-group').remove(); // ลบฟิลด์
+        }
+    });
+
+    // ฟังก์ชันเพื่อแสดง/ซ่อนตัวเลือกเมื่อเลือก field type
+    fieldContainer.addEventListener("change", function(event) {
+        if (event.target && event.target.name === "field_type[]") {
+            // หาตำแหน่งของ options-group ในฟอร์มที่เลือก
+            let optionsGroup = event.target.closest('.custom-field-group').querySelector(
+                '.options-group');
+            if (event.target.value === "select" || event.target.value === "radio" || event.target
+                .value === "checkbox") {
+                optionsGroup.style.display = "block"; // แสดงตัวเลือก
+            } else {
+                optionsGroup.style.display = "none"; // ซ่อนตัวเลือก
+            }
+        }
+    });
+});
+</script>
+@endsection
