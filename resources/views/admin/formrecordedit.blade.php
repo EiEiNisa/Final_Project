@@ -198,8 +198,8 @@
                 </select>
             </div>
             <div class="input-container">
-                <label for="name">ชื่อ <span style="color: red;">*</span></label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
+                <label for="xx">ชื่อ <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" id="xx" name="xx" value="{{ old('xx') }}"
                     placeholder="กรอกชื่อ" readonly>
             </div>
         </div>
