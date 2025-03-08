@@ -13,6 +13,7 @@ use App\Models\LifestyleHabit;
 use App\Models\ElderlyInformation;
 use Illuminate\Support\Facades\Schema;
 use App\AnotherNamespace\Checkup;
+use App\Models\CustomField;
 use Carbon\Carbon;
 
 class RecorddataController
@@ -33,176 +34,178 @@ class RecorddataController
     }
 
     public function create() 
-{
-    $users = User::where('role', 'แอดมิน')->get();
-    if ($users->isEmpty()) {
-        return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
-    }
-
-    $recorddata = Recorddata::first(); 
-
-    // ดึง extra_fields จากฐานข้อมูล
-    $extra_fields_recorddata = $recorddata ? json_decode($recorddata->extra_fields, true) : [];
-
-
-    $columns_health_records = Schema::getColumnListing('health_records');
-    $exclude_columns_health_records = [
-        'id', 'recorddata_id', 'sys', 'dia', 'pul', 'body_temp', 'blood_oxygen', 'blood_level', 'created_at', 'updated_at'
-    ];
-    $extra_fields_health_records = array_diff($columns_health_records, $exclude_columns_health_records);
-
-    return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata'));
-}
-
-
-public function store(Request $request)
-{
-    //dd($request);
-
-    $extra_fields = $request->input('extra_fields');  
-
-    $existing_extra_fields = []; 
-    if ($request->has('existing_extra_fields')) {
-        $existing_extra_fields = json_decode($request->input('existing_extra_fields'), true);
-    }
-
-    $recorddata = Recorddata::firstOrCreate(
-        ['id_card' => $request->input('id_card')],
-        $request->except(['custom_fields']) // ไม่บันทึก custom_fields ลงตารางหลัก
-    );
-
-    $formatted_extra_fields = [];
-
-    if (isset($extra_fields) && is_array($extra_fields)) {
-        // ถ้าใช้ existing_extra_fields ให้ใช้ข้อมูลเก่าเป็นพื้นฐาน
-        foreach ($existing_extra_fields as $field) {
-            $formatted_extra_fields[] = [
-                'label' => $field['label'],
-                // ใช้ค่าที่ผู้ใช้กรอก หรือถ้าไม่มีให้ใช้ค่าที่มีอยู่เดิม
-                'value' => isset($extra_fields[$field['label']]) ? $extra_fields[$field['label']] : $field['value']
-            ];
+    {
+        $users = User::where('role', 'แอดมิน')->get();
+        if ($users->isEmpty()) {
+            return back()->with('error', 'ไม่มีข้อมูลผู้ใช้ในระบบ');
         }
+
+        $recorddata = Recorddata::first(); 
+
+        // ดึง extra_fields จากฐานข้อมูล
+        $extra_fields_recorddata = $recorddata ? json_decode($recorddata->extra_fields, true) : [];
+
+        // ดึงข้อมูลฟิลด์ที่ผู้ใช้เพิ่มเองจากฐานข้อมูล
+        $customFields = CustomField::all(); 
+
+        // ดึงคอลัมน์ที่มีอยู่ในตาราง health_records
+        $columns_health_records = Schema::getColumnListing('health_records');
+        $exclude_columns_health_records = [
+            'id', 'recorddata_id', 'sys', 'dia', 'pul', 'body_temp', 'blood_oxygen', 'blood_level', 'created_at', 'updated_at'
+        ];
+        $extra_fields_health_records = array_diff($columns_health_records, $exclude_columns_health_records);
+
+        return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata', 'customFields'));
     }
 
-    $recorddata = Recorddata::firstOrCreate(
-        ['id_card' => $request->input('id_card')],
-        [
-            'prefix' => $request->input('prefix'),
-            'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'housenumber' => $request->input('housenumber'),
-            'birthdate' => $request->input('birthdate'),
-            'age' => (int) $request->input('age'),
-            'blood_group' => $request->input('blood_group'),
-            'weight' => (float) $request->input('weight'),
-            'height' => (float) $request->input('height'),
-            'waistline' => (float) $request->input('waistline'),
-            'bmi' => (float) $request->input('bmi'),
-            'phone' => $request->input('phone'),
-            'idline' => $request->input('idline'),
-            'user_name' => $request->input('user_name'),
-        ]
-    );
+    public function store(Request $request)
+    {
+        //dd($request);
 
-    if (!$recorddata) {
-        return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
-    }
+        $extra_fields = $request->input('extra_fields');  
 
-    $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
-    $recorddata->save();
-    
-    $customFields = \App\Models\CustomField::all();
-    foreach ($customFields as $field) {
-        if ($request->has($field->name)) {
-            $recorddata->customFields()->create([
-                'name' => $field->name,
-                'value' => $request->input($field->name),
+        $existing_extra_fields = []; 
+        if ($request->has('existing_extra_fields')) {
+            $existing_extra_fields = json_decode($request->input('existing_extra_fields'), true);
+        }
+
+        $recorddata = Recorddata::firstOrCreate(
+            ['id_card' => $request->input('id_card')],
+            $request->except(['custom_fields']) // ไม่บันทึก custom_fields ลงตารางหลัก
+        );
+
+        $formatted_extra_fields = [];
+
+        if (isset($extra_fields) && is_array($extra_fields)) {
+            // ถ้าใช้ existing_extra_fields ให้ใช้ข้อมูลเก่าเป็นพื้นฐาน
+            foreach ($existing_extra_fields as $field) {
+                $formatted_extra_fields[] = [
+                    'label' => $field['label'],
+                    // ใช้ค่าที่ผู้ใช้กรอก หรือถ้าไม่มีให้ใช้ค่าที่มีอยู่เดิม
+                    'value' => isset($extra_fields[$field['label']]) ? $extra_fields[$field['label']] : $field['value']
+                ];
+            }
+        }
+
+        $recorddata = Recorddata::firstOrCreate(
+            ['id_card' => $request->input('id_card')],
+            [
+                'prefix' => $request->input('prefix'),
+                'name' => $request->input('name'),
+                'surname' => $request->input('surname'),
+                'housenumber' => $request->input('housenumber'),
+                'birthdate' => $request->input('birthdate'),
+                'age' => (int) $request->input('age'),
+                'blood_group' => $request->input('blood_group'),
+                'weight' => (float) $request->input('weight'),
+                'height' => (float) $request->input('height'),
+                'waistline' => (float) $request->input('waistline'),
+                'bmi' => (float) $request->input('bmi'),
+                'phone' => $request->input('phone'),
+                'idline' => $request->input('idline'),
+                'user_name' => $request->input('user_name'),
+            ]
+        );
+
+        if (!$recorddata) {
+            return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
+        }
+
+        $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
+        $recorddata->save();
+        
+        $customFields = \App\Models\CustomField::all();
+        foreach ($customFields as $field) {
+            if ($request->has($field->name)) {
+                $recorddata->customFields()->create([
+                    'name' => $field->name,
+                    'value' => $request->input($field->name),
+                ]);
+            }
+        }
+
+            $healthRecord = HealthRecord::create([
+                'recorddata_id' => $recorddata->id,
+                'sys' => $request->input('sys'),
+                'dia' => $request->input('dia'),
+                'pul' => $request->input('pul'),
+                'body_temp' => $request->input('body_temp'),
+                'blood_oxygen' => $request->input('blood_oxygen'),
+                'blood_level' => $request->input('blood_level'),
             ]);
+
+            $healthZone = HealthZone::create([
+                'recorddata_id' => $recorddata->id,
+                'zone1_normal' => filter_var($request->input('zone1_normal', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_risk_group' => filter_var($request->input('zone1_risk_group', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_good_control' => filter_var($request->input('zone1_good_control', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_watch_out' => filter_var($request->input('zone1_watch_out', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_danger' => filter_var($request->input('zone1_danger', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_critical' => filter_var($request->input('zone1_critical', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_complications' => filter_var($request->input('zone1_complications', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_heart' => filter_var($request->input('zone1_heart', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_cerebrovascular' => filter_var($request->input('zone1_cerebrovascular', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_kidney' => filter_var($request->input('zone1_kidney', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_eye' => filter_var($request->input('zone1_eye', false), FILTER_VALIDATE_BOOLEAN),
+                'zone1_foot' => filter_var($request->input('zone1_foot', false), FILTER_VALIDATE_BOOLEAN),
+            ]);
+
+            $healthZone2 = HealthZone2::create([
+                'recorddata_id' => $recorddata->id,
+                'zone2_normal' => filter_var($request->input('zone2_normal', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_risk_group' => filter_var($request->input('zone2_risk_group', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_good_control' => filter_var($request->input('zone2_good_control', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_watch_out' => filter_var($request->input('zone2_watch_out', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_danger' => filter_var($request->input('zone2_danger', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_critical' => filter_var($request->input('zone2_critical', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_complications' => filter_var($request->input('zone2_complications', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_heart' => filter_var($request->input('zone2_heart', false), FILTER_VALIDATE_BOOLEAN),
+                'zone2_eye' => filter_var($request->input('zone2_eye', false), FILTER_VALIDATE_BOOLEAN),
+            ]);
+
+            $disease = Disease::create([
+                'recorddata_id' => $recorddata->id,
+                'diabetes' => filter_var($request->input('diabetes', false), FILTER_VALIDATE_BOOLEAN),
+                'cerebral_artery' => filter_var($request->input('cerebral_artery', false), FILTER_VALIDATE_BOOLEAN),
+                'kidney' => filter_var($request->input('kidney', false), FILTER_VALIDATE_BOOLEAN),
+                'blood_pressure' => filter_var($request->input('blood_pressure', false), FILTER_VALIDATE_BOOLEAN),
+                'heart' => filter_var($request->input('heart', false), FILTER_VALIDATE_BOOLEAN),
+                'eye' => filter_var($request->input('eye', false), FILTER_VALIDATE_BOOLEAN),
+                'other' => filter_var($request->input('other', false), FILTER_VALIDATE_BOOLEAN),
+                'other_text' => $request->input('other') ? $request->input('other_text', null) : null, 
+            ]);
+
+            $lifestyle = LifestyleHabit::create([
+                'recorddata_id' => $recorddata->id,
+                'drink' => filter_var($request->input('drink', false),  FILTER_VALIDATE_BOOLEAN),
+                'drink_sometimes' => filter_var($request->input('drink_sometimes', false),  FILTER_VALIDATE_BOOLEAN),
+                'dont_drink' => filter_var($request->input('dont_drink', false),  FILTER_VALIDATE_BOOLEAN),
+                'smoke' => filter_var($request->input('smoke', false),  FILTER_VALIDATE_BOOLEAN),
+                'sometime_smoke' => filter_var($request->input('sometime_smoke', false),  FILTER_VALIDATE_BOOLEAN),
+                'dont_smoke' => filter_var($request->input('dont_smoke', false),  FILTER_VALIDATE_BOOLEAN),
+                'troubled' => filter_var($request->input('troubled', false),  FILTER_VALIDATE_BOOLEAN),
+                'dont_live' => filter_var($request->input('dont_live', false),  FILTER_VALIDATE_BOOLEAN),
+                'bored' => filter_var($request->input('bored', false),  FILTER_VALIDATE_BOOLEAN),
+            ]);
+
+            $elderlyInformation = ElderlyInformation::create([
+                'recorddata_id' => $recorddata->id,
+                'help_yourself' => $request->has('help_yourself'),
+                'can_help' => $request->has('can_help'),
+                'cant_help' => $request->has('cant_help'),
+                'caregiver' => $request->has('caregiver'),
+                'have_caregiver' => $request->has('have_caregiver'),
+                'no_caregiver' => $request->has('no_caregiver'),
+                'group1' => $request->has('group1'),
+                'group2' => $request->has('group2'),
+                'group3' => $request->has('group3'),
+                'house' => $request->has('house'),
+                'society' => $request->has('society'),
+                'bed_ridden' => $request->has('bed_ridden'),
+            ]);
+
+            return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
         }
-    }
-
-        $healthRecord = HealthRecord::create([
-            'recorddata_id' => $recorddata->id,
-            'sys' => $request->input('sys'),
-            'dia' => $request->input('dia'),
-            'pul' => $request->input('pul'),
-            'body_temp' => $request->input('body_temp'),
-            'blood_oxygen' => $request->input('blood_oxygen'),
-            'blood_level' => $request->input('blood_level'),
-        ]);
-
-        $healthZone = HealthZone::create([
-            'recorddata_id' => $recorddata->id,
-            'zone1_normal' => filter_var($request->input('zone1_normal', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_risk_group' => filter_var($request->input('zone1_risk_group', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_good_control' => filter_var($request->input('zone1_good_control', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_watch_out' => filter_var($request->input('zone1_watch_out', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_danger' => filter_var($request->input('zone1_danger', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_critical' => filter_var($request->input('zone1_critical', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_complications' => filter_var($request->input('zone1_complications', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_heart' => filter_var($request->input('zone1_heart', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_cerebrovascular' => filter_var($request->input('zone1_cerebrovascular', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_kidney' => filter_var($request->input('zone1_kidney', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_eye' => filter_var($request->input('zone1_eye', false), FILTER_VALIDATE_BOOLEAN),
-            'zone1_foot' => filter_var($request->input('zone1_foot', false), FILTER_VALIDATE_BOOLEAN),
-        ]);
-
-        $healthZone2 = HealthZone2::create([
-            'recorddata_id' => $recorddata->id,
-            'zone2_normal' => filter_var($request->input('zone2_normal', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_risk_group' => filter_var($request->input('zone2_risk_group', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_good_control' => filter_var($request->input('zone2_good_control', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_watch_out' => filter_var($request->input('zone2_watch_out', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_danger' => filter_var($request->input('zone2_danger', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_critical' => filter_var($request->input('zone2_critical', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_complications' => filter_var($request->input('zone2_complications', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_heart' => filter_var($request->input('zone2_heart', false), FILTER_VALIDATE_BOOLEAN),
-            'zone2_eye' => filter_var($request->input('zone2_eye', false), FILTER_VALIDATE_BOOLEAN),
-        ]);
-
-        $disease = Disease::create([
-            'recorddata_id' => $recorddata->id,
-            'diabetes' => filter_var($request->input('diabetes', false), FILTER_VALIDATE_BOOLEAN),
-            'cerebral_artery' => filter_var($request->input('cerebral_artery', false), FILTER_VALIDATE_BOOLEAN),
-            'kidney' => filter_var($request->input('kidney', false), FILTER_VALIDATE_BOOLEAN),
-            'blood_pressure' => filter_var($request->input('blood_pressure', false), FILTER_VALIDATE_BOOLEAN),
-            'heart' => filter_var($request->input('heart', false), FILTER_VALIDATE_BOOLEAN),
-            'eye' => filter_var($request->input('eye', false), FILTER_VALIDATE_BOOLEAN),
-            'other' => filter_var($request->input('other', false), FILTER_VALIDATE_BOOLEAN),
-            'other_text' => $request->input('other') ? $request->input('other_text', null) : null, 
-        ]);
-
-        $lifestyle = LifestyleHabit::create([
-            'recorddata_id' => $recorddata->id,
-            'drink' => filter_var($request->input('drink', false),  FILTER_VALIDATE_BOOLEAN),
-            'drink_sometimes' => filter_var($request->input('drink_sometimes', false),  FILTER_VALIDATE_BOOLEAN),
-            'dont_drink' => filter_var($request->input('dont_drink', false),  FILTER_VALIDATE_BOOLEAN),
-            'smoke' => filter_var($request->input('smoke', false),  FILTER_VALIDATE_BOOLEAN),
-            'sometime_smoke' => filter_var($request->input('sometime_smoke', false),  FILTER_VALIDATE_BOOLEAN),
-            'dont_smoke' => filter_var($request->input('dont_smoke', false),  FILTER_VALIDATE_BOOLEAN),
-            'troubled' => filter_var($request->input('troubled', false),  FILTER_VALIDATE_BOOLEAN),
-            'dont_live' => filter_var($request->input('dont_live', false),  FILTER_VALIDATE_BOOLEAN),
-            'bored' => filter_var($request->input('bored', false),  FILTER_VALIDATE_BOOLEAN),
-        ]);
-
-        $elderlyInformation = ElderlyInformation::create([
-            'recorddata_id' => $recorddata->id,
-            'help_yourself' => $request->has('help_yourself'),
-            'can_help' => $request->has('can_help'),
-            'cant_help' => $request->has('cant_help'),
-            'caregiver' => $request->has('caregiver'),
-            'have_caregiver' => $request->has('have_caregiver'),
-            'no_caregiver' => $request->has('no_caregiver'),
-            'group1' => $request->has('group1'),
-            'group2' => $request->has('group2'),
-            'group3' => $request->has('group3'),
-            'house' => $request->has('house'),
-            'society' => $request->has('society'),
-            'bed_ridden' => $request->has('bed_ridden'),
-        ]);
-
-        return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
-    }
 
     public function edit($id, Request $request)
     {
