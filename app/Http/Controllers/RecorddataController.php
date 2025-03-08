@@ -60,19 +60,15 @@ class RecorddataController
 
     public function store(Request $request)
     {
-        //dd($request);
+        // dd($request); // คุณสามารถใช้ dd() เพื่อดูข้อมูลที่ส่งเข้ามาใน request
 
+        // รับค่าที่ส่งมาในฟอร์ม
         $extra_fields = $request->input('extra_fields');  
 
         $existing_extra_fields = []; 
         if ($request->has('existing_extra_fields')) {
             $existing_extra_fields = json_decode($request->input('existing_extra_fields'), true);
         }
-
-        $recorddata = Recorddata::firstOrCreate(
-            ['id_card' => $request->input('id_card')],
-            $request->except(['custom_fields']) // ไม่บันทึก custom_fields ลงตารางหลัก
-        );
 
         $formatted_extra_fields = [];
 
@@ -87,8 +83,9 @@ class RecorddataController
             }
         }
 
+        // สร้างหรือค้นหา recorddata
         $recorddata = Recorddata::firstOrCreate(
-            ['id_card' => $request->input('id_card')],
+            ['id_card' => $request->input('id_card')], // ค้นหาด้วย id_card
             [
                 'prefix' => $request->input('prefix'),
                 'name' => $request->input('name'),
@@ -111,21 +108,32 @@ class RecorddataController
             return redirect()->back()->with('error', 'ไม่สามารถบันทึกข้อมูลได้');
         }
 
-        $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
-        $recorddata->save();
-        
+        // บันทึกค่าของ custom_fields จากฟอร์ม
         $customFields = \App\Models\CustomField::all();
-
+        
         foreach ($customFields as $field) {
-            if (isset($data[$field->name])) {
+            if ($request->has($field->name)) {
+                // เช็คว่าเป็น checkbox หรือไม่
+                if ($field->field_type == 'checkbox' || $field->field_type == 'select') {
+                    $value = json_encode($request->input($field->name)); // เก็บค่าแบบ array หรือ object
+                } else {
+                    $value = $request->input($field->name); // ค่าแบบปกติ เช่น text, radio
+                }
+
                 \App\Models\CustomFieldData::create([
-                    'recorddata_id' => $recorddata_id,  
-                    'custom_field_id' => $field->id,
-                    'value' => $data[$field->name], 
+                    'recorddata_id' => $recorddata->id, // ใช้ ID ของ recorddata
+                    'custom_field_id' => $field->id,     // ใช้ ID ของ custom_field
+                    'value' => $value,                   // ค่าที่กรอกจากฟอร์ม
+                    'field_type' => $field->field_type,  // ประเภทฟิลด์ เช่น text, select, checkbox, radio
+                    'option_values' => $field->options ?? null, // ถ้ามี options เช่น select, checkbox, radio
                 ]);
             }
         }
 
+        // บันทึกค่าอื่น ๆ ที่เกี่ยวข้อง
+        $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
+        $recorddata->save();
+            
             $healthRecord = HealthRecord::create([
                 'recorddata_id' => $recorddata->id,
                 'sys' => $request->input('sys'),
@@ -207,7 +215,7 @@ class RecorddataController
             ]);
 
             return redirect()->route('recorddata.index')->with('success', 'บันทึกข้อมูลสำเร็จ');
-        }
+    }
 
     public function edit($id, Request $request)
     {
