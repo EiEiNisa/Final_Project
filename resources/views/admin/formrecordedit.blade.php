@@ -549,7 +549,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         successAlert.classList.add('alert', 'alert-success');
                         successAlert.innerText = result.message || 'ลบฟิลด์สำเร็จ';
 
-                        // เพิ่มข้อความ success ไว้ที่ท้าย #existing-fields หรือท้าย body
                         let existingFields = document.querySelector('#existing-fields');
                         if (existingFields) {
                             existingFields.appendChild(successAlert);
@@ -560,12 +559,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         // ปิด Modal ยืนยันการลบ
                         deleteConfirmationModal.hide();
 
-                        // ทำให้ข้อความ success หายไปหลังจาก 3 วินาที แล้วค่อยรีเฟรชหน้า
-                        setTimeout(() => {
-                            successAlert.remove();
-                            window.location.replace(
-                                "{{ route('customfields.edit') }}");
-                        }, 3000);
                     } else {
                         throw new Error(result.message ||
                             "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
