@@ -170,55 +170,96 @@ label {
 
 .custom-field-group {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    padding: 15px;
+    grid-template-columns: 1fr 1fr;  /* ทำให้มี 2 คอลัมน์ */
+    gap: 20px;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin-bottom: 15px;
+    background-color: #f9f9f9;  /* เพิ่มสีพื้นหลังให้ดูสะอาด */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* เพิ่มเงาให้ดูดี */
+    margin-bottom: 20px;
 }
 
-/* เพิ่ม CSS เพื่อแบ่งเป็น 2 คอลัมน์ */
-.custom-field-group .left-column {
-    grid-column: 1;
-    /* ตำแหน่งคอลัมน์ซ้าย */
-}
-
+.custom-field-group .left-column,
 .custom-field-group .right-column {
-    grid-column: 2;
-    /* ตำแหน่งคอลัมน์ขวา */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+input[type="text"], select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.field-label, .field-name {
+    background-color: #fff;
+}
+
+.field-type {
+    background-color: #fff;
 }
 
 .options-group {
     grid-column: 1 / -1;
-    /* ให้ options-group เต็มความกว้าง */
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .option-container {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
 }
 
 .option-input {
-    width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 14px;
 }
 
 .button-group {
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 15px;
     margin-top: 10px;
+}
+
+.add-option-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.add-option-btn:hover {
+    background-color: #5a6268;
 }
 
 .delete-field-btn {
     grid-column: 1 / -1;
-    /* ให้ปุ่มลบเต็มความกว้าง */
-    margin-top: 10px;
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-field-btn:hover {
+    background-color: #c82333;
 }
 
 /* Mobile Friendly */
@@ -233,6 +274,10 @@ label {
 
     .btn-primary {
         padding: 10px;
+    }
+
+    .custom-field-group {
+        grid-template-columns: 1fr;  /* ให้แสดงเป็น 1 คอลัมน์เมื่อหน้าจอเล็ก */
     }
 }
 </style>
@@ -381,6 +426,7 @@ label {
             </div>
             @endforeach
         </div>
+
 
         <!-- Modal for Delete Confirmation -->
         <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
