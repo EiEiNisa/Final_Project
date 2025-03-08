@@ -326,7 +326,7 @@
                 <div class="form-group options-group" style="display: none;">
                     <label>Options:</label>
                     <div class="option-container">
-                        <input type="text" class="form-control option-input" name="options[{{ fieldContainer.children.length }}][]" placeholder="เพิ่มค่าตัวเลือก">
+                        <input type="text" class="form-control option-input" name="options[${fieldContainer.children.length}][]" placeholder="เพิ่มค่าตัวเลือก">
                     </div>
                     <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
                 </div>
