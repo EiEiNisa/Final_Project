@@ -188,9 +188,34 @@ form {
     display: inline-block;
 }
 
-.form-check {
-    margin-bottom: 10px;
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
 }
+
+.custom-form-group {
+    margin-bottom: 20px;
+}
+
+.checkbox-group, .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; 
+    gap: 10px;
+}
+
+.form-check {
+    margin-bottom: 10px; 
+}
+
+.checkbox-input, .radio-input {
+    margin-right: 5px;
+}
+
 
 .form-check-container label {
     font-size: 15px;
@@ -650,15 +675,15 @@ form {
             @endif
 
             @foreach($customFields as $field)
-            <div class="form-group">
+            <div class="custom-form-group">
                 <label>{{ $field->label }}</label>
 
                 @if($field->field_type == 'text')
-                <input type="text" class="form-control" name="{{ $field->name }}">
+                <input type="text" class="input-field" name="{{ $field->name }}">
 
                 @elseif($field->field_type == 'select')
                 @php $options = json_decode($field->options, true) ?? []; @endphp
-                <select class="form-control" name="{{ $field->name }}">
+                <select class="input-field" name="{{ $field->name }}">
                     @foreach($options as $option)
                     <option value="{{ $option }}">{{ $option }}</option>
                     @endforeach
@@ -666,21 +691,25 @@ form {
 
                 @elseif($field->field_type == 'checkbox')
                 @php $options = json_decode($field->options, true) ?? []; @endphp
-                @foreach($options as $option)
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
-                    <label class="form-check-label">{{ $option }}</label>
+                <div class="checkbox-group">
+                    @foreach($options as $option)
+                    <div class="form-check">
+                        <input class="checkbox-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
+                        <label class="form-check-label">{{ $option }}</label>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
 
                 @elseif($field->field_type == 'radio')
                 @php $options = json_decode($field->options, true) ?? []; @endphp
-                @foreach($options as $option)
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}">
-                    <label class="form-check-label">{{ $option }}</label>
+                <div class="radio-group">
+                    @foreach($options as $option)
+                    <div class="form-check">
+                        <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}">
+                        <label class="form-check-label">{{ $option }}</label>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
                 @endif
             </div>
             @endforeach

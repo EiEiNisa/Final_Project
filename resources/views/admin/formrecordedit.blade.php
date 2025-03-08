@@ -133,8 +133,32 @@
 }
 
 /* Group Styles */
-.personal-info-group, .contact-info-group {
-    margin-bottom: 30px;
+.personal-info-group,
+.contact-info-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    /* Adds space between inputs */
+}
+
+.personal-info-group .input-container,
+.contact-info-group .input-container {
+    flex: 1 1 calc(33.33% - 20px);
+    /* 3 inputs per row for personal-info-group */
+}
+
+.contact-info-group .input-container {
+    flex: 1 1 calc(50% - 20px);
+    /* 2 inputs per row for contact-info-group */
+}
+
+/* Additional Styles */
+.personal-info-group .input-container {
+    max-width: calc(33.33% - 20px);
+}
+
+.contact-info-group .input-container {
+    max-width: calc(50% - 20px);
 }
 
 /* Mobile Friendly */
@@ -237,21 +261,6 @@
             <div class="input-container">
                 <label class="input-label">น้ำหนัก</label>
                 <input type="number" class="input-field" placeholder="กรอกน้ำหนัก" step="0.1" disabled>
-            </div>
-        </div>
-
-        <div class="personal-info-group">
-            <div class="input-container">
-                <label class="input-label">ส่วนสูง</label>
-                <input type="number" class="input-field" placeholder="กรอกส่วนสูง" step="0.1" disabled>
-            </div>
-            <div class="input-container">
-                <label class="input-label">รอบเอว (ซม.)</label>
-                <input type="number" class="input-field" placeholder="กรอกรอบเอว" step="0.1" disabled>
-            </div>
-            <div class="input-container">
-                <label class="input-label">ดัชนีมวล BMI</label>
-                <input type="number" class="input-field" placeholder="กรอกดัชนีมวล BMI" step="0.1" disabled>
             </div>
         </div>
 
