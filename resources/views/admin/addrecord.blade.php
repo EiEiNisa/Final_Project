@@ -616,7 +616,6 @@ form {
                     placeholder="กรอกรอบเอว" step="0.1" required>
             </div>
 
-
             <div class="form-group1">
                 <label for="bmi" style="margin-bottom: 5px; text-align: left; color: #020364;">ดัชนีมวล BMI <span
                         style="color: red;">*</span></label>
@@ -659,31 +658,16 @@ form {
                     placeholder="กรอกไอดีไลน์" required>
             </div>
 
-            @if(!empty($extra_fields_recorddata))
-            @foreach($extra_fields_recorddata as $field)
-            <div class="form-group mb-3">
-                <label for="{{ $field['value'] }}" class="form-label"
-                    style="color: #020364;">{{ ucfirst($field['label']) }}</label>
-                <input type="text" class="form-control @error('extra_fields.'.$field['value']) is-invalid @enderror"
-                    id="{{ $field['value'] }}" name="extra_fields[{{ $field['value'] }}]"
-                    value="{{ old('extra_fields.' . $field['value']) }}"
-                    placeholder="กรอก{{ ucfirst($field['label']) }}">
-            </div>
-            @endforeach
-            @else
-            <p class="text-danger"></p>
-            @endif
-
             @foreach($customFields as $field)
             <div class="custom-form-group">
-                <label>{{ $field->label }}</label>
+                <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
                 @if($field->field_type == 'text')
-                <input type="text" class="input-field" name="{{ $field->name }}">
+                <input type="text" class="form-control"  name="{{ $field->name }}">
 
                 @elseif($field->field_type == 'select')
                 @php $options = json_decode($field->options, true) ?? []; @endphp
-                <select class="input-field" name="{{ $field->name }}">
+                <select  class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
                     <option value="{{ $option }}">{{ $option }}</option>
                     @endforeach
@@ -694,8 +678,8 @@ form {
                 <div class="checkbox-group">
                     @foreach($options as $option)
                     <div class="form-check">
-                        <input class="checkbox-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
-                        <label class="form-check-label">{{ $option }}</label>
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
                 </div>
@@ -706,7 +690,7 @@ form {
                     @foreach($options as $option)
                     <div class="form-check">
                         <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}">
-                        <label class="form-check-label">{{ $option }}</label>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
                 </div>

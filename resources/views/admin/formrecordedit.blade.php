@@ -275,6 +275,46 @@
             </div>
         </div>
 
+        @foreach($customFields as $field)
+        <div class="custom-form-group">
+            <label>{{ $field->label }}</label>
+
+            @if($field->field_type == 'text')
+            <input type="text" class="input-field" name="{{ $field->name }}">
+
+            @elseif($field->field_type == 'select')
+            @php $options = json_decode($field->options, true) ?? []; @endphp
+            <select class="input-field" name="{{ $field->name }}">
+                @foreach($options as $option)
+                <option value="{{ $option }}">{{ $option }}</option>
+                @endforeach
+            </select>
+
+            @elseif($field->field_type == 'checkbox')
+            @php $options = json_decode($field->options, true) ?? []; @endphp
+            <div class="checkbox-group">
+                @foreach($options as $option)
+                <div class="form-check">
+                    <input class="checkbox-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
+                    <label class="form-check-label">{{ $option }}</label>
+                </div>
+                @endforeach
+            </div>
+
+            @elseif($field->field_type == 'radio')
+            @php $options = json_decode($field->options, true) ?? []; @endphp
+            <div class="radio-group">
+                @foreach($options as $option)
+                <div class="form-check">
+                    <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}">
+                    <label class="form-check-label">{{ $option }}</label>
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
+        @endforeach
+
         <br>
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่ม Custom Field</button>
 
