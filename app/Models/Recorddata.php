@@ -67,7 +67,7 @@ class Recorddata extends Model
 
     public function customFields(): HasMany
     {
-        return $this->hasMany(CustomField::class, 'recorddata_id'); 
+        return $this->hasMany(CustomField::class, 'recorddata_id');
     }
 }
 
