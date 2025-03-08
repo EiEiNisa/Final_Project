@@ -154,6 +154,15 @@
     </div>
 
     <div class="card-body">
+        <div>
+            <h5>คอลัมน์ที่มีใน RecordData</h5>
+            <ul>
+                @foreach($recordDataColumns as $column)
+                <li>{{ $column }}</li>
+                @endforeach
+            </ul>
+        </div>
+        
         <h2 class="text-primary mb-4">เพิ่ม Custom Field</h2>
 
         <form action="{{ route('customfields.store') }}" method="POST">
@@ -180,12 +189,14 @@
 
             <!-- ส่วนสำหรับการเพิ่มตัวเลือกของ Select, Radio, Checkbox -->
             <div class="form-group" id="options-group" style="display: none;">
-                <label for="options" class="font-weight-bold text-dark">ตัวเลือก (ใช้สำหรับ Select, Radio, Checkbox):</label>
+                <label for="options" class="font-weight-bold text-dark">ตัวเลือก (ใช้สำหรับ Select, Radio,
+                    Checkbox):</label>
                 <div id="option-container">
                     <input type="text" class="form-control option-input rounded-pill" name="options[]"
                         placeholder="เพิ่มค่าตัวเลือก">
                 </div>
-                <button type="button" class="btn btn-outline-secondary mt-2 rounded-pill" id="add-option">+ เพิ่มตัวเลือก</button>
+                <button type="button" class="btn btn-outline-secondary mt-2 rounded-pill" id="add-option">+
+                    เพิ่มตัวเลือก</button>
             </div>
 
             <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
