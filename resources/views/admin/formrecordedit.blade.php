@@ -171,7 +171,6 @@ label {
 .custom-field-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    /* ปรับขนาดให้ responsive */
     gap: 10px;
     padding: 15px;
     border: 1px solid #ddd;
@@ -179,17 +178,15 @@ label {
     margin-bottom: 15px;
 }
 
-.custom-field-group label {
-    grid-column: 1 / -1;
-    /* ให้ label เต็มความกว้าง */
+/* เพิ่ม CSS เพื่อแบ่งเป็น 2 คอลัมน์ */
+.custom-field-group .left-column {
+    grid-column: 1;
+    /* ตำแหน่งคอลัมน์ซ้าย */
 }
 
-.custom-field-group input,
-.custom-field-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.custom-field-group .right-column {
+    grid-column: 2;
+    /* ตำแหน่งคอลัมน์ขวา */
 }
 
 .options-group {
@@ -338,15 +335,16 @@ label {
             </div>
         </div>
 
-        <div id="existing-fields">
-            @foreach($customFields as $field)
-            <div class="form-group custom-field-group" data-id="{{ $field->id }}">
+        <div class="form-group custom-field-group" data-id="{{ $field->id }}">
+            <div class="left-column">
                 <label>ชื่อหัวข้อ</label>
                 <input type="text" class="form-control field-label" name="label[]" value="{{ $field->label }}" required>
 
                 <label>ชื่อตัวแปร</label>
                 <input type="text" class="form-control field-name" name="name[]" value="{{ $field->name }}" required>
+            </div>
 
+            <div class="right-column">
                 <label>รูปแบบข้อมูล</label>
                 <select class="form-control field-type" name="field_type[]" required>
                     <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ</option>
@@ -371,11 +369,9 @@ label {
                         <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
                     </div>
                 </div>
-                <br>
-                <button type="button" class="btn btn-danger delete-field-btn"
-                    data-id="{{ $field->id }}">ลบฟิลด์</button>
             </div>
-            @endforeach
+            <br>
+            <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}">ลบฟิลด์</button>
         </div>
 
         <!-- Modal สำหรับยืนยันการลบ -->
@@ -524,61 +520,60 @@ document.addEventListener("DOMContentLoaded", function() {
             deleteConfirmationModal.show();
 
             // เมื่อกดปุ่ม "ลบ" ใน Modal ยืนยันการลบ
-            document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
-                // ส่งคำขอลบไปยัง Controller
-                fetch(`/delete-custom-field/${fieldId}`, {
+            document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
+                try {
+                    // ส่งคำขอลบไปยัง Controller
+                    const response = await fetch(`/delete-custom-field/${fieldId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute('content')
+                                'meta[name="csrf-token"]').getAttribute(
+                                'content')
                         }
-                    })
-                    .then(response => response.json()) // แปลงเป็น JSON
-                    .then(data => {
-                        if (data.success) {
-                            // ลบฟิลด์จากหน้า
-                            event.target.closest('.custom-field-group').remove();
-
-                            // แสดงข้อความ success บนหน้า
-                            let successAlert = document.createElement('div');
-                            successAlert.classList.add('alert', 'alert-success');
-                            successAlert.innerText = data.message || 'ลบฟิลด์สำเร็จ';
-
-                            // เช็คว่า #existing-fields อยู่ใน DOM ก่อนจะเพิ่มข้อความ success
-                            let existingFields = document.querySelector('#existing-fields');
-                            if (existingFields) {
-                                document.querySelector('body').insertBefore(successAlert,
-                                    existingFields);
-                            } else {
-                                document.body.appendChild(
-                                successAlert); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
-                            }
-
-                            // ปิด Modal ยืนยันการลบ
-                            deleteConfirmationModal.hide();
-
-                            // ทำให้ข้อความ success หายไปหลังจาก 3 วินาที
-                            setTimeout(() => {
-                                successAlert.remove();
-                            }, 3000);
-                        } else {
-                            // หากไม่สามารถลบฟิลด์ได้ แสดง Modal แจ้งเตือน
-                            let errorModal = new bootstrap.Modal(document.getElementById(
-                                'errorModal'));
-                            document.querySelector("#errorModal .modal-body").innerHTML =
-                                data.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง";
-                            errorModal.show();
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error); // log for debugging
-                        let errorModal = new bootstrap.Modal(document.getElementById(
-                            'errorModal'));
-                        document.querySelector("#errorModal .modal-body").innerHTML =
-                            "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
-                        errorModal.show();
                     });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        // ลบฟิลด์จากหน้า
+                        event.target.closest('.custom-field-group').remove();
+
+                        // แสดงข้อความ success บนหน้า
+                        let successAlert = document.createElement('div');
+                        successAlert.classList.add('alert', 'alert-success');
+                        successAlert.innerText = data.message || 'ลบฟิลด์สำเร็จ';
+
+                        // เช็คว่า #existing-fields อยู่ใน DOM ก่อนจะเพิ่มข้อความ success
+                        let existingFields = document.querySelector('#existing-fields');
+                        if (existingFields) {
+                            document.querySelector('body').insertBefore(successAlert,
+                                existingFields);
+                        } else {
+                            document.body.appendChild(
+                            successAlert); // ถ้าไม่พบ #existing-fields, เพิ่มข้อความ success ไว้ที่ท้าย body
+                        }
+
+                        // ปิด Modal ยืนยันการลบ
+                        deleteConfirmationModal.hide();
+
+                        // ทำให้ข้อความ success หายไปหลังจาก 3 วินาที
+                        setTimeout(() => {
+                            successAlert.remove();
+                        }, 3000);
+                    } else {
+                        throw new Error(data.message ||
+                            "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
+                    }
+                } catch (error) {
+                    console.error('Error:', error); // log for debugging
+                    let errorModal = new bootstrap.Modal(document.getElementById(
+                        'errorModal'));
+                    document.querySelector("#errorModal .modal-body").innerHTML = error
+                        .message ||
+                        "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
+                    errorModal.show();
+                }
             });
 
             // เมื่อกดปุ่ม "ยกเลิก" ใน Modal ยืนยันการลบ
