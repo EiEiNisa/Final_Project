@@ -1,6 +1,17 @@
 @extends('layoutadmin')
 
 @section('content')
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+@if(session('error'))
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
 <form action="{{ route('customfields.store') }}" method="POST">
     @csrf
     <div class="form-group">
@@ -36,32 +47,32 @@
 </form>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let fieldType = document.getElementById("field_type");
-        let optionsGroup = document.getElementById("options-group");
-        let optionContainer = document.getElementById("option-container");
-        let addOptionBtn = document.getElementById("add-option");
+document.addEventListener("DOMContentLoaded", function() {
+    let fieldType = document.getElementById("field_type");
+    let optionsGroup = document.getElementById("options-group");
+    let optionContainer = document.getElementById("option-container");
+    let addOptionBtn = document.getElementById("add-option");
 
-        function toggleOptionsField() {
-            if (fieldType.value === "select" || fieldType.value === "radio" || fieldType.value === "checkbox") {
-                optionsGroup.style.display = "block";
-            } else {
-                optionsGroup.style.display = "none";
-            }
+    function toggleOptionsField() {
+        if (fieldType.value === "select" || fieldType.value === "radio" || fieldType.value === "checkbox") {
+            optionsGroup.style.display = "block";
+        } else {
+            optionsGroup.style.display = "none";
         }
+    }
 
-        fieldType.addEventListener("change", toggleOptionsField);
-        
-        addOptionBtn.addEventListener("click", function() {
-            let newOption = document.createElement("input");
-            newOption.type = "text";
-            newOption.className = "form-control option-input mt-2";
-            newOption.name = "options[]";
-            newOption.placeholder = "เพิ่มค่าตัวเลือก";
-            optionContainer.appendChild(newOption);
-        });
+    fieldType.addEventListener("change", toggleOptionsField);
 
-        toggleOptionsField();
+    addOptionBtn.addEventListener("click", function() {
+        let newOption = document.createElement("input");
+        newOption.type = "text";
+        newOption.className = "form-control option-input mt-2";
+        newOption.name = "options[]";
+        newOption.placeholder = "เพิ่มค่าตัวเลือก";
+        optionContainer.appendChild(newOption);
     });
+
+    toggleOptionsField();
+});
 </script>
 @endsection
