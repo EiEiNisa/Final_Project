@@ -44,7 +44,7 @@ class CustomFieldController extends Controller
         // ตรวจสอบการมี options ถ้า field_type เป็น select, checkbox หรือ radio
         // ทำการ flat และรวม options ให้เป็น array เดียว
         $options = isset($request->options[$index]) 
-            ? json_encode(array_merge(...array_map('array_values', $request->options[$index])), JSON_UNESCAPED_UNICODE) 
+            ? json_encode(Arr::flatten($request->options[$index]), JSON_UNESCAPED_UNICODE)
             : null;
 
         // บันทึก Custom Field ใหม่
