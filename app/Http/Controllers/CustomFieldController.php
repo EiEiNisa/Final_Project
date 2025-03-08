@@ -25,7 +25,7 @@ class CustomFieldController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->options);
+        
         $validatedData = $request->validate([
             'label' => 'required|string',
             'name' => 'required|string|unique:custom_fields,name',
@@ -45,6 +45,7 @@ class CustomFieldController extends Controller
                 'field_type' => $request->field_type[$index],
                 'options' => json_encode($options), // บันทึกเป็น JSON
             ]);
+            dd($options);
         }        
     
 }
