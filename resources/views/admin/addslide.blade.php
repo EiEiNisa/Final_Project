@@ -64,7 +64,7 @@
     </div>
 
     <!-- ปุ่มเพิ่มสไลด์ -->
-    <button class="btn btn-success" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
+<button class="btn btn-success" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
 </div>
 
 <!-- ฟอร์มเพิ่มสไลด์ -->
@@ -77,12 +77,14 @@
             newSlide.classList.add("slide-item");
 
             newSlide.innerHTML = `
-             <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+                <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
                     <button type="submit" class="btn btn-primary">อัปโหลด</button>
                 </form>
-                slideContainer.appendChild(newSlide);
+            `;
+
+            slideContainer.appendChild(newSlide); // ต้องเอาออกมานอก innerHTML
         });
     });
 </script>
