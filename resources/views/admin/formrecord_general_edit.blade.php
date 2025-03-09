@@ -330,7 +330,7 @@ select {
 
     <div class="card-header">
         <h4><strong>แก้ไขฟอร์มข้อมูลทั่วไป</strong></h4>
-        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back" style="background: rgba(255, 255, 255, 0.3); color: #000;
+        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary" style="background: rgba(255, 255, 255, 0.3); color: #000;
         padding: 8px 16px; border-radius: 8px; text-decoration: none; transition: all 0.3s ease-in-out;">กลับ</a>
     </div>
 
