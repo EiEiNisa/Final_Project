@@ -25,8 +25,8 @@ class CustomFieldGeneralData extends Model
     }
 
     // Define relationship with CustomField
-    public function customField()
+    public function customFieldGeneral()
     {
-        return $this->belongsTo(CustomField::class, 'custom_field_general_id');
+        return $this->belongsTo(CustomFieldGeneral::class, 'custom_field_general_id');
     }
 }
