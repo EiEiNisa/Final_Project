@@ -1142,31 +1142,26 @@ form {
                 </div>
                 <div class="col-12">
                     @if($field->field_type == 'text')
-                    <input type="text" name="{{ $field->name }}" id="{{ $field->name }}" class="form-control">
+                    <input type="text" name="{{ $field->name }}" id="{{ $field->name }}" class="form-control w-100">
 
                     @elseif($field->field_type == 'select')
-                    <select name="{{ $field->name }}" id="{{ $field->name }}" class="form-select">
+                    <select name="{{ $field->name }}" id="{{ $field->name }}" class="form-select w-100">
                         @foreach(json_decode($field->options, true) as $option)
                         <option value="{{ $option }}">{{ $option }}</option>
                         @endforeach
                     </select>
 
-                    @elseif($field->field_type == 'checkbox')
-                    @foreach(json_decode($field->options, true) as $option)
-                    <div class="form-check">
-                        <input type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}"
-                            class="form-check-input">
-                        <label class="form-check-label">{{ $option }}</label>
+                    @elseif($field->field_type == 'checkbox' || $field->field_type == 'radio')
+                    <div class="d-flex flex-wrap gap-3">
+                        @foreach(json_decode($field->options, true) as $option)
+                        <div class="form-check">
+                            <input type="{{ $field->field_type }}"
+                                name="{{ $field->name }}{{ $field->field_type == 'checkbox' ? '[]' : '' }}"
+                                value="{{ $option }}" class="form-check-input">
+                            <label class="form-check-label">{{ $option }}</label>
+                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
-
-                    @elseif($field->field_type == 'radio')
-                    @foreach(json_decode($field->options, true) as $option)
-                    <div class="form-check">
-                        <input type="radio" name="{{ $field->name }}" value="{{ $option }}" class="form-check-input">
-                        <label class="form-check-label">{{ $option }}</label>
-                    </div>
-                    @endforeach
                     @endif
                 </div>
             </div>
