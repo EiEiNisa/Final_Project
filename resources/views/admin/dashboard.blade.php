@@ -83,36 +83,37 @@
         
         // Create or update age chart
         if (!ageChart) {
-            ageChart = new Chart(document.getElementById("ageChart"), {
-                type: "bar",
-                data: {
-                    labels: data.age_labels,
-                    datasets: [{
-                        label: "จำนวนสมาชิก",
-                        data: data.age_data,
-                        backgroundColor: "#ffffff"  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    legend: {
-                        position: "bottom"
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
+            const ageChart = new Chart(document.getElementById("ageChart"), {
+    type: "bar",
+    data: {
+        labels: data.age_labels,
+        datasets: [{
+            label: "จำนวนสมาชิก",
+            data: data.age_data,
+            backgroundColor: "#ffffff"  // สีของแท่งกราฟ
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            x: {
+                grid: {
+                    color: "rgba(255, 255, 255, 0.2)", // สีเส้นกริด
+                    backgroundColor: "#003366" // เปลี่ยนพื้นหลังของ chart area
                 }
-            });
+            },
+            y: {
+                grid: {
+                    color: "rgba(255, 255, 255, 0.2)", 
+                    backgroundColor: "#003366"
+                },
+                beginAtZero: true
+            }
+        }
+    }
+});
+
         } else {
             ageChart.data.labels = data.age_labels;
             ageChart.data.datasets[0].data = data.age_data;
