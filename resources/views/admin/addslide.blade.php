@@ -77,12 +77,12 @@
             newSlide.classList.add("slide-item");
 
             newSlide.innerHTML = `
-                <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+               <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                     <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
                     <button type="submit" class="btn btn-primary">อัปโหลด</button>
                 </form>
-            `;
+
 
             slideContainer.appendChild(newSlide);
         });
