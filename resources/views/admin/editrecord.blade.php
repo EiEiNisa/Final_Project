@@ -478,7 +478,6 @@ form {
                 </select>
             </div>
 
-
             <div class="form-group1">
                 <label for="weight" class="form-label">น้ำหนัก</label>
                 <input type="number" class="form-control" id="weight" name="weight"
@@ -547,12 +546,10 @@ form {
                 @php $options = json_decode($field->options, true) ?? []; @endphp
                 <select class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
-                            value="{{ $option }}"
-                            {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
-                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
-                    </div>
+                    <option value="{{ $option }}"
+                        {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'selected' : '' }}>
+                        {{ $option }}
+                    </option>
                     @endforeach
                 </select>
 
@@ -574,8 +571,7 @@ form {
                 <div class="radio-group">
                     @foreach($options as $option)
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
-                            value="{{ $option }}"
+                        <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
                             {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
