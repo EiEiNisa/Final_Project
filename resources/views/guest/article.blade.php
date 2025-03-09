@@ -1,4 +1,4 @@
-@extends( 'layout')
+@extends('layout')
 
 @section('content')
 <style>
@@ -32,14 +32,17 @@
         margin-bottom: 20px;
     }
 
+    .article-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* กำหนดให้รูปภาพอยู่ในกริด */
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
     .article-image {
         width: 100%;
-        max-width: 750px; /* ขนาดสูงสุดสำหรับภาพ */
         height: auto;
         border-radius: 10px;
-        margin: 0 auto;
-        display: block;
-        margin-bottom: 20px;
     }
 
     .back-button {
@@ -82,15 +85,18 @@
     <div class="article-container">
         <h1 class="article-title">{{ $article->title }}</h1>
         <p class="article-meta">{{ $article->post_date }} | {{ $article->author }}</p>
-@if(is_array(json_decode($article->image)))
-    <!-- กรณีที่มีหลายรูปภาพ -->
-        @foreach (json_decode($article->image) as $image)
-            <img src="{{ asset($image) }}" class="article-image" alt="{{ $article->title }}">
-        @endforeach
-@else
-    <!-- กรณีที่มีรูปภาพเดียว -->
-        <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
-@endif
+
+        @if(is_array(json_decode($article->image)))
+            <!-- กรณีที่มีหลายรูปภาพ -->
+            <div class="article-images">
+                @foreach (json_decode($article->image) as $image)
+                    <img src="{{ asset($image) }}" class="article-image" alt="{{ $article->title }}">
+                @endforeach
+            </div>
+        @else
+            <!-- กรณีที่มีรูปภาพเดียว -->
+            <img src="{{ asset($article->image) }}" class="article-image" alt="{{ $article->title }}">
+        @endif
 
         <!-- วิดีโอจาก YouTube -->
         @if($article->video_link)
