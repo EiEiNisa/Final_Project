@@ -509,6 +509,26 @@ select {
             @endforeach
         </div>
 
+        <!-- Modal ยืนยันการบันทึก -->
+        <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmSaveLabel">ยืนยันการบันทึก</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        คุณต้องการบันทึกการแก้ไขรายการนี้หรือไม่?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-primary" id="confirmSaveBtn">ยืนยัน</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal for Delete Confirmation -->
         <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
             aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
@@ -569,6 +589,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let customFieldForm = document.getElementById("custom-field-form");
     let addFieldBtn = document.getElementById("add-field-btn");
     let fieldContainer = document.getElementById("field-container");
+    let selectedFieldId = null;
+    let selectedFieldData = {};
 
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
     showFormBtn.addEventListener("click", function() {
@@ -713,51 +735,59 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".update-field-btn").forEach((button) => {
-            button.addEventListener("click", function() {
-                let fieldGroup = this.closest(".custom-field-group");
-                let fieldId = this.getAttribute("data-id");
+    document.querySelectorAll(".update-field-btn").forEach((button) => {
+        button.addEventListener("click", function() {
+            let fieldGroup = this.closest(".custom-field-group");
+            selectedFieldId = this.getAttribute("data-id");
 
-                let label = fieldGroup.querySelector(".field-label").value;
-                let name = fieldGroup.querySelector(".field-name").value;
-                let fieldType = fieldGroup.querySelector(".field-type").value;
-                let options = [];
+            selectedFieldData = {
+                label: fieldGroup.querySelector(".field-label").value,
+                name: fieldGroup.querySelector(".field-name").value,
+                field_type: fieldGroup.querySelector(".field-type").value,
+                options: []
+            };
 
-                if (["select", "radio", "checkbox"].includes(fieldType)) {
-                    fieldGroup.querySelectorAll(".option-input").forEach((input) => {
-                        if (input.value.trim() !== "") {
-                            options.push(input.value.trim());
-                        }
-                    });
-                }
+            if (["select", "radio", "checkbox"].includes(selectedFieldData.field_type)) {
+                fieldGroup.querySelectorAll(".option-input").forEach((input) => {
+                    if (input.value.trim() !== "") {
+                        selectedFieldData.options.push(input.value.trim());
+                    }
+                });
+            }
 
-                fetch(`/custom-fields/update/${fieldId}`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute(
-                                "content"),
-                        },
-                        body: JSON.stringify({
-                            label: label,
-                            name: name,
-                            field_type: fieldType,
-                            options: options,
-                        }),
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            alert("อัปเดตฟิลด์สำเร็จ!");
-                        } else {
-                            alert("เกิดข้อผิดพลาด: " + data.message);
-                        }
-                    })
-                    .catch((error) => console.error("Error:", error));
-            });
+            // แสดง Modal ยืนยัน
+            let confirmModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+            confirmModal.show();
         });
+    });
+
+    // เมื่อกด "ยืนยัน" ใน Modal ให้ส่งข้อมูลไปยังเซิร์ฟเวอร์
+    document.getElementById("confirmSaveBtn").addEventListener("click", function() {
+        if (!selectedFieldId || !selectedFieldData) return;
+
+        fetch(`/custom-fields/update/${selectedFieldId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        "content"),
+                },
+                body: JSON.stringify(selectedFieldData),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    alert("อัปเดตฟิลด์สำเร็จ!");
+                    location.reload(); // รีเฟรชหน้าเพื่อให้ข้อมูลอัปเดต
+                } else {
+                    alert("เกิดข้อผิดพลาด: " + data.message);
+                }
+            })
+            .catch((error) => console.error("Error:", error));
+
+        // ปิด Modal หลังจากกด "ยืนยัน"
+        let confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmSaveModal'));
+        confirmModal.hide();
     });
 });
 </script>
