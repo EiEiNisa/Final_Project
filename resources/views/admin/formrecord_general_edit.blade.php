@@ -620,6 +620,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(data => {
                     if (data.success) {
                         fieldGroup.remove();
+                        showSuccessMessage("ลบรายการสำเร็จ!");
 
                         // ปิด Modal
                         let deleteModal = document.getElementById(
@@ -686,8 +687,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     let successMessage = document.createElement('div');
 
                     document.body.appendChild(successMessage);
-                    window.location.replace(
-                        "{{ route('customfieldgeneral.edit') }}");
+                    window.location.reload();
 
                 } else {
                     let errorMessage = document.getElementById("modal-error-message");
