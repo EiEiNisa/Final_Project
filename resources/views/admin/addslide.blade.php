@@ -68,24 +68,27 @@
 </div>
 
 <!-- ฟอร์มเพิ่มสไลด์ -->
+<!-- วางไว้ก่อนปิด </body> -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // เมื่อคลิกที่ปุ่มเพิ่มสไลด์
-        document.getElementById('add-slide-btn').addEventListener('click', function () {
-            let slideContainer = document.getElementById('slide-container');
-            let newSlide = document.createElement('div');
-            newSlide.classList.add('slide-item');
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("add-slide-btn").addEventListener("click", function () {
+            let slideContainer = document.getElementById("slide-container");
+            let newSlide = document.createElement("div");
+            newSlide.classList.add("slide-item");
 
-            newSlide.innerHTML = 
+            newSlide.innerHTML = `
                 <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
                     <button type="submit" class="btn btn-primary">อัปโหลด</button>
                 </form>
-            ;
+            `;
 
             slideContainer.appendChild(newSlide);
         });
     });
 </script>
+</body>
+</html>
+
 @endsection
