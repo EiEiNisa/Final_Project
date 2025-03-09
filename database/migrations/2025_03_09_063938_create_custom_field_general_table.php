@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('custom_field_general', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // ชื่อของฟิลด์ เช่น 'married_status'
-            $table->string('label'); // ชื่อแสดงใน UI เช่น 'คุณแต่งงานหรือยัง'
-            $table->enum('field_type', ['text', 'select', 'checkbox', 'radio']); // ชนิดของฟิลด์
-            $table->text('options')->nullable(); // ตัวเลือกถ้ามี เช่น สำหรับ 'select' หรือ 'radio'
+            $table->string('label');
+            $table->string('name')->unique();
+            $table->string('field_type');
+            $table->json('options')->nullable();
             $table->timestamps();
         });
     }

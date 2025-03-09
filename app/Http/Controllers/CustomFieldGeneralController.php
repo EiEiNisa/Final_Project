@@ -55,7 +55,7 @@ class CustomFieldGeneralController extends Controller
             $customField = CustomFieldGeneral::findOrFail($id);
             $customField->delete();
 
-            return response()->json(['success' => true, 'message' => 'ลบฟิลด์สำเร็จ']);
+            return response()->json(['success' => true, 'mesฟsage' => 'ลบฟิลด์สำเร็จ']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
         }
