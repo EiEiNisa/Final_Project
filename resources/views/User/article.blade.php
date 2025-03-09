@@ -1,5 +1,4 @@
 @extends('layoutuser') 
-
 @section('content')
 <style>
     .article-container {
@@ -32,14 +31,17 @@
         margin-bottom: 20px;
     }
 
+    .article-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* กำหนดให้รูปภาพอยู่ในกริด */
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
     .article-image {
         width: 100%;
-        max-width: 750px; /* ขนาดสูงสุดสำหรับภาพ */
         height: auto;
         border-radius: 10px;
-        margin: 0 auto;
-        display: block;
-        margin-bottom: 20px;
     }
 
     .back-button {
@@ -82,7 +84,20 @@
     <div class="article-container">
         <h1 class="article-title">{{ $article->title }}</h1>
         <p class="article-meta">{{ $article->post_date }} | {{ $article->author }}</p>
-        <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+
+        @if(is_array(json_decode($article->image)))
+            <!-- กรณีที่มีหลายรูปภาพ -->
+            <div class="article-images">
+                @foreach (json_decode($article->image) as $image)
+                    <img src="{{ asset($image) }}" class="article-image" alt="{{ $article->title }}">
+                @endforeach
+            </div>
+        @else
+            <!-- กรณีที่มีรูปภาพเดียว -->
+            <img src="{{ asset($article->image) }}" class="article-image" alt="{{ $article->title }}">
+        @endif
+
+        <!-- วิดีโอจาก YouTube -->
         @if($article->video_link)
             @php
                 // ตรวจสอบและแปลงลิงก์ให้อยู่ในรูปแบบ embed
@@ -102,6 +117,7 @@
             </div>
         @endif
 
+        <!-- วิดีโอที่อัปโหลด -->
         @if($article->video_upload)
             <div class="video-container">
                 <video class="article-video" controls>
@@ -110,10 +126,11 @@
                 </video>
             </div>
         @endif
-        
+
         <div class="article-content">
             {!! nl2br(e($article->description)) !!}
         </div>
+        
         <a href="javascript:history.back()" class="back-button">กลับไปหน้าหลัก</a>
     </div>
 </div>
