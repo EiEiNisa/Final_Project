@@ -590,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.delete-field-btn').forEach(button => {
         button.addEventListener('click', function(event) {
             window.deleteFieldId = event.target.getAttribute(
-            'data-id'); // กำหนดค่าใน global scope
+                'data-id'); // กำหนดค่าใน global scope
             console.log("Field ID ที่ต้องการลบ:", window.deleteFieldId);
 
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
@@ -600,10 +600,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        console.log("Field ID ที่จะลบ:", window.deleteFieldId); // ใช้ window.deleteFieldId
+        console.log("Confirm Delete Button Clicked");
+        console.log("Field ID ที่จะลบ:", window.deleteFieldId);
 
         if (!window.deleteFieldId) {
             console.error("Field ID ไม่ได้ถูกกำหนด");
+            alert("Field ID ไม่ได้ถูกกำหนด"); // เพิ่ม alert
             return;
         }
 
@@ -613,7 +615,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("CSRF Token:", csrfToken);
 
             const response = await fetch(
-            `/admin/formrecord_general_edit/${deleteFieldId}`, {
+            `/admin/formrecord_general_edit/${window.deleteFieldId}`, { // แก้ไขเป็น window.deleteFieldId
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -626,12 +628,15 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Response data:", responseData);
 
             if (!response.ok) {
+                console.error("HTTP error:", response.status, responseData); // เพิ่ม console.error
+                alert(
+                    `HTTP error: ${response.status} - ${responseData.message || "ไม่สามารถลบฟิลด์ได้"}`); // เพิ่ม alert
                 throw new Error(responseData.message || "ไม่สามารถลบฟิลด์ได้");
             }
 
             if (responseData.success) {
                 const elementToRemove = document.querySelector(
-                    `[data-id="${deleteFieldId}"]`); // ใช้ window.deleteFieldId
+                    `[data-id="${window.deleteFieldId}"]`); // แก้ไขเป็น window.deleteFieldId
                 console.log("Element to remove:", elementToRemove);
 
                 if (elementToRemove) {
