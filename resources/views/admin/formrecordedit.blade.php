@@ -335,8 +335,8 @@ select {
 
 .button-group {
     display: flex;
-    justify-content: flex-start; 
-    gap: 10px; 
+    justify-content: flex-start;
+    gap: 10px;
     margin-top: 10px;
 }
 
@@ -463,14 +463,16 @@ select {
             <div class="form-group custom-field-group" data-id="{{ $field->id }}">
                 <div class="left-column">
                     <label class="input-label">ชื่อหัวข้อ</label>
-                    <input type="text" class="form-control" name="label[]" value="{{ $field->label }}" required>
+                    <input type="text" class="form-control field-label" name="label[]" value="{{ $field->label }}"
+                        required>
                     <label class="input-label">ชื่อตัวแปร</label>
-                    <input type="text" class="form-control" name="name[]" value="{{ $field->name }}" required>
+                    <input type="text" class="form-control field-name" name="name[]" value="{{ $field->name }}"
+                        required>
                 </div>
 
                 <div class="right-column">
                     <label class="input-label">รูปแบบข้อมูล</label>
-                    <select class="form-control" name="field_type[]" required>
+                    <select class="form-control field-type" name="field_type[]" required>
                         <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ
                         </option>
                         <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
@@ -482,7 +484,7 @@ select {
                     </select>
 
                     <div class="form-group options-group"
-                        style="{{ $field->field_type === 'select' || $field->field_type === 'radio' || $field->field_type === 'checkbox' ? 'display: block;' : 'display: none;' }}">
+                        style="{{ in_array($field->field_type, ['select', 'radio', 'checkbox']) ? 'display: block;' : 'display: none;' }}">
                         <label class="input-label">ตัวเลือก</label>
                         <div class="option-container">
                             @foreach(json_decode($field->options) ?? [] as $option)
@@ -497,18 +499,15 @@ select {
                 </div>
 
                 <br>
-                <div>
-                    <div class="button-group">
-                        <button type="button" class="btn btn-success"
-                            data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
-                        <button type="button" class="btn btn-danger delete-field-btn"
-                            data-id="{{ $field->id }}">ลบรายการ</button>
-                    </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-success update-field-btn"
+                        data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
+                    <button type="button" class="btn btn-danger delete-field-btn"
+                        data-id="{{ $field->id }}">ลบรายการ</button>
                 </div>
             </div>
             @endforeach
         </div>
-
 
         <!-- Modal for Delete Confirmation -->
         <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
@@ -577,7 +576,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     addFieldBtn.addEventListener("click", function() {
-        let fieldIndex = fieldContainer.children.length; 
+        let fieldIndex = fieldContainer.children.length;
         let fieldHTML = `
             <div class="form-group custom-field-group">
                 <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
@@ -712,6 +711,53 @@ document.addEventListener("DOMContentLoaded", function() {
                 deleteConfirmationModal.hide();
             });
         }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".update-field-btn").forEach((button) => {
+            button.addEventListener("click", function() {
+                let fieldGroup = this.closest(".custom-field-group");
+                let fieldId = this.getAttribute("data-id");
+
+                let label = fieldGroup.querySelector(".field-label").value;
+                let name = fieldGroup.querySelector(".field-name").value;
+                let fieldType = fieldGroup.querySelector(".field-type").value;
+                let options = [];
+
+                if (["select", "radio", "checkbox"].includes(fieldType)) {
+                    fieldGroup.querySelectorAll(".option-input").forEach((input) => {
+                        if (input.value.trim() !== "") {
+                            options.push(input.value.trim());
+                        }
+                    });
+                }
+
+                fetch(`/custom-fields/update/${fieldId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector(
+                                'meta[name="csrf-token"]').getAttribute(
+                                "content"),
+                        },
+                        body: JSON.stringify({
+                            label: label,
+                            name: name,
+                            field_type: fieldType,
+                            options: options,
+                        }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert("อัปเดตฟิลด์สำเร็จ!");
+                        } else {
+                            alert("เกิดข้อผิดพลาด: " + data.message);
+                        }
+                    })
+                    .catch((error) => console.error("Error:", error));
+            });
+        });
     });
 });
 </script>

@@ -66,4 +66,29 @@ class CustomFieldController extends Controller
             return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
         }
     }
+
+    public function update(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'label' => 'required|string',
+        'name' => 'required|string|distinct',
+        'field_type' => 'required|in:text,select,checkbox,radio',
+        'options' => 'nullable|array',
+        'options.*' => 'nullable|string',
+    ]);
+
+    try {
+        $customField = CustomField::findOrFail($id);
+        $customField->label = $request->label;
+        $customField->name = $request->name;
+        $customField->field_type = $request->field_type;
+        $customField->options = json_encode($request->options ?? []);
+        $customField->save();
+
+        return response()->json(['success' => true, 'message' => 'อัปเดตสำเร็จ']);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการอัปเดต'], 500);
+    }
+}
+
 }

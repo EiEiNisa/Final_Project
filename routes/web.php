@@ -224,5 +224,5 @@ Route::get('/admin/formrecordedit', [CustomFieldController::class, 'edit'])->nam
 Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('customfields.store');
 // Route สำหรับลบ CustomField
 Route::delete('/delete-custom-field/{id}', [CustomFieldController::class, 'delete'])->name('delete.custom.field');
-
+Route::post('/custom-fields/update/{id}', [CustomFieldController::class, 'update'])->name('custom-fields.update');
 
