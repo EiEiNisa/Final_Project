@@ -381,83 +381,11 @@ select {
     @endif
 
     <div class="card-header">
-        <h4><strong>แก้ไขฟอร์มข้อมูลทั้วไป</strong></h4>
+        <h4><strong>แก้ไขฟอร์มข้อมูลทั่วไป</strong></h4>
         <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back">กลับ</a>
     </div>
 
     <div class="card-body">
-        <div class="personal-info-group">
-            <div class="input-container">
-                <label class="input-label">เลขบัตรประจำตัวประชาชน</label>
-                <input type="number" class="form-control" placeholder="กรอกเลขบัตรประจำตัวประชาชน" disabled>
-            </div>
-            <div class="input-container">
-                <label class="input-label">คำนำหน้าชื่อ</label>
-                <select class="form-control" disabled>
-                    <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
-                    </option>
-                    <option value="ด.ช.">ด.ช.</option>
-                    <option value="ด.ญ.">ด.ญ.</option>
-                    <option value="นาย">นาย</option>
-                    <option value="นาง">นาง</option>
-                    <option value="นางสาว">นางสาว</option>
-                </select>
-            </div>
-            <div class="input-container">
-                <label class="input-label">ชื่อ</label>
-                <input type="text" class="form-control" placeholder="กรอกชื่อ" disabled>
-            </div>
-        </div>
-
-        <div class="personal-info-group">
-            <div class="input-container">
-                <label class="input-label">นามสกุล</label>
-                <input type="text" class="form-control" placeholder="กรอกนามสกุล" disabled>
-            </div>
-            <div class="input-container">
-                <label class="input-label">บ้านเลขที่</label>
-                <input type="text" class="form-control" value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
-                    disabled>
-            </div>
-            <div class="input-container">
-                <label class="input-label">วัน / เดือน / ปีเกิด</label>
-                <input type="date" class="form-control" placeholder="วัน/เดือน/ปีเกิด" disabled>
-            </div>
-        </div>
-
-        <div class="personal-info-group">
-            <div class="input-container">
-                <label class="input-label">อายุ</label>
-                <input type="number" class="form-control" placeholder="กรอกอายุ" disabled>
-            </div>
-            <div class="input-container">
-                <label class="input-label">กรุ๊ปเลือด</label>
-                <select class="form-control" disabled>
-                    <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>กรุณาเลือกกรุ๊ปเลือด
-                    </option>
-                    <option value="A" {{ old('blood_group') == 'A' ? 'selected' : '' }}>A</option>
-                    <option value="B" {{ old('blood_group') == 'B' ? 'selected' : '' }}>B</option>
-                    <option value="AB" {{ old('blood_group') == 'AB' ? 'selected' : '' }}>AB</option>
-                    <option value="O" {{ old('blood_group') == 'O' ? 'selected' : '' }}>O</option>
-                </select>
-            </div>
-            <div class="input-container">
-                <label class="input-label">น้ำหนัก</label>
-                <input type="number" class="form-control" placeholder="กรอกน้ำหนัก" step="0.1" disabled>
-            </div>
-        </div>
-
-        <div class="contact-info-group">
-            <div class="input-container">
-                <label class="input-label">เบอร์โทรศัพท์</label>
-                <input type="tel" class="form-control" placeholder="กรอกหมายเลขโทรศัพท์" disabled>
-            </div>
-            <div class="input-container">
-                <label class="input-label">ID Line</label>
-                <input type="text" class="form-control" placeholder="กรอกไอดีไลน์" disabled>
-            </div>
-        </div>
-
         <div id="existing-fields">
             @foreach($customFields as $field)
             <div class="form-group custom-field-group" data-id="{{ $field->id }}">
