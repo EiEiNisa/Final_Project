@@ -605,7 +605,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
             let fieldGroup = document.querySelector(
-            `.custom-field-group[data-id="${fieldToDeleteId}"]`);
+                `.custom-field-group[data-id="${fieldToDeleteId}"]`);
 
             fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
                     method: 'DELETE',
@@ -620,6 +620,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (data.success) {
                         fieldGroup.remove();
                         showSuccessMessage("ลบรายการสำเร็จ!");
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000); // รีโหลดหลังจาก 1 วินาที
                     } else {
                         showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                     }
@@ -631,24 +635,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Function to show success message
-    function showSuccessMessage(message) {
-        const successMessageElement = document.createElement('div');
-        successMessageElement.classList.add('alert', 'alert-success');
-        successMessageElement.textContent = message;
-        document.body.appendChild(successMessageElement);
-        setTimeout(() => successMessageElement.remove(), 3000);
-    }
 
-    // Function to show error message
-    function showErrorMessage(message) {
-        const errorMessageElement = document.createElement('div');
-        errorMessageElement.classList.add('alert', 'alert-danger');
-        errorMessageElement.textContent = message;
-        document.body.appendChild(errorMessageElement);
-        setTimeout(() => errorMessageElement.remove(), 3000);
-    }
-    
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
             let fieldGroup = this.closest(".custom-field-group");
