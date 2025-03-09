@@ -148,7 +148,7 @@ class RecorddataController
                     $value = $request->input($field->name); // ค่าที่กรอกจากฟอร์ม
                 }
 
-                \App\Models\customFieldsGeneralData::create([
+                \App\Models\customFieldGeneralData::create([
                     'recorddata_id' => $recorddata->id, // ใช้ ID ของ recorddata
                     'custom_field_id' => $field->id,     // ใช้ ID ของ custom_field
                     'value' => $value,                   // ค่าที่กรอกจากฟอร์ม
