@@ -720,6 +720,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
+            console.log("Response:", response); // ตรวจสอบค่า response
+
             if (!response.ok) {
                 // ถ้า response ไม่ใช่ 200 OK ให้ throw error
                 const errorData = await response.json();
@@ -727,7 +729,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             const result = await response.json();
-            console.log("Server response:", result); // ตรวจสอบ response จาก server
+            console.log("Delete Field ID: ", deleteFieldId); // ตรวจสอบค่า deleteFieldId
 
             if (result.success) {
                 // ซ่อน Modal
@@ -759,7 +761,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 errorModal.show();
             } else {
                 alert("เกิดข้อผิดพลาดในการลบ: " + error
-                .message); // แสดง alert ถ้า Modal error ไม่มี
+                    .message); // แสดง alert ถ้า Modal error ไม่มี
             }
         }
     });
