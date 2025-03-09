@@ -623,9 +623,22 @@ document.addEventListener("DOMContentLoaded", function() {
                         fieldGroup.remove();
 
                         // ปิด Modal
-                        let deleteModal = document.getElementById("deleteModal");
-                        let modalInstance = bootstrap.Modal.getInstance(deleteModal);
-                        modalInstance.hide();
+                        try {
+                            let deleteModal = document.getElementById("deleteModal");
+                            if (deleteModal) {
+                                let modalInstance = bootstrap.Modal.getInstance(deleteModal);
+                                if (modalInstance) {
+                                    modalInstance.hide();
+                                } else {
+                                    console.warn("Modal instance not found.");
+                                }
+                            } else {
+                                console.warn("Modal element not found.");
+                            }
+                        } catch (error) {
+                            console.error("Error closing modal:", error);
+                            // อาจจะเพิ่มโค้ดเพื่อจัดการกับข้อผิดพลาด เช่น แสดงข้อความให้ผู้ใช้ทราบ
+                        }
 
                         window.location.replace(
                             "{{ route('customfieldgeneral.edit') }}");
