@@ -492,7 +492,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentFieldId;
     let currentOptionIndex;
     let deleteFieldId = null;
-    let fieldToDeleteId = null; 
+    let fieldToDeleteId = null;
 
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
     showFormBtn.addEventListener("click", function() {
@@ -584,15 +584,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Event Listener สำหรับการลบใน existing-fields
-    document.querySelector("#existing-fields").addEventListener("click", function(event) {
-        if (event.target && event.target.classList.contains("delete-field-btn")) {
-            deleteFieldId = event.target.getAttribute("data-id");
+    document.addEventListener("DOMContentLoaded", function() {
+        const deleteModal = document.getElementById("deleteConfirmationModal");
 
-            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
-                'deleteConfirmationModal'));
-            deleteConfirmationModal.show();
-        }
+        deleteModal.addEventListener("shown.bs.modal", function() {
+            deleteModal.removeAttribute("aria-hidden"); // ลบ aria-hidden เมื่อ modal เปิด
+        });
+
+        deleteModal.addEventListener("hidden.bs.modal", function() {
+            deleteModal.setAttribute("aria-hidden", "true"); // ใส่กลับเมื่อปิด modal
+        });
     });
 
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
