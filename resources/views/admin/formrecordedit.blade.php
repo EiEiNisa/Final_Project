@@ -807,6 +807,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
         if (!optionToDelete) return;
 
+        console.log("Deleting option:", optionToDelete);
+
         fetch(`/custom-fields/options/${optionToDelete.fieldId}/${optionToDelete.optionIndex}`, {
                 method: "DELETE",
                 headers: {
@@ -817,20 +819,21 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Response:", data); // ดู response ที่ได้รับ
+                console.log("Response:", data);
                 if (data.success) {
-                    alert(data.message);
-                    location.reload();
+                    location.reload(); // โหลดหน้าใหม่หลังจากลบสำเร็จ
                 } else {
-                    alert("Error: " + data.message);
+                    alert(data.message);
                 }
             })
             .catch(error => {
                 console.error("เกิดข้อผิดพลาด:", error);
+                alert("เกิดข้อผิดพลาด: " + error);
             });
 
         optionToDelete = null;
     });
+
 
 });
 </script>
