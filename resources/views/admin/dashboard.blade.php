@@ -90,7 +90,7 @@
                     datasets: [{
                         label: "จำนวนสมาชิก",
                         data: data.age_data,
-                        backgroundColor: "#00796b"
+                        backgroundColor: "#ffffff"  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                     }]
                 },
                 options: {
@@ -131,37 +131,37 @@
                 {
                     label: 'เบาหวาน',
                     data: data.diseases['diabetes'],  
-                    backgroundColor: 'rgba(255, 99, 132, 0.7)'
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                 },
                 {
                     label: 'หลอดเลือดในสมอง',
                     data: data.diseases['cerebral_artery'],
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                 },
                 {
                     label: 'ไต',
                     data: data.diseases['kidney'],
-                    backgroundColor: 'rgba(153, 102, 255, 0.7)'
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                 },
                 {
                     label: 'ความดันโลหิตสูง',
                     data: data.diseases['blood_pressure'],
-                    backgroundColor: 'rgba(181, 234, 239, 0.7)'
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                 },
                 {
                     label: 'หัวใจ',
                     data: data.diseases['heart'],
-                    backgroundColor: 'rgba(126, 237, 92, 0.7)'
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                 },
                 {
                     label: 'ตา',
                     data: data.diseases['eye'],
-                    backgroundColor: 'rgba(255, 159, 64, 0.7)'
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                 },
                 {
                     label: 'อื่นๆ',
                     data: data.diseases['other'],
-                    backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                 }
             ];
         } else {
@@ -170,7 +170,7 @@
                     {
                         label: data.disease_labels[filter],
                         data: data.diseases[filter],
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                        backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                     }
                 ];
             }
