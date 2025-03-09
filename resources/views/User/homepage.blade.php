@@ -225,7 +225,7 @@
     <div class="slideshow-container py-3">
         @foreach ($slides as $slide)
             <div class="mySlides">
-                <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
+                <img src="{{ asset('images/'.$slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
             </div>
         @endforeach
     </div>
