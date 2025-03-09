@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('author');
             $table->date('post_date');
-            $table->string('image');
+            $table->json('image');
             $table->string('video_link')->nullable();   // ✅ เพิ่มฟิลด์ลิงก์วิดีโอ
             $table->string('video_upload')->nullable(); // ✅ เพิ่มฟิลด์ไฟล์วิดีโอ
             $table->timestamps();
