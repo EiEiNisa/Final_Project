@@ -224,16 +224,13 @@
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
         @php
-            $slideImages = [];
-            // หาทุกไฟล์ที่มีชื่อเริ่มต้นด้วย 'slide' ในโฟลเดอร์ images/
-            foreach (glob(public_path('images/slide*.{jpg,jpeg,png,webp}', GLOB_BRACE)) as $file) {
-                $slideImages[] = asset(str_replace(public_path(), '', $file));  // เก็บ URL ของไฟล์
-            }
+            // ดึงข้อมูลสไลด์จากฐานข้อมูลและเรียงตามลำดับ
+            $slides = \App\Models\SlideShow::orderBy('order')->get();  // เรียงตาม order
         @endphp
 
-        @foreach ($slideImages as $index => $slideImage)
+        @foreach ($slides as $index => $slide)
             <div class="mySlides">
-                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $index + 1 }}">
+                <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $index + 1 }}">
             </div>
         @endforeach
 
@@ -244,7 +241,7 @@
 
     <!-- Dots -->
     <div style="text-align:center">
-        @foreach ($slideImages as $index => $slideImage)
+        @foreach ($slides as $index => $slide)
             <span class="dot" onclick="currentSlide({{ $index + 1 }})"></span>
         @endforeach
     </div>
@@ -282,7 +279,6 @@
         plusSlides(1);
     }, 3000); // Change slide every 3 seconds
 </script>
-
 
     <!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
