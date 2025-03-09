@@ -587,13 +587,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // เมื่อคลิกที่ปุ่ม "ลบรายการ"
-    // เมื่อคลิกที่ปุ่ม "ลบรายการ"
+    let deleteFieldId;
+
     document.querySelectorAll('.delete-field-btn').forEach(button => {
         button.addEventListener('click', function(event) {
-            // ดึงค่า data-id จากปุ่ม
             deleteFieldId = event.target.getAttribute('data-id');
-            console.log("Field ID ที่ต้องการลบ:", deleteFieldId); // เพิ่มบรรทัดนี้เพื่อเช็ค
+            console.log("Field ID ที่ต้องการลบ:", deleteFieldId);
 
             // แสดง Modal
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
@@ -612,12 +611,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         try {
-            // ตรวจสอบ CSRF Token
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
                 'content');
-            console.log("CSRF Token:", csrfToken); // ตรวจสอบว่า CSRF token ถูกต้อง
+            console.log("CSRF Token:", csrfToken);
 
-            // ส่งคำขอลบฟิลด์
             const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
                 method: 'DELETE',
                 headers: {
@@ -626,10 +623,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            console.log("Response status:", response.status); // ตรวจสอบสถานะการตอบกลับ
-            const responseData = await response.json(); // ดูข้อมูลที่ตอบกลับมา
-
-            // ตรวจสอบว่า server ตอบกลับด้วยข้อมูลหรือไม่
+            console.log("Response status:", response.status);
+            const responseData = await response.json();
             console.log("Response data:", responseData);
 
             if (!response.ok) {
@@ -637,8 +632,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             if (responseData.success) {
-                // ลบฟิลด์จาก DOM
                 const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
+                console.log("Element to remove:", elementToRemove);
+
                 if (elementToRemove) {
                     elementToRemove.remove();
                 }
