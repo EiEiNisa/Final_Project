@@ -51,6 +51,8 @@ class CustomFieldGeneralController extends Controller
 
     public function delete($id)
     {
+        dd($id);
+        
         try {
             $customField = CustomFieldGeneral::findOrFail($id);
             $customField->delete();
