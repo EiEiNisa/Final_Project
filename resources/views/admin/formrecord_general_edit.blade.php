@@ -671,47 +671,16 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    document.getElementById("confirmSaveBtn").addEventListener("click", function() {
-        if (!selectedFieldId || !selectedFieldData) return;
-
-        fetch(`/admin/formrecord_general_edit/${selectedFieldId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        "content"),
-                },
-                body: JSON.stringify(selectedFieldData),
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    // แสดงข้อความ success
-                    let successMessage = document.getElementById("success");
-                    successMessage.classList.remove("d-none");
-
-                    window.location.replace("{{ route('customfieldgeneral.edit') }}");
-                } else {
-                    let errorBox = document.getElementById("modal-error-message");
-                    errorBox.innerHTML = data.message;
-                    errorBox.classList.remove("d-none");
-                }
-            })
-            .catch((error) => {
-                let errorBox = document.getElementById("modal-error-message");
-                errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
-                errorBox.classList.remove("d-none");
-            });
-    });
-
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
+            // หาตัวเลือกที่ถูกคลิก
             let optionItem = this.closest('.option-item');
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
             let optionIndex = optionItem.dataset.index;
 
             // ตั้งค่าการยืนยันการลบ
             document.getElementById("confirmDeleteBtn").onclick = function() {
+                // ส่งคำขอลบไปยังเซิร์ฟเวอร์
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
                         headers: {
@@ -720,20 +689,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                 'meta[name="csrf-token"]').getAttribute("content"),
                         }
                     })
-                    .then(response => {
-                        console.log("Response status:", response
-                        .status); // เพิ่มการตรวจสอบสถานะ
-                        return response.json();
-                    })
+                    .then(response => response.json())
                     .then(data => {
-                        console.log("Data:",
-                        data); // ตรวจสอบข้อมูลที่ได้รับจากเซิร์ฟเวอร์
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
-
-                            // แสดงข้อความสำเร็จ
-                            let successMessage = document.getElementById("success");
-                            successMessage.classList.remove("d-none");
 
                             // ลบตัวเลือกจากหน้าเว็บ
                             document.querySelector(
@@ -741,7 +700,9 @@ document.addEventListener("DOMContentLoaded", function() {
                             .remove();
 
                             // ปิด Modal
-                            $('#deleteConfirmationModal').modal('hide');
+                            let deleteModal = new bootstrap.Modal(document
+                                .getElementById('deleteModal'));
+                            deleteModal.hide();
 
                             // รีเฟรชหน้า
                             window.location.replace(
@@ -757,13 +718,15 @@ document.addEventListener("DOMContentLoaded", function() {
             };
 
             // แสดง Modal
-            new bootstrap.Modal(document.getElementById('deleteConfirmationModal')).show();
+            let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
         });
     });
 
     // เมื่อกดปุ่ม "ยกเลิก" จะปิด Modal
-    document.querySelector('#deleteConfirmationModal .btn-secondary').addEventListener('click', function() {
-        new bootstrap.Modal(document.getElementById('deleteConfirmationModal')).hide();
+    document.querySelector('#deleteModal .btn-secondary').addEventListener('click', function() {
+        let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.hide();
     });
 
 });
