@@ -37,10 +37,10 @@
     </div>
     
     <!-- Age Chart Section -->
-<div class="card p-3 bg-white text-dark">
-    <h5 class="text-center">สมาชิกในชุมชนแยกตามอายุทั้งหมด</h5>
-    <canvas id="ageChart" class="mt-3"></canvas>
-</div>
+    <div class="card p-3 bg-white text-dark">
+        <h5 class="text-center">สมาชิกในชุมชนแยกตามอายุทั้งหมด</h5>
+        <canvas id="ageChart" class="mt-3"></canvas>
+    </div>
 
     <!-- Disease Filter and Chart Section -->
     <div class="card p-3 bg-white text-dark">
@@ -83,35 +83,57 @@
         
         // Create or update age chart
         if (!ageChart) {
-           const customBackgroundPlugin = {
-    id: "customCanvasBackgroundColor",
-    beforeDraw: (chart) => {
-        const ctx = chart.canvas.getContext("2d");
-        ctx.save();
-        ctx.fillStyle = "#FFFFFF"; 
-        ctx.fillRect(0, 0, chart.width, chart.height);
-        ctx.restore();
-    }
-};
+            const customBackgroundPlugin = {
+                id: "customCanvasBackgroundColor",
+                beforeDraw: (chart) => {
+                    const ctx = chart.canvas.getContext("2d");
+                    ctx.save();
+                    ctx.fillStyle = "#FFFFFF"; 
+                    ctx.fillRect(0, 0, chart.width, chart.height);
+                    ctx.restore();
+                }
+            };
 
-const ageChart = new Chart(document.getElementById("ageChart"), {
-    type: "bar",
-    data: {
-        labels: data.age_labels,
-        datasets: [{
-            label: "จำนวนสมาชิก",
-            data: data.age_data,
-            backgroundColor: "#000000"
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true
-    },
-    plugins: [customBackgroundPlugin] // ใช้ plugin ที่สร้างขึ้น
-});
+            const ctx = document.getElementById("ageChart").getContext("2d");
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, "rgba(255, 165, 0, 0.7)");  // ส้ม
+            gradient.addColorStop(1, "rgba(0, 150, 136, 0.7)");  // เขียวมรกต
 
-
+            ageChart = new Chart(document.getElementById("ageChart"), {
+                type: "bar",
+                data: {
+                    labels: data.age_labels,
+                    datasets: [{
+                        label: "จำนวนสมาชิก",
+                        data: data.age_data,
+                        backgroundColor: gradient,
+                        borderColor: "rgba(0, 0, 0, 0.1)",
+                        borderWidth: 1,
+                        hoverBorderColor: "rgba(0, 0, 0, 0.5)",
+                        hoverBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        position: "bottom"
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                },
+                plugins: [customBackgroundPlugin]
+            });
         } else {
             ageChart.data.labels = data.age_labels;
             ageChart.data.datasets[0].data = data.age_data;
@@ -129,38 +151,52 @@ const ageChart = new Chart(document.getElementById("ageChart"), {
             dataset = [
                 {
                     label: 'เบาหวาน',
-                    data: data.diseases['diabetes'],  
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    data: data.diseases['diabetes'],
+                    backgroundColor: 'rgba(255, 193, 7, 0.7)',  // สีทอง
+                    borderColor: 'rgba(255, 193, 7, 1)',
+                    borderWidth: 1
                 },
                 {
                     label: 'หลอดเลือดในสมอง',
                     data: data.diseases['cerebral_artery'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    backgroundColor: 'rgba(255, 82, 82, 0.7)',  // สีแดงอ่อน
+                    borderColor: 'rgba(255, 82, 82, 1)',
+                    borderWidth: 1
                 },
                 {
                     label: 'ไต',
                     data: data.diseases['kidney'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    backgroundColor: 'rgba(33, 150, 243, 0.7)',  // สีน้ำเงิน
+                    borderColor: 'rgba(33, 150, 243, 1)',
+                    borderWidth: 1
                 },
                 {
                     label: 'ความดันโลหิตสูง',
                     data: data.diseases['blood_pressure'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    backgroundColor: 'rgba(76, 175, 80, 0.7)',  // สีเขียว
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 1
                 },
                 {
                     label: 'หัวใจ',
                     data: data.diseases['heart'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    backgroundColor: 'rgba(156, 39, 176, 0.7)',  // สีม่วง
+                    borderColor: 'rgba(156, 39, 176, 1)',
+                    borderWidth: 1
                 },
                 {
                     label: 'ตา',
                     data: data.diseases['eye'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    backgroundColor: 'rgba(255, 87, 34, 0.7)',  // สีส้ม
+                    borderColor: 'rgba(255, 87, 34, 1)',
+                    borderWidth: 1
                 },
                 {
                     label: 'อื่นๆ',
                     data: data.diseases['other'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    backgroundColor: 'rgba(233, 30, 99, 0.7)',  // สีชมพู
+                    borderColor: 'rgba(233, 30, 99, 1)',
+                    borderWidth: 1
                 }
             ];
         } else {
@@ -169,7 +205,9 @@ const ageChart = new Chart(document.getElementById("ageChart"), {
                     {
                         label: data.disease_labels[filter],
                         data: data.diseases[filter],
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                        backgroundColor: 'rgba(255, 193, 7, 0.7)',  // สีทอง
+                        borderColor: 'rgba(255, 193, 7, 1)',
+                        borderWidth: 1
                     }
                 ];
             }
@@ -244,18 +282,6 @@ const ageChart = new Chart(document.getElementById("ageChart"), {
             width: 80%;
         }
     }
-    plugins: [{
-    id: "custom_canvas_background_color",
-    beforeDraw: (chart) => {
-        const ctx = chart.canvas.getContext("2d");
-        ctx.save();
-        ctx.globalCompositeOperation = "destination-over";
-        ctx.fillStyle = "#FFFFFF"; 
-        ctx.fillRect(0, 0, chart.width, chart.height);
-        ctx.restore();
-    }
-}]
-
 </style>
 
 @endsection
