@@ -537,6 +537,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // ตรวจสอบว่า `existingFields` มีอยู่ใน DOM หรือไม่
     if (existingFields) {
         // Event listener สำหรับปุ่ม "เพิ่มตัวเลือก" ในฟอร์มที่มีอยู่
+        
+
         existingFields.addEventListener("click", function(event) {
             // ตรวจสอบว่าเป็นการคลิกปุ่ม "เพิ่มตัวเลือก"
             if (event.target && event.target.classList.contains("add-option-btn")) {
