@@ -474,6 +474,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let selectedFieldId = null;
     let selectedFieldData = {};
 
+    let existingFields = document.getElementById("existing-fields");
+
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
     showFormBtn.addEventListener("click", function() {
         customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
@@ -513,40 +515,47 @@ document.addEventListener("DOMContentLoaded", function() {
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
     });
 
-    // Event listener สำหรับปุ่ม "เพิ่มตัวเลือก" ในฟอร์มที่มีอยู่
-    existingFields.addEventListener("click", function(event) {
-        // ตรวจสอบว่าเป็นการคลิกปุ่ม "เพิ่มตัวเลือก"
-        if (event.target && event.target.classList.contains("add-option-btn")) {
-            let fieldGroup = event.target.closest('.custom-field-group');
-            let optionContainer = fieldGroup.querySelector('.option-container');
-            let fieldId = fieldGroup.getAttribute('data-id'); // ใช้ data-id ในการระบุฟิลด์ที่เลือก
+    // ตรวจสอบว่า `existingFields` มีอยู่ใน DOM หรือไม่
+    if (existingFields) {
+        // Event listener สำหรับปุ่ม "เพิ่มตัวเลือก" ในฟอร์มที่มีอยู่
+        existingFields.addEventListener("click", function(event) {
+            // ตรวจสอบว่าเป็นการคลิกปุ่ม "เพิ่มตัวเลือก"
+            if (event.target && event.target.classList.contains("add-option-btn")) {
+                let fieldGroup = event.target.closest('.custom-field-group');
+                let optionContainer = fieldGroup.querySelector('.option-container');
+                let fieldId = fieldGroup.getAttribute('data-id'); // ใช้ data-id ในการระบุฟิลด์ที่เลือก
 
-            let newOption = document.createElement("input");
-            newOption.type = "text";
-            newOption.className = "form-control option-input rounded-pill mt-2";
-            newOption.name = `options[${fieldId}][]`; // ใช้ fieldId เพื่อให้ชื่อ field ถูกต้อง
-            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+                let newOption = document.createElement("input");
+                newOption.type = "text";
+                newOption.className = "form-control option-input rounded-pill mt-2";
+                newOption.name = `options[${fieldId}][]`; // ใช้ fieldId เพื่อให้ชื่อ field ถูกต้อง
+                newOption.placeholder = "เพิ่มค่าตัวเลือก";
 
-            optionContainer.appendChild(newOption);
-        }
-
-        // ตรวจสอบการคลิกปุ่ม "ลบฟิลด์"
-        if (event.target && event.target.classList.contains("delete-field-btn")) {
-            event.target.closest('.custom-field-group').remove(); // ลบฟิลด์
-        }
-    });
-
-    // ฟังก์ชันเพื่อแสดง/ซ่อนตัวเลือกเมื่อเลือก field type
-    existingFields.addEventListener("change", function(event) {
-        if (event.target && event.target.name === "field_type[]") {
-            let optionsGroup = event.target.closest('.custom-field-group').querySelector('.options-group');
-            if (event.target.value === "select" || event.target.value === "radio" || event.target.value === "checkbox") {
-                optionsGroup.style.display = "block"; // แสดงตัวเลือก
-            } else {
-                optionsGroup.style.display = "none"; // ซ่อนตัวเลือก
+                optionContainer.appendChild(newOption);
             }
-        }
-    });
+
+            // ตรวจสอบการคลิกปุ่ม "ลบฟิลด์"
+            if (event.target && event.target.classList.contains("delete-field-btn")) {
+                event.target.closest('.custom-field-group').remove(); // ลบฟิลด์
+            }
+        });
+
+        // ฟังก์ชันเพื่อแสดง/ซ่อนตัวเลือกเมื่อเลือก field type
+        existingFields.addEventListener("change", function(event) {
+            if (event.target && event.target.name === "field_type[]") {
+                let optionsGroup = event.target.closest('.custom-field-group').querySelector(
+                    '.options-group');
+                if (event.target.value === "select" || event.target.value === "radio" || event.target
+                    .value === "checkbox") {
+                    optionsGroup.style.display = "block"; // แสดงตัวเลือก
+                } else {
+                    optionsGroup.style.display = "none"; // ซ่อนตัวเลือก
+                }
+            }
+        });
+    } else {
+        console.error('Element with ID "existing-fields" not found!');
+    }
 
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
