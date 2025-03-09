@@ -346,12 +346,11 @@ select {
             <div class="right-column">
                 <label class="input-label">รูปแบบข้อมูล</label>
                 <select class="form-control field-type" name="field_type[]" required>
-                    <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ
-                    </option>
+                    <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ</option>
                     <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
                     </option>
-                    <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>
-                        ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
+                    <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
+                        (เลือกได้หลายรายการ)</option>
                     <option value="radio" {{ $field->field_type == 'radio' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
                         (เลือกได้รายการเดียว)</option>
                 </select>
@@ -383,6 +382,26 @@ select {
             </div>
         </div>
         @endforeach
+    </div>
+
+    <!-- Modal for Delete Confirmation -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    คุณต้องการลบรายการนี้หรือไม่?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal for Delete Confirmation -->
@@ -422,26 +441,6 @@ select {
                 <div class="modal-footer d-flex gap-2 justify-content-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
                     <button type="button" class="btn btn-success" id="confirmSaveBtn">ยืนยัน</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Delete Confirmation -->
-    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    คุณต้องการลบรายการนี้หรือไม่?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
                 </div>
             </div>
         </div>
@@ -606,7 +605,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
             let fieldGroup = document.querySelector(
-                `.custom-field-group[data-id="${fieldToDeleteId}"]`);
+            `.custom-field-group[data-id="${fieldToDeleteId}"]`);
 
             fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
                     method: 'DELETE',
@@ -649,7 +648,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(errorMessageElement);
         setTimeout(() => errorMessageElement.remove(), 3000);
     }
-
+    
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
             let fieldGroup = this.closest(".custom-field-group");
