@@ -583,10 +583,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    let fieldToDeleteId = null; // This will store the ID of the field to delete
+
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             // Store the ID of the field to delete
             fieldToDeleteId = event.target.getAttribute("data-id");
+
+            // Create a new Bootstrap Modal instance and show it
+            let deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+            deleteModal.show();
         }
     });
 
