@@ -30,10 +30,11 @@
             <input type="text" class="form-control" id="title" name="title" required style="border: 2px solid #5a9fcf; transition: 0.3s;" onfocus="this.style.backgroundColor='#e0f2ff'" onblur="this.style.backgroundColor='white'">
         </div>
         
-<div class="mb-3">
-    <label for="images" class="form-label fw-bold" style="color: #005f99;">อัปโหลดรูปภาพ (อัปโหลดได้หลายไฟล์)</label>
-    <input type="file" class="form-control" id="images" name="images[]" accept="image/*" multiple required style="border: 2px solid #5a9fcf;">
-</div>
+        <div class="mb-3">
+            <label for="images" class="form-label fw-bold" style="color: #005f99;">อัปโหลดรูปภาพ (อัปโหลดได้หลายไฟล์)</label>
+            <input type="file" class="form-control" id="images" name="images[]" accept="image/*" multiple required style="border: 2px solid #5a9fcf;">
+            <div id="imageError" class="text-danger" style="display: none; font-size: 14px;">ขนาดไฟล์รูปภาพเกินกำหนด ขนาดสูงสุดคือ 2MB</div>
+        </div>
 
         <div class="mb-3">
             <label for="description" class="form-label fw-bold" style="color: #005f99;">คำอธิบายในโพสต์</label>
@@ -51,17 +52,49 @@
         </div>
 
         <div class="mb-3">
-    <label for="video_upload" class="form-label fw-bold" style="color: #005f99;">อัปโหลดไฟล์วิดีโอ (ถ้ามี)</label>
-    <input type="file" class="form-control" id="video_upload" name="video_upload" accept="video/*" style="border: 2px solid #5a9fcf;">
-    <div id="videoError" class="text-danger" style="display: none; font-size: 14px;">ขนาดไฟล์วิดีโอเกินกำหนด ขนาดสูงสุดคือ 50MB</div>
+            <label for="video_upload" class="form-label fw-bold" style="color: #005f99;">อัปโหลดไฟล์วิดีโอ (ถ้ามี)</label>
+            <input type="file" class="form-control" id="video_upload" name="video_upload" accept="video/*" style="border: 2px solid #5a9fcf;">
+            <div id="videoError" class="text-danger" style="display: none; font-size: 14px;">ขนาดไฟล์วิดีโอเกินกำหนด ขนาดสูงสุดคือ 50MB</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label fw-bold" style="color: #005f99;">ชื่อผู้โพสต์</label>
+            <input type="text" class="form-control" id="author" name="author" required style="border: 2px solid #5a9fcf;">
+        </div>
+
+        <button type="submit" class="btn w-100 fw-bold" style="background-color: #5a9fcf; color: white; border: 2px solid #005f99; transition: 0.3s;" onmouseover="this.style.backgroundColor='#005f99'" onmouseout="this.style.backgroundColor='#5a9fcf'">เสร็จสิ้น</button>
+    </form>
 </div>
 
 <script>
+    // ตรวจสอบขนาดไฟล์รูปภาพเมื่อมีการเลือกไฟล์
+    document.getElementById('images').addEventListener('change', function(event) {
+        var files = event.target.files;
+        var errorDiv = document.getElementById('imageError');
+        var maxSize = 2 * 1024 * 1024; // ขนาดสูงสุด 2MB
+        var hasError = false;
+
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].size > maxSize) {
+                hasError = true;
+                break;
+            }
+        }
+
+        if (hasError) {
+            errorDiv.style.display = 'block'; // แสดงข้อความเตือน
+            document.getElementById('images').style.border = '2px solid red'; // เปลี่ยนกรอบ input เป็นสีแดง
+        } else {
+            errorDiv.style.display = 'none'; // ซ่อนข้อความเตือน
+            document.getElementById('images').style.border = '2px solid #5a9fcf'; // เปลี่ยนกรอบ input กลับเป็นสีเดิม
+        }
+    });
+
     // ตรวจสอบขนาดไฟล์วิดีโอเมื่อมีการเลือกไฟล์
     document.getElementById('video_upload').addEventListener('change', function(event) {
-        var file = event.target.files[0]; // รับไฟล์ที่ผู้ใช้เลือก
+        var file = event.target.files[0];
         var errorDiv = document.getElementById('videoError');
-        
+
         if (file) {
             var maxSize = 50 * 1024 * 1024; // ขนาดสูงสุด 50MB
             if (file.size > maxSize) {
@@ -75,15 +108,5 @@
         }
     });
 </script>
-
-
-        <div class="mb-3">
-            <label for="author" class="form-label fw-bold" style="color: #005f99;">ชื่อผู้โพสต์</label>
-            <input type="text" class="form-control" id="author" name="author" required style="border: 2px solid #5a9fcf;">
-        </div>
-
-        <button type="submit" class="btn w-100 fw-bold" style="background-color: #5a9fcf; color: white; border: 2px solid #005f99; transition: 0.3s;" onmouseover="this.style.backgroundColor='#005f99'" onmouseout="this.style.backgroundColor='#5a9fcf'">เสร็จสิ้น</button>
-    </form>
-</div>
 
 @endsection
