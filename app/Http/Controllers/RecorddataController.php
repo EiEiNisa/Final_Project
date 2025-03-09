@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use App\AnotherNamespace\Checkup;
 use App\Models\CustomField;
 use Carbon\Carbon;
-use App\Models\CustomFieldGeneralData;
+use App\Models\CustomFieldGeneral;
 
 
 class RecorddataController
@@ -135,7 +135,7 @@ class RecorddataController
             }
         }
 
-        $customFieldsGeneral = CustomFieldGeneral::all(); 
+        $customFieldsGeneral = \App\Models\CustomFieldGeneral::all(); 
 
         foreach ($customFieldsGeneral as $field) {
             if ($request->has($field->name)) {
