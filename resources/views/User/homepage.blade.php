@@ -223,30 +223,19 @@
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @for ($i = 1; $i <= 6; $i++)
-            @php
-                $slideImage = null;
-                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
-                    if (file_exists(public_path("images/slide$i.$ext"))) {
-                        $slideImage = asset("images/slide$i.$ext");
-                        break;
-                    }
-                }
-                $slideImage = $slideImage ?? asset('images/default.png');
-            @endphp
-            
+        @foreach ($slides as $slide)
             <div class="mySlides">
-                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
+                <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
             </div>
-        @endfor
+        @endforeach
     </div>
 
-
-<!-- Dots -->
-<div style="text-align:center">
-    @for ($i = 1; $i <= 6; $i++) <span class="dot" onclick="currentSlide({{ $i }})"></span>
-        @endfor
-</div>
+    <!-- Dots -->
+    <div style="text-align:center">
+        @foreach ($slides as $index => $slide)
+            <span class="dot" onclick="currentSlide({{ $index + 1 }})"></span>
+        @endforeach
+    </div>
 </div>
 
 <!-- JavaScript for Image Slideshow -->
@@ -277,13 +266,13 @@
         slides[slideIndex - 1].style.display = "block";
         dots[slideIndex - 1].className += " active";
     }
+
     setInterval(function() {
         plusSlides(1);
     }, 3000); 
 </script>
 
-
-    <!-- Article Slideshow -->
+<!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
         @php
             $chunkedArticles = $articles->chunk(3); // Group articles in chunks of 3
