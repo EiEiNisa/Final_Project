@@ -492,6 +492,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentFieldId;
     let currentOptionIndex;
     let deleteFieldId = null;
+    let fieldToDeleteId = null; 
 
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
     showFormBtn.addEventListener("click", function() {
