@@ -221,11 +221,11 @@ Route::prefix('admin')->group(function() {
 });
 
 //CustomField
-Route::get('/admin/formrecordedit', [CustomFieldController::class, 'edit'])->name('customfields.edit');
-Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('customfields.store');
-Route::delete('/delete-custom-field/{id}', [CustomFieldController::class, 'delete'])->name('delete.custom.field');
-Route::post('/custom-fields/update/{id}', [CustomFieldController::class, 'update'])->name('custom-fields.update');
-Route::get('/formrecord_general_edit', [CustomFieldGeneralController::class, 'index'])->name('customfields.index');
+Route::get('/admin/formrecordedit', [CustomFieldController::class, 'edit'])->name('customfield.edit');
+Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('customfield.store');
+Route::delete('/admin/formrecordedit/{id}', [CustomFieldController::class, 'delete'])->name('customfield.delete');
+Route::delete('/admin/deleteOption/{fieldId}/{optionIndex}', [CustomFieldController::class, 'deleteOption'])->name('customfield.deleteOption');
+Route::put('/admin/formrecordedit/{id}', [CustomFieldController::class, 'update'])->name('customfield.update');
 
 //CustomFieldGeneral
 Route::get('/admin/formrecord_general_edit', [CustomFieldGeneralController::class, 'edit'])->name('customfieldgeneral.edit');
