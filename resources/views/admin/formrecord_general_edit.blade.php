@@ -284,6 +284,10 @@ select {
     margin-top: 10px;
 }
 
+#existing-fields{
+    margin-top:10px;
+}
+
 @media (max-width: 768px) {
     .card-container {
         padding: 20px;

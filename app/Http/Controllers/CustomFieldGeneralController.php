@@ -84,7 +84,7 @@ class CustomFieldGeneralController extends Controller
             // บันทึกการเปลี่ยนแปลง
             $field->save();
 
-            // ส่งข้อมูลกลับเป็น JSON
+            session()->flash('success', 'อัปเดตรายการสำเร็จ');
             return response()->json(['success' => true], 200);
         }
 
