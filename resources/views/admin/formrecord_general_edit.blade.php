@@ -428,6 +428,7 @@ select {
         </div>
     </div>
 
+    <!-- Modal ยืนยันการลบ -->
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -486,6 +487,7 @@ $(document).ready(function() {
     // เมื่อกดปุ่มลบรายการ
     $('.delete-field-btn').on('click', function() {
         var fieldId = $(this).data('id'); // รับค่า ID ของฟิลด์ที่ต้องการลบ
+        console.log('Field ID: ', fieldId); // ตรวจสอบค่า ID ที่ได้
         $('#confirmDeleteBtn').data('id', fieldId); // เก็บ ID ไว้ในปุ่มยืนยันการลบ
         $('#deleteConfirmationModal').modal('show'); // แสดง modal ยืนยันการลบ
     });
@@ -495,11 +497,16 @@ $(document).ready(function() {
         var fieldId = $(this).data('id'); // รับค่า ID ที่เก็บไว้ในปุ่ม
         console.log("Deleting field with ID: " + fieldId); // ตรวจสอบค่าของ ID
 
+        // ส่งคำขอลบไปที่เซิร์ฟเวอร์
         $.ajax({
             url: '/admin/formrecord_general_edit/' + fieldId,
             type: 'DELETE',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content') // ส่ง CSRF Token
+            },
             success: function(response) {
-                console.log(response); // ตรวจสอบข้อมูลที่ได้รับจาก server
+                console.log("Server response: ",
+                response); // ตรวจสอบข้อมูลที่ได้รับจาก server
                 if (response.success) {
                     $('#deleteConfirmationModal').modal('hide');
                     $('.custom-field-group[data-id="' + fieldId + '"]')
