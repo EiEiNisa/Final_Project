@@ -521,9 +521,9 @@ select {
                     <div class="modal-body">
                         คุณต้องการบันทึกการแก้ไขรายการนี้หรือไม่?
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer d-flex gap-2 justify-content-end">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" class="btn btn-primary" id="confirmSaveBtn">ยืนยัน</button>
+                        <button type="button" class="btn btn-success" id="confirmSaveBtn">ยืนยัน</button>
                     </div>
                 </div>
             </div>
@@ -735,6 +735,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // กดปุ่ม "บันทึกแก้ไขรายการ" → แสดง Modal
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
             let fieldGroup = this.closest(".custom-field-group");
@@ -755,8 +756,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
 
-            // แสดง Modal ยืนยัน
-            let confirmModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+            // ซ่อนข้อความ error (ถ้ามี)
+            document.getElementById("modal-error-message").classList.add("d-none");
+
+            // แสดง Modal
+            let confirmModal = new bootstrap.Modal(document.getElementById("confirmSaveModal"));
             confirmModal.show();
         });
     });
@@ -777,17 +781,19 @@ document.addEventListener("DOMContentLoaded", function() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    alert("อัปเดตฟิลด์สำเร็จ!");
-                    location.reload(); // รีเฟรชหน้าเพื่อให้ข้อมูลอัปเดต
+                    location.reload();
                 } else {
-                    alert("เกิดข้อผิดพลาด: " + data.message);
+                    // แสดงข้อผิดพลาดใน Modal
+                    let errorBox = document.getElementById("modal-error-message");
+                    errorBox.innerHTML = data.message;
+                    errorBox.classList.remove("d-none");
                 }
             })
-            .catch((error) => console.error("Error:", error));
-
-        // ปิด Modal หลังจากกด "ยืนยัน"
-        let confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmSaveModal'));
-        confirmModal.hide();
+            .catch((error) => {
+                let errorBox = document.getElementById("modal-error-message");
+                errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
+                errorBox.classList.remove("d-none");
+            });
     });
 });
 </script>
