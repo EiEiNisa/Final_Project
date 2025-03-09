@@ -83,10 +83,17 @@
         <h1 class="article-title">{{ $article->title }}</h1>
         <p class="article-meta">{{ $article->post_date }} | {{ $article->author }}</p>
         
-        <!-- แสดงรูปภาพหลายไฟล์ -->
-        @foreach (json_decode($article->image) as $image)
-            <img src="{{ asset($image) }}" class="article-image" alt="{{ $article->title }}">
-        @endforeach
+       @if($article->image && is_array(json_decode($article->image)))
+    @foreach (json_decode($article->image) as $image)
+        <img src="{{ asset('image/' . $image) }}" class="article-image" alt="{{ $article->title }}">
+    @endforeach
+@elseif($article->image)
+    <!-- ถ้ามีรูปภาพแค่ 1 รูป -->
+    <img src="{{ asset('image/' . $article->image) }}" class="article-image" alt="{{ $article->title }}">
+@else
+    <p>ไม่มีรูปภาพในบทความนี้</p>
+@endif
+
 
         <!-- วิดีโอจาก YouTube -->
         @if($article->video_link)
