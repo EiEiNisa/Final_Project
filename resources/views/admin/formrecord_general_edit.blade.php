@@ -726,6 +726,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
+            console.log("fieldId:", fieldId); // เพิ่ม console.log()
+            console.log("optionIndex:", optionIndex); 
+            
             document.getElementById("confirmDeleteBtn").onclick = function() {
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
