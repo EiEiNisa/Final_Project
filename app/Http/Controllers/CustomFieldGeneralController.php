@@ -65,7 +65,6 @@ class CustomFieldGeneralController extends Controller
     }
 }
 
-
     public function deleteOption($fieldId, $optionIndex)
 {
     // ค้นหาฟิลด์ที่ต้องการแก้ไข
