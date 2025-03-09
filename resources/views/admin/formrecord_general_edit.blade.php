@@ -772,6 +772,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         deleteModal.hide();
     });
+
 });
 </script>
 @endsection
