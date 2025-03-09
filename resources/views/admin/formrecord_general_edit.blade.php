@@ -603,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+    ocument.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             // Store the ID of the field to delete
             fieldToDeleteId = event.target.getAttribute("data-id");
@@ -629,6 +629,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (data.success) {
                         fieldGroup.remove();
 
+                        // ปิด Modal
                         try {
                             let deleteModal = document.getElementById("deleteModal");
                             if (deleteModal) {
@@ -643,6 +644,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             }
                         } catch (error) {
                             console.error("Error closing modal:", error);
+                            // อาจจะเพิ่มโค้ดเพื่อจัดการกับข้อผิดพลาด เช่น แสดงข้อความให้ผู้ใช้ทราบ
                         }
 
                         window.location.replace(
