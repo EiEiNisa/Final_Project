@@ -330,7 +330,8 @@ select {
 
     <div class="card-header">
         <h4><strong>แก้ไขฟอร์มข้อมูลทั่วไป</strong></h4>
-        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back">กลับ</a>
+        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back" style="background: rgba(255, 255, 255, 0.3); color: #000;
+        padding: 8px 16px; border-radius: 8px; text-decoration: none; transition: all 0.3s ease-in-out;">กลับ</a>
     </div>
 
     <div id="existing-fields">
@@ -622,8 +623,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         fieldGroup.remove();
 
                         // ปิด Modal
-                        let deleteModal = document.getElementById(
-                            "deleteModal"); // แทนที่ด้วย ID ของโมเดล
+                        let deleteModal = document.getElementById("deleteModal");
                         let modalInstance = bootstrap.Modal.getInstance(deleteModal);
                         modalInstance.hide();
 
