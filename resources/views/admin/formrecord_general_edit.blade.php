@@ -493,22 +493,23 @@ $(document).ready(function() {
     // เมื่อกดปุ่มยืนยันการลบ
     $('#confirmDeleteBtn').on('click', function() {
         var fieldId = $(this).data('id'); // รับค่า ID ที่เก็บไว้ในปุ่ม
-        // ส่งคำขอลบไปที่เซิร์ฟเวอร์
+        console.log("Deleting field with ID: " + fieldId); // ตรวจสอบค่าของ ID
+
         $.ajax({
             url: '/admin/formrecord_general_edit/' + fieldId,
             type: 'DELETE',
             success: function(response) {
+                console.log(response); // ตรวจสอบข้อมูลที่ได้รับจาก server
                 if (response.success) {
-                    // ถ้าลบสำเร็จให้ปิด Modal และลบรายการจากหน้าเว็บ
                     $('#deleteConfirmationModal').modal('hide');
                     $('.custom-field-group[data-id="' + fieldId + '"]')
                 .remove(); // ลบ div ที่ตรงกับ ID
                 } else {
-                    // ถ้ามีข้อผิดพลาดให้แสดงข้อความแจ้งเตือน
                     alert(response.message || 'เกิดข้อผิดพลาดในการลบข้อมูล');
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.log("Error: " + error); // ตรวจสอบข้อผิดพลาด
                 alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
             }
         });
