@@ -37,13 +37,13 @@
     </div>
     
     <!-- Age Chart Section -->
-    <div class="card p-3 bg-dark text-white">
-        <h5 class="text-center">สมาชิกในชุมชนแยกตามอายุทั้งหมด</h5>
-        <canvas id="ageChart" class="mt-3"></canvas>
-    </div>
-    
+<div class="card p-3 bg-white text-dark">
+    <h5 class="text-center">สมาชิกในชุมชนแยกตามอายุทั้งหมด</h5>
+    <canvas id="ageChart" class="mt-3"></canvas>
+</div>
+
     <!-- Disease Filter and Chart Section -->
-    <div class="card p-3 bg-dark text-white mt-3">
+    <div class="card p-3 bg-white text-dark">
         <h5 class="text-center">โรคประจำตัว</h5>
         <select id="disease-filter" class="form-select w-25 mx-auto my-3 rounded-pill">
             <option value="all">ทั้งหมด</option>
@@ -88,7 +88,7 @@
     beforeDraw: (chart) => {
         const ctx = chart.canvas.getContext("2d");
         ctx.save();
-        ctx.fillStyle = "#003366"; // เปลี่ยนพื้นหลังเป็นสีน้ำเงินเข้ม
+        ctx.fillStyle = "#FFFFFF"; 
         ctx.fillRect(0, 0, chart.width, chart.height);
         ctx.restore();
     }
@@ -101,7 +101,7 @@ const ageChart = new Chart(document.getElementById("ageChart"), {
         datasets: [{
             label: "จำนวนสมาชิก",
             data: data.age_data,
-            backgroundColor: "#ffffff"
+            backgroundColor: "#000000"
         }]
     },
     options: {
