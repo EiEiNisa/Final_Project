@@ -47,7 +47,7 @@ class RecorddataController
 
         // ดึงข้อมูลฟิลด์ที่ผู้ใช้เพิ่มเองจากฐานข้อมูล
         $customFields = CustomField::all(); 
-
+        $customFieldsGeneral = CustomFieldGeneral::all(); 
         // ดึงคอลัมน์ที่มีอยู่ในตาราง health_records
         $columns_health_records = Schema::getColumnListing('health_records');
         $exclude_columns_health_records = [
@@ -55,7 +55,8 @@ class RecorddataController
         ];
         $extra_fields_health_records = array_diff($columns_health_records, $exclude_columns_health_records);
 
-        return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata', 'customFields'));
+        return view('admin.addrecord', compact('extra_fields_recorddata', 'extra_fields_health_records', 'users', 'recorddata', 'customFields',
+        'customFieldsGeneral'));
     }
 
     public function store(Request $request)

@@ -693,7 +693,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     document.body.appendChild(successMessage);
 
-                    window.location.reload();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
                 } else {
                     let errorMessage = document.getElementById("modal-error-message");
                     errorMessage.classList.remove("d-none");

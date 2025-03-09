@@ -201,18 +201,20 @@ form {
     margin-bottom: 20px;
 }
 
-.checkbox-group, .radio-group {
+.checkbox-group,
+.radio-group {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     gap: 10px;
 }
 
 .form-check {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
-.checkbox-input, .radio-input {
+.checkbox-input,
+.radio-input {
     margin-right: 5px;
 }
 
@@ -662,11 +664,11 @@ form {
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
                 @if($field->field_type == 'text')
-                <input type="text" class="form-control"  name="{{ $field->name }}">
+                <input type="text" class="form-control" name="{{ $field->name }}">
 
                 @elseif($field->field_type == 'select')
                 @php $options = json_decode($field->options, true) ?? []; @endphp
-                <select  class="form-control" name="{{ $field->name }}">
+                <select class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
                     <option value="{{ $option }}">{{ $option }}</option>
                     @endforeach
@@ -677,7 +679,8 @@ form {
                 <div class="checkbox-group">
                     @foreach($options as $option)
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}">
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                            value="{{ $option }}">
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
@@ -1131,6 +1134,40 @@ form {
                     </div>
                 </div>
             </div>
+
+            @foreach($customFieldsGeneral as $field)
+            <div class="mb-3">
+                <label for="{{ $field->name }}" class="form-label">{{ $field->label }}</label>
+
+                @if($field->field_type == 'text')
+                <input type="text" name="{{ $field->name }}" id="{{ $field->name }}" class="form-control">
+
+                @elseif($field->field_type == 'select')
+                <select name="{{ $field->name }}" id="{{ $field->name }}" class="form-select">
+                    @foreach(json_decode($field->options, true) as $option)
+                    <option value="{{ $option }}">{{ $option }}</option>
+                    @endforeach
+                </select>
+
+                @elseif($field->field_type == 'checkbox')
+                @foreach(json_decode($field->options, true) as $option)
+                <div class="form-check">
+                    <input type="checkbox" name="{{ $field->name }}[]" value="{{ $option }}" class="form-check-input">
+                    <label class="form-check-label">{{ $option }}</label>
+                </div>
+                @endforeach
+
+                @elseif($field->field_type == 'radio')
+                @foreach(json_decode($field->options, true) as $option)
+                <div class="form-check">
+                    <input type="radio" name="{{ $field->name }}" value="{{ $option }}" class="form-check-input">
+                    <label class="form-check-label">{{ $option }}</label>
+                </div>
+                @endforeach
+
+                @endif
+            </div>
+            @endforeach
 
             <div class="w-100 text-end fw-bold" style="color: #020364;">
                 <div class="d-flex flex-column align-items-end">
