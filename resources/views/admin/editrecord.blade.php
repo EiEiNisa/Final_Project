@@ -546,8 +546,13 @@ form {
                     @if(in_array($customField->id, json_decode($customFieldValuesMap[$customField->id] ?? '[]')))
                 checked @endif>
                 @elseif($customField->field_type == 'select')
+                @php
+                // ตรวจสอบว่า $customField->options เป็นอาเรย์หรือไม่ ถ้าไม่ใช่ให้แปลงเป็นอาเรย์
+                $options = is_array($customField->options) ? $customField->options : explode(',',
+                $customField->options);
+                @endphp
                 <select name="{{ $customField->name }}" class="form-control">
-                    @foreach($customField->options as $option)
+                    @foreach($options as $option)
                     <option value="{{ $option }}" @if($customFieldValuesMap[$customField->id] == $option) selected
                         @endif>
                         {{ $option }}
