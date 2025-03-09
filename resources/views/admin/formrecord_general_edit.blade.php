@@ -527,6 +527,24 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // Event Listener สำหรับการเพิ่มตัวเลือกใน existing-fields
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("add-option-btn")) {
+            let optionContainer = event.target.closest('.form-group').querySelector(
+            '.option-container');
+            let fieldId = event.target.closest('.custom-field-group').getAttribute('data-id');
+
+            let newOption = document.createElement("input");
+            newOption.type = "text";
+            newOption.className = "form-control option-input rounded-pill mt-2";
+            newOption.name = `options[${fieldId}][]`;
+            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+
+            optionContainer.appendChild(newOption);
+        }
+    });
+
+    // Event Listener สำหรับการลบใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");
@@ -634,8 +652,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     let successMessage = document.getElementById("success");
                     successMessage.classList.remove("d-none");
 
-                    window.location.replace("{{ route('customfieldgeneral.edit') }}");
-
+                    // หน่วงเวลาการรีเฟรชหน้า 1 วินาที เพื่อให้เห็นข้อความ success
+                    setTimeout(function() {
+                        window.location.replace("{{ route('customfieldgeneral.edit') }}");
+                    }, 1000); // 1000 มิลลิวินาที = 1 วินาที
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
                     errorBox.innerHTML = data.message;
