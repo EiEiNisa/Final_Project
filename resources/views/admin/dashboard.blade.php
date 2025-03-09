@@ -90,28 +90,25 @@
                     datasets: [{
                         label: "จำนวนสมาชิก",
                         data: data.age_data,
-                        backgroundColor: "#ffffff"
+                        backgroundColor: "#ffffff"  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
+                    legend: {
+                        position: "bottom"
+                    },
                     scales: {
                         x: {
-                            grid: {
-                                color: "rgba(255, 255, 255, 0.2)"
-                            },
                             ticks: {
-                                color: "#ffffff"
+                                font: {
+                                    size: 12
+                                }
                             }
                         },
                         y: {
-                            grid: {
-                                color: "rgba(255, 255, 255, 0.2)"
-                            },
-                            ticks: {
-                                color: "#ffffff"
-                            }
+                            beginAtZero: true
                         }
                     }
                 }
@@ -121,16 +118,116 @@
             ageChart.data.datasets[0].data = data.age_data;
             ageChart.update();
         }
+
+        // Update disease chart
+        updateDiseaseChart("all", data);
     }
+
+    function updateDiseaseChart(filter, data) {
+        let dataset = [];
+
+        if (filter === "all") {
+            dataset = [
+                {
+                    label: 'เบาหวาน',
+                    data: data.diseases['diabetes'],  
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                },
+                {
+                    label: 'หลอดเลือดในสมอง',
+                    data: data.diseases['cerebral_artery'],
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                },
+                {
+                    label: 'ไต',
+                    data: data.diseases['kidney'],
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                },
+                {
+                    label: 'ความดันโลหิตสูง',
+                    data: data.diseases['blood_pressure'],
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                },
+                {
+                    label: 'หัวใจ',
+                    data: data.diseases['heart'],
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                },
+                {
+                    label: 'ตา',
+                    data: data.diseases['eye'],
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                },
+                {
+                    label: 'อื่นๆ',
+                    data: data.diseases['other'],
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                }
+            ];
+        } else {
+            if (data.diseases[filter]) {
+                dataset = [
+                    {
+                        label: data.disease_labels[filter],
+                        data: data.diseases[filter],
+                        backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    }
+                ];
+            }
+        }
+
+        // Create or update disease chart
+        if (!diseaseChart) {
+            diseaseChart = new Chart(document.getElementById("diseaseChart"), {
+                type: "bar",
+                data: {
+                    labels: data.months,
+                    datasets: dataset
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        position: "bottom"
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } else {
+            diseaseChart.data.labels = data.months;
+            diseaseChart.data.datasets = dataset;
+            diseaseChart.update();
+        }
+    }
+
+    document.getElementById("disease-filter").addEventListener("change", function() {
+        let selectedFilter = this.value;
+        if (dashboardData) {
+            updateDiseaseChart(selectedFilter, dashboardData);
+        }
+    });
 
     fetchDashboardData();
 </script>
 
 <style>
+    /* Card Margin */
     .card {
         margin-bottom: 1.5rem;
     }
 
+    /* Adjust the font size for smaller screens */
     .member-count {
         font-size: 1.5rem;
     }
@@ -148,6 +245,18 @@
             width: 80%;
         }
     }
+    plugins: [{
+    id: "custom_canvas_background_color",
+    beforeDraw: (chart) => {
+        const ctx = chart.canvas.getContext("2d");
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillStyle = "#FFFFFF"; 
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+    }
+}]
+
 </style>
 
 @endsection
