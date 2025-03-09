@@ -616,8 +616,8 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(data => {
                 if (data.success) {
                     fieldGroup.remove();
-                    showSuccessMessage("ลบรายการสำเร็จ!");
-                    window.location.reload();
+                    window.location.replace(
+                        "{{ route('customfieldgeneral.edit') }}");
                 } else {
                     showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                 }
