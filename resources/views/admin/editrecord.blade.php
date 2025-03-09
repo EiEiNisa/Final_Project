@@ -535,18 +535,104 @@ form {
                     value="{{ old('idline', $recorddata->idline) }}">
             </div>
 
-            @if ($extra_fields_recorddata)
-            <div class="extra-fields">
-                @foreach ($extra_fields_recorddata as $key => $value)
-                <div class="form-group">
-                    <label for="{{ $key }}">{{ htmlspecialchars($value['label'] ?? $key) }}</label>
-                    <input type="text" name="extra_fields[{{ $value['label'] }}]" id="{{ $key }}"
-                        value="{{ old('extra_fields.' . $value['label'], $value['value'] ?? '') }}"
-                        class="form-control">
+            @foreach($customFields as $field)
+            <div class="form-group1">
+                <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
+
+                @if($field->field_type == 'text')
+                <input type="text" class="form-control" name="{{ $field->name }}"
+                    value="{{ old($field->name, $customFieldValuesMap[$field->id] ?? '') }}">
+
+                @elseif($field->field_type == 'select')
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                <select class="form-control" name="{{ $field->name }}">
+                    @foreach($options as $option)
+                    <option value="{{ $option }}"
+                        {{ old($field->name, $customFieldValuesMap[$field->id] ?? '') == $option ? 'selected' : '' }}>
+                        {{ $option }}
+                    </option>
+                    @endforeach
+                </select>
+
+                @elseif($field->field_type == 'checkbox')
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                <div class="checkbox-group">
+                    @foreach($options as $option)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                            value="{{ $option }}"
+                            {{ in_array($option, old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
+
+                @elseif($field->field_type == 'radio')
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                <div class="radio-group">
+                    @foreach($options as $option)
+                    <div class="form-check">
+                        <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
+                            {{ old($field->name, $customFieldValuesMap[$field->id] ?? '') == $option ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
             </div>
-            @endif
+            @endforeach
+
+            <!-- ข้อมูลจาก customFieldsGeneral -->
+            <div class="form-group3">
+                <h4><strong>ข้อมูลเพิ่มเติมทั่วไป (Custom Fields General)</strong></h4>
+            </div>
+
+            @foreach($customFieldsGeneral as $field)
+            <div class="form-group1">
+                <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
+
+                @if($field->field_type == 'text')
+                <input type="text" class="form-control" name="{{ $field->name }}"
+                    value="{{ old($field->name, $customFieldGeneralValuesMap[$field->id] ?? '') }}">
+
+                @elseif($field->field_type == 'select')
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                <select class="form-control" name="{{ $field->name }}">
+                    @foreach($options as $option)
+                    <option value="{{ $option }}"
+                        {{ old($field->name, $customFieldGeneralValuesMap[$field->id] ?? '') == $option ? 'selected' : '' }}>
+                        {{ $option }}
+                    </option>
+                    @endforeach
+                </select>
+
+                @elseif($field->field_type == 'checkbox')
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                <div class="checkbox-group">
+                    @foreach($options as $option)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                            value="{{ $option }}"
+                            {{ in_array($option, old($field->name, $customFieldGeneralValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
+                </div>
+
+                @elseif($field->field_type == 'radio')
+                @php $options = json_decode($field->options, true) ?? []; @endphp
+                <div class="radio-group">
+                    @foreach($options as $option)
+                    <div class="form-check">
+                        <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
+                            {{ old($field->name, $customFieldGeneralValuesMap[$field->id] ?? '') == $option ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+            @endforeach
 
             <button type="submit" class="custom-btn-small" id="saveBtn">
                 <i class="fas fa-save"></i> บันทึกข้อมูล
