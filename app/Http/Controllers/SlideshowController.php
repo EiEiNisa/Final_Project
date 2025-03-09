@@ -69,6 +69,22 @@ public function destroy($id)
 
     return redirect()->route('addslide');
 }
+    
+public function showSlides()
+{
+    // ดึงข้อมูลสไลด์จากฐานข้อมูลตามลำดับ 'order'
+    $slides = Slideshow::orderBy('order')->get();
 
+    // ส่งข้อมูลสไลด์ไปยัง Blade view ของ User.homepage
+    return view('User.homepage', compact('slides'));
+}
 
+public function showHomePage()
+{
+    // ดึงข้อมูลสไลด์จากฐานข้อมูลตามลำดับ 'order'
+    $slides = Slideshow::orderBy('order')->get();
+
+    // ส่งข้อมูลสไลด์ไปยัง Blade view ของ home
+    return view('home', compact('slides'));
+}
 }
