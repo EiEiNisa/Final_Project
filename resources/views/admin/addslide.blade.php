@@ -62,33 +62,51 @@
             </div>
         @endforeach
     </div>
-
-    <!-- ปุ่มเพิ่มสไลด์ -->
-<button class="btn btn-success" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
 </div>
 
 <!-- ฟอร์มเพิ่มสไลด์ -->
-<body>
+<button class="btn btn-success" id="add-slide-btn">+ เพิ่มสไลด์ใหม่</button>
+<div id="slide-container"></div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("add-slide-btn").addEventListener("click", function () {
-            let slideContainer = document.getElementById("slide-container");
-            let newSlide = document.createElement("div");
-            newSlide.classList.add("slide-item");
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("add-slide-btn").addEventListener("click", function () {
+        let slideContainer = document.getElementById("slide-container");
+        let newSlide = document.createElement("div");
+        newSlide.classList.add("slide-item");
 
-            newSlide.innerHTML = `
-            <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
-                    <button type="submit" class="btn btn-primary">อัปโหลด</button>
-                </form>
-            `;
+        // สร้างฟอร์มใหม่แบบไม่ใช้ innerHTML
+        let form = document.createElement("form");
+        form.action = "{{ route('slideshow.store') }}";
+        form.method = "POST";
+        form.enctype = "multipart/form-data";
 
-            slideContainer.appendChild(newSlide); // ต้องเอาออกมานอก innerHTML
-        });
+        // สร้าง input type file
+        let inputFile = document.createElement("input");
+        inputFile.type = "file";
+        inputFile.name = "slide";
+        inputFile.classList.add("form-control", "mb-2");
+        inputFile.accept = "image/*";
+        inputFile.required = true;
+
+        // สร้างปุ่ม Submit
+        let submitButton = document.createElement("button");
+        submitButton.type = "submit";
+        submitButton.classList.add("btn", "btn-primary");
+        submitButton.innerText = "อัปโหลด";
+
+        // เพิ่ม input และปุ่มลงในฟอร์ม
+        form.appendChild(inputFile);
+        form.appendChild(submitButton);
+
+        // เพิ่มฟอร์มเข้าไปใน newSlide
+        newSlide.appendChild(form);
+
+        // เพิ่ม newSlide ลงใน slideContainer
+        slideContainer.appendChild(newSlide);
     });
+});
 </script>
-</body>
-</html>
+
 
 @endsection
