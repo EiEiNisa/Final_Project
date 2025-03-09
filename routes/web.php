@@ -225,7 +225,8 @@ Route::get('/admin/formrecordedit', [CustomFieldController::class, 'edit'])->nam
 Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('customfield.store');
 Route::delete('/delete-custom-field/{id}', [CustomFieldController::class, 'delete'])->name('delete.custom.field');
 Route::post('/custom-fields/update/{id}', [CustomFieldController::class, 'update'])->name('custom-fields.update');
-Route::delete('/custom-fields/options/{id}', [CustomFieldController::class, 'deleteOption'])->name('custom-fields.deleteOption');
+Route::delete('/custom-fields/options/{fieldId}/{optionIndex}', 
+    [CustomFieldController::class, 'deleteOption'])->name('custom-fields.deleteOption');
 
 //CustomFieldGeneral
 Route::get('/admin/formrecord_general_edit', [CustomFieldGeneralController::class, 'edit'])->name('customfieldgeneral.edit');

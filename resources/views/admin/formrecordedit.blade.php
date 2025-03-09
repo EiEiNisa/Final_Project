@@ -368,7 +368,8 @@ select {
                             <div class="option-item" data-index="{{ $index }}">
                                 <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
                                     value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
-                                <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
+                                <button type="button" class="btn btn-danger delete-option-btn"
+                                    data-field-id="{{ $field->id }}" data-index="{{ $index }}">ลบ</button>
                             </div>
                             @endforeach
                         </div>
@@ -787,11 +788,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ค้นหาปุ่มลบทั้งหมดและเพิ่ม Event Listener
     document.querySelectorAll(".delete-option-btn").forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
             const fieldId = this.getAttribute("data-field-id");
             const optionIndex = this.getAttribute("data-index");
 
-            optionToDelete = { fieldId, optionIndex };
+            optionToDelete = {
+                fieldId,
+                optionIndex
+            };
 
             // แสดง Modal
             const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
@@ -800,28 +804,29 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // กดปุ่ม "ยืนยันลบ" ใน Modal
-    document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+    document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
         if (!optionToDelete) return;
 
         fetch(`/custom-fields/options/${optionToDelete.fieldId}/${optionToDelete.optionIndex}`, {
-            method: "DELETE",
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                "Content-Type": "application/json"
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            location.reload(); // โหลดหน้าใหม่หลังจากลบสำเร็จ
-        })
-        .catch(error => {
-            alert("เกิดข้อผิดพลาด: " + error);
-        });
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        "content"),
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload(); // โหลดหน้าใหม่หลังจากลบสำเร็จ
+            })
+            .catch(error => {
+                alert("เกิดข้อผิดพลาด: " + error);
+            });
 
         optionToDelete = null;
     });
-    
+
 });
 </script>
 @endsection
