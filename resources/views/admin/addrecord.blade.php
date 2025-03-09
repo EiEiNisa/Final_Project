@@ -1136,7 +1136,7 @@ form {
             </div>
 
             @foreach($customFieldsGeneral as $field)
-            <div class="row mb-3">
+            <div class="col-12">
                 <div class="col-12">
                     <label for="{{ $field->name }}" class="form-label fw-bold">{{ $field->label }}</label>
                 </div>
