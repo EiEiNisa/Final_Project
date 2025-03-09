@@ -712,7 +712,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     });
 
-
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             // หาตัวเลือกที่ถูกคลิก
@@ -770,7 +769,6 @@ document.addEventListener("DOMContentLoaded", function() {
         let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         deleteModal.hide();
     });
-
 });
 </script>
 @endsection

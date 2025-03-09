@@ -548,6 +548,23 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // Event Listener สำหรับการเพิ่มตัวเลือกใน existing-fields
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("add-option-btn")) {
+            let optionContainer = event.target.closest('.form-group').querySelector(
+                '.option-container');
+            let fieldId = event.target.closest('.custom-field-group').getAttribute('data-id');
+
+            let newOption = document.createElement("input");
+            newOption.type = "text";
+            newOption.className = "form-control option-input rounded-pill mt-2";
+            newOption.name = `options[${fieldId}][]`;
+            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+
+            optionContainer.appendChild(newOption);
+        }
+    });
+    
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");
