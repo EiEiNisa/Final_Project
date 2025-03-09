@@ -458,21 +458,46 @@ select {
             </div>
         </div>
     </div>
-    
-    <script src="path/to/jquery.js"></script>
-    <script src="path/to/bootstrap.bundle.js"></script>
 
-    <!-- สคริปต์ของคุณที่ใช้ในการจัดการ Modal -->
+    <!-- Modal ยืนยันการลบ -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    คุณต้องการลบรายการนี้หรือไม่?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <!-- ฟอร์มสำหรับลบข้อมูล -->
+                    <form id="deleteForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <!-- กำหนดให้ใช้ HTTP method DELETE -->
+                        <button type="submit" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
     $(document).ready(function() {
         // เมื่อคลิกปุ่มลบในตาราง
-        $('#deleteConfirmationModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // ปุ่มที่เรียก modal
+        $('#existing-fields').on('click', '.delete-field-btn', function(event) {
+            var button = $(this); // ปุ่มที่เรียก modal
             var fieldId = button.data('id'); // หาค่า id ของฟิลด์ที่ต้องการลบ
 
             // ตั้งค่าที่อยู่ของ URL ในฟอร์ม
             var formAction = '/admin/formrecord_general_edit/' + fieldId;
             $('#deleteForm').attr('action', formAction);
+
+            // แสดง Modal
+            $('#deleteConfirmationModal').modal('show');
         });
 
         // เมื่อคลิกปุ่มลบใน modal
