@@ -94,6 +94,7 @@
     }
 };
 
+// สำหรับ ageChart
 const ageChart = new Chart(document.getElementById("ageChart"), {
     type: "bar",
     data: {
@@ -101,7 +102,15 @@ const ageChart = new Chart(document.getElementById("ageChart"), {
         datasets: [{
             label: "จำนวนสมาชิก",
             data: data.age_data,
-            backgroundColor: "#000000"
+            backgroundColor: [
+                "#FF5733", // สีแดง
+                "#33FF57", // สีเขียว
+                "#3357FF", // สีน้ำเงิน
+                "#FF33A6", // สีชมพู
+                "#FFC300", // สีเหลือง
+                "#33FFF6", // สีฟ้า
+                "#8E44AD"  // สีม่วง
+            ]
         }]
     },
     options: {
@@ -111,104 +120,95 @@ const ageChart = new Chart(document.getElementById("ageChart"), {
     plugins: [customBackgroundPlugin] // ใช้ plugin ที่สร้างขึ้น
 });
 
+// สำหรับ diseaseChart
+function updateDiseaseChart(filter, data) {
+    let dataset = [];
 
-        } else {
-            ageChart.data.labels = data.age_labels;
-            ageChart.data.datasets[0].data = data.age_data;
-            ageChart.update();
-        }
-
-        // Update disease chart
-        updateDiseaseChart("all", data);
-    }
-
-    function updateDiseaseChart(filter, data) {
-        let dataset = [];
-
-        if (filter === "all") {
+    if (filter === "all") {
+        dataset = [
+            {
+                label: 'เบาหวาน',
+                data: data.diseases['diabetes'],
+                backgroundColor: '#FF6347'  // สีแดง
+            },
+            {
+                label: 'หลอดเลือดในสมอง',
+                data: data.diseases['cerebral_artery'],
+                backgroundColor: '#FFB6C1'  // สีชมพู
+            },
+            {
+                label: 'ไต',
+                data: data.diseases['kidney'],
+                backgroundColor: '#FFD700'  // สีทอง
+            },
+            {
+                label: 'ความดันโลหิตสูง',
+                data: data.diseases['blood_pressure'],
+                backgroundColor: '#32CD32'  // สีเขียว
+            },
+            {
+                label: 'หัวใจ',
+                data: data.diseases['heart'],
+                backgroundColor: '#4682B4'  // สีน้ำเงิน
+            },
+            {
+                label: 'ตา',
+                data: data.diseases['eye'],
+                backgroundColor: '#8A2BE2'  // สีม่วง
+            },
+            {
+                label: 'อื่นๆ',
+                data: data.diseases['other'],
+                backgroundColor: '#FF1493'  // สีชมพูเข้ม
+            }
+        ];
+    } else {
+        if (data.diseases[filter]) {
             dataset = [
                 {
-                    label: 'เบาหวาน',
-                    data: data.diseases['diabetes'],  
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                },
-                {
-                    label: 'หลอดเลือดในสมอง',
-                    data: data.diseases['cerebral_artery'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                },
-                {
-                    label: 'ไต',
-                    data: data.diseases['kidney'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                },
-                {
-                    label: 'ความดันโลหิตสูง',
-                    data: data.diseases['blood_pressure'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                },
-                {
-                    label: 'หัวใจ',
-                    data: data.diseases['heart'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                },
-                {
-                    label: 'ตา',
-                    data: data.diseases['eye'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                },
-                {
-                    label: 'อื่นๆ',
-                    data: data.diseases['other'],
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
+                    label: data.disease_labels[filter],
+                    data: data.diseases[filter],
+                    backgroundColor: '#DAA520'  // สีทอง
                 }
             ];
-        } else {
-            if (data.diseases[filter]) {
-                dataset = [
-                    {
-                        label: data.disease_labels[filter],
-                        data: data.diseases[filter],
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)'  // เปลี่ยนพื้นหลังของแท่งกราฟเป็นสีขาว
-                    }
-                ];
-            }
-        }
-
-        // Create or update disease chart
-        if (!diseaseChart) {
-            diseaseChart = new Chart(document.getElementById("diseaseChart"), {
-                type: "bar",
-                data: {
-                    labels: data.months,
-                    datasets: dataset
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    legend: {
-                        position: "bottom"
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } else {
-            diseaseChart.data.labels = data.months;
-            diseaseChart.data.datasets = dataset;
-            diseaseChart.update();
         }
     }
+
+    // อัพเดตกราฟ
+    if (!diseaseChart) {
+        diseaseChart = new Chart(document.getElementById("diseaseChart"), {
+            type: "bar",
+            data: {
+                labels: data.months,
+                datasets: dataset
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                legend: {
+                    position: "bottom"
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    } else {
+        diseaseChart.data.labels = data.months;
+        diseaseChart.data.datasets = dataset;
+        diseaseChart.update();
+    }
+}
+
 
     document.getElementById("disease-filter").addEventListener("change", function() {
         let selectedFilter = this.value;
