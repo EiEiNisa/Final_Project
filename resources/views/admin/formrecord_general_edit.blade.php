@@ -682,6 +682,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById("confirmSaveBtn").addEventListener("click", function() {
         let selectedFieldIdElement = document.getElementById("selectedFieldId");
+        console.log(selectedFieldIdElement);
 
         // ตรวจสอบว่าองค์ประกอบที่มี ID 'selectedFieldId' มีอยู่หรือไม่
         if (!selectedFieldIdElement) {
