@@ -566,7 +566,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Event Listener สำหรับการเพิ่มตัวเลือกใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
@@ -583,7 +582,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Event Listener สำหรับการลบใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldGroup = event.target.closest(".custom-field-group");
@@ -601,19 +599,43 @@ document.addEventListener("DOMContentLoaded", function() {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            fieldGroup.remove(); // ลบออกจาก DOM
-                            alert("ลบรายการสำเร็จ!");
+                            fieldGroup.remove();
+                            showSuccessMessage("ลบรายการสำเร็จ!");
                         } else {
-                            alert("เกิดข้อผิดพลาดในการลบรายการ!");
+                            showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                         }
                     })
                     .catch(error => {
                         console.error("เกิดข้อผิดพลาด: ", error);
-                        alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                        showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
                     });
             }
         }
     });
+
+    function showSuccessMessage(message) {
+        // ตัวอย่างการแสดงข้อความ success (สามารถใช้ไลบรารีหรือ CSS ที่กำหนดเอง)
+        const successMessageElement = document.createElement('div');
+        successMessageElement.classList.add('success-message');
+        successMessageElement.textContent = message;
+        document.body.appendChild(successMessageElement);
+
+        setTimeout(() => {
+            successMessageElement.remove();
+        }, 1000);
+    }
+
+    function showErrorMessage(message) {
+        // ตัวอย่างการแสดงข้อความ error (สามารถใช้ไลบรารีหรือ CSS ที่กำหนดเอง)
+        const errorMessageElement = document.createElement('div');
+        errorMessageElement.classList.add('error-message');
+        errorMessageElement.textContent = message;
+        document.body.appendChild(errorMessageElement);
+
+        setTimeout(() => {
+            errorMessageElement.remove();
+        }, 1000);
+    }
 
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
         if (!deleteFieldId) return; // ถ้าไม่มี ID ไม่ต้องทำอะไร
