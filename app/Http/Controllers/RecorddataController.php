@@ -373,14 +373,14 @@ class RecorddataController
     // Map the values from customFieldValues to a key-value format
     $customFieldValuesMap = $customFieldValues->mapWithKeys(function ($fieldData) {
         return [$fieldData->custom_field_id => $fieldData->value];
-    });
-    
+    })->toArray();
+
     $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();
     $customFieldGeneralValues = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)->get();
 
-    $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
+     $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
         return [$fieldData->custom_field_general_id => $fieldData->value];
-    });
+    })->toArray();
 
     return view('admin.editrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases', 
