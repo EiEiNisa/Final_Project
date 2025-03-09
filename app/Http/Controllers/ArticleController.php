@@ -57,10 +57,9 @@ public function show($id)
     $imagePaths = [];
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $image) {
-            $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('image');
-            $image->move($destinationPath, $fileName);
-            $imagePaths[] = 'image/' . $fileName;  // เก็บพาธของรูปภาพ
+            // ใช้ store เพื่อเก็บไฟล์ในโฟลเดอร์ public/images
+            $filePath = $image->store('images', 'public');  // เก็บใน public/images
+            $imagePaths[] = $filePath;  // เก็บพาธของไฟล์
         }
     }
 
@@ -87,8 +86,6 @@ public function show($id)
 
     return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
 }
-
-
     public function search(Request $request)
     {
         // รับค่า query จากผู้ใช้
