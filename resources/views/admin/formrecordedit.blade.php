@@ -333,6 +333,13 @@ select {
     transition: all 0.2s ease;
 }
 
+.button-group {
+    display: flex;
+    justify-content: flex-start; 
+    gap: 10px; 
+    margin-top: 10px;
+}
+
 @media (max-width: 768px) {
     .card-container {
         padding: 20px;
@@ -491,10 +498,12 @@ select {
 
                 <br>
                 <div>
-                    <button type="button" class="btn btn-secondary"
-                        data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
-                    <button type="button" class="btn btn-danger delete-field-btn"
-                        data-id="{{ $field->id }}">ลบรายการ</button>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-success"
+                            data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
+                        <button type="button" class="btn btn-danger delete-field-btn"
+                            data-id="{{ $field->id }}">ลบรายการ</button>
+                    </div>
                 </div>
             </div>
             @endforeach
