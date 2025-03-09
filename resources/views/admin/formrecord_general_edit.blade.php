@@ -379,7 +379,7 @@ select {
                 <button type="button" class="btn btn-success update-field-btn"
                     data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
                 <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
-                    data-toggle="modal" data-target="#deleteModal">ลบรายการ</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">ลบรายการ</button>
             </div>
         </div>
         @endforeach
@@ -594,41 +594,59 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        if (!deleteFieldId) return; // ถ้าไม่มี ID ไม่ต้องทำอะไร
-
-        try {
-            const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                        .getAttribute('content')
-                }
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-                // ซ่อน Modal
-                let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
-                    'deleteConfirmationModal'));
-                deleteConfirmationModal.hide();
-
-                // ลบ Element ออกจากหน้า
-                document.querySelector(`[data-id="${deleteFieldId}"]`).closest('.field-item')
-                    .remove();
-
-                alert("ลบฟิลด์สำเร็จ!");
-            } else {
-                throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert("เกิดข้อผิดพลาด: " + (error.message ||
-                "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่"));
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            // Store the ID of the field to delete
+            fieldToDeleteId = event.target.getAttribute("data-id");
         }
     });
+
+    document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
+        if (fieldToDeleteId) {
+            let fieldGroup = document.querySelector(
+                `.custom-field-group[data-id="${fieldToDeleteId}"]`);
+
+            fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fieldGroup.remove();
+                        showSuccessMessage("ลบรายการสำเร็จ!");
+                    } else {
+                        showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
+                    }
+                })
+                .catch(error => {
+                    console.error("เกิดข้อผิดพลาด: ", error);
+                    showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                });
+        }
+    });
+
+    // Function to show success message
+    function showSuccessMessage(message) {
+        const successMessageElement = document.createElement('div');
+        successMessageElement.classList.add('alert', 'alert-success');
+        successMessageElement.textContent = message;
+        document.body.appendChild(successMessageElement);
+        setTimeout(() => successMessageElement.remove(), 3000);
+    }
+
+    // Function to show error message
+    function showErrorMessage(message) {
+        const errorMessageElement = document.createElement('div');
+        errorMessageElement.classList.add('alert', 'alert-danger');
+        errorMessageElement.textContent = message;
+        document.body.appendChild(errorMessageElement);
+        setTimeout(() => errorMessageElement.remove(), 3000);
+    }
 
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
