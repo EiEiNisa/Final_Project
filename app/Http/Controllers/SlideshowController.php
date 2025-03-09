@@ -7,20 +7,10 @@ use Illuminate\Support\Facades\File;
 
 class SlideshowController extends Controller
 {
-    public function index($page = 'home')
+    public function index()
     {
         $slides = Slideshow::orderBy('order')->get(); 
-
-        if ($page === 'home') {
-            return view('home', compact('slides'));
-        }
-
-        // ตรวจสอบว่าเป็นหน้า 'user/homepage'
-        if ($page === 'User/homepage') {
-            return view('User.homepage', compact('slides'));
-        }
-
-    // ถ้าไม่ใช่หน้า 'admin/homepage' หรือ 'user/homepage' จะโหลดหน้า home
+        
     return view('admin.addslide', compact('slides'));
     }
    
