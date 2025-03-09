@@ -412,15 +412,13 @@ select {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">ยืนยันการลบ</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     คุณต้องการลบตัวเลือกนี้ใช่หรือไม่?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
                     <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
                 </div>
             </div>
@@ -494,20 +492,21 @@ document.addEventListener("DOMContentLoaded", function() {
     let deleteFieldId = null;
     let fieldToDeleteId = null;
 
-    // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
+    // แสดง/ซ่อนฟอร์มเพิ่มฟิลด์ใหม่
     showFormBtn.addEventListener("click", function() {
         customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
     });
 
+    // เพิ่มฟิลด์ใหม่
     addFieldBtn.addEventListener("click", function() {
         let fieldIndex = fieldContainer.children.length;
         let fieldHTML = `
-            <div class="form-group custom-field-group">
+            <div class="form-group custom-field-group" data-id="${fieldIndex}">
                 <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
-                <input type="text" class="form-control field-label" name="label[]" required>
+                <input type="text" class="form-control" name="label[]" required>
 
                 <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
-                <input type="text" class="form-control field-name" name="name[]" required>
+                <input type="text" class="form-control" name="name[]" required>
 
                 <label class="input-label">รูปแบบข้อมูล</label>
                 <select class="form-control field-type" name="field_type[]" required>
@@ -520,7 +519,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="form-group options-group" style="display: none;">
                     <label class="input-label">ตัวเลือก</label>
                     <div class="option-container">
-                        <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
+                        <input type="text" class="form-control" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
                     </div>
                     <div class="button-group">
                         <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
@@ -533,40 +532,48 @@ document.addEventListener("DOMContentLoaded", function() {
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
     });
 
-    fieldContainer.addEventListener("click", function(event) {
-        if (event.target && event.target.classList.contains("add-option-btn")) {
-            let optionContainer = event.target.closest('.form-group').querySelector(
-                '.option-container');
-            let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
-                '.custom-field-group'));
+    // ใช้ event delegation ครอบคลุมทั้ง existingFields และ fieldContainer
+    document.addEventListener("click", function(event) {
+        // ตรวจสอบว่ากดปุ่ม "เพิ่มตัวเลือก" หรือไม่
+        if (event.target.classList.contains("add-option-btn")) {
+            let fieldGroup = event.target.closest(".custom-field-group");
+            let optionContainer = fieldGroup.querySelector(".option-container");
+            let fieldId = fieldGroup.getAttribute("data-id");
 
-            let newOption = document.createElement("input");
-            newOption.type = "text";
-            newOption.className = "form-control option-input rounded-pill mt-2";
-            newOption.name = `options[${fieldIndex}][]`;
-            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+            let newOption = document.createElement("div");
+            newOption.classList.add("option-item");
+            newOption.innerHTML = `
+                <input type="text" class="form-control option-input mt-2" name="options[${fieldId}][]" placeholder="เพิ่มค่าตัวเลือก">
+                <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
+            `;
 
             optionContainer.appendChild(newOption);
         }
 
-        if (event.target && event.target.classList.contains("delete-field-btn")) {
-            event.target.closest('.custom-field-group').remove();
+        // ตรวจสอบว่ากดปุ่ม "ลบตัวเลือก" หรือไม่
+        if (event.target.classList.contains("delete-option-btn")) {
+            event.target.closest(".option-item").remove();
+        }
+
+        // ตรวจสอบว่ากดปุ่ม "ลบฟิลด์" หรือไม่
+        if (event.target.classList.contains("delete-field-btn")) {
+            event.target.closest(".custom-field-group").remove();
         }
     });
 
-    fieldContainer.addEventListener("change", function(event) {
-        if (event.target && event.target.name === "field_type[]") {
-            let optionsGroup = event.target.closest('.custom-field-group').querySelector(
-                '.options-group');
-            if (event.target.value === "select" || event.target.value === "radio" || event.target
-                .value === "checkbox") {
+    // ตรวจจับการเปลี่ยนค่า field type และแสดงตัวเลือกถ้าจำเป็น
+    document.addEventListener("change", function(event) {
+        if (event.target.classList.contains("field-type")) {
+            let optionsGroup = event.target.closest(".custom-field-group").querySelector(
+                ".options-group");
+            if (["select", "radio", "checkbox"].includes(event.target.value)) {
                 optionsGroup.style.display = "block";
             } else {
                 optionsGroup.style.display = "none";
             }
         }
     });
-
+    
     // Event Listener สำหรับการเพิ่มตัวเลือกใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
@@ -727,8 +734,8 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             console.log("fieldId:", fieldId); // เพิ่ม console.log()
-            console.log("optionIndex:", optionIndex); 
-            
+            console.log("optionIndex:", optionIndex);
+
             document.getElementById("confirmDeleteBtn").onclick = function() {
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
@@ -743,8 +750,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
                             document.querySelector(
-                                `.option-item[data-index="${optionIndex}"]`)
-                            .remove();
+                                    `.option-item[data-index="${optionIndex}"]`)
+                                .remove();
                             let deleteModal = new bootstrap.Modal(document
                                 .getElementById('deleteModal'));
                             deleteModal.hide();
