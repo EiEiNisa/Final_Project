@@ -70,5 +70,20 @@ public function destroy($id)
 
     return redirect()->route('addslide');
 }
-    
+public function delete($id)
+{
+    // หาข้อมูลสไลด์จากฐานข้อมูล
+    $slide = Slide::findOrFail($id);
+
+    // ลบไฟล์รูปภาพจากโฟลเดอร์ public/images
+    $filePath = public_path('images/' . $slide->path);
+    if (File::exists($filePath)) {
+        File::delete($filePath); // ลบไฟล์
+    }
+
+    // ลบข้อมูลสไลด์จากฐานข้อมูล
+    $slide->delete();
+
+    return redirect()->route('addslide')->with('success', 'ลบสไลด์สำเร็จ');
+}    
 }
