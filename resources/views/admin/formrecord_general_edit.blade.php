@@ -617,14 +617,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(data => {
                 if (data.success) {
                     fieldGroup.remove();
-
-                    let deleteModal = document.getElementById("deleteModal");
-                    let modalInstance = bootstrap.Modal.getInstance(deleteModal);
-                    modalInstance.hide();
-
-                    showSuccessMessage("ลบรายการสำเร็จ!"); // แสดงข้อความสำเร็จ
-
-                    // รีเฟรชหน้าเว็บแทนการ redirect
+                    showSuccessMessage("ลบรายการสำเร็จ!");
                     window.location.reload();
                 } else {
                     showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
@@ -633,10 +626,21 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => {
                 console.error("เกิดข้อผิดพลาด: ", error);
                 showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+            })
+            .finally(() => {
+                closeModal(); // ปิดโมเดลเสมอ
             });
         }
     });
 
+    function closeModal() {
+        let deleteModal = document.getElementById("deleteModal");
+        let modalInstance = bootstrap.Modal.getInstance(deleteModal);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    }
+    
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
             let fieldGroup = this.closest(".custom-field-group");
