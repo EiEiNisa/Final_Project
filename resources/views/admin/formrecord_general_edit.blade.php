@@ -600,8 +600,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
                     .then(response => response.json())
                     .then(data => {
+                        console.log(response); 
                         if (data.success) {
-                            fieldGroup.remove(); // ลบออกจาก DOM
+                            fieldGroup.remove(); 
                             alert("ลบรายการสำเร็จ!");
                         } else {
                             alert("เกิดข้อผิดพลาดในการลบรายการ!");
@@ -611,6 +612,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         console.error("เกิดข้อผิดพลาด: ", error);
                         alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
                     });
+
             }
         }
     });
