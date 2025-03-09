@@ -377,8 +377,7 @@ select {
             <div class="button-group">
                 <button type="button" class="btn btn-success update-field-btn"
                     data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
-                <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
-                    data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">ลบรายการ</button>
+                
             </div>
         </div>
         @endforeach
