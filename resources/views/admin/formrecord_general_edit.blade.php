@@ -717,67 +717,67 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // เพิ่ม event listener สำหรับปุ่มลบ
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
-            // หาตัวเลือกที่ถูกคลิก
             let optionItem = this.closest('.option-item');
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
             let optionIndex = optionItem.dataset.index;
 
             // ตั้งค่าการยืนยันการลบ
             document.getElementById("confirmDeleteBtn").onclick = function() {
-                // ส่งคำขอลบไปยังเซิร์ฟเวอร์
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
                             "X-CSRF-TOKEN": document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute(
-                                "content"),
+                                'meta[name="csrf-token"]').getAttribute("content"),
                         }
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        console.log("Response status:", response
+                        .status); // เพิ่มการตรวจสอบสถานะ
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log("Data:",
+                        data); // ตรวจสอบข้อมูลที่ได้รับจากเซิร์ฟเวอร์
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
 
                             // แสดงข้อความสำเร็จ
-                            let successMessage = document.getElementById(
-                                "success");
+                            let successMessage = document.getElementById("success");
                             successMessage.classList.remove("d-none");
 
                             // ลบตัวเลือกจากหน้าเว็บ
                             document.querySelector(
-                                `.option-item[data-index="${optionIndex}"]`
-                            ).remove();
+                                `.option-item[data-index="${optionIndex}"]`)
+                            .remove();
 
                             // ปิด Modal
                             $('#deleteConfirmationModal').modal('hide');
 
                             // รีเฟรชหน้า
                             window.location.replace(
-                                "{{ route('customfieldgeneral.edit') }}"
-                            );
+                                "{{ route('customfieldgeneral.edit') }}");
                         } else {
-                            console.error("เกิดข้อผิดพลาดในการลบตัวเลือก");
+                            console.error("เกิดข้อผิดพลาดในการลบตัวเลือก:", data
+                                .message);
                         }
                     })
-                    .catch(error => console.error(
-                        "เกิดข้อผิดพลาดในการลบตัวเลือก", error));
+                    .catch(error => {
+                        console.error("เกิดข้อผิดพลาดในการลบตัวเลือก", error);
+                    });
             };
 
             // แสดง Modal
-            new bootstrap.Modal(document.getElementById('deleteConfirmationModal'))
-                .show();
+            new bootstrap.Modal(document.getElementById('deleteConfirmationModal')).show();
         });
     });
 
     // เมื่อกดปุ่ม "ยกเลิก" จะปิด Modal
-    document.querySelector('#deleteConfirmationModal .btn-secondary').addEventListener('click',
-        function() {
-            new bootstrap.Modal(document.getElementById('deleteConfirmationModal')).hide();
-        });
+    document.querySelector('#deleteConfirmationModal .btn-secondary').addEventListener('click', function() {
+        new bootstrap.Modal(document.getElementById('deleteConfirmationModal')).hide();
+    });
 
 });
 </script>
