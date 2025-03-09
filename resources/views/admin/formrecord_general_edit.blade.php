@@ -595,13 +595,21 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            // Store the ID of the field to delete
+            fieldToDeleteId = event.target.getAttribute("data-id");
+        }
+    });
+
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
             let fieldGroup = document.querySelector(
-                `.custom-field-group[data-id="${fieldToDeleteId}"]`
-            );
+                .custom - field - group[data - id = "${fieldToDeleteId}"]);
 
-            fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
+            fetch(/admin/formrecord_general_edit / $ {
+                    fieldToDeleteId
+                }, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -613,24 +621,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(data => {
                     if (data.success) {
                         fieldGroup.remove();
-                        showSuccessMessage("ลบรายการสำเร็จ!");
-
-                        // ปิด Modal
-                        let deleteModal = document.getElementById(
-                        "deleteModal"); // ใช้ ID ของโมเดลจริง
-                        let modalInstance = bootstrap.Modal.getInstance(deleteModal);
-
-                        if (!modalInstance) {
-                            modalInstance = new bootstrap.Modal(deleteModal);
-                        }
-
-                        modalInstance.hide();
-
-                        // รีเฟรชหน้า
-                        setTimeout(() => {
-                            window.location.replace(
-                                "{{ route('customfieldgeneral.edit') }}");
-                        }, 1000);
+                        window.location.replace(
+                            "{{ route('customfieldgeneral.edit') }}");
                     } else {
                         showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                     }
