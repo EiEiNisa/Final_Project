@@ -396,7 +396,7 @@ form {
             <!--ข้อมูลประจำตัว-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลประจำตัว</h4>
-                <a href="{{ route('customfields.edit') }}" class="btn btn-primary">
+                <a href="{{ route('customfield.edit') }}" class="btn btn-primary">
                     <i class="fas fa-edit me-1"></i> แก้ไขฟอร์มข้อมูลประจำตัว
                 </a>
             </div>
