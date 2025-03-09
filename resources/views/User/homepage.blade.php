@@ -222,17 +222,18 @@
 <div class="container py-2"> 
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
+       @if(isset($slides) && count($slides) > 0)
+    <div class="slideshow-container">
         @foreach ($slides as $slide)
             <div class="mySlides">
                 <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
             </div>
         @endforeach
-
-        <!-- Next/Prev Buttons -->
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
-</div>
+@else
+    <p class="text-center">ไม่มีสไลด์โชว์</p>
+@endif
+
 
 <!-- Dots -->
 <div style="text-align:center">
