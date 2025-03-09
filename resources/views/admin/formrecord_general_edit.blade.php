@@ -589,22 +589,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelectorAll('.delete-field-btn').forEach(button => {
         button.addEventListener('click', function(event) {
-            let deleteFieldId = event.target.getAttribute('data-id');
-            console.log("Field ID ที่ต้องการลบ:", deleteFieldId);
+            window.deleteFieldId = event.target.getAttribute(
+            'data-id'); // กำหนดค่าใน global scope
+            console.log("Field ID ที่ต้องการลบ:", window.deleteFieldId);
 
-            // แสดง Modal
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
                 'deleteConfirmationModal'));
             deleteConfirmationModal.show();
         });
     });
 
-    // เมื่อคลิกที่ปุ่ม "ลบ" ใน Modal
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        console.log("Field ID ที่จะลบ:", deleteFieldId);
-        
-        let deleteFieldId = window.deleteFieldId;
-        if (!deleteFieldId) {
+        console.log("Field ID ที่จะลบ:", window.deleteFieldId); // ใช้ window.deleteFieldId
+
+        if (!window.deleteFieldId) {
             console.error("Field ID ไม่ได้ถูกกำหนด");
             return;
         }
@@ -614,7 +612,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 'content');
             console.log("CSRF Token:", csrfToken);
 
-            const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
+            const response = await fetch(
+            `/admin/formrecord_general_edit/${window.deleteFieldId}`, { // ใช้ window.deleteFieldId
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -631,14 +630,14 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             if (responseData.success) {
-                const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
+                const elementToRemove = document.querySelector(
+                    `[data-id="${window.deleteFieldId}"]`); // ใช้ window.deleteFieldId
                 console.log("Element to remove:", elementToRemove);
 
                 if (elementToRemove) {
                     elementToRemove.remove();
                 }
 
-                // ซ่อน Modal
                 let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
                     'deleteConfirmationModal'));
                 deleteConfirmationModal.hide();
@@ -652,7 +651,7 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
         }
     });
-
+    
     // การบันทึกการแก้ไขฟิลด์
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
