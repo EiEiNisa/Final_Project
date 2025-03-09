@@ -51,15 +51,13 @@ class CustomFieldGeneralController extends Controller
 
     public function delete($id)
     {
-        dd($id);
-        
         try {
             $customField = CustomFieldGeneral::findOrFail($id);
             $customField->delete();
 
-            session()->flash('success', 'ลบรายการสำเร็จ');
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
+            \Log::error($e->getMessage()); // บันทึก Error ใน Log
             return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
         }
     }

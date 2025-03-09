@@ -704,10 +704,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     });
 
-
-
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        if (!deleteFieldId) return; // ถ้าไม่มี ID ไม่ต้องทำอะไร
+        if (!deleteFieldId) {
+            console.error("Field ID not set.");
+            return; // ถ้าไม่มี ID ไม่ต้องทำอะไร
+        }
 
         try {
             const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
@@ -719,16 +720,28 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            const result = await response.json();
+            if (!response.ok) {
+                // ถ้า response ไม่ใช่ 200 OK ให้ throw error
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+            }
 
-            if (response.ok && result.success) {
+            const result = await response.json();
+            console.log("Server response:", result); // ตรวจสอบ response จาก server
+
+            if (result.success) {
                 // ซ่อน Modal
                 let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
                     'deleteConfirmationModal'));
-                deleteConfirmationModal.hide();
+                if (deleteConfirmationModal) {
+                    deleteConfirmationModal.hide();
+                }
 
                 // ลบ Element ออกจากหน้า
-                document.querySelector(`[data-id="${deleteFieldId}"]`).remove();
+                const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
+                if (elementToRemove) {
+                    elementToRemove.remove();
+                }
 
                 alert("ลบฟิลด์สำเร็จ!");
 
@@ -738,10 +751,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error); // ตรวจสอบ Error ใน JavaScript
+
             // แสดง Modal Error
             let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
+            if (errorModal) {
+                errorModal.show();
+            } else {
+                alert("เกิดข้อผิดพลาดในการลบ: " + error
+                .message); // แสดง alert ถ้า Modal error ไม่มี
+            }
         }
     });
 
