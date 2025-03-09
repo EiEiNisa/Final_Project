@@ -24,69 +24,56 @@ class FormController extends Controller
         'video_upload.mimes' => 'ไฟล์วิดีโอต้องเป็น mp4, avi หรือ mov เท่านั้น'
     ]);
 
-    // การจัดการรูปภาพ
+    // ✅ การจัดการรูปภาพหลายไฟล์
     if ($request->hasFile('images')) {
-        $images = $request->file('images'); // รับไฟล์หลายไฟล์
-        $imageUrls = []; // เก็บพาธของไฟล์ทั้งหมด
+        $images = $request->file('images'); // 👉 รับไฟล์หลายไฟล์
+        $imageUrls = []; // 👉 เก็บพาธของไฟล์ทั้งหมด
 
         foreach ($images as $image) {
-            // ตรวจสอบขนาดไฟล์ (ไม่เกิน 2MB)
-            if ($image->getSize() > 2048 * 1024) { 
-                return redirect()->back()->withErrors(['images' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB'])->withInput();
-            }
-
-            // สร้างชื่อไฟล์ใหม่
+            // ✅ สร้างชื่อไฟล์ใหม่
             $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-            // จัดเก็บไฟล์ไว้ที่ public/images
-            $destinationPath = public_path('images');
-            $image->move($destinationPath, $fileName);
+            // ✅ ย้ายไฟล์ไปยัง public/image/
+            $image->move(public_path('image'), $fileName);
 
-            // เก็บพาธของไฟล์
-            $imageUrls[] = 'images/' . $fileName;
+            // ✅ เก็บพาธของไฟล์
+            $imageUrls[] = 'image/' . $fileName;
         }
     } else {
         return redirect()->back()->withErrors(['images' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
 
-    // การจัดการไฟล์วิดีโอ
+    // ✅ การจัดการไฟล์วิดีโอ
     if ($request->hasFile('video_upload')) {
         $video = $request->file('video_upload');
         $maxSize = 50000 * 1024;  // ขนาดสูงสุด 50 MB
 
-        // ตรวจสอบขนาดไฟล์วิดีโอ
         if ($video->getSize() > $maxSize) {
             return redirect()->back()->withErrors(['video_upload' => 'ไฟล์วิดีโอใหญ่เกินไป (สูงสุด 50MB)'])->withInput();
         }
 
-        // สร้างชื่อไฟล์ใหม่
         $videoName = time() . '.' . $video->getClientOriginalExtension();
-
-        // บันทึกไฟล์ลงในโฟลเดอร์ public/videos
         $video->move(public_path('videos'), $videoName);
-
-        // เก็บพาธของไฟล์
         $videoPath = 'videos/' . $videoName;
     } else {
         $videoPath = null;
     }
 
-    // เก็บลิงก์วิดีโอจาก YouTube (ถ้ามี)
+    // ✅ เก็บลิงก์วิดีโอจาก YouTube (ถ้ามี)
     $videoLink = $request->input('video_link');
 
-    // บันทึกข้อมูลบทความ
+    // ✅ บันทึกข้อมูลบทความ
     $article = new Article();
     $article->title = $request->input('title');
-    $article->image = json_encode($imageUrls); // เก็บหลายภาพเป็น JSON
+    $article->image = json_encode($imageUrls); // ✅ เก็บหลายภาพเป็น JSON
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
     $article->author = $request->input('author');
-    $article->video_upload = $videoPath; // เก็บเส้นทางไฟล์วิดีโอ
-    $article->video_link = $videoLink; // เก็บลิงก์ YouTube
+    $article->video_upload = $videoPath; 
+    $article->video_link = $videoLink;
     $article->save();
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
-
 
 }
