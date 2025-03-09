@@ -54,7 +54,7 @@ class CustomFieldController extends Controller
         try {
             $field = CustomField::findOrFail($id);
             $field->delete();
-
+            session()->flash('success', 'ลบรายการสำเร็จ');
             return response()->json(['success' => true, 'message' => 'ลบรายการสำเร็จ'], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'ไม่สามารถลบข้อมูลได้'], 500);
@@ -71,7 +71,7 @@ class CustomFieldController extends Controller
             $options = array_values($options);
             $field->options = json_encode($options);
             $field->save();
-
+            session()->flash('success', 'ลบตัวเลือกสำเร็จ');
             return response()->json(['success' => true, 'message' => 'ลบตัวเลือกสำเร็จ'], 200);
         }
 
