@@ -623,7 +623,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         // ปิด Modal
                         let deleteModal = document.getElementById(
-                            "deleteModal"); // แทนที่ด้วย ID ของโมเดล
+                        "deleteModal"); // แทนที่ด้วย ID ของโมเดล
                         let modalInstance = bootstrap.Modal.getInstance(deleteModal);
                         modalInstance.hide();
 
@@ -683,18 +683,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(data);
 
                 if (data.success) {
-                    // ปิดโมเดล
-                    $('#myModal').modal(
-                        'hide');
+                    let successMessage = document.createElement('div');
 
+                    document.body.appendChild(successMessage);
                     window.location.replace(
                         "{{ route('customfieldgeneral.edit') }}");
-                    window.location.reload();
 
                 } else {
                     let errorMessage = document.getElementById("modal-error-message");
                     errorMessage.classList.remove("d-none");
-                    errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการลบข้อมูล";
+                    errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
                 }
             })
             .catch(error => {
