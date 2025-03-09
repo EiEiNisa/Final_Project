@@ -633,7 +633,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function closeModal() {
-        let deleteModal = document.getElementById("deleteModal");
+        let deleteModal = document.getElementById("deleteConfirmationModal"); // แก้ไข ID ตรงนี้
         let modalInstance = bootstrap.Modal.getInstance(deleteModal);
         if (modalInstance) {
             modalInstance.hide();
