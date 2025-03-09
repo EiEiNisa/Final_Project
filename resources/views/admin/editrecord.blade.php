@@ -521,7 +521,7 @@ form {
                 }
             }
             </script>
-
+            
             @foreach($customFields as $field)
             <div class="form-group1">
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
@@ -536,7 +536,8 @@ form {
                 @elseif($field->field_type == 'select')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                $selectedValues = (array) $fieldValue;
+                // หาก fieldValue เป็น 1 ให้ดึงค่านั้นมา
+                $selectedValues = ($fieldValue == '1') ? ['1'] : (array) $fieldValue;
                 @endphp
                 <select class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
@@ -549,7 +550,8 @@ form {
                 @elseif($field->field_type == 'checkbox')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                $checkedValues = (array) $fieldValue;
+                // หาก fieldValue เป็น 1 ให้เลือก checkbox ที่มีค่า 1
+                $checkedValues = ($fieldValue == '1') ? ['1'] : (array) $fieldValue;
                 @endphp
                 <div class="checkbox-group">
                     @foreach($options as $option)
@@ -564,7 +566,8 @@ form {
                 @elseif($field->field_type == 'radio')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                $selectedRadio = $fieldValue;
+                // หาก fieldValue เป็น 1 ให้เลือก radio ที่มีค่า 1
+                $selectedRadio = ($fieldValue == '1') ? '1' : $fieldValue;
                 @endphp
                 <div class="radio-group">
                     @foreach($options as $option)
@@ -578,7 +581,6 @@ form {
                 @endif
             </div>
             @endforeach
-
 
             <button type="submit" class="custom-btn-small" id="saveBtn">
                 <i class="fas fa-save"></i> บันทึกข้อมูล
