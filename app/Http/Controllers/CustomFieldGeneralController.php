@@ -66,25 +66,33 @@ class CustomFieldGeneralController extends Controller
     }
 
     public function deleteOption($fieldId, $optionIndex)
-{
-    try {
-        $field = CustomFieldGeneral::findOrFail($fieldId);
-        $options = json_decode($field->options, true);
-
-        if (is_array($options) && isset($options[$optionIndex])) {
-            unset($options[$optionIndex]);
-            $options = array_values($options);
-            $field->options = json_encode($options);
-            $field->save();
-            session()->flash('success', 'ลบรายการสำเร็จ');
-            return response()->json(['success' => true], 200);
+    {
+        try {
+            error_log("fieldId: " . $fieldId);
+            error_log("optionIndex: " . $optionIndex);
+            $field = CustomFieldGeneral::findOrFail($fieldId);
+            $options = json_decode($field->options, true);
+    
+            if (!is_array($options)) {
+                error_log("Error: options is not an array");
+                return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาด: ข้อมูลตัวเลือกไม่ถูกต้อง'], 500);
+            }
+    
+            if (isset($options[$optionIndex])) {
+                unset($options[$optionIndex]);
+                $options = array_values($options);
+                $field->options = json_encode($options);
+                $field->save();
+                session()->flash('success', 'ลบรายการสำเร็จ');
+                return response()->json(['success' => true], 200);
+            }
+    
+            return response()->json(['success' => false, 'message' => 'ไม่พบตัวเลือกที่ต้องการลบ'], 404);
+        } catch (\Exception $e) {
+            error_log("Error in deleteOption: " . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการลบ: ' . $e->getMessage()], 500);
         }
-
-        return response()->json(['success' => false, 'message' => 'ไม่พบตัวเลือกที่ต้องการลบ'], 404);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการลบ: ' . $e->getMessage()], 500);
     }
-}
 
     public function update(Request $request, $id)
     {
