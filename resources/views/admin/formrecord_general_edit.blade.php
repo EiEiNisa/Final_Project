@@ -458,11 +458,29 @@ select {
             </div>
         </div>
     </div>
+    
+    <script src="path/to/jquery.js"></script>
+    <script src="path/to/bootstrap.bundle.js"></script>
 
-    <!-- ตำแหน่งที่ปุ่มลบอยู่ เช่น ในตาราง -->
-    <button class="btn btn-danger" data-id="123" data-bs-toggle="modal"
-        data-bs-target="#deleteConfirmationModal">ลบ</button>
+    <!-- สคริปต์ของคุณที่ใช้ในการจัดการ Modal -->
+    <script>
+    $(document).ready(function() {
+        // เมื่อคลิกปุ่มลบในตาราง
+        $('#deleteConfirmationModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // ปุ่มที่เรียก modal
+            var fieldId = button.data('id'); // หาค่า id ของฟิลด์ที่ต้องการลบ
 
+            // ตั้งค่าที่อยู่ของ URL ในฟอร์ม
+            var formAction = '/admin/formrecord_general_edit/' + fieldId;
+            $('#deleteForm').attr('action', formAction);
+        });
+
+        // เมื่อคลิกปุ่มลบใน modal
+        $('#confirmDeleteBtn').click(function() {
+            $('#deleteForm').submit();
+        });
+    });
+    </script>
 
     <!-- Modal for Error -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
@@ -497,32 +515,6 @@ select {
         </form>
     </div>
 </div>
-
-<script>
-$(document).ready(function() {
-    // ตรวจสอบว่ามีอิลิเมนต์ deleteConfirmationModal อยู่ในหน้าไหม
-    if ($('#deleteConfirmationModal').length > 0) {
-        // เมื่อคลิกปุ่มลบในตาราง
-        $('#deleteConfirmationModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // ปุ่มที่เรียก modal
-            var fieldId = button.data('id'); // หาค่า id ของฟิลด์ที่ต้องการลบ
-
-            // ตั้งค่าที่อยู่ของ URL ในฟอร์ม
-            var formAction = '/admin/formrecord_general_edit/' + fieldId;
-            $('#deleteForm').attr('action', formAction);
-        });
-    }
-
-    // ตรวจสอบว่ามีปุ่ม #confirmDeleteBtn อยู่ในหน้าไหม
-    if ($('#confirmDeleteBtn').length > 0) {
-        // เมื่อคลิกปุ่มลบใน modal
-        $('#confirmDeleteBtn').click(function() {
-            $('#deleteForm').submit();
-        });
-    }
-});
-</script>
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
