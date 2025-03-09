@@ -222,27 +222,18 @@
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @for ($i = 1; $i <= 6; $i++)
-            @php
-                $slideImage = null;
-                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
-                    if (file_exists(public_path("images/slide$i.$ext"))) {
-                        $slideImage = asset("images/slide$i.$ext");
-                        break;
-                    }
-                }
-                $slideImage = $slideImage ?? asset('images/default.png');
-            @endphp
-            
+        @foreach ($slides as $slide)
             <div class="mySlides">
-                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
+                <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
             </div>
-        @endfor
+        @endforeach
 
         <!-- Next/Prev Buttons -->
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
+</div>
+
 
 
 <!-- Dots -->
