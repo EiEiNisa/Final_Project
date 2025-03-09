@@ -6,11 +6,11 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8;
+    background-color: #f7f8fa;
 }
 
 .header-banner {
-    background: linear-gradient(135deg, #4e79a7, #f2994a);
+    background: linear-gradient(135deg, #4f72a1, #8c9eff);
     color: #fff;
     text-align: center;
     padding: 50px 20px;
@@ -20,28 +20,32 @@ body, html {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     margin-bottom: 30px;
+    border-radius: 10px;
 }
 
 .header-banner h3 {
     font-size: 2.5rem;
     font-weight: bold;
     letter-spacing: 1px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .header-banner h5 {
     font-size: 1.5rem;
     font-weight: 400;
+    margin-top: 10px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .info-section {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 30px;
+    padding: 40px;
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -52,9 +56,9 @@ body, html {
 
 .info-section h4 {
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
-    color: #333;
+    color: #444;
     margin-bottom: 20px;
 }
 
@@ -72,27 +76,28 @@ table {
 }
 
 .table th {
-    background-color: #6c5b7b;
+    background-color: #6c72c1;
     color: white;
     font-weight: bold;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .table td {
-    background-color: #f9f9f9;
-    color: #444;
+    background-color: #f8f9fc;
+    color: #555;
 }
 
 .table td strong {
-    color: #6c5b7b;
+    color: #4f72a1;
 }
 
 .table tr:nth-child(even) td {
-    background-color: #f1f1f1;
+    background-color: #f1f3f7;
 }
 
 .table tr:hover td {
-    background-color: #ffb4a2;
+    background-color: #d1e2ff;
 }
 
 .form-container {
