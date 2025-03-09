@@ -678,42 +678,40 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("confirmSaveBtn").addEventListener("click", function() {
-        let selectedFieldIdElement = document.getElementById("selectedFieldId");
-        console.log(selectedFieldIdElement);
-
-        // ตรวจสอบว่าองค์ประกอบที่มี ID 'selectedFieldId' มีอยู่หรือไม่
-        if (!selectedFieldIdElement) {
-            console.error("ไม่พบองค์ประกอบที่มี ID 'selectedFieldId'");
-            return; // หยุดการทำงานต่อหากไม่พบองค์ประกอบ
-        }
-
-        let selectedFieldId = selectedFieldIdElement.value; // ดึงค่า value ของ selectedFieldId
-        let selectedFieldData = getSelectedFieldData();
-
-        console.log("selectedFieldData:", selectedFieldData);
-        fetch(`/admin/formrecordedit/${selectedFieldId}`, {
-                method: 'PUT',
-                body: JSON.stringify(selectedFieldData),
+        // ส่งคำขอบันทึกไปยังเซิร์ฟเวอร์
+        fetch(`/admin/formrecord_general_edit/${selectedFieldId}`, {
+                method: "PUT", // เปลี่ยนเป็น PUT แทน POST
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content')
-                }
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        "content")
+                },
+                body: JSON.stringify(selectedFieldData)
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
+
                 if (data.success) {
-                    console.log("ข้อมูลถูกอัปเดตสำเร็จ");
-                    window.location.replace("{{ route('customfieldgeneral.edit') }}");
+                    // ปิดโมเดล
+                    $('#myModal').modal(
+                        'hide');
+
+                    window.location.replace(
+                        "{{ route('customfieldgeneral.edit') }}");
+                    window.location.reload();
+
                 } else {
-                    showErrorMessage("เกิดข้อผิดพลาดในการอัปเดตข้อมูล");
+                    let errorMessage = document.getElementById("modal-error-message");
+                    errorMessage.classList.remove("d-none");
+                    errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการลบข้อมูล";
                 }
             })
             .catch(error => {
                 console.error("เกิดข้อผิดพลาด:", error);
-                showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
             });
     });
+
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
