@@ -170,13 +170,13 @@ label {
 
 .custom-field-group {
     display: grid;
-    grid-template-columns: 1fr 1fr;  /* ทำให้มี 2 คอลัมน์ */
+    grid-template-columns: 1fr 1fr;  
     gap: 20px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;  /* เพิ่มสีพื้นหลังให้ดูสะอาด */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* เพิ่มเงาให้ดูดี */
+    background-color: #f9f9f9;  
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
     margin-bottom: 20px;
 }
 
@@ -310,11 +310,11 @@ input[type="text"], select {
     <div class="card-body">
         <div class="personal-info-group">
             <div class="input-container">
-                <label>เลขบัตรประจำตัวประชาชน</label>
+                <label class="input-label">เลขบัตรประจำตัวประชาชน</label>
                 <input type="number" class="form-control" placeholder="กรอกเลขบัตรประจำตัวประชาชน" disabled>
             </div>
             <div class="input-container">
-                <label>คำนำหน้าชื่อ</label>
+                <label class="input-label">คำนำหน้าชื่อ</label>
                 <select class="form-control" disabled>
                     <option value="" disabled {{ old('prefix') == '' ? 'selected' : '' }}>กรุณาเลือกคำนำหน้าชื่อ
                     </option>
@@ -326,34 +326,34 @@ input[type="text"], select {
                 </select>
             </div>
             <div class="input-container">
-                <label>ชื่อ</label>
+                <label class="input-label">ชื่อ</label>
                 <input type="text" class="form-control" placeholder="กรอกชื่อ" disabled>
             </div>
         </div>
 
         <div class="personal-info-group">
             <div class="input-container">
-                <label>นามสกุล</label>
+                <label class="input-label">นามสกุล</label>
                 <input type="text" class="form-control" placeholder="กรอกนามสกุล" disabled>
             </div>
             <div class="input-container">
-                <label>บ้านเลขที่</label>
+                <label class="input-label">บ้านเลขที่</label>
                 <input type="text" class="form-control" value="{{ old('housenumber') }}" placeholder="กรอกบ้านเลขที่"
                     disabled>
             </div>
             <div class="input-container">
-                <label>วัน / เดือน / ปีเกิด</label>
+                <label class="input-label">วัน / เดือน / ปีเกิด</label>
                 <input type="date" class="form-control" placeholder="วัน/เดือน/ปีเกิด" disabled>
             </div>
         </div>
 
         <div class="personal-info-group">
             <div class="input-container">
-                <label>อายุ</label>
+                <label class="input-label">อายุ</label>
                 <input type="number" class="form-control" placeholder="กรอกอายุ" disabled>
             </div>
             <div class="input-container">
-                <label>กรุ๊ปเลือด</label>
+                <label class="input-label">กรุ๊ปเลือด</label>
                 <select class="form-control" disabled>
                     <option value="" disabled {{ old('blood_group') == '' ? 'selected' : '' }}>กรุณาเลือกกรุ๊ปเลือด
                     </option>
@@ -384,17 +384,17 @@ input[type="text"], select {
             @foreach($customFields as $field)
             <div class="form-group custom-field-group" data-id="{{ $field->id }}">
                 <div class="left-column">
-                    <label>ชื่อหัวข้อ</label>
-                    <input type="text" class="form-control field-label" name="label[]" value="{{ $field->label }}"
+                    <label class="input-label">ชื่อหัวข้อ</label>
+                    <input type="text" class="form-control" name="label[]" value="{{ $field->label }}"
                         required>
-                    <label>ชื่อตัวแปร</label>
-                    <input type="text" class="form-control field-name" name="name[]" value="{{ $field->name }}"
+                    <label class="input-label">ชื่อตัวแปร</label>
+                    <input type="text" class="form-control" name="name[]" value="{{ $field->name }}"
                         required>
                 </div>
 
                 <div class="right-column">
-                    <label>รูปแบบข้อมูล</label>
-                    <select class="form-control field-type" name="field_type[]" required>
+                    <label class="input-label">รูปแบบข้อมูล</label>
+                    <select class="form-control" name="field_type[]" required>
                         <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ
                         </option>
                         <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
@@ -407,7 +407,7 @@ input[type="text"], select {
 
                     <div class="form-group options-group"
                         style="{{ $field->field_type === 'select' || $field->field_type === 'radio' || $field->field_type === 'checkbox' ? 'display: block;' : 'display: none;' }}">
-                        <label>ตัวเลือก</label>
+                        <label class="input-label">ตัวเลือก</label>
                         <div class="option-container">
                             @foreach(json_decode($field->options) ?? [] as $option)
                             <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
@@ -498,14 +498,14 @@ document.addEventListener("DOMContentLoaded", function() {
         let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
         let fieldHTML = `
             <div class="form-group custom-field-group">
-                <label>ชื่อหัวข้อ (เช่น ชื่อ)</label>
+                <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
                 <input type="text" class="form-control" name="label[]" required>
 
-                <label>ชื่อตัวแปร (เช่น name)</label>
+                <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
                 <input type="text" class="form-control" name="name[]" required>
 
-                <label>รูปแบบข้อมูล</label>
-                <select class="form-control field-type" name="field_type[]" required>
+                <label class="input-label">รูปแบบข้อมูล</label>
+                <select class="form-control" name="field_type[]" required>
                     <option value="text">ช่องกรอกข้อความ</option>
                     <option value="select">เลือกจากรายการ</option>
                     <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
@@ -513,7 +513,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </select>
 
                 <div class="form-group options-group" style="display: none;">
-                    <label>ตัวเลือก</label>
+                    <label class="input-label">ตัวเลือก</label>
                     <div class="option-container">
                         <input type="text" class="form-control" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
                     </div>
