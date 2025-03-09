@@ -585,6 +585,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // เพิ่มตัวเลือกใหม่ลงใน container
             optionContainer.appendChild(newOption);
 
+            // แสดง Modal ยืนยันการลบ
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
                 'deleteConfirmationModal'));
             let confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
@@ -592,8 +593,12 @@ document.addEventListener("DOMContentLoaded", function() {
             // ตั้งค่า ID ฟิลด์ที่ต้องการลบ
             deleteFieldId = fieldId;
 
-            // แสดง Modal
-            deleteConfirmationModal.show();
+            // ตรวจสอบว่า Modal ถูกสร้างหรือยัง
+            if (!deleteConfirmationModal._isShown) {
+                deleteConfirmationModal.show();
+            } else {
+                console.error("Modal ไม่สามารถแสดงได้");
+            }
         }
     });
 
