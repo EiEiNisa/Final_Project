@@ -41,50 +41,53 @@ public function show($id)
     }
     
   public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'post_date' => 'required|date',
-            'author' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
-            'video_link' => 'nullable|url', // กรอกลิงก์วิดีโอ
-            'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:20480', // ไฟล์วิดีโอ
-        ]);
-    
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path('image');  // ใช้ public/image
-            $file->move($destinationPath, $fileName);  // ย้ายไฟล์ไปที่ public/images/
-            $imagePath = 'image/' . $fileName; // เก็บเส้นทางในฐานข้อมูล
-        }
-        
-// สำหรับอัปโหลดไฟล์วิดีโอ
-        $videoPath = null;
-        if ($request->hasFile('video_upload')) {
-            $videoFile = $request->file('video_upload');
-            $videoFileName = time() . '.' . $videoFile->getClientOriginalExtension();
-            $videoDestinationPath = public_path('videos');
-            $videoFile->move($videoDestinationPath, $videoFileName);
-            $videoPath = 'videos/' . $videoFileName;
-        }
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'post_date' => 'required|date',
+        'author' => 'required|string|max:255',
+        'images' => 'required|array|min:1',  // ต้องมีการเลือกอย่างน้อย 1 ไฟล์
+        'images.*' => 'image|mimes:jpeg,png,gif|max:2048',  // ตรวจสอบแต่ละไฟล์
+        'video_link' => 'nullable|url',  // กรอกลิงก์วิดีโอ
+        'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:20480',  // ไฟล์วิดีโอ
+    ]);
 
-    
-        // บันทึกข้อมูลบทความ
-        Article::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'post_date' => $validated['post_date'],
-            'author' => $validated['author'],
-            'image' => $imagePath,
-            'video_link' => $validated['video_link'] ?? null,  // ถ้ามีลิงก์
-            'video_upload' => $videoPath,  // ถ้ามีไฟล์
-        ]);
-    
-        return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
-    }    
+    // การจัดการรูปภาพ (รองรับหลายไฟล์)
+    $imagePaths = [];
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('image');
+            $image->move($destinationPath, $fileName);
+            $imagePaths[] = 'image/' . $fileName;  // เก็บพาธของรูปภาพ
+        }
+    }
+
+    // สำหรับอัปโหลดไฟล์วิดีโอ
+    $videoPath = null;
+    if ($request->hasFile('video_upload')) {
+        $videoFile = $request->file('video_upload');
+        $videoFileName = time() . '.' . $videoFile->getClientOriginalExtension();
+        $videoDestinationPath = public_path('videos');
+        $videoFile->move($videoDestinationPath, $videoFileName);
+        $videoPath = 'videos/' . $videoFileName;
+    }
+
+    // บันทึกข้อมูลบทความ
+    Article::create([
+        'title' => $validated['title'],
+        'description' => $validated['description'],
+        'post_date' => $validated['post_date'],
+        'author' => $validated['author'],
+        'image' => json_encode($imagePaths),  // เก็บหลายไฟล์ในรูปแบบ JSON
+        'video_link' => $validated['video_link'] ?? null,  // ถ้ามีลิงก์
+        'video_upload' => $videoPath,  // ถ้ามีไฟล์
+    ]);
+
+    return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
+}
+
 
     public function search(Request $request)
     {
