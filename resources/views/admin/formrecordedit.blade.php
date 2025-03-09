@@ -597,7 +597,7 @@ select {
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่มรายการ</button>
 
         <div id="custom-field-form" style="display: none;">
-            <form action="{{ route('customfields.store') }}" method="POST">
+            <form action="{{ route('customfield.store') }}" method="POST">
                 @csrf
                 <div id="field-container">
                 </div>
@@ -693,6 +693,21 @@ document.addEventListener("DOMContentLoaded", function() {
             optionsGroup.style.display = (["select", "radio", "checkbox"].includes(event.target.value)) ? "block" : "none";
         }
     });
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("add-option-btn")) {
+            let optionContainer = event.target.closest('.form-group').querySelector(
+                '.option-container');
+            let fieldId = event.target.closest('.custom-field-group').getAttribute('data-id');
+
+            let newOption = document.createElement("input");
+            newOption.type = "text";
+            newOption.className = "form-control option-input rounded-pill mt-2";
+            newOption.name = `options[${fieldId}][]`;
+            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+
+            optionContainer.appendChild(newOption);
+        }
+    });
 
     // Handle deleting fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
@@ -703,7 +718,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
-            let fieldGroup = document.querySelector(`.custom-field-group[data-id="${fieldToDeleteId}"]`);
+            let fieldGroup = document.querySelector(
+                `.custom-field-group[data-id="${fieldToDeleteId}"]`
+            );
 
             fetch(`/admin/formrecordedit/${fieldToDeleteId}`, {
                 method: 'DELETE',
@@ -713,16 +730,38 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    fieldGroup.remove();
-                    $('#deleteModal').modal('hide');
-                    window.location.reload();
-                } else {
-                    showErrorMessage(data.message);
-                }
-            })
-            .catch(error => showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้"));
+                .then(data => {
+                    if (data.success) {
+                        fieldGroup.remove();
+
+                        // ปิด Modal
+                        try {
+                            let deleteModal = document.getElementById("deleteModal");
+                            if (deleteModal) {
+                                let modalInstance = bootstrap.Modal.getInstance(deleteModal);
+                                if (modalInstance) {
+                                    modalInstance.hide();
+                                } else {
+                                    console.warn("Modal instance not found.");
+                                }
+                            } else {
+                                console.warn("Modal element not found.");
+                            }
+                        } catch (error) {
+                            console.error("Error closing modal:", error);
+                            // อาจจะเพิ่มโค้ดเพื่อจัดการกับข้อผิดพลาด เช่น แสดงข้อความให้ผู้ใช้ทราบ
+                        }
+
+                        window.location.replace(
+                            "{{ route('customfieldgeneral.edit') }}");
+                    } else {
+                        showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
+                    }
+                })
+                .catch(error => {
+                    console.error("เกิดข้อผิดพลาด: ", error);
+                    showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                });
         }
     });
 
@@ -764,21 +803,28 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         })
         .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                showErrorMessage(data.message);
-            }
-        })
-        .catch(error => showErrorMessage("เกิดข้อผิดพลาดในการอัปเดต"));
-    });
+            .then(data => {
+                console.log(data);
 
-    function showErrorMessage(message) {
-        let errorMessage = document.getElementById("modal-error-message");
-        errorMessage.classList.remove("d-none");
-        errorMessage.textContent = message;
-    }
+                if (data.success) {
+                    // ปิดโมเดล
+                    $('#myModal').modal(
+                        'hide');
+
+                    window.location.replace(
+                        "{{ route('customfieldgeneral.edit') }}");
+                    window.location.reload();
+
+                } else {
+                    let errorMessage = document.getElementById("modal-error-message");
+                    errorMessage.classList.remove("d-none");
+                    errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการลบข้อมูล";
+                }
+            })
+            .catch(error => {
+                console.error("เกิดข้อผิดพลาด:", error);
+            });
+    });
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
