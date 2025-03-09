@@ -75,69 +75,6 @@
     margin-top: 20px;
 }
 
-#option-container input {
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    font-size: 15px;
-    border: 1px solid #ddd;
-    width: 100%;
-}
-
-#option-container button {
-    background-color: #a8dadc;
-    border-radius: 30px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    width: 100%;
-}
-
-#option-container button:hover {
-    background-color: #457b9d;
-}
-
-.input-field {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-}
-
-.input-container {
-    margin-bottom: 15px;
-}
-
-.input-label {
-    margin-bottom: 5px;
-    text-align: left;
-    color: #020364;
-}
-
-.personal-info-group,
-.contact-info-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.personal-info-group .input-container,
-.contact-info-group .input-container {
-    flex: 1 1 calc(33.33% - 20px);
-}
-
-.contact-info-group .input-container {
-    flex: 1 1 calc(50% - 20px);
-}
-
-.personal-info-group .input-container {
-    max-width: calc(33.33% - 20px);
-}
-
-.contact-info-group .input-container {
-    max-width: calc(50% - 20px);
-}
-
 .form-check {
     margin-bottom: 10px;
 }
@@ -153,10 +90,6 @@ label {
     text-align: left;
     color: #020364;
     font-weight: bold;
-}
-
-#existing-fields {
-    margin-top: 20px;
 }
 
 .custom-field-group {
@@ -212,12 +145,23 @@ select {
     gap: 10px;
 }
 
-.option-input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* ระยะห่างระหว่าง input และปุ่มลบ */
 }
+
+.option-item input {
+    flex: 1;
+    /* ให้ input ใช้พื้นที่เหลือทั้งหมด */
+}
+
+.option-item button {
+    flex-shrink: 0;
+    /* ไม่ให้ปุ่มลบหดตัว */
+}
+
 
 .button-group {
     display: flex;
@@ -340,6 +284,10 @@ select {
     margin-top: 10px;
 }
 
+#existing-fields {
+    margin-top: 10px;
+}
+
 @media (max-width: 768px) {
     .card-container {
         padding: 20px;
@@ -382,7 +330,8 @@ select {
 
     <div class="card-header">
         <h4><strong>แก้ไขฟอร์มข้อมูลส่วนตัว</strong></h4>
-        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back">กลับ</a>
+        <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary" style="background: rgba(255, 255, 255, 0.3); color: #000;
+        padding: 8px 16px; border-radius: 8px; text-decoration: none; transition: all 0.3s ease-in-out;">กลับ</a>
     </div>
 
     <div class="card-body">
@@ -487,9 +436,12 @@ select {
                         style="{{ in_array($field->field_type, ['select', 'radio', 'checkbox']) ? 'display: block;' : 'display: none;' }}">
                         <label class="input-label">ตัวเลือก</label>
                         <div class="option-container">
-                            @foreach(json_decode($field->options) ?? [] as $option)
-                            <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
-                                value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
+                            @foreach(json_decode($field->options) ?? [] as $index => $option)
+                            <div class="option-item" data-index="{{ $index }}">
+                                <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
+                                    value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
+                                <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
+                            </div>
                             @endforeach
                         </div>
                         <div class="button-group">
@@ -572,7 +524,7 @@ select {
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่มรายการ</button>
 
         <div id="custom-field-form" style="display: none;">
-            <form action="{{ route('customfields.store') }}" method="POST">
+            <form action="{{ route('customfield.store') }}" method="POST">
                 @csrf
                 <div id="field-container">
                 </div>
