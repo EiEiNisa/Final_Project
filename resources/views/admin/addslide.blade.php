@@ -77,7 +77,7 @@
             newSlide.classList.add("slide-item");
 
             newSlide.innerHTML = `
-            <form action="{{ route('addslide') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
                     <button type="submit" class="btn btn-primary">อัปโหลด</button>
