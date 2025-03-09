@@ -519,6 +519,7 @@ select {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div id="modal-error-message" class="alert alert-danger d-none"></div>
                         คุณต้องการบันทึกการแก้ไขรายการนี้หรือไม่?
                     </div>
                     <div class="modal-footer d-flex gap-2 justify-content-end">
