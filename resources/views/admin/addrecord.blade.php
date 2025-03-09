@@ -1138,8 +1138,8 @@ form {
             @foreach($customFieldsGeneral as $field)
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center p-3 w-100 mb-0">
-                    <h3 class="form-label fw-bold" style="color:#020364;" for="{{ $field->name }}">{{ $field->label }}
-                    </h3>
+                    <h5 class="form-label fw-bold" style="color:#020364;" for="{{ $field->name }}">{{ $field->label }}
+                    </h5>
                 </div>
                 <div class="col-12">
                     @if($field->field_type == 'text')
