@@ -573,7 +573,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
-    
+
     // Event Listener สำหรับการเพิ่มตัวเลือกใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
@@ -726,14 +726,14 @@ document.addEventListener("DOMContentLoaded", function() {
         button.addEventListener('click', function() {
             let optionItem = this.closest('.option-item');
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
-            let optionIndex = parseInt(optionItem.dataset.index); // แปลงเป็น integer
+            let optionIndex = parseInt(optionItem.dataset.index);
 
             if (isNaN(optionIndex)) {
                 console.error("optionIndex ไม่ถูกต้อง");
                 return;
             }
 
-            console.log("fieldId:", fieldId); // เพิ่ม console.log()
+            console.log("fieldId:", fieldId);
             console.log("optionIndex:", optionIndex);
 
             document.getElementById("confirmDeleteBtn").onclick = function() {
@@ -745,17 +745,28 @@ document.addEventListener("DOMContentLoaded", function() {
                                 'meta[name="csrf-token"]').getAttribute("content"),
                         }
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
+                            console.log("Element ก่อนลบ:", document.querySelector(
+                                `.option-item[data-index="${optionIndex}"]`));
                             document.querySelector(
-                                    `.option-item[data-index="${optionIndex}"]`)
-                                .remove();
+                                `.option-item[data-index="${optionIndex}"]`)
+                            .remove();
+                            console.log("Element หลังลบ:", document.querySelector(
+                                `.option-item[data-index="${optionIndex}"]`));
                             let deleteModal = new bootstrap.Modal(document
                                 .getElementById('deleteModal'));
+                            console.log("Modal ก่อนปิด:", deleteModal);
                             deleteModal.hide();
-                            window.location.reload(); // รีเฟรชหน้า
+                            console.log("Modal หลังปิด:", deleteModal);
+                            // location.reload(); // ลองใช้ location.reload() หรือ comment ออก
                         } else {
                             console.error("เกิดข้อผิดพลาดในการลบตัวเลือก:", data
                                 .message);
@@ -775,7 +786,6 @@ document.addEventListener("DOMContentLoaded", function() {
         let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         deleteModal.hide();
     });
-
 });
 </script>
 @endsection
