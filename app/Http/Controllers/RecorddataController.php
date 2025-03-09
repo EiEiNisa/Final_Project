@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Schema;
 use App\AnotherNamespace\Checkup;
 use App\Models\CustomField;
 use Carbon\Carbon;
-use App\Models\CustomFieldGeneral;
+use App\Models\CustomFieldGeneralData;
+
 
 class RecorddataController
 {
