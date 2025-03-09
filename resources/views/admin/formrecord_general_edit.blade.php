@@ -681,7 +681,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (data.success) {
                     let successMessage = document.createElement('div');
                     successMessage.classList.add('alert', 'alert-success');
-                    successMessage.innerText = "บันทึกการแก้ไขสำเร็จ!";
 
                     document.body.appendChild(successMessage);
 
