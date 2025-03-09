@@ -84,12 +84,12 @@
         <p class="article-meta">{{ $article->post_date }} | {{ $article->author }}</p>
 @if(is_array(json_decode($article->image)))
     <!-- กรณีที่มีหลายรูปภาพ -->
-    @foreach (json_decode($article->image) as $image)
-        <img src="{{ asset('image/' . $image) }}" class="article-image" alt="{{ $article->title }}">
-    @endforeach
+        @foreach (json_decode($article->image) as $image)
+            <img src="{{ asset($image) }}" class="article-image" alt="{{ $article->title }}">
+        @endforeach
 @else
     <!-- กรณีที่มีรูปภาพเดียว -->
-    <img src="{{ asset('image/' . $article->image) }}" class="article-image" alt="{{ $article->title }}">
+        <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
 @endif
 
         <!-- วิดีโอจาก YouTube -->
