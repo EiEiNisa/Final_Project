@@ -69,10 +69,15 @@
 <body>
     <div class="container mt-5">
         @if($recorddataList->isNotEmpty())
+        @php
+        $recordCount = count($recorddataList);
+        @endphp
+
+        @foreach($recorddataList as $index => $recorddata)
+        @if($index == 0)
         <h2 class="text-center">ข้อมูลบุคคล</h2>
         @endif
 
-        @foreach($recorddataList as $recorddata)
         <div class="info-box row-1">
             <div class="col">
                 <strong>เลขบัตรประชาชน:</strong> {{ $recorddata->id_card }}
@@ -212,9 +217,11 @@
         @endif
         @endforeach
         <br>
-        <h2 class="text-center">ข้อมูลบุคคล</h2>
-        <div class="page-break"></div>
-        @endforeach
+        @if($index < $recordCount - 1) <h2 class="text-center">ข้อมูลบุคคล</h2>
+            @endif
+            <div class="page-break"></div>
+            @endforeach
+            @endif
     </div>
 </body>
 
