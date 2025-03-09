@@ -613,7 +613,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
             let fieldGroup = document.querySelector(
-            `.custom-field-group[data-id="${fieldToDeleteId}"]`);
+                `.custom-field-group[data-id="${fieldToDeleteId}"]`
+            );
 
             fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
                     method: 'DELETE',
@@ -646,8 +647,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             // อาจจะเพิ่มโค้ดเพื่อจัดการกับข้อผิดพลาด เช่น แสดงข้อความให้ผู้ใช้ทราบ
                         }
 
-                        // ลบ fieldToDeleteId หลังจากลบสำเร็จ
-                        fieldToDeleteId = null;
+                        window.location.replace(
+                            "{{ route('customfieldgeneral.edit') }}");
                     } else {
                         showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                     }
@@ -756,8 +757,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             console.log("Element ก่อนลบ:", document.querySelector(
                                 `.option-item[data-index="${optionIndex}"]`));
                             document.querySelector(
-                                    `.option-item[data-index="${optionIndex}"]`)
-                                .remove();
+                                `.option-item[data-index="${optionIndex}"]`)
+                            .remove();
                             console.log("Element หลังลบ:", document.querySelector(
                                 `.option-item[data-index="${optionIndex}"]`));
                             let deleteModal = new bootstrap.Modal(document
