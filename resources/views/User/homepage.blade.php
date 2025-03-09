@@ -225,7 +225,7 @@
         @if ($slides->count() > 0)
             @foreach ($slides as $slide)
                 <div class="mySlides">
-                    <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
+                    <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
                 </div>
             @endforeach
         @else
@@ -280,7 +280,6 @@ setInterval(() => {
     plusSlides(1);
 }, 3000); // เปลี่ยนภาพทุก 3 วินาที
 </script>
-
 <!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
         @php
