@@ -700,6 +700,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
+            // หาตัวเลือกที่ถูกคลิก
             let optionItem = this.closest('.option-item');
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
             let optionIndex = optionItem.dataset.index;
@@ -712,7 +713,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // ปิด Modal
                 $('#deleteModal').modal('hide');
 
-                // ส่งคำสั่งลบไปยังเซิร์ฟเวอร์
+                // ส่งคำขอลบไปยังเซิร์ฟเวอร์
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
                         headers: {
@@ -731,6 +732,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
                     .catch(error => console.error("เกิดข้อผิดพลาดในการลบตัวเลือก", error));
             };
+
+            // แสดง Modal
+            $('#deleteModal').modal('show');
         });
     });
 });
