@@ -12,14 +12,14 @@ class SlideshowController extends Controller
     // ดึงข้อมูลทั้งหมดจากฐานข้อมูล โดยเรียงตาม 'order'
     $slides = Slideshow::orderBy('order')->get();  // ดึงข้อมูลสไลด์ทั้งหมดที่จัดเรียงตาม 'order'
 // ตรวจสอบว่าเป็นหน้า 'admin/homepage'
-    if ($slides === 'home') {
-        return view('home', compact('slides'));
-    }
+     if ($page === 'home') {
+            return view('home', compact('slides'));
+        }
 
-    // ตรวจสอบว่าเป็นหน้า 'user/homepage'
-    if ($slides === 'User/homepage') {
-        return view('User.homepage', compact('slides'));
-    }
+        // ตรวจสอบว่าเป็นหน้า 'user/homepage'
+        if ($page === 'User/homepage') {
+            return view('User.homepage', compact('slides'));
+        }
 
     // ถ้าไม่ใช่หน้า 'admin/homepage' หรือ 'user/homepage' จะโหลดหน้า home
     return view('admin.addslide', compact('slides'));
