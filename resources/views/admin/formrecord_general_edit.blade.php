@@ -600,9 +600,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(response); 
+                        console.log(response);
                         if (data.success) {
-                            fieldGroup.remove(); 
+                            fieldGroup.remove();
                             alert("ลบรายการสำเร็จ!");
                         } else {
                             alert("เกิดข้อผิดพลาดในการลบรายการ!");
