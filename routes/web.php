@@ -230,6 +230,6 @@ Route::get('/formrecord_general_edit', [CustomFieldGeneralController::class, 'in
 //CustomFieldGeneral
 Route::get('/admin/formrecord_general_edit', [CustomFieldGeneralController::class, 'edit'])->name('customfieldgeneral.edit');
 Route::post('/admin/formrecord_general_edit', [CustomFieldGeneralController::class, 'store'])->name('customfieldgeneral.store');
-Route::any(['get', 'post', 'delete'], '/admin/formrecord_general_edit/{id}', [CustomFieldGeneralController::class, 'delete']);
+Route::any('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralController::class, 'delete']);
 Route::delete('/admin/deleteOption/{fieldId}/{optionIndex}', [CustomFieldGeneralController::class, 'deleteOption'])->name('customfieldgeneral.deleteOption');
 Route::put('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralController::class, 'update'])->name('customfieldgeneral.update');
