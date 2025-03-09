@@ -505,8 +505,7 @@ $(document).ready(function() {
                 _token: $('meta[name="csrf-token"]').attr('content') // ส่ง CSRF Token
             },
             success: function(response) {
-                console.log("Server response: ",
-                response); // ตรวจสอบข้อมูลที่ได้รับจาก server
+                console.log(response); // ตรวจสอบข้อมูลที่ได้รับจาก server
                 if (response.success) {
                     $('#deleteConfirmationModal').modal('hide');
                     $('.custom-field-group[data-id="' + fieldId + '"]')
