@@ -628,10 +628,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         let modalInstance = bootstrap.Modal.getInstance(deleteModal);
                         modalInstance.hide();
 
-                        // รอ 1 วินาทีก่อนรีโหลดหน้า
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1000);
+                        window.location.replace(
+                            "{{ route('customfieldgeneral.edit') }}");
                     } else {
                         showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                     }
@@ -689,7 +687,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     let successMessage = document.createElement('div');
 
                     document.body.appendChild(successMessage);
-                    window.location.reload();
+                    window.location.replace(
+                        "{{ route('customfieldgeneral.edit') }}");
 
                 } else {
                     let errorMessage = document.getElementById("modal-error-message");
