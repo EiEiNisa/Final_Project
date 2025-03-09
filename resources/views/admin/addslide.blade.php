@@ -53,7 +53,7 @@
                         <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                         <button type="submit" class="btn btn-primary">อัปโหลด</button>
                     </form>
-                    <form action="{{ route('slideshow.delete', $slide->id) }}" method="POST" class="mt-2">
+                    <form action="{{ route('slideshow.destroy', $slide->id) }}" method="POST" class="mt-2">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสไลด์นี้?')">ลบ</button>
