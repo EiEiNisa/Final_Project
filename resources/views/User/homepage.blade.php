@@ -219,7 +219,7 @@
         }
     }
 </style>
-<div class="container py-2">
+<div class="container py-2"> 
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
         @foreach ($slides as $slide)
@@ -234,13 +234,11 @@
     </div>
 </div>
 
-
-
 <!-- Dots -->
 <div style="text-align:center">
-    @for ($i = 1; $i <= 6; $i++) <span class="dot" onclick="currentSlide({{ $i }})"></span>
-        @endfor
-</div>
+    @for ($i = 1; $i <= count($slides); $i++)
+        <span class="dot" onclick="currentSlide({{ $i }})"></span>
+    @endfor
 </div>
 
 <!-- JavaScript for Image Slideshow -->
@@ -275,8 +273,6 @@
         plusSlides(1);
     }, 3000); 
 </script>
-
-
 
     <!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
