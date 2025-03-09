@@ -744,7 +744,6 @@ document.addEventListener("DOMContentLoaded", function() {
         let selectedFieldId = document.getElementById("selectedFieldId").value;
         let selectedFieldData = getSelectedFieldData();
 
-        console.log("selectedFieldData:", selectedFieldData);
         fetch(`/admin/formrecordedit/${selectedFieldId}`, {
                 method: 'PUT',
                 body: JSON.stringify(selectedFieldData),
@@ -756,19 +755,23 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
+
                 if (data.success) {
-                    // รีเฟรชหน้าหรือทำการปิด Modal ที่นี่
-                    console.log("ข้อมูลถูกอัปเดตสำเร็จ");
+                    // ปิดโมเดล
+                    $('#myModal').modal('hide');
+
                     window.location.replace("{{ route('customfieldgeneral.edit') }}");
+                    window.location.reload();
                 } else {
-                    showErrorMessage("เกิดข้อผิดพลาดในการอัปเดตข้อมูล");
+                    let errorMessage = document.getElementById("modal-error-message");
+                    errorMessage.classList.remove("d-none");
+                    errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
                 }
             })
             .catch(error => {
                 console.error("เกิดข้อผิดพลาด:", error);
-                showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
             });
-
     });
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
