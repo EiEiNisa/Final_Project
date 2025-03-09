@@ -553,7 +553,7 @@ form {
                 @endforeach
                 @elseif($customField->field_type == 'select')
                 @php
-                // แปลงค่าใน options ให้เป็นอาเรย์ ถ้าเป็น string
+                // ตรวจสอบว่า options เป็น string หรือไม่ ถ้าใช่ให้แปลงเป็น array
                 $options = is_array($customField->options) ? $customField->options : json_decode($customField->options,
                 true);
                 @endphp
