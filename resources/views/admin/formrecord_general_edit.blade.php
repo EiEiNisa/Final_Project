@@ -629,16 +629,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (data.success) {
                         fieldGroup.remove();
 
-                        // ปิด Modal แบบ Bootstrap 5
-                        let deleteModal = document.getElementById("deleteConfirmationModal");
-                        let modalInstance = bootstrap.Modal.getInstance(deleteModal);
-                        if (modalInstance) {
-                            modalInstance.hide();
+                        try {
+                            let deleteModal = document.getElementById("deleteModal");
+                            if (deleteModal) {
+                                let modalInstance = bootstrap.Modal.getInstance(deleteModal);
+                                if (modalInstance) {
+                                    modalInstance.hide();
+                                } else {
+                                    console.warn("Modal instance not found.");
+                                }
+                            } else {
+                                console.warn("Modal element not found.");
+                            }
+                        } catch (error) {
+                            console.error("Error closing modal:", error);
                         }
 
                         window.location.replace(
                             "{{ route('customfieldgeneral.edit') }}");
-                        window.location.reload();
                     } else {
                         showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                     }
@@ -747,8 +755,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             console.log("Element ก่อนลบ:", document.querySelector(
                                 `.option-item[data-index="${optionIndex}"]`));
                             document.querySelector(
-                                    `.option-item[data-index="${optionIndex}"]`)
-                                .remove();
+                                `.option-item[data-index="${optionIndex}"]`)
+                            .remove();
                             console.log("Element หลังลบ:", document.querySelector(
                                 `.option-item[data-index="${optionIndex}"]`));
                             let deleteModal = new bootstrap.Modal(document
