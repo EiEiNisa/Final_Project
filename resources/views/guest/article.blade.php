@@ -82,7 +82,17 @@
     <div class="article-container">
         <h1 class="article-title">{{ $article->title }}</h1>
         <p class="article-meta">{{ $article->post_date }} | {{ $article->author }}</p>
+@if(is_array(json_decode($article->image)))
+    <!-- กรณีที่มีหลายรูปภาพ -->
+        @foreach (json_decode($article->image) as $image)
+            <img src="{{ asset($image) }}" class="article-image" alt="{{ $article->title }}">
+        @endforeach
+@else
+    <!-- กรณีที่มีรูปภาพเดียว -->
         <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
+@endif
+
+        <!-- วิดีโอจาก YouTube -->
         @if($article->video_link)
             @php
                 // ตรวจสอบและแปลงลิงก์ให้อยู่ในรูปแบบ embed
@@ -102,6 +112,7 @@
             </div>
         @endif
 
+        <!-- วิดีโอที่อัปโหลด -->
         @if($article->video_upload)
             <div class="video-container">
                 <video class="article-video" controls>
@@ -110,10 +121,11 @@
                 </video>
             </div>
         @endif
-        
+
         <div class="article-content">
             {!! nl2br(e($article->description)) !!}
         </div>
+        
         <a href="javascript:history.back()" class="back-button">กลับไปหน้าหลัก</a>
     </div>
 </div>
