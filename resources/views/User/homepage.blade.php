@@ -219,15 +219,9 @@
         }
     }
 </style>
-
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @php
-            // ดึงข้อมูลสไลด์จากฐานข้อมูลและเรียงตามลำดับ
-            $slides = \App\Models\SlideShow::orderBy('order')->get();  // เรียงตาม order
-        @endphp
-
         @foreach ($slides as $index => $slide)
             <div class="mySlides">
                 <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $index + 1 }}">
@@ -279,6 +273,7 @@
         plusSlides(1);
     }, 3000); // Change slide every 3 seconds
 </script>
+
 
     <!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
