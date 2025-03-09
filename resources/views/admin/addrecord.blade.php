@@ -910,7 +910,7 @@ form {
 
             <!--โรคประจำตัว-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
-                <h4 class="fw-bold m-0" style="color:#020364;">โรคประจำตัว</h4>
+                <h5 class="fw-bold m-0" style="color:#020364;">โรคประจำตัว</h5>
 
             </div>
 
@@ -987,8 +987,8 @@ form {
 
             <!--พฤติกรรม-สุขภาพจิต-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100 mb-0">
-                <h4 class="fw-bold m-0" style="color:#020364;">พฤติกรรม-สุขภาพจิต <span style="color: red;">*</span>
-                </h4>
+                <h5 class="fw-bold m-0" style="color:#020364;">พฤติกรรม-สุขภาพจิต <span style="color: red;">*</span>
+                </h5>
 
             </div>
             <div class="behavior">
@@ -1053,7 +1053,7 @@ form {
 
             <!--ข้อมูลผู้สูงอายุ-->
             <div class="d-flex justify-content-between align-items-center p-3 w-100 mb-0">
-                <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ <span style="color: red;">*</span></h4>
+                <h5 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ <span style="color: red;">*</span></h5>
             </div>
 
             <div class="elderly_information">
