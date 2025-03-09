@@ -382,7 +382,7 @@ select {
                 <div class="button-group">
                     <button type="button" class="btn btn-success update-field-btn"
                         data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
-                        <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
+                    <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
                         data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">ลบรายการ</button>
                 </div>
             </div>
@@ -448,6 +448,24 @@ select {
             </div>
         </div>
 
+        <!-- Modal for Error Message -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">เกิดข้อผิดพลาด</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="errorMessage">ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <br>
         <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่มรายการ</button>
 
@@ -474,7 +492,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let selectedFieldId = null;
     let selectedFieldData = {};
     const deleteModal = document.getElementById("deleteConfirmationModal");
-    let fieldToDeleteId = null; 
+    let fieldToDeleteId = null;
     let existingFields = document.getElementById("existing-fields");
 
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
@@ -725,7 +743,14 @@ document.addEventListener("DOMContentLoaded", function() {
                             .getAttribute('content')
                     }
                 })
-                .then(response => response.json())
+                .then(response => {
+                    // ตรวจสอบสถานะการตอบกลับก่อน
+                    if (!response.ok) {
+                        throw new Error("ไม่สามารถติดต่อกับเซิร์ฟเวอร์ได้ (HTTP Status " + response
+                            .status + ")");
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         // ลบฟิลด์จากหน้า
@@ -733,15 +758,24 @@ document.addEventListener("DOMContentLoaded", function() {
                         // ปิด Modal
                         $('#deleteConfirmationModal').modal('hide');
                     } else {
-                        alert("เกิดข้อผิดพลาดในการลบรายการ!");
+                        // แสดงข้อผิดพลาดด้วย Modal
+                        showErrorModal("เกิดข้อผิดพลาดในการลบรายการ!");
                     }
                 })
                 .catch(error => {
                     console.error("เกิดข้อผิดพลาด: ", error);
-                    alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                    // แสดงข้อผิดพลาดด้วย Modal
+                    showErrorModal(error.message);
                 });
         }
     });
+
+    // ฟังก์ชันแสดง Modal สำหรับข้อผิดพลาด
+    function showErrorModal(message) {
+        document.getElementById("errorMessage").textContent = message;
+        $('#errorModal').modal('show');
+    }
+
 });
 </script>
 @endsection
