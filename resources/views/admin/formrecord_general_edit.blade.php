@@ -631,7 +631,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (responseData.success) {
                 const elementToRemove = document.querySelector(
-                    `[data-id="${window.deleteFieldId}"]`); // ใช้ window.deleteFieldId
+                    `[data-id="${deleteFieldId}"]`); // ใช้ window.deleteFieldId
                 console.log("Element to remove:", elementToRemove);
 
                 if (elementToRemove) {
