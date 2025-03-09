@@ -427,7 +427,6 @@ select {
         </div>
     </div>
 
-    <!-- Modal for Delete Confirmation -->
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -668,34 +667,50 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         try {
+            // ตรวจสอบ CSRF Token ใน console
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                'content');
+            console.log('CSRF Token:', csrfToken); // ตรวจสอบ CSRF Token
+
             const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                        .getAttribute('content')
+                    'X-CSRF-TOKEN': csrfToken // ส่ง CSRF Token
                 }
             });
 
-            // ตรวจสอบว่า response มีข้อมูลหรือไม่
-            console.log("Response:", response);
-
+            console.log("Response status:", response.status); // ตรวจสอบ Status Code
             if (!response.ok) {
                 const errorData = await response.json();
+                console.log("Error data:", errorData); // ตรวจสอบข้อมูล error
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
 
             const result = await response.json();
-            console.log("Result:", result);
+            console.log("Result:", result); // ตรวจสอบผลลัพธ์จาก server
 
             if (result.success) {
-                // ซ่อน Modal และลบ Element
-                // ...
+                let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
+                    'deleteConfirmationModal'));
+                if (deleteConfirmationModal) {
+                    deleteConfirmationModal.hide();
+                }
+
+                const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
+                if (elementToRemove) {
+                    elementToRemove.remove();
+                }
+
+                alert("ลบฟิลด์สำเร็จ!");
+                window.location.reload(); // รีเฟรชหน้าใหม่
             } else {
                 throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error); // ตรวจสอบ Error ใน JavaScript
+
+            // แสดง Modal Error
             let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
             if (errorModal) {
                 errorModal.show();
