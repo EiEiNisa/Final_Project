@@ -5,24 +5,29 @@
     <h2 class="text-white text-center mb-4">Dashboard</h2>
     
     <div class="row text-center my-4">
+        <!-- Card 1: Total Members -->
         <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card text-white shadow" style="background-color: #00A86B;">
+            <div class="card text-white shadow" style="background-color: #00695c;">
                 <div class="card-body">
                     <h5 class="card-title">สมาชิกทั้งหมดในชุมชน</h5>
                     <h3 id="total-members" class="card-text display-4 member-count">XXX คน</h3>
                 </div>
             </div>
         </div>
+
+        <!-- Card 2: Female Members -->
         <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card text-white shadow" style="background-color: #f8ba1c;">
+            <div class="card text-white shadow" style="background-color: #ffb300;">
                 <div class="card-body">
                     <h5 class="card-title">สมาชิกที่ลงทะเบียนเป็นหญิง</h5>
                     <h3 id="female-members" class="card-text display-4 member-count">XXX คน</h3>
                 </div>
             </div>
         </div>
+
+        <!-- Card 3: Male Members -->
         <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card text-white shadow" style="background-color: #FF5733;">
+            <div class="card text-white shadow" style="background-color: #d32f2f;">
                 <div class="card-body">
                     <h5 class="card-title">สมาชิกที่ลงทะเบียนเป็นชาย</h5>
                     <h3 id="male-members" class="card-text display-4 member-count">XXX คน</h3>
@@ -31,7 +36,7 @@
         </div>
     </div>
     
-    <!-- Chart Section -->
+    <!-- Age Chart Section -->
     <div class="card p-3 bg-dark text-white">
         <h5 class="text-center">สมาชิกในชุมชนแยกตามอายุทั้งหมด</h5>
         <canvas id="ageChart" class="mt-3"></canvas>
@@ -56,9 +61,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    let dashboardData = null; // ตัวแปรเก็บข้อมูลที่ดึงมาจาก server
-    let ageChart = null; // ตัวแปรเก็บกราฟอายุ
-    let diseaseChart = null; // ตัวแปรเก็บกราฟโรค
+    let dashboardData = null;
+    let ageChart = null;
+    let diseaseChart = null;
 
     async function fetchDashboardData() {
         let response = await fetch("https://thungsetthivhv.pcnone.com/dashboard/data");
@@ -69,15 +74,14 @@
         }
         let data = await response.json();
         
-        console.log(data);  // ดูข้อมูลที่ได้จาก API
         dashboardData = data;
 
-        // แสดงผลข้อมูลจำนวนสมาชิก
+        // Update total, female, and male member counts
         document.getElementById("total-members").innerText = data.total + " คน";
         document.getElementById("female-members").innerText = data.female + " คน";
         document.getElementById("male-members").innerText = data.male + " คน";
         
-        // แสดงกราฟอายุ
+        // Create or update age chart
         if (!ageChart) {
             ageChart = new Chart(document.getElementById("ageChart"), {
                 type: "bar",
@@ -86,7 +90,7 @@
                     datasets: [{
                         label: "จำนวนสมาชิก",
                         data: data.age_data,
-                        backgroundColor: "#36a2eb"
+                        backgroundColor: "#00796b"
                     }]
                 },
                 options: {
@@ -115,12 +119,11 @@
             ageChart.update();
         }
 
-        // เริ่มต้นกราฟโรค
+        // Update disease chart
         updateDiseaseChart("all", data);
     }
 
     function updateDiseaseChart(filter, data) {
-        console.log("Disease data:", data.diseases);  // ตรวจสอบข้อมูลโรค
         let dataset = [];
 
         if (filter === "all") {
@@ -162,7 +165,6 @@
                 }
             ];
         } else {
-            // ตรวจสอบว่า filter ที่เลือกมีอยู่ใน data.diseases หรือไม่
             if (data.diseases[filter]) {
                 dataset = [
                     {
@@ -171,12 +173,10 @@
                         backgroundColor: 'rgba(54, 162, 235, 0.7)'
                     }
                 ];
-            } else {
-                console.log("Error: No data found for", filter);  // กรณีที่ไม่มีข้อมูลสำหรับ filter ที่เลือก
             }
         }
 
-        // อัปเดตกราฟ
+        // Create or update disease chart
         if (!diseaseChart) {
             diseaseChart = new Chart(document.getElementById("diseaseChart"), {
                 type: "bar",
@@ -212,36 +212,35 @@
     }
 
     document.getElementById("disease-filter").addEventListener("change", function() {
-        let selectedFilter = this.value; // รับค่าจาก select
-        console.log("Selected filter:", selectedFilter);  // ตรวจสอบค่าที่ถูกเลือก
+        let selectedFilter = this.value;
         if (dashboardData) {
-            updateDiseaseChart(selectedFilter, dashboardData); // อัปเดตกราฟโรคตาม filter ที่เลือก
+            updateDiseaseChart(selectedFilter, dashboardData);
         }
     });
 
-    // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
     fetchDashboardData();
 </script>
 
 <style>
-    /* ให้การ์ดดูมีระยะห่างในแต่ละอุปกรณ์ */
+    /* Card Margin */
     .card {
         margin-bottom: 1.5rem;
     }
 
-    /* ปรับขนาดข้อความของจำนวนสมาชิกให้เล็กลงในหน้าจอที่เล็ก */
+    /* Adjust the font size for smaller screens */
     .member-count {
         font-size: 1.5rem;
     }
 
     @media (max-width: 768px) {
         .member-count {
-            font-size: 1.2rem; /* ลดขนาดของจำนวนสมาชิก */
+            font-size: 1.2rem;
         }
 
         #ageChart, #diseaseChart {
             max-height: 400px;
         }
+
         .form-select {
             width: 80%;
         }
