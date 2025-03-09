@@ -222,13 +222,11 @@
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @forelse ($slides as $slide)
+      @foreach($slides as $slide)
             <div class="mySlides">
                 <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
             </div>
-        @empty
-            <p class="text-center">ไม่มีสไลด์โชว์</p>
-        @endforelse
+        @endforeach
     </div>
 
     <!-- Dots -->
