@@ -762,7 +762,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // รีเฟรชหน้าหรือทำการปิด Modal ที่นี่
                     console.log("ข้อมูลถูกอัปเดตสำเร็จ");
                     window.location.replace("{{ route('customfieldgeneral.edit') }}");
                 } else {
