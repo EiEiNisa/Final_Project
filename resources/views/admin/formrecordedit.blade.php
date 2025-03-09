@@ -663,7 +663,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         deleteConfirmationModal.hide();
 
                         // รีเฟรชหน้าทันที
-                        window.location.replace("{{ route('customfields.edit') }}");
+                        window.location.replace("{{ route('customfield.edit') }}");
 
                         // ทำให้ข้อความ success หายไปทันที (ถ้าต้องการ)
                         successAlert.remove();
@@ -739,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then((data) => {
                 if (data.success) {
-                    window.location.replace("{{ route('customfields.edit') }}");
+                    window.location.replace("{{ route('customfield.edit') }}");
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
                     errorBox.innerHTML = data.message;
