@@ -700,10 +700,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
-            // หาตัวเลือกที่ถูกคลิก
             let optionItem = this.closest('.option-item');
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
             let optionIndex = optionItem.dataset.index;
+
+            console.log('Field ID:', fieldId); // ตรวจสอบค่าของ fieldId
+            console.log('Option Index:', optionIndex); // ตรวจสอบค่าของ optionIndex
 
             // ตั้งค่าการยืนยันการลบ
             document.getElementById("confirmDeleteBtn").onclick = function() {
@@ -737,6 +739,7 @@ document.addEventListener("DOMContentLoaded", function() {
             $('#deleteModal').modal('show');
         });
     });
+
 });
 </script>
 @endsection
