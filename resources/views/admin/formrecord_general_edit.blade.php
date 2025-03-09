@@ -537,7 +537,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // การเพิ่มตัวเลือก
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
-            '.option-container');
+                '.option-container');
             let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
                 '.custom-field-group'));
             let newOption = document.createElement("input");
@@ -573,7 +573,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let fieldGroup = event.target.closest('.custom-field-group');
             let fieldId = fieldGroup.getAttribute("data-id");
             let optionContainer = fieldGroup.querySelector('.option-container');
-            
+
             // สร้างช่องกรอกข้อมูลสำหรับตัวเลือกใหม่
             let newOption = document.createElement("div");
             newOption.classList.add("option-item");
@@ -581,9 +581,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 <input type="text" class="form-control option-input" name="options[${fieldId}][]" placeholder="เพิ่มค่าตัวเลือก">
                 <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
             `;
-            
+
             // เพิ่มตัวเลือกใหม่ลงใน container
             optionContainer.appendChild(newOption);
+
+            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
+                'deleteConfirmationModal'));
+            let confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+            // ตั้งค่า ID ฟิลด์ที่ต้องการลบ
+            deleteFieldId = fieldId;
+
+            // แสดง Modal
+            deleteConfirmationModal.show();
         }
     });
 
@@ -602,6 +612,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 'content');
             console.log('CSRF Token:', csrfToken);
 
+            // ทำการส่งคำขอลบไปยังเซิร์ฟเวอร์
             const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
                 method: 'DELETE',
                 headers: {
@@ -627,6 +638,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     deleteConfirmationModal.hide();
                 }
 
+                // ลบฟิลด์ที่มี ID ที่ตรงกับที่เลือก
                 const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
                 if (elementToRemove) {
                     elementToRemove.remove();
@@ -732,8 +744,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
                             document.querySelector(
-                                `.option-item[data-index="${optionIndex}"]`)
-                            .remove();
+                                    `.option-item[data-index="${optionIndex}"]`)
+                                .remove();
                             let deleteModal = new bootstrap.Modal(document
                                 .getElementById('deleteModal'));
                             deleteModal.hide();
