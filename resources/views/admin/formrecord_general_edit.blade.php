@@ -401,8 +401,7 @@ select {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
-                        data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">ลบรายการ</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
                 </div>
             </div>
         </div>
@@ -567,6 +566,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // Event Listener สำหรับการเพิ่มตัวเลือกใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
@@ -583,65 +583,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    let fieldToDeleteId = null; // This will store the ID of the field to delete
-
+    // Event Listener สำหรับการลบใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
-            // Store the ID of the field to delete
-            fieldToDeleteId = event.target.getAttribute("data-id");
+            deleteFieldId = event.target.getAttribute("data-id");
 
-            // Create a new Bootstrap Modal instance and show it
-            let deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
-            deleteModal.show();
+            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
+                'deleteConfirmationModal'));
+            deleteConfirmationModal.show();
         }
     });
-
-    document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
-        if (fieldToDeleteId) {
-            let fieldGroup = document.querySelector(
-            `.custom-field-group[data-id="${fieldToDeleteId}"]`);
-
-            fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        fieldGroup.remove();
-                        showSuccessMessage("ลบรายการสำเร็จ!");
-                    } else {
-                        showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
-                    }
-                })
-                .catch(error => {
-                    console.error("เกิดข้อผิดพลาด: ", error);
-                    showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
-                });
-        }
-    });
-
-    // Function to show success message
-    function showSuccessMessage(message) {
-        const successMessageElement = document.createElement('div');
-        successMessageElement.classList.add('alert', 'alert-success');
-        successMessageElement.textContent = message;
-        document.body.appendChild(successMessageElement);
-        setTimeout(() => successMessageElement.remove(), 3000);
-    }
-
-    // Function to show error message
-    function showErrorMessage(message) {
-        const errorMessageElement = document.createElement('div');
-        errorMessageElement.classList.add('alert', 'alert-danger');
-        errorMessageElement.textContent = message;
-        document.body.appendChild(errorMessageElement);
-        setTimeout(() => errorMessageElement.remove(), 3000);
-    }
 
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
         if (!deleteFieldId) return; // ถ้าไม่มี ID ไม่ต้องทำอะไร
