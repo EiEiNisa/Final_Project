@@ -75,69 +75,6 @@
     margin-top: 20px;
 }
 
-#option-container input {
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    font-size: 15px;
-    border: 1px solid #ddd;
-    width: 100%;
-}
-
-#option-container button {
-    background-color: #a8dadc;
-    border-radius: 30px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    width: 100%;
-}
-
-#option-container button:hover {
-    background-color: #457b9d;
-}
-
-.input-field {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-}
-
-.input-container {
-    margin-bottom: 15px;
-}
-
-.input-label {
-    margin-bottom: 5px;
-    text-align: left;
-    color: #020364;
-}
-
-.personal-info-group,
-.contact-info-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.personal-info-group .input-container,
-.contact-info-group .input-container {
-    flex: 1 1 calc(33.33% - 20px);
-}
-
-.contact-info-group .input-container {
-    flex: 1 1 calc(50% - 20px);
-}
-
-.personal-info-group .input-container {
-    max-width: calc(33.33% - 20px);
-}
-
-.contact-info-group .input-container {
-    max-width: calc(50% - 20px);
-}
-
 .form-check {
     margin-bottom: 10px;
 }
@@ -153,10 +90,6 @@ label {
     text-align: left;
     color: #020364;
     font-weight: bold;
-}
-
-#existing-fields {
-    margin-top: 20px;
 }
 
 .custom-field-group {
