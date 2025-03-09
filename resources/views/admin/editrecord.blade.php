@@ -525,15 +525,15 @@ form {
             <div class="form-group1">
                 <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
                 <input type="number" class="form-control" id="phone" name="phone"
-                    value="{{ old('bmi', $recorddata->phone) }}">
+                    value="{{ old('phone', $recorddata->phone) }}">
             </div>
 
             <div class="form-group1">
                 <label for="idline" class="form-label">ID Line</label>
-                <input type="number" class="form-control" id="bmi" name="idline"
-                    value="{{ old('bmi', $recorddata->idline) }}">
+                <input type="text" class="form-control" id="idline" name="idline"
+                    value="{{ old('idline', $recorddata->idline) }}">
             </div>
-            
+
             @foreach($customFields as $field)
             <div class="form-group1">
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
