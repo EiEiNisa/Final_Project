@@ -605,7 +605,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
             let fieldGroup = document.querySelector(
-                `.custom-field-group[data-id="${fieldToDeleteId}"]`);
+                `.custom-field-group[data-id="${fieldToDeleteId}"]`
+            );
 
             fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
                     method: 'DELETE',
@@ -621,9 +622,16 @@ document.addEventListener("DOMContentLoaded", function() {
                         fieldGroup.remove();
                         showSuccessMessage("ลบรายการสำเร็จ!");
 
+                        // ปิด Modal
+                        let deleteModal = document.getElementById(
+                        "deleteModal"); // แทนที่ด้วย ID ของโมเดล
+                        let modalInstance = bootstrap.Modal.getInstance(deleteModal);
+                        modalInstance.hide();
+
+                        // รอ 1 วินาทีก่อนรีโหลดหน้า
                         setTimeout(() => {
                             window.location.reload();
-                        }, 1000); // รีโหลดหลังจาก 1 วินาที
+                        }, 1000);
                     } else {
                         showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
                     }
@@ -634,7 +642,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
         }
     });
-
 
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
@@ -682,10 +689,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     let successMessage = document.createElement('div');
 
                     document.body.appendChild(successMessage);
+                    window.location.reload();
 
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
                 } else {
                     let errorMessage = document.getElementById("modal-error-message");
                     errorMessage.classList.remove("d-none");
