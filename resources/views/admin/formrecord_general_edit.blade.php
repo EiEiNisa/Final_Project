@@ -613,7 +613,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("CSRF Token:", csrfToken);
 
             const response = await fetch(
-            `/admin/formrecord_general_edit/${window.deleteFieldId}`, { // ใช้ window.deleteFieldId
+            `/admin/formrecord_general_edit/${deleteFieldId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -651,7 +651,7 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
         }
     });
-    
+
     // การบันทึกการแก้ไขฟิลด์
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
