@@ -734,10 +734,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     // ปิด Modal
                     $('#deleteModal').modal('hide');
 
-                    // หน่วงเวลาการรีเฟรชหน้า
-                    setTimeout(function() {
-                        window.location.reload(); // รีเฟรชหน้า
-                    }, 1000); // 1 วินาที
+                    window.location.replace("{{ route('customfieldgeneral.edit') }}");
                 } else {
                     console.error("เกิดข้อผิดพลาดในการลบตัวเลือก");
                 }
