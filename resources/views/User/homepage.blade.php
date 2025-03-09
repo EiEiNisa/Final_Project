@@ -222,27 +222,31 @@
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @if ($slides->count() > 0)
-            @foreach ($slides as $slide)
-                <div class="mySlides">
-                    <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
-                </div>
-            @endforeach
-        @else
-            <p class="text-center">ไม่มีสไลด์โชว์</p>
-        @endif
-
-        <!-- Next/Prev Buttons -->
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        @for ($i = 1; $i <= 6; $i++)
+            @php
+                // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
+                $slideImage = null;
+                foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
+                    if (file_exists(public_path("images/slide$i.$ext"))) {
+                        $slideImage = asset("images/slide$i.$ext");
+                        break;
+                    }
+                }
+                $slideImage = $slideImage ?? asset('images/default.png');
+            @endphp
+            
+            <div class="mySlides">
+                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
+            </div>
+        @endfor
     </div>
 
-    <!-- Dots -->
-    <div style="text-align:center">
-        @foreach ($slides as $index => $slide)
-            <span class="dot" onclick="currentSlide({{ $index + 1 }})"></span>
-        @endforeach
-    </div>
+
+<!-- Dots -->
+<div style="text-align:center">
+    @for ($i = 1; $i <= 6; $i++) <span class="dot" onclick="currentSlide({{ $i }})"></span>
+        @endfor
+</div>
 </div>
 
 <!-- JavaScript for Image Slideshow -->
@@ -259,26 +263,27 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
+    let i;
     let slides = document.getElementsByClassName("mySlides");
     let dots = document.getElementsByClassName("dot");
-
-    if (n > slides.length) { slideIndex = 1; }
-    if (n < 1) { slideIndex = slides.length; }
-
-    for (let i = 0; i < slides.length; i++) {
+    if (n > slides.length) {
+        slideIndex = 1
+    }
+    if (n < 1) {
+        slideIndex = slides.length
+    }
+    for (i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
     }
-    for (let i = 0; i < dots.length; i++) {
+    for (i = 0; i < dots.length; i++) {
         dots[i].className = dots[i].className.replace(" active", "");
     }
-
     slides[slideIndex - 1].style.display = "block";
     dots[slideIndex - 1].className += " active";
 }
-
-setInterval(() => {
+setInterval(function() {
     plusSlides(1);
-}, 3000); // เปลี่ยนภาพทุก 3 วินาที
+}, 3000); // Change slide every 3 seconds
 </script>
 <!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
