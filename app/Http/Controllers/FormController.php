@@ -7,42 +7,46 @@ use App\Models\Article;
 
 class FormController extends Controller
 {
-  public function store(Request $request) 
+ public function store(Request $request) 
 {
     $request->validate([
         'title' => 'required',
-        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'images' => 'required|array|min:1', // ต้องมีการเลือกอย่างน้อย 1 ไฟล์
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // ตรวจสอบแต่ละไฟล์
         'description' => 'required',
         'post_date' => 'required|date',
         'author' => 'required',
         'video_upload' => 'nullable|mimes:mp4,avi,mov|max:50000', // ขนาดไฟล์วิดีโอไม่เกิน 50 MB
         'video_link' => 'nullable|url', // Validation สำหรับลิงก์ YouTube
     ], [
-        'image.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB',
+        'images.max' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB',
         'video_upload.max' => 'ไฟล์วิดีโอใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 50 MB',
         'video_upload.mimes' => 'ไฟล์วิดีโอต้องเป็น mp4, avi หรือ mov เท่านั้น'
     ]);
 
     // การจัดการรูปภาพ
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
+    if ($request->hasFile('images')) {
+        $images = $request->file('images'); // รับไฟล์หลายไฟล์
+        $imageUrls = []; // เก็บพาธของไฟล์ทั้งหมด
 
-        // ตรวจสอบขนาดไฟล์ (ไม่เกิน 2MB)
-        if ($image->getSize() > 2048 * 1024) { 
-            return redirect()->back()->withErrors(['image' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB'])->withInput();
+        foreach ($images as $image) {
+            // ตรวจสอบขนาดไฟล์ (ไม่เกิน 2MB)
+            if ($image->getSize() > 2048 * 1024) { 
+                return redirect()->back()->withErrors(['images' => 'ไฟล์รูปภาพใหญ่เกินไป กรุณาอัปโหลดไฟล์ที่มีขนาดไม่เกิน 2 MB'])->withInput();
+            }
+
+            // สร้างชื่อไฟล์ใหม่
+            $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            // จัดเก็บไฟล์ไว้ที่ public/images
+            $destinationPath = public_path('images');
+            $image->move($destinationPath, $fileName);
+
+            // เก็บพาธของไฟล์
+            $imageUrls[] = 'images/' . $fileName;
         }
-
-        // สร้างชื่อไฟล์ใหม่
-        $fileName = time() . '.' . $image->getClientOriginalExtension();
-
-        // จัดเก็บไฟล์ไว้ที่ public/images
-        $destinationPath = public_path('images');
-        $image->move($destinationPath, $fileName);
-
-        // แปลง path เพื่อใช้ใน Blade
-        $imageUrl = 'images/' . $fileName;
     } else {
-        return redirect()->back()->withErrors(['image' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
+        return redirect()->back()->withErrors(['images' => 'กรุณาอัปโหลดรูปภาพ'])->withInput();
     }
 
     // การจัดการไฟล์วิดีโอ
@@ -73,7 +77,7 @@ class FormController extends Controller
     // บันทึกข้อมูลบทความ
     $article = new Article();
     $article->title = $request->input('title');
-    $article->image = $imageUrl; // เส้นทางที่ใช้เรียกไฟล์ใน Blade
+    $article->image = json_encode($imageUrls); // เก็บหลายภาพเป็น JSON
     $article->description = $request->input('description');
     $article->post_date = $request->input('post_date');
     $article->author = $request->input('author');
@@ -83,5 +87,6 @@ class FormController extends Controller
 
     return redirect()->route('admin.homepage')->with('success', 'บทความถูกบันทึกสำเร็จ');
 }
+
 
 }
