@@ -671,6 +671,44 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    document.getElementById("confirmSaveBtn").addEventListener("click", function() {
+        // ส่งคำขอบันทึกไปยังเซิร์ฟเวอร์
+        fetch(`/admin/saveField/${selectedFieldId}`, {
+                method: "POST", // หรือ PUT ขึ้นอยู่กับว่าคุณใช้ประเภทคำขออะไร
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        "content")
+                },
+                body: JSON.stringify(selectedFieldData) // ข้อมูลที่ต้องการบันทึก
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // แสดงข้อความสำเร็จ
+                    let successMessage = document.createElement('div');
+                    successMessage.classList.add('alert', 'alert-success');
+                    successMessage.innerText = "บันทึกการแก้ไขสำเร็จ!";
+
+                    // ใส่ข้อความ success ลงในหน้า
+                    document.body.appendChild(successMessage);
+
+                    // รีเฟรชหน้า
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    // แสดงข้อผิดพลาด
+                    let errorMessage = document.getElementById("modal-error-message");
+                    errorMessage.classList.remove("d-none");
+                    errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
+                }
+            })
+            .catch(error => {
+                console.error("เกิดข้อผิดพลาด:", error);
+            });
+    });
+
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             // หาตัวเลือกที่ถูกคลิก
@@ -696,8 +734,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                             // ลบตัวเลือกจากหน้าเว็บ
                             document.querySelector(
-                                `.option-item[data-index="${optionIndex}"]`)
-                            .remove();
+                                    `.option-item[data-index="${optionIndex}"]`)
+                                .remove();
 
                             // ปิด Modal
                             let deleteModal = new bootstrap.Modal(document
