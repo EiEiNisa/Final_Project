@@ -600,6 +600,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
+        event.stopPropagation();
         console.log("Confirm Delete Button Clicked");
         console.log("Field ID ที่จะลบ:", window.deleteFieldId);
 
@@ -631,7 +632,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("HTTP error:", response.status, responseData); // เพิ่ม console.error
                 alert(
                     `HTTP error: ${response.status} - ${responseData.message || "ไม่สามารถลบฟิลด์ได้"}`
-                    ); // เพิ่ม alert
+                ); // เพิ่ม alert
                 throw new Error(responseData.message || "ไม่สามารถลบฟิลด์ได้");
             }
 
