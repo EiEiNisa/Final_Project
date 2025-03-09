@@ -77,12 +77,11 @@
             newSlide.classList.add("slide-item");
 
             newSlide.innerHTML = `
-                <form action="{{ route('slideshow.update', $slide->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <input type="file" name="slide" class="form-control mb-2" accept="image/*">
-                        <button type="submit" class="btn btn-primary">อัปโหลด</button>
-                    </form>
+            <form action="{{ route('addslide') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
+                    <button type="submit" class="btn btn-primary">อัปโหลด</button>
+                </form>
             `;
 
             slideContainer.appendChild(newSlide); // ต้องเอาออกมานอก innerHTML
