@@ -482,6 +482,41 @@ select {
 </div>
 </div>
 <script>
+$(document).ready(function() {
+    // เมื่อกดปุ่มลบรายการ
+    $('.delete-field-btn').on('click', function() {
+        var fieldId = $(this).data('id'); // รับค่า ID ของฟิลด์ที่ต้องการลบ
+        $('#confirmDeleteBtn').data('id', fieldId); // เก็บ ID ไว้ในปุ่มยืนยันการลบ
+        $('#deleteConfirmationModal').modal('show'); // แสดง modal ยืนยันการลบ
+    });
+
+    // เมื่อกดปุ่มยืนยันการลบ
+    $('#confirmDeleteBtn').on('click', function() {
+        var fieldId = $(this).data('id'); // รับค่า ID ที่เก็บไว้ในปุ่ม
+        // ส่งคำขอลบไปที่เซิร์ฟเวอร์
+        $.ajax({
+            url: '/admin/formrecord_general_edit/' + fieldId,
+            type: 'DELETE',
+            success: function(response) {
+                if (response.success) {
+                    // ถ้าลบสำเร็จให้ปิด Modal และลบรายการจากหน้าเว็บ
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('.custom-field-group[data-id="' + fieldId + '"]')
+                .remove(); // ลบ div ที่ตรงกับ ID
+                } else {
+                    // ถ้ามีข้อผิดพลาดให้แสดงข้อความแจ้งเตือน
+                    alert(response.message || 'เกิดข้อผิดพลาดในการลบข้อมูล');
+                }
+            },
+            error: function() {
+                alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+            }
+        });
+    });
+});
+</script>
+
+<script>
 document.addEventListener("DOMContentLoaded", function() {
     let showFormBtn = document.getElementById("show-form-btn");
     let customFieldForm = document.getElementById("custom-field-form");
@@ -584,78 +619,6 @@ document.addEventListener("DOMContentLoaded", function() {
             // เพิ่มตัวเลือกใหม่ลงใน container
             optionContainer.appendChild(newOption);
 
-        }
-    });
-
-    document.querySelectorAll('.delete-field-btn').forEach(button => {
-        button.addEventListener('click', function(event) {
-            window.deleteFieldId = event.target.getAttribute('data-id');
-            console.log("Field ID ที่ต้องการลบ:", window.deleteFieldId);
-
-            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
-                'deleteConfirmationModal'));
-            deleteConfirmationModal.show();
-            console.log("Modal Shown"); // เพิ่มบรรทัดนี้
-        });
-    });
-
-    document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        event.stopPropagation();
-        console.log("Confirm Delete Button Clicked");
-        console.log("Field ID ที่จะลบ:", window.deleteFieldId);
-
-        if (!window.deleteFieldId) {
-            console.error("Field ID ไม่ได้ถูกกำหนด");
-            alert("Field ID ไม่ได้ถูกกำหนด"); // เพิ่ม alert
-            return;
-        }
-
-        try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
-                'content');
-            console.log("CSRF Token:", csrfToken);
-
-            const response = await fetch(
-                `/admin/formrecord_general_edit/${window.deleteFieldId}`, { // แก้ไขเป็น window.deleteFieldId
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                });
-
-            console.log("Response status:", response.status);
-            const responseData = await response.json();
-            console.log("Response data:", responseData);
-
-            if (!response.ok) {
-                console.error("HTTP error:", response.status, responseData); // เพิ่ม console.error
-                alert(
-                    `HTTP error: ${response.status} - ${responseData.message || "ไม่สามารถลบฟิลด์ได้"}`
-                ); // เพิ่ม alert
-                throw new Error(responseData.message || "ไม่สามารถลบฟิลด์ได้");
-            }
-
-            if (responseData.success) {
-                const elementToRemove = document.querySelector(
-                    `[data-id="${window.deleteFieldId}"]`); // แก้ไขเป็น window.deleteFieldId
-                console.log("Element to remove:", elementToRemove);
-
-                if (elementToRemove) {
-                    elementToRemove.remove();
-                }
-
-                let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
-                    'deleteConfirmationModal'));
-                deleteConfirmationModal.hide();
-
-                alert("ลบฟิลด์สำเร็จ!");
-            } else {
-                alert("ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
         }
     });
 
