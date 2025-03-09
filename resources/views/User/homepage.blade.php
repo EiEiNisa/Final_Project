@@ -222,15 +222,13 @@
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @if ($slides->count() > 0)
-            @foreach ($slides as $slide)
-                <div class="mySlides">
-                    <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $slide->order }}">
-                </div>
-            @endforeach
-        @else
+        @forelse ($slides as $slide)
+            <div class="mySlides">
+                <img src="{{ asset($slide->path) }}?t={{ time() }}" alt="Slide {{ $loop->iteration }}">
+            </div>
+        @empty
             <p class="text-center">ไม่มีสไลด์โชว์</p>
-        @endif
+        @endforelse
     </div>
 
     <!-- Dots -->
@@ -240,6 +238,7 @@
         @endforeach
     </div>
 </div>
+
 
 <!-- JavaScript for Image Slideshow -->
 <script>
@@ -264,7 +263,6 @@ function showSlides(n) {
     for (let i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
     }
-
     for (let i = 0; i < dots.length; i++) {
         dots[i].className = dots[i].className.replace(" active", "");
     }
@@ -273,10 +271,11 @@ function showSlides(n) {
     dots[slideIndex - 1].className += " active";
 }
 
-setInterval(function() {
+setInterval(() => {
     plusSlides(1);
-}, 3000); // Change slide every 3 seconds
+}, 3000); // เปลี่ยนภาพทุก 3 วินาที
 </script>
+
 
 <!-- Article Slideshow -->
     <div class="article-slideshow-container py-3">
