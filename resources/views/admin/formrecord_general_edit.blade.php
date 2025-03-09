@@ -378,8 +378,9 @@ select {
             <div class="button-group">
                 <button type="button" class="btn btn-success update-field-btn"
                     data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
-                <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
-                    data-toggle="modal" data-target="#deleteModal">ลบรายการ</button>
+                <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}">
+                    ลบรายการ
+                </button>
             </div>
         </div>
         @endforeach
@@ -584,39 +585,34 @@ document.addEventListener("DOMContentLoaded", function() {
             optionContainer.appendChild(newOption);
 
         }
-
-        if (event.target && event.target.classList.contains("delete-option-btn")) {
-            let fieldGroup = event.target.closest('.custom-field-group');
-            let fieldId = fieldGroup.getAttribute("data-id");
-
-            // แสดง Modal ยืนยันการลบ
-            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
-                'deleteConfirmationModal'));
-
-            // ตั้งค่า ID ฟิลด์ที่ต้องการลบ
-            deleteFieldId = fieldId;
-
-            // ตรวจสอบว่า Modal ถูกสร้างหรือยัง
-            console.log("Delete Modal is being shown"); // เพิ่มบรรทัดนี้เพื่อเช็ค
-            deleteConfirmationModal.show();
-        }
     });
 
-    // การลบฟิลด์หลังจากยืนยัน
+    // เมื่อคลิกที่ปุ่ม "ลบรายการ"
+    document.querySelectorAll('.delete-field-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            // ดึงค่า data-id จากปุ่ม
+            deleteFieldId = event.target.getAttribute('data-id');
+
+            // แสดง Modal
+            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
+                'deleteConfirmationModal'));
+            deleteConfirmationModal.show();
+        });
+    });
+
+    // เมื่อคลิกที่ปุ่ม "ลบ" ใน Modal
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        console.log("Delete Field ID:", deleteFieldId);
+        console.log("Field ID ที่จะลบ: ", deleteFieldId);
 
         if (!deleteFieldId) {
-            console.error("Field ID not set.");
+            console.error("Field ID ไม่ได้ถูกกำหนด");
             return;
         }
 
         try {
+            // การส่งคำขอลบฟิลด์จากฐานข้อมูล
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
                 'content');
-            console.log('CSRF Token:', csrfToken);
-
-            // ทำการส่งคำขอลบไปยังเซิร์ฟเวอร์
             const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
                 method: 'DELETE',
                 headers: {
@@ -625,24 +621,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            console.log("Response status:", response.status);
             if (!response.ok) {
                 const errorData = await response.json();
-                console.log("Error data:", errorData);
-                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                throw new Error(errorData.message || "ไม่สามารถลบฟิลด์ได้");
             }
 
             const result = await response.json();
-            console.log("Result:", result);
-
             if (result.success) {
+                // ซ่อน Modal หลังจากลบสำเร็จ
                 let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
                     'deleteConfirmationModal'));
-                if (deleteConfirmationModal) {
-                    deleteConfirmationModal.hide();
-                }
+                deleteConfirmationModal.hide();
 
-                // ลบฟิลด์ที่มี ID ที่ตรงกับที่เลือก
+                // ลบฟิลด์จาก DOM
                 const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
                 if (elementToRemove) {
                     elementToRemove.remove();
@@ -650,16 +641,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 alert("ลบฟิลด์สำเร็จ!");
             } else {
-                throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
+                alert("ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
             }
         } catch (error) {
             console.error('Error:', error);
-            let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            if (errorModal) {
-                errorModal.show();
-            } else {
-                alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
-            }
+            alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
         }
     });
 
