@@ -11,13 +11,21 @@ class SlideshowController extends Controller
 {
     // ดึงข้อมูลทั้งหมดจากฐานข้อมูล โดยเรียงตาม 'order'
     $slides = Slideshow::orderBy('order')->get();  // ดึงข้อมูลสไลด์ทั้งหมดที่จัดเรียงตาม 'order'
+// ตรวจสอบว่าเป็นหน้า 'admin/homepage'
+    if ($page === 'admin/homepage') {
+        return view('admin.homepage', compact('slides'));
+    }
 
-    // ส่งตัวแปร $slides ไปยัง view 'admin.addslide'
-    return view('admin.addslide', compact('slides'));
+    // ตรวจสอบว่าเป็นหน้า 'user/homepage'
+    if ($page === 'user/homepage') {
+        return view('user.homepage', compact('slides'));
+    }
+
+    // ถ้าไม่ใช่หน้า 'admin/homepage' หรือ 'user/homepage' จะโหลดหน้า home
+    return view('home', compact('slides'));
 }
-
-
-  public function store(Request $request)
+    
+    public function store(Request $request)
 {
     $request->validate([
         'slide' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
