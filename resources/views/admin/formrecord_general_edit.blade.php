@@ -586,11 +586,32 @@ document.addEventListener("DOMContentLoaded", function() {
     // Event Listener สำหรับการลบใน existing-fields
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
-            deleteFieldId = event.target.getAttribute("data-id");
+            let fieldGroup = event.target.closest(".custom-field-group");
+            let fieldId = event.target.getAttribute("data-id");
 
-            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
-                'deleteConfirmationModal'));
-            deleteConfirmationModal.show();
+            if (confirm("คุณต้องการลบรายการนี้ใช่หรือไม่?")) {
+                fetch(`/admin/formrecord_general_edit/${fieldId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            fieldGroup.remove(); // ลบออกจาก DOM
+                            alert("ลบรายการสำเร็จ!");
+                        } else {
+                            alert("เกิดข้อผิดพลาดในการลบรายการ!");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("เกิดข้อผิดพลาด: ", error);
+                        alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                    });
+            }
         }
     });
 
