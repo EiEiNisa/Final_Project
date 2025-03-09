@@ -542,7 +542,7 @@ form {
                 @elseif($customField->field_type == 'select')
                 @php
                 // ตรวจสอบว่า $customField->options เป็น string หรือไม่ ถ้าเป็น string แปลงให้เป็น array
-                $options = is_string($customField->options) ? json_decode($customField->options, true) :
+                $options = is_string($customField->options) ? json_decode($customField->options, true) : (array)
                 $customField->options;
                 @endphp
                 <select name="{{ $customField->name }}" class="form-control">
@@ -556,7 +556,6 @@ form {
                 @endif
             </div>
             @endforeach
-
 
             <button type="submit" class="custom-btn-small" id="saveBtn">
                 <i class="fas fa-save"></i> บันทึกข้อมูล
