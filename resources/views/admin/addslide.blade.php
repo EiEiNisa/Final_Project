@@ -1,5 +1,4 @@
 @extends('layoutadmin')
-
 @section('content')
 <style>
     .container {
@@ -54,7 +53,6 @@
                         <input type="file" name="slide" class="form-control mb-2" accept="image/*">
                         <button type="submit" class="btn btn-primary">อัปโหลด</button>
                     </form>
-
                     <form action="{{ route('slideshow.delete', $slide->id) }}" method="POST" class="mt-2">
                         @csrf
                         @method('DELETE')
@@ -78,13 +76,13 @@
             let newSlide = document.createElement('div');
             newSlide.classList.add('slide-item');
 
-            newSlide.innerHTML = `
+            newSlide.innerHTML = 
                 <form action="{{ route('slideshow.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="slide" class="form-control mb-2" accept="image/*" required>
                     <button type="submit" class="btn btn-primary">อัปโหลด</button>
                 </form>
-            `;
+            ;
 
             slideContainer.appendChild(newSlide);
         });
