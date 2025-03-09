@@ -234,4 +234,4 @@ Route::delete('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralControll
 Route::delete('/admin/deleteOption/{fieldId}/{optionIndex}', [CustomFieldGeneralController::class, 'deleteOption'])->name('customfieldgeneral.deleteOption');
 Route::put('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralController::class, 'update'])->name('customfieldgeneral.update');
 
-Route::get('/{page?}', [SlideshowController::class, 'index']);
+
