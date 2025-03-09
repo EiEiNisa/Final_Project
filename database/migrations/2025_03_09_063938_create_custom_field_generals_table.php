@@ -26,11 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_fields_general');
-    }
-
-    public function customFields(): HasMany
-    {
-        return $this->hasMany(CustomField::class, 'recorddata_id'); 
+        Schema::dropIfExists('custom_field_generals');
     }
 };
