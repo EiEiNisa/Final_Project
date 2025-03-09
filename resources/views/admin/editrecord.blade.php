@@ -539,18 +539,23 @@ form {
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
                 @php
-                // ดึงค่าจาก customFieldValuesMap หรือ old() สำหรับกรณีที่มีการ submit ฟอร์มแล้วมีการ validation
-                $fieldValue = $customFieldValuesMap[$field->id] ?? old($field->name, '');
+                // ดึงค่าจาก customFieldValuesMap หรือ old() (กรณีมีการ submit แล้ว validation ไม่ผ่าน)
+                $storedValue = $customFieldValuesMap[$field->id] ?? old($field->name, '');
+
+                // ตรวจสอบว่าเป็น JSON string หรือไม่ ถ้าใช่ให้แปลงเป็น array
+                if (is_string($storedValue) && str_starts_with($storedValue, '[')) {
+                $storedValue = json_decode($storedValue, true);
+                }
                 @endphp
 
                 @if($field->field_type == 'text')
-                <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $fieldValue }}">
+                <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}">
 
                 @elseif($field->field_type == 'select')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // ถ้าค่าที่ได้จาก customFieldValuesMap เป็น 1 ให้เลือกตัวเลือกที่มีค่า 1
-                $selectedValue = ($fieldValue == '1') ? '1' : $fieldValue;
+                // ตรวจสอบว่าค่าเป็น 1 หรือมีค่าที่เลือกไว้
+                $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
                 <select class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
@@ -563,8 +568,9 @@ form {
                 @elseif($field->field_type == 'checkbox')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // กำหนดค่าที่เลือกจาก customFieldValuesMap ถ้ามีค่าเป็น 1 ให้ทำการเลือก
-                $checkedValues = ($fieldValue == '1') ? ['1'] : (array) $fieldValue;
+                // ตรวจสอบว่าเป็น JSON หรือไม่ แล้วแปลงให้เป็น array
+                $checkedValues = is_array($storedValue) ? $storedValue : (is_string($storedValue) ? [$storedValue] :
+                []);
                 @endphp
                 <div class="checkbox-group">
                     @foreach($options as $option)
@@ -579,8 +585,8 @@ form {
                 @elseif($field->field_type == 'radio')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // ถ้าค่าเป็น 1 ให้เลือก radio ที่มีค่า 1
-                $selectedRadio = ($fieldValue == '1') ? '1' : $fieldValue;
+                // ตรวจสอบว่าค่าเป็น 1 หรือมีค่าที่เลือกไว้
+                $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
                 <div class="radio-group">
                     @foreach($options as $option)

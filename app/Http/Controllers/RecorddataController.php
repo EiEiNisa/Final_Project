@@ -381,7 +381,7 @@ class RecorddataController
      $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
         return [$fieldData->custom_field_general_id => $fieldData->value];
     })->toArray();
-    dd($customFieldValuesMap);
+    //dd($customFieldValuesMap);
 
     return view('admin.editrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases', 
