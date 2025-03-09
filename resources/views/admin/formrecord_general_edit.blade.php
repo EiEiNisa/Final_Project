@@ -570,8 +570,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // การยืนยันการลบฟิลด์
     document.getElementById("existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
-            let fieldGroup = event.target.closest('.custom-field-group');
-            let fieldId = fieldGroup.getAttribute("data-id");
             let optionContainer = fieldGroup.querySelector('.option-container');
 
             // สร้างช่องกรอกข้อมูลสำหรับตัวเลือกใหม่
@@ -585,23 +583,24 @@ document.addEventListener("DOMContentLoaded", function() {
             // เพิ่มตัวเลือกใหม่ลงใน container
             optionContainer.appendChild(newOption);
 
+        }
+
+        if (event.target && event.target.classList.contains("delete-option-btn")) {
+            let fieldGroup = event.target.closest('.custom-field-group');
+            let fieldId = fieldGroup.getAttribute("data-id");
+
             // แสดง Modal ยืนยันการลบ
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
                 'deleteConfirmationModal'));
-            let confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
 
             // ตั้งค่า ID ฟิลด์ที่ต้องการลบ
             deleteFieldId = fieldId;
 
             // ตรวจสอบว่า Modal ถูกสร้างหรือยัง
-            if (!deleteConfirmationModal._isShown) {
-                deleteConfirmationModal.show();
-            } else {
-                console.error("Modal ไม่สามารถแสดงได้");
-            }
+            console.log("Delete Modal is being shown"); // เพิ่มบรรทัดนี้เพื่อเช็ค
+            deleteConfirmationModal.show();
         }
     });
-
 
     // การลบฟิลด์หลังจากยืนยัน
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
