@@ -134,6 +134,28 @@ class RecorddataController
             }
         }
 
+        $customFieldsGeneral = CustomFieldGeneral::all(); 
+
+        foreach ($customFieldsGeneral as $field) {
+            if ($request->has($field->name)) {
+                // ตรวจสอบว่าฟิลด์เป็น checkbox หรือ select หรือไม่
+                if ($field->field_type == 'checkbox' || $field->field_type == 'select') {
+                    $value = $request->input($field->name);
+                    // แปลงค่าเป็น JSON ที่อ่านง่ายก่อนบันทึก
+                    $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+                } else {
+                    $value = $request->input($field->name); // ค่าที่กรอกจากฟอร์ม
+                }
+
+                \App\Models\customFieldsGeneralData::create([
+                    'recorddata_id' => $recorddata->id, // ใช้ ID ของ recorddata
+                    'custom_field_id' => $field->id,     // ใช้ ID ของ custom_field
+                    'value' => $value,                   // ค่าที่กรอกจากฟอร์ม
+                    'field_type' => $field->field_type,  // ประเภทฟิลด์ เช่น text, select, checkbox, radio
+                    'option_values' => $field->options ?? null, // ถ้ามี options เช่น select, checkbox, radio
+                ]);
+            }
+        }
         // บันทึกค่าอื่น ๆ ที่เกี่ยวข้อง
         $recorddata->extra_fields = json_encode($formatted_extra_fields, JSON_UNESCAPED_UNICODE);
         $recorddata->save();
