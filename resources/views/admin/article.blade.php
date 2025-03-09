@@ -82,24 +82,14 @@
     <div class="article-container">
         <h1 class="article-title">{{ $article->title }}</h1>
         <p class="article-meta">{{ $article->post_date }} | {{ $article->author }}</p>
-        
-       @if($article->image)
-    @php
-        // ตรวจสอบว่า $article->image เป็น JSON หรือไม่
-        $images = json_decode($article->image);
-    @endphp
-
-    @if(is_array($images)) 
-        <!-- ถ้าเป็น JSON ที่มีหลายรูปภาพ -->
-        @foreach($images as $image)
-            <img src="{{ asset('image/' . $image) }}" class="article-image" alt="{{ $article->title }}">
-        @endforeach
-    @else
-        <!-- ถ้ามีเพียงแค่ 1 รูปภาพ -->
-        <img src="{{ asset('image/' . $article->image) }}" class="article-image" alt="{{ $article->title }}">
-    @endif
+@if(is_array(json_decode($article->image)))
+    <!-- กรณีที่มีหลายรูปภาพ -->
+    @foreach (json_decode($article->image) as $image)
+        <img src="{{ asset('image/' . $image) }}" class="article-image" alt="{{ $article->title }}">
+    @endforeach
 @else
-    <p>ไม่มีรูปภาพในบทความนี้</p>
+    <!-- กรณีที่มีรูปภาพเดียว -->
+    <img src="{{ asset('image/' . $article->image) }}" class="article-image" alt="{{ $article->title }}">
 @endif
 
         <!-- วิดีโอจาก YouTube -->
