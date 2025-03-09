@@ -588,10 +588,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // เมื่อคลิกที่ปุ่ม "ลบรายการ"
+    // เมื่อคลิกที่ปุ่ม "ลบรายการ"
     document.querySelectorAll('.delete-field-btn').forEach(button => {
         button.addEventListener('click', function(event) {
             // ดึงค่า data-id จากปุ่ม
             deleteFieldId = event.target.getAttribute('data-id');
+            console.log("Field ID ที่ต้องการลบ:", deleteFieldId); // เพิ่มบรรทัดนี้เพื่อเช็ค
 
             // แสดง Modal
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
@@ -602,7 +604,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // เมื่อคลิกที่ปุ่ม "ลบ" ใน Modal
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        console.log("Field ID ที่จะลบ: ", deleteFieldId);
+        console.log("Field ID ที่จะลบ: ", deleteFieldId); // เพิ่มบรรทัดนี้เพื่อเช็ค
 
         if (!deleteFieldId) {
             console.error("Field ID ไม่ได้ถูกกำหนด");
@@ -613,6 +615,8 @@ document.addEventListener("DOMContentLoaded", function() {
             // การส่งคำขอลบฟิลด์จากฐานข้อมูล
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
                 'content');
+            console.log("CSRF Token:", csrfToken); // ตรวจสอบว่า CSRF token ถูกดึงมาหรือไม่
+
             const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
                 method: 'DELETE',
                 headers: {
@@ -621,12 +625,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
+            console.log("Response status:", response
+            .status); // เพิ่มบรรทัดนี้เพื่อดูสถานะการตอบกลับ
+
             if (!response.ok) {
                 const errorData = await response.json();
+                console.log("Error data:", errorData);
                 throw new Error(errorData.message || "ไม่สามารถลบฟิลด์ได้");
             }
 
             const result = await response.json();
+            console.log("Result:", result); // ตรวจสอบผลลัพธ์จากการตอบกลับ
+
             if (result.success) {
                 // ซ่อน Modal หลังจากลบสำเร็จ
                 let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
@@ -648,6 +658,7 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
         }
     });
+
 
     // การบันทึกการแก้ไขฟิลด์
     document.querySelectorAll(".update-field-btn").forEach((button) => {
