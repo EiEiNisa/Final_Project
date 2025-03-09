@@ -487,9 +487,12 @@ select {
                         style="{{ in_array($field->field_type, ['select', 'radio', 'checkbox']) ? 'display: block;' : 'display: none;' }}">
                         <label class="input-label">ตัวเลือก</label>
                         <div class="option-container">
-                            @foreach(json_decode($field->options) ?? [] as $option)
-                            <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
-                                value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
+                            @foreach(json_decode($field->options) ?? [] as $index => $option)
+                            <div class="option-item" data-index="{{ $index }}">
+                                <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
+                                    value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
+                                <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
+                            </div>
                             @endforeach
                         </div>
                         <div class="button-group">
@@ -502,11 +505,33 @@ select {
                 <div class="button-group">
                     <button type="button" class="btn btn-success update-field-btn"
                         data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
-                    <button type="button" class="btn btn-danger delete-field-btn"
-                        data-id="{{ $field->id }}">ลบรายการ</button>
+                    <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
+                        data-toggle="modal" data-target="#deleteModal">ลบรายการ</button>
                 </div>
             </div>
             @endforeach
+        </div>
+
+        <!-- Modal for Delete Confirmation -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">ยืนยันการลบ</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        คุณต้องการลบตัวเลือกนี้ใช่หรือไม่?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Modal ยืนยันการบันทึก -->
@@ -681,7 +706,7 @@ document.addEventListener("DOMContentLoaded", function() {
             optionContainer.appendChild(newOption);
         }
     });
-    
+
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");

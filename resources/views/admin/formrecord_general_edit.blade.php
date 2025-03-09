@@ -652,7 +652,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     let successMessage = document.getElementById("success");
                     successMessage.classList.remove("d-none");
 
-                     window.location.replace("{{ route('customfieldgeneral.edit') }}");
+                    window.location.replace("{{ route('customfieldgeneral.edit') }}");
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
                     errorBox.innerHTML = data.message;
@@ -664,6 +664,42 @@ document.addEventListener("DOMContentLoaded", function() {
                 errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
                 errorBox.classList.remove("d-none");
             });
+    });
+
+    document.querySelectorAll('.delete-option-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            let optionItem = this.closest('.option-item');
+            let fieldId = optionItem.closest('.custom-field-group').dataset.id;
+            let optionIndex = optionItem.dataset.index;
+
+            // ตั้งค่าการยืนยันการลบ
+            document.getElementById("confirmDeleteBtn").onclick = function() {
+                // ลบตัวเลือก
+                optionItem.remove();
+
+                // ปิด Modal
+                $('#deleteModal').modal('hide');
+
+                // ส่งคำสั่งลบไปยังเซิร์ฟเวอร์
+                fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector(
+                                'meta[name="csrf-token"]').getAttribute("content"),
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("ตัวเลือกถูกลบสำเร็จ");
+                        } else {
+                            console.error("เกิดข้อผิดพลาดในการลบตัวเลือก");
+                        }
+                    })
+                    .catch(error => console.error("เกิดข้อผิดพลาดในการลบตัวเลือก", error));
+            };
+        });
     });
 });
 </script>
