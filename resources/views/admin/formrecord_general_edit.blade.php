@@ -589,13 +589,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelectorAll('.delete-field-btn').forEach(button => {
         button.addEventListener('click', function(event) {
-            window.deleteFieldId = event.target.getAttribute(
-                'data-id'); // กำหนดค่าใน global scope
+            window.deleteFieldId = event.target.getAttribute('data-id');
             console.log("Field ID ที่ต้องการลบ:", window.deleteFieldId);
 
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
                 'deleteConfirmationModal'));
             deleteConfirmationModal.show();
+            console.log("Modal Shown"); // เพิ่มบรรทัดนี้
         });
     });
 
@@ -615,13 +615,13 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("CSRF Token:", csrfToken);
 
             const response = await fetch(
-            `/admin/formrecord_general_edit/${window.deleteFieldId}`, { // แก้ไขเป็น window.deleteFieldId
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                }
-            });
+                `/admin/formrecord_general_edit/${window.deleteFieldId}`, { // แก้ไขเป็น window.deleteFieldId
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
 
             console.log("Response status:", response.status);
             const responseData = await response.json();
@@ -630,7 +630,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!response.ok) {
                 console.error("HTTP error:", response.status, responseData); // เพิ่ม console.error
                 alert(
-                    `HTTP error: ${response.status} - ${responseData.message || "ไม่สามารถลบฟิลด์ได้"}`); // เพิ่ม alert
+                    `HTTP error: ${response.status} - ${responseData.message || "ไม่สามารถลบฟิลด์ได้"}`
+                    ); // เพิ่ม alert
                 throw new Error(responseData.message || "ไม่สามารถลบฟิลด์ได้");
             }
 
