@@ -17,8 +17,8 @@ class SlideshowController extends Controller
     }
 
     // ตรวจสอบว่าเป็นหน้า 'user/homepage'
-    if ($page === 'user/homepage') {
-        return view('user.homepage', compact('slides'));
+    if ($page === 'User/homepage') {
+        return view('User.homepage', compact('slides'));
     }
 
     // ถ้าไม่ใช่หน้า 'admin/homepage' หรือ 'user/homepage' จะโหลดหน้า home
