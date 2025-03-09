@@ -7,12 +7,11 @@ use Illuminate\Support\Facades\File;
 
 class SlideshowController extends Controller
 {
-    public function index()
-{
-    // ดึงข้อมูลทั้งหมดจากฐานข้อมูล โดยเรียงตาม 'order'
-    $slides = Slideshow::orderBy('order')->get();  // ดึงข้อมูลสไลด์ทั้งหมดที่จัดเรียงตาม 'order'
-// ตรวจสอบว่าเป็นหน้า 'admin/homepage'
-     if ($page === 'home') {
+    public function index($page = 'home')
+    {
+        $slides = Slideshow::orderBy('order')->get(); 
+
+        if ($page === 'home') {
             return view('home', compact('slides'));
         }
 
@@ -23,8 +22,8 @@ class SlideshowController extends Controller
 
     // ถ้าไม่ใช่หน้า 'admin/homepage' หรือ 'user/homepage' จะโหลดหน้า home
     return view('admin.addslide', compact('slides'));
-}
-    
+    }
+   
     public function store(Request $request)
 {
     $request->validate([
