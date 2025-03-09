@@ -915,7 +915,7 @@ form {
             </div>
 
             <div class="congenital_disease">
-                <div style="color: #020364; font-size: 15px; font-weight: bold;">
+                <div style="color: #020364; font-size: 15px; font-weight: bold; mb-0">
                     <div class="form-check form-check-inline">
                         <input type="hidden" name="diabetes" value="0">
                         <input class="form-check-input" type="checkbox" name="diabetes" id="diabetes" value="1"
@@ -986,7 +986,7 @@ form {
             </div>
 
             <!--พฤติกรรม-สุขภาพจิต-->
-            <div class="d-flex justify-content-between align-items-center p-3 w-100">
+            <div class="d-flex justify-content-between align-items-center p-3 w-100 mb-0">
                 <h4 class="fw-bold m-0" style="color:#020364;">พฤติกรรม-สุขภาพจิต <span style="color: red;">*</span>
                 </h4>
 
@@ -1052,7 +1052,7 @@ form {
             </div>
 
             <!--ข้อมูลผู้สูงอายุ-->
-            <div class="d-flex justify-content-between align-items-center p-3 w-100">
+            <div class="d-flex justify-content-between align-items-center p-3 w-100 mb-0">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลผู้สูงอายุ <span style="color: red;">*</span></h4>
             </div>
 
