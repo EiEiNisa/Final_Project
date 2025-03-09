@@ -232,35 +232,27 @@
 <div class="container py-2">
     <!-- Image Slideshow -->
     <div class="slideshow-container py-3">
-        @for ($i = 1; $i <= 6; $i++)
+        @foreach ($slides as $i => $slide)
             @php
                 // ตรวจสอบว่าไฟล์สไลด์มีอยู่หรือไม่
-                $slideImage = null;
-                @foreach (['png', 'jpg', 'jpeg', 'webp'] as $ext) {
-                    if (file_exists(public_path("images/slide$i.$ext"))) {
-                        $slideImage = asset("images/slide$i.$ext");
-                        break;
-                    }
-                }
-                $slideImage = $slideImage ?? asset('images/default.png');
+                $slideImage = asset($slide->path) ?? asset('images/default.png');
             @endphp
-            
             <div class="mySlides">
-                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i }}">
+                <img src="{{ $slideImage }}?t={{ time() }}" alt="Slide {{ $i + 1 }}">
             </div>
-        @endfor
+        @endforeach
 
         <!-- Next/Prev Buttons -->
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
 
-
-<!-- Dots -->
-<div style="text-align:center">
-    @for ($i = 1; $i <= 6; $i++) <span class="dot" onclick="currentSlide({{ $i }})"></span>
-        @endfor
-</div>
+    <!-- Dots -->
+    <div style="text-align:center">
+        @foreach ($slides as $i => $slide)
+            <span class="dot" onclick="currentSlide({{ $i + 1 }})"></span>
+        @endforeach
+    </div>
 </div>
 
 <!-- JavaScript for Image Slideshow -->
@@ -280,12 +272,8 @@ function showSlides(n) {
     let i;
     let slides = document.getElementsByClassName("mySlides");
     let dots = document.getElementsByClassName("dot");
-    if (n > slides.length) {
-        slideIndex = 1
-    }
-    if (n < 1) {
-        slideIndex = slides.length
-    }
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
     for (i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
     }
@@ -300,72 +288,68 @@ setInterval(function() {
 }, 3000); // Change slide every 3 seconds
 </script>
 
-
 <!-- Article Slideshow -->
-  <div class="article-slideshow-container py-3">
-        @php
-            $chunkedArticles = $articles->chunk(3); // Group articles in chunks of 3
-        @endphp
+<div class="article-slideshow-container py-3">
+    @php
+        $chunkedArticles = $articles->chunk(3); // Group articles in chunks of 3
+    @endphp
 
-        @foreach($chunkedArticles as $chunk)
-            <div class="article-slides">
-                @foreach($chunk as $article)
-                    <div class="card">
+    @foreach($chunkedArticles as $chunk)
+        <div class="article-slides">
+            @foreach($chunk as $article)
+                <div class="card">
                     <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}">
                     <div class="card-body">
-                            <h5 class="card-title">{{ $article->title }}</h5>
-                            <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
-                            <p class="text-muted">ผู้เขียน: {{ $article->author }}</p>
-                            <p class="text-muted">วันที่: {{ $article->post_date }}</p>
-                            <a href="{{ route('User.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
-                        </div>
+                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
+                        <p class="text-muted">ผู้เขียน: {{ $article->author }}</p>
+                        <p class="text-muted">วันที่: {{ $article->post_date }}</p>
+                        <a href="{{ route('User.article', $article->id) }}" class="btn btn-primary">อ่านเพิ่มเติม</a>
                     </div>
-                @endforeach
-            </div>
-        @endforeach
-    
-        <!-- Next/Prev Buttons for Article Slideshow -->
-        <a class="prev" onclick="plusArticleSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusArticleSlides(1)">&#10095;</a>
-    </div>
+                </div>
+            @endforeach
+        </div>
+    @endforeach
 
-    <!-- Dots for Article Slideshow -->
-    <div style="text-align:center">
-        @foreach($chunkedArticles as $index => $chunk)
-            <span class="dot" onclick="currentArticleSlide({{ $index + 1 }})"></span>
-        @endforeach
-    </div>
-    
-    <!-- JavaScript for Article Slideshow -->
-    <script>
-        let articleSlideIndex = 1;
-        showArticleSlides(articleSlideIndex);
-    
-        function plusArticleSlides(n) {
-            showArticleSlides(articleSlideIndex += n);
-        }
-    
-        function currentArticleSlide(n) {
-            showArticleSlides(articleSlideIndex = n);
-        }
-    
-        function showArticleSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("article-slides");
-            let dots = document.getElementsByClassName("dot");
-            if (n > slides.length) { articleSlideIndex = 1 }
-            if (n < 1) { articleSlideIndex = slides.length }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[articleSlideIndex - 1].style.display = "flex";
-            dots[articleSlideIndex - 1].className += " active";
-        }
-
-    </script>
-
+    <!-- Next/Prev Buttons for Article Slideshow -->
+    <a class="prev" onclick="plusArticleSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusArticleSlides(1)">&#10095;</a>
 </div>
+
+<!-- Dots for Article Slideshow -->
+<div style="text-align:center">
+    @foreach($chunkedArticles as $index => $chunk)
+        <span class="dot" onclick="currentArticleSlide({{ $index + 1 }})"></span>
+    @endforeach
+</div>
+
+<!-- JavaScript for Article Slideshow -->
+<script>
+    let articleSlideIndex = 1;
+    showArticleSlides(articleSlideIndex);
+
+    function plusArticleSlides(n) {
+        showArticleSlides(articleSlideIndex += n);
+    }
+
+    function currentArticleSlide(n) {
+        showArticleSlides(articleSlideIndex = n);
+    }
+
+    function showArticleSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("article-slides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { articleSlideIndex = 1 }
+        if (n < 1) { articleSlideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[articleSlideIndex - 1].style.display = "flex";
+        dots[articleSlideIndex - 1].className += " active";
+    }
+</script>
 @endsection
