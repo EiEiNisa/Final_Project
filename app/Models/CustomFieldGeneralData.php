@@ -12,11 +12,11 @@ class CustomFieldGeneralData extends Model
 
     protected $fillable = [
         'recorddata_id',
-        'custom_field_id',
+        'custom_field_general_id', 
         'value',
         'field_type',
         'option_values',
-    ];
+    ];    
 
     // Define relationship with RecordData
     public function recordData()
@@ -27,6 +27,6 @@ class CustomFieldGeneralData extends Model
     // Define relationship with CustomField
     public function customField()
     {
-        return $this->belongsTo(CustomField::class, 'custom_field_id');
+        return $this->belongsTo(CustomField::class, 'custom_field_general_id');
     }
 }
