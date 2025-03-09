@@ -705,6 +705,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
+        console.log("Delete Field ID:", deleteFieldId); // ตรวจสอบค่าของ deleteFieldId
+
         if (!deleteFieldId) {
             console.error("Field ID not set.");
             return; // ถ้าไม่มี ID ไม่ต้องทำอะไร
@@ -720,48 +722,30 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            console.log("Response:", response); // ตรวจสอบค่า response
+            // ตรวจสอบว่า response มีข้อมูลหรือไม่
+            console.log("Response:", response);
 
             if (!response.ok) {
-                // ถ้า response ไม่ใช่ 200 OK ให้ throw error
                 const errorData = await response.json();
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
 
             const result = await response.json();
-            console.log("Delete Field ID: ", deleteFieldId); // ตรวจสอบค่า deleteFieldId
+            console.log("Result:", result);
 
             if (result.success) {
-                // ซ่อน Modal
-                let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
-                    'deleteConfirmationModal'));
-                if (deleteConfirmationModal) {
-                    deleteConfirmationModal.hide();
-                }
-
-                // ลบ Element ออกจากหน้า
-                const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
-                if (elementToRemove) {
-                    elementToRemove.remove();
-                }
-
-                alert("ลบฟิลด์สำเร็จ!");
-
-                // รีเฟรชหน้า
-                window.location.reload();
+                // ซ่อน Modal และลบ Element
+                // ...
             } else {
                 throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
             }
         } catch (error) {
-            console.error('Error:', error); // ตรวจสอบ Error ใน JavaScript
-
-            // แสดง Modal Error
+            console.error('Error:', error);
             let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
             if (errorModal) {
                 errorModal.show();
             } else {
-                alert("เกิดข้อผิดพลาดในการลบ: " + error
-                    .message); // แสดง alert ถ้า Modal error ไม่มี
+                alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
             }
         }
     });
