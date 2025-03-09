@@ -57,7 +57,6 @@
     padding: 20px;
 }
 
-/* ปุ่ม */
 .btn-primary {
     background-color: #1d3557;
     border: none;
@@ -72,7 +71,6 @@
     background-color: #457b9d;
 }
 
-/* การปรับแต่งกล่องตัวเลือก */
 #options-group {
     margin-top: 20px;
 }
@@ -98,7 +96,6 @@
     background-color: #457b9d;
 }
 
-/* General Styles */
 .input-field {
     width: 100%;
     padding: 10px;
@@ -164,13 +161,13 @@ label {
 
 .custom-field-group {
     display: grid;
-    grid-template-columns: 1fr 1fr;  
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;  
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
@@ -187,14 +184,16 @@ label {
     color: #333;
 }
 
-input[type="text"], select {
+input[type="text"],
+select {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
 }
 
-.field-label, .field-name {
+.field-label,
+.field-name {
     background-color: #fff;
 }
 
@@ -256,6 +255,84 @@ input[type="text"], select {
     background-color: #c82333;
 }
 
+.field-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.field-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.field-label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.placeholder {
+    font-size: 12px;
+    color: #777;
+    margin-left: 5px;
+}
+
+.input-box {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.input-box:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+.option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+}
+
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.option-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
 @media (max-width: 768px) {
     .card-container {
         padding: 20px;
@@ -270,7 +347,8 @@ input[type="text"], select {
     }
 
     .custom-field-group {
-        grid-template-columns: 1fr;  /* ให้แสดงเป็น 1 คอลัมน์เมื่อหน้าจอเล็ก */
+        grid-template-columns: 1fr;
+        /* ให้แสดงเป็น 1 คอลัมน์เมื่อหน้าจอเล็ก */
     }
 }
 </style>
@@ -378,11 +456,9 @@ input[type="text"], select {
             <div class="form-group custom-field-group" data-id="{{ $field->id }}">
                 <div class="left-column">
                     <label class="input-label">ชื่อหัวข้อ</label>
-                    <input type="text" class="form-control" name="label[]" value="{{ $field->label }}"
-                        required>
+                    <input type="text" class="form-control" name="label[]" value="{{ $field->label }}" required>
                     <label class="input-label">ชื่อตัวแปร</label>
-                    <input type="text" class="form-control" name="name[]" value="{{ $field->name }}"
-                        required>
+                    <input type="text" class="form-control" name="name[]" value="{{ $field->name }}" required>
                 </div>
 
                 <div class="right-column">
@@ -414,8 +490,12 @@ input[type="text"], select {
                 </div>
 
                 <br>
-                <button type="button" class="btn btn-danger delete-field-btn"
-                    data-id="{{ $field->id }}">ลบฟิลด์</button>
+                <div>
+                    <button type="button" class="btn btn-secondary"
+                        data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
+                    <button type="button" class="btn btn-danger delete-field-btn"
+                        data-id="{{ $field->id }}">ลบรายการ</button>
+                </div>
             </div>
             @endforeach
         </div>
@@ -490,32 +570,30 @@ document.addEventListener("DOMContentLoaded", function() {
     addFieldBtn.addEventListener("click", function() {
         let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
         let fieldHTML = `
-            <div class="form-group custom-field-group">
-                <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
-                <input type="text" class="form-control" name="label[]" required>
+                <div class="field-container">
+                <label class="input-label">ชื่อหัวข้อ <span class="placeholder">(เช่น ชื่อ)</span></label>
+                <input type="text" class="input-box" name="label[]" required>
 
-                <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
-                <input type="text" class="form-control" name="name[]" required>
+                <label class="input-label">ชื่อตัวแปร <span class="placeholder">(เช่น name)</span></label>
+                <input type="text" class="input-box" name="name[]" required>
 
                 <label class="input-label">รูปแบบข้อมูล</label>
-                <select class="form-control" name="field_type[]" required>
+                <select class="input-box field-type" name="field_type[]" required>
                     <option value="text">ช่องกรอกข้อความ</option>
                     <option value="select">เลือกจากรายการ</option>
                     <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
                     <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
                 </select>
 
-                <div class="form-group options-group" style="display: none;">
+                <div class="option-group" style="display: none;">
                     <label class="input-label">ตัวเลือก</label>
-                    <div class="option-container">
-                        <input type="text" class="form-control" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
+                    <div class="option-list">
+                        <input type="text" class="input-box option-input" name="options[]" placeholder="เพิ่มค่าตัวเลือก">
                     </div>
-                    <div class="button-group">
-                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-                    </div>
+                    <button type="button" class="btn add-option">+ เพิ่มตัวเลือก</button>
                 </div>
-                <br>
-                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+
+                <button type="button" class="btn delete-field">ลบฟิลด์</button>
             </div>
         `;
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
@@ -619,9 +697,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // เมื่อกดปุ่ม "ยกเลิก" ใน Modal ยืนยันการลบ
             document.querySelector(".btn-secondary").addEventListener("click", function() {
-                // ปิด Modal ยืนยันการลบ
                 deleteConfirmationModal.hide();
             });
         }
