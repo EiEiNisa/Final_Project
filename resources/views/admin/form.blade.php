@@ -9,14 +9,15 @@
         </div>
     @endif
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 
     <a href="/admin/homepage" class="btn btn-light text-primary mb-4" style="border: 2px solid #5a9fcf; color: #005f99;">&larr; กลับสู่หน้าหลัก</a>
     <h2 class="text-center mb-4" style="color: #005f99; font-weight: bold; position: relative;">เพิ่มบทความใหม่</h2>
@@ -50,9 +51,31 @@
         </div>
 
         <div class="mb-3">
-            <label for="video_upload" class="form-label fw-bold" style="color: #005f99;">อัปโหลดไฟล์วิดีโอ (ถ้ามี)</label>
-            <input type="file" class="form-control" id="video_upload" name="video_upload" accept="video/*" style="border: 2px solid #5a9fcf;">
-        </div>
+    <label for="video_upload" class="form-label fw-bold" style="color: #005f99;">อัปโหลดไฟล์วิดีโอ (ถ้ามี)</label>
+    <input type="file" class="form-control" id="video_upload" name="video_upload" accept="video/*" style="border: 2px solid #5a9fcf;">
+    <div id="videoError" class="text-danger" style="display: none; font-size: 14px;">ขนาดไฟล์วิดีโอเกินกำหนด ขนาดสูงสุดคือ 50MB</div>
+</div>
+
+<script>
+    // ตรวจสอบขนาดไฟล์วิดีโอเมื่อมีการเลือกไฟล์
+    document.getElementById('video_upload').addEventListener('change', function(event) {
+        var file = event.target.files[0]; // รับไฟล์ที่ผู้ใช้เลือก
+        var errorDiv = document.getElementById('videoError');
+        
+        if (file) {
+            var maxSize = 50 * 1024 * 1024; // ขนาดสูงสุด 50MB
+            if (file.size > maxSize) {
+                errorDiv.style.display = 'block'; // แสดงข้อความเตือน
+                document.getElementById('video_upload').style.border = '2px solid red'; // เปลี่ยนกรอบ input เป็นสีแดง
+                event.target.value = ''; // ลบไฟล์ที่เลือก
+            } else {
+                errorDiv.style.display = 'none'; // ซ่อนข้อความเตือน
+                document.getElementById('video_upload').style.border = '2px solid #5a9fcf'; // เปลี่ยนกรอบ input กลับเป็นสีเดิม
+            }
+        }
+    });
+</script>
+
 
         <div class="mb-3">
             <label for="author" class="form-label fw-bold" style="color: #005f99;">ชื่อผู้โพสต์</label>
