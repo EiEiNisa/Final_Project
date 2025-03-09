@@ -779,14 +779,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: JSON.stringify(selectedFieldData),
             })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
             .then((data) => {
                 if (data.success) {
-                    let successMessage = document.getElementById("success");
-                    successMessage.classList.remove("d-none");
-                    
-                    window.location.replace("{{ route('customfields.edit') }}");
-
+                    window.location.href = "/custom-fields/edit?success=1";
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
                     errorBox.innerHTML = data.message;
