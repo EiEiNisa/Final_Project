@@ -482,6 +482,7 @@ select {
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    let showFormBtn = document.getElementById("show-form-btn");
     let customFieldForm = document.getElementById("custom-field-form");
     let addFieldBtn = document.getElementById("add-field-btn");
     let fieldContainer = document.getElementById("field-container");
@@ -496,60 +497,97 @@ document.addEventListener("DOMContentLoaded", function() {
         customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
     });
 
+    // ฟังก์ชันเพิ่ม Custom Field ใหม่
     addFieldBtn.addEventListener("click", function() {
         let fieldIndex = fieldContainer.children.length;
         let fieldHTML = `
-            <div class="form-group custom-field-group">
-                <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
-                <input type="text" class="form-control field-label" name="label[]" required>
-                <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
-                <input type="text" class="form-control field-name" name="name[]" required>
-                <label class="input-label">รูปแบบข้อมูล</label>
-                <select class="form-control field-type" name="field_type[]" required>
-                    <option value="text">ช่องกรอกข้อความ</option>
-                    <option value="select">เลือกจากรายการ</option>
-                    <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
-                    <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
-                </select>
-                <div class="form-group options-group" style="display: none;">
-                    <label class="input-label">ตัวเลือก</label>
-                    <div class="option-container">
-                        <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
-                    </div>
-                    <div class="button-group">
-                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-                    </div>
+        <div class="form-group custom-field-group">
+            <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
+            <input type="text" class="form-control field-label" name="label[]" required>
+            
+            <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
+            <input type="text" class="form-control field-name" name="name[]" required>
+            
+            <label class="input-label">รูปแบบข้อมูล</label>
+            <select class="form-control field-type" name="field_type[]" required>
+                <option value="text">ช่องกรอกข้อความ</option>
+                <option value="select">เลือกจากรายการ</option>
+                <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
+                <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
+            </select>
+            
+            <div class="form-group options-group" style="display: none;">
+                <label class="input-label">ตัวเลือก</label>
+                <div class="option-container">
+                    <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
                 </div>
-                <br>
-                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                </div>
             </div>
-        `;
+            <br>
+            <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+        </div>
+    `;
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
     });
 
-    // การลบฟิลด์
+    // ฟังก์ชันจัดการการคลิกบน Field Container
+    fieldContainer.addEventListener("click", function(event) {
+        // การเพิ่มตัวเลือก
+        if (event.target && event.target.classList.contains("add-option-btn")) {
+            let optionContainer = event.target.closest('.form-group').querySelector(
+            '.option-container');
+            let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
+                '.custom-field-group'));
+            let newOption = document.createElement("input");
+            newOption.type = "text";
+            newOption.className = "form-control option-input rounded-pill mt-2";
+            newOption.name = `options[${fieldIndex}][]`;
+            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+            optionContainer.appendChild(newOption);
+        }
+
+        // การลบฟิลด์
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            event.target.closest('.custom-field-group').remove();
+        }
+    });
+
+    // ฟังก์ชันการเปลี่ยนแปลงประเภทฟิลด์
+    fieldContainer.addEventListener("change", function(event) {
+        if (event.target && event.target.name === "field_type[]") {
+            let optionsGroup = event.target.closest('.custom-field-group').querySelector(
+                '.options-group');
+            if (["select", "radio", "checkbox"].includes(event.target.value)) {
+                optionsGroup.style.display = "block";
+            } else {
+                optionsGroup.style.display = "none";
+            }
+        }
+    });
+
+    // การยืนยันการลบฟิลด์
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             deleteFieldId = event.target.getAttribute("data-id");
             console.log("Delete Field ID:", deleteFieldId);
-
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
                 'deleteConfirmationModal'));
             deleteConfirmationModal.show();
         }
     });
 
-    // ยืนยันการลบ
+    // การลบฟิลด์หลังจากยืนยัน
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
-        console.log("Delete Field ID:", deleteFieldId); // ตรวจสอบค่าของ deleteFieldId
+        console.log("Delete Field ID:", deleteFieldId);
 
         if (!deleteFieldId) {
             console.error("Field ID not set.");
-            return; // ถ้าไม่มี ID ไม่ต้องทำอะไร
+            return;
         }
 
         try {
-            // ตรวจสอบ CSRF Token ใน console
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
                 'content');
             console.log('CSRF Token:', csrfToken);
@@ -558,14 +596,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken // ส่ง CSRF Token
+                    'X-CSRF-TOKEN': csrfToken
                 }
             });
 
-            console.log("Response status:", response.status); // ตรวจสอบ Status Code
+            console.log("Response status:", response.status);
             if (!response.ok) {
                 const errorData = await response.json();
-                console.log("Error data:", errorData); // ตรวจสอบข้อมูล error
+                console.log("Error data:", errorData);
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
 
@@ -573,14 +611,12 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Result:", result);
 
             if (result.success) {
-                // ซ่อน Modal หลังจากลบสำเร็จ
                 let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
                     'deleteConfirmationModal'));
                 if (deleteConfirmationModal) {
                     deleteConfirmationModal.hide();
                 }
 
-                // ลบ element จากหน้า
                 const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
                 if (elementToRemove) {
                     elementToRemove.remove();
@@ -591,9 +627,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
             }
         } catch (error) {
-            console.error('Error:', error); // ตรวจสอบ Error ใน JavaScript
-
-            // แสดง Modal Error
+            console.error('Error:', error);
             let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
             if (errorModal) {
                 errorModal.show();
@@ -603,189 +637,100 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // การบันทึกการแก้ไขฟิลด์
     document.querySelectorAll(".update-field-btn").forEach((button) => {
-
         button.addEventListener("click", function() {
-
             let fieldGroup = this.closest(".custom-field-group");
-
             selectedFieldId = this.getAttribute("data-id");
 
-
-
             selectedFieldData = {
-
                 label: fieldGroup.querySelector(".field-label").value,
-
                 name: fieldGroup.querySelector(".field-name").value,
-
                 field_type: fieldGroup.querySelector(".field-type").value,
-
                 options: []
-
             };
 
-
-
             if (["select", "radio", "checkbox"].includes(selectedFieldData.field_type)) {
-
                 fieldGroup.querySelectorAll(".option-input").forEach((input) => {
-
                     if (input.value.trim() !== "") {
-
                         selectedFieldData.options.push(input.value.trim());
-
                     }
-
                 });
-
             }
-
-
 
             document.getElementById("modal-error-message").classList.add("d-none");
 
-
-
             let confirmModal = new bootstrap.Modal(document.getElementById("confirmSaveModal"));
-
             confirmModal.show();
-
         });
-
     });
 
-
-
+    // การบันทึกข้อมูลหลังจากยืนยัน
     document.getElementById("confirmSaveBtn").addEventListener("click", function() {
-
-        // ส่งคำขอบันทึกไปยังเซิร์ฟเวอร์
-
         fetch(`/admin/formrecord_general_edit/${selectedFieldId}`, {
-
-                method: "PUT", // เปลี่ยนเป็น PUT แทน POST
-
+                method: "PUT",
                 headers: {
-
                     "Content-Type": "application/json",
-
                     "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
-
                         "content")
-
                 },
-
                 body: JSON.stringify(selectedFieldData)
-
             })
-
             .then(response => response.json())
-
             .then(data => {
-
                 console.log(data);
 
-
-
                 if (data.success) {
-
                     let successMessage = document.createElement('div');
-
                     successMessage.classList.add('alert', 'alert-success');
-
                     successMessage.innerText = "บันทึกการแก้ไขสำเร็จ!";
-
-
 
                     document.body.appendChild(successMessage);
 
-
-
                     setTimeout(() => {
-
                         window.location.reload();
-
                     }, 1000);
-
                 } else {
-
                     let errorMessage = document.getElementById("modal-error-message");
-
                     errorMessage.classList.remove("d-none");
-
                     errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
-
                 }
-
             })
-
             .catch(error => {
-
                 console.error("เกิดข้อผิดพลาด:", error);
-
             });
-
     });
 
-
-
+    // การลบตัวเลือก
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
-
         button.addEventListener('click', function() {
-
-            // หาตัวเลือกที่ถูกคลิก
-
             let optionItem = this.closest('.option-item');
-
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
-
             let optionIndex = optionItem.dataset.index;
 
-
-
-            // ตั้งค่าการยืนยันการลบ
-
             document.getElementById("confirmDeleteBtn").onclick = function() {
-
-                // ส่งคำขอลบไปยังเซิร์ฟเวอร์
-
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
-
                         method: "DELETE",
-
                         headers: {
-
                             "Content-Type": "application/json",
-
                             "X-CSRF-TOKEN": document.querySelector(
-
                                 'meta[name="csrf-token"]').getAttribute("content"),
-
                         }
-
                     })
-
                     .then(response => response.json())
-
                     .then(data => {
-
                         if (data.success) {
-
                             console.log("ตัวเลือกถูกลบสำเร็จ");
-                            // ลบตัวเลือกจากหน้าเว็บ
                             document.querySelector(
-                                    `.option-item[data-index="${optionIndex}"]`)
-                                .remove();
-                            // ปิด Modal
+                                `.option-item[data-index="${optionIndex}"]`)
+                            .remove();
                             let deleteModal = new bootstrap.Modal(document
                                 .getElementById('deleteModal'));
                             deleteModal.hide();
-                            // รีเฟรชหน้า
                             window.location.replace(
                                 "{{ route('customfieldgeneral.edit') }}");
                         } else {
                             console.error("เกิดข้อผิดพลาดในการลบตัวเลือก:", data
-
                                 .message);
                         }
                     })
@@ -793,17 +738,15 @@ document.addEventListener("DOMContentLoaded", function() {
                         console.error("เกิดข้อผิดพลาดในการลบตัวเลือก", error);
                     });
             };
-            // แสดง Modal
+
             let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show();
         });
     });
 
-    // เมื่อกดปุ่ม "ยกเลิก" จะปิด Modal
+    // ปิด Modal เมื่อกด "ยกเลิก"
     document.querySelector('#deleteModal .btn-secondary').addEventListener('click', function() {
-
         let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-
         deleteModal.hide();
     });
 });
