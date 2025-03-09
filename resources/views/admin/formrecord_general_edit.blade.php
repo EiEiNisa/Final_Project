@@ -401,7 +401,8 @@ select {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                    <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
+                        data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">ลบรายการ</button>
                 </div>
             </div>
         </div>
@@ -584,57 +585,56 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
-            let fieldGroup = event.target.closest(".custom-field-group");
-            let fieldId = event.target.getAttribute("data-id");
-
-            if (confirm("คุณต้องการลบรายการนี้ใช่หรือไม่?")) {
-                fetch(`/admin/formrecord_general_edit/${fieldId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content')
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            fieldGroup.remove();
-                            showSuccessMessage("ลบรายการสำเร็จ!");
-                        } else {
-                            showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("เกิดข้อผิดพลาด: ", error);
-                        showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
-                    });
-            }
+            // Store the ID of the field to delete
+            fieldToDeleteId = event.target.getAttribute("data-id");
         }
     });
 
+    document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
+        if (fieldToDeleteId) {
+            let fieldGroup = document.querySelector(
+            `.custom-field-group[data-id="${fieldToDeleteId}"]`);
+
+            fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fieldGroup.remove();
+                        showSuccessMessage("ลบรายการสำเร็จ!");
+                    } else {
+                        showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
+                    }
+                })
+                .catch(error => {
+                    console.error("เกิดข้อผิดพลาด: ", error);
+                    showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                });
+        }
+    });
+
+    // Function to show success message
     function showSuccessMessage(message) {
-        // ตัวอย่างการแสดงข้อความ success (สามารถใช้ไลบรารีหรือ CSS ที่กำหนดเอง)
         const successMessageElement = document.createElement('div');
-        successMessageElement.classList.add('success-message');
+        successMessageElement.classList.add('alert', 'alert-success');
         successMessageElement.textContent = message;
         document.body.appendChild(successMessageElement);
-
-        setTimeout(() => {
-            successMessageElement.remove();
-        }, 1000);
+        setTimeout(() => successMessageElement.remove(), 3000);
     }
 
+    // Function to show error message
     function showErrorMessage(message) {
-        // ตัวอย่างการแสดงข้อความ error (สามารถใช้ไลบรารีหรือ CSS ที่กำหนดเอง)
         const errorMessageElement = document.createElement('div');
-        errorMessageElement.classList.add('error-message');
+        errorMessageElement.classList.add('alert', 'alert-danger');
         errorMessageElement.textContent = message;
         document.body.appendChild(errorMessageElement);
-
-        setTimeout(() => {
-            errorMessageElement.remove();
-        }, 1000);
+        setTimeout(() => errorMessageElement.remove(), 3000);
     }
 
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
