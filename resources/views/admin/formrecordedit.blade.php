@@ -709,17 +709,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Handle updating fields
-    document.querySelectorAll(".update-field-btn").forEach(button => {
+    document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
             let fieldGroup = this.closest(".custom-field-group");
-            let selectedFieldId = this.getAttribute("data-id");
+            selectedFieldId = this.getAttribute("data-id");
 
-            // กำหนดค่าให้กับ input hidden
-            document.getElementById("selectedFieldId").value = selectedFieldId;
-
-            // ทำการตั้งค่า selectedFieldData
-            let selectedFieldData = {
+            selectedFieldData = {
                 label: fieldGroup.querySelector(".field-label").value,
                 name: fieldGroup.querySelector(".field-name").value,
                 field_type: fieldGroup.querySelector(".field-type").value,
@@ -727,14 +722,15 @@ document.addEventListener("DOMContentLoaded", function() {
             };
 
             if (["select", "radio", "checkbox"].includes(selectedFieldData.field_type)) {
-                fieldGroup.querySelectorAll(".option-input").forEach(input => {
-                    if (input.value.trim() !== "") selectedFieldData.options.push(input
-                        .value.trim());
+                fieldGroup.querySelectorAll(".option-input").forEach((input) => {
+                    if (input.value.trim() !== "") {
+                        selectedFieldData.options.push(input.value.trim());
+                    }
                 });
             }
 
-            // แสดง modal สำหรับยืนยันการบันทึก
             document.getElementById("modal-error-message").classList.add("d-none");
+
             let confirmModal = new bootstrap.Modal(document.getElementById("confirmSaveModal"));
             confirmModal.show();
         });
@@ -744,6 +740,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let selectedFieldId = document.getElementById("selectedFieldId").value;
         let selectedFieldData = getSelectedFieldData();
 
+        console.log("selectedFieldData:", selectedFieldData);
         fetch(`/admin/formrecordedit/${selectedFieldId}`, {
                 method: 'PUT',
                 body: JSON.stringify(selectedFieldData),
@@ -755,23 +752,19 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-
                 if (data.success) {
-                    // ปิดโมเดล
-                    $('#myModal').modal('hide');
-
+                    // รีเฟรชหน้าหรือทำการปิด Modal ที่นี่
+                    console.log("ข้อมูลถูกอัปเดตสำเร็จ");
                     window.location.replace("{{ route('customfieldgeneral.edit') }}");
-                    window.location.reload();
                 } else {
-                    let errorMessage = document.getElementById("modal-error-message");
-                    errorMessage.classList.remove("d-none");
-                    errorMessage.innerText = data.message || "เกิดข้อผิดพลาดในการบันทึกข้อมูล";
+                    showErrorMessage("เกิดข้อผิดพลาดในการอัปเดตข้อมูล");
                 }
             })
             .catch(error => {
                 console.error("เกิดข้อผิดพลาด:", error);
+                showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
             });
+
     });
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
