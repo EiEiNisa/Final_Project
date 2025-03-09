@@ -494,6 +494,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const deleteModal = document.getElementById("deleteConfirmationModal");
     let fieldToDeleteId = null;
     let existingFields = document.getElementById("existing-fields");
+    let optionToDelete = null;
 
     showFormBtn.addEventListener("click", function() {
         customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
@@ -784,6 +785,43 @@ document.addEventListener("DOMContentLoaded", function() {
         $('#errorModal').modal('show');
     }
 
+    // ค้นหาปุ่มลบทั้งหมดและเพิ่ม Event Listener
+    document.querySelectorAll(".delete-option-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const fieldId = this.getAttribute("data-field-id");
+            const optionIndex = this.getAttribute("data-index");
+
+            optionToDelete = { fieldId, optionIndex };
+
+            // แสดง Modal
+            const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+            deleteModal.show();
+        });
+    });
+
+    // กดปุ่ม "ยืนยันลบ" ใน Modal
+    document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+        if (!optionToDelete) return;
+
+        fetch(`/custom-fields/options/${optionToDelete.fieldId}/${optionToDelete.optionIndex}`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload(); // โหลดหน้าใหม่หลังจากลบสำเร็จ
+        })
+        .catch(error => {
+            alert("เกิดข้อผิดพลาด: " + error);
+        });
+
+        optionToDelete = null;
+    });
+    
 });
 </script>
 @endsection
