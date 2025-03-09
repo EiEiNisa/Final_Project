@@ -52,14 +52,16 @@ class CustomFieldGeneralController extends Controller
     public function delete($id)
 {
     try {
-        $customField = CustomFieldGeneral::findOrFail($id); // หา ID ที่จะลบ
-        $customField->delete(); // ลบฟิลด์
+        // ใช้ CustomFieldGeneral แทน CustomField
+        $field = CustomFieldGeneral::findOrFail($id);
 
-        // ส่ง JSON response กลับไปแจ้งว่าเสร็จสิ้น
-        return response()->json(['success' => true]);
+        // ลบข้อมูล
+        $field->delete();
+
+        // ส่งผลลัพธ์กลับไปยังหน้า
+        return response()->json(['success' => true], 200);
     } catch (\Exception $e) {
-        Log::error($e->getMessage()); // log ข้อผิดพลาดในกรณีที่เกิด exception
-        return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
     }
 }
 

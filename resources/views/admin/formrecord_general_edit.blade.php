@@ -422,7 +422,12 @@ select {
                 </div>
                 <div class="modal-footer d-flex gap-2 justify-content-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-success" id="confirmSaveBtn">ยืนยัน</button>
+                    <form id="deleteForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <!-- กำหนดให้ใช้ HTTP method DELETE -->
+                        <button type="submit" class="btn btn-danger">ลบ</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -483,44 +488,21 @@ select {
 </div>
 </div>
 <script>
-$(document).ready(function() {
-    // เมื่อกดปุ่มลบรายการ
-    $('.delete-field-btn').on('click', function() {
-        var fieldId = $(this).data('id'); // รับค่า ID ของฟิลด์ที่ต้องการลบ
-        console.log('Field ID: ', fieldId); // ตรวจสอบค่า ID ที่ได้
-        $('#confirmDeleteBtn').data('id', fieldId); // เก็บ ID ไว้ในปุ่มยืนยันการลบ
-        $('#deleteConfirmationModal').modal('show'); // แสดง modal ยืนยันการลบ
-    });
-
-    // เมื่อกดปุ่มยืนยันการลบ
-    $('#confirmDeleteBtn').on('click', function() {
-        var fieldId = $(this).data('id'); // รับค่า ID ที่เก็บไว้ในปุ่ม
-        console.log("Deleting field with ID: " + fieldId); // ตรวจสอบค่าของ ID
-
-        // ส่งคำขอลบไปที่เซิร์ฟเวอร์
-        $.ajax({
-            url: '/admin/formrecord_general_edit/' + fieldId,
-            type: 'DELETE',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content') // ส่ง CSRF Token
-            },
-            success: function(response) {
-                console.log(response); // ตรวจสอบข้อมูลที่ได้รับจาก server
-                if (response.success) {
-                    $('#deleteConfirmationModal').modal('hide');
-                    $('.custom-field-group[data-id="' + fieldId + '"]')
-                .remove(); // ลบ div ที่ตรงกับ ID
-                } else {
-                    alert(response.message || 'เกิดข้อผิดพลาดในการลบข้อมูล');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error: " + error); // ตรวจสอบข้อผิดพลาด
-                alert('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
-            }
-        });
-    });
+// เมื่อคลิกปุ่มลบในตาราง
+$('#deleteConfirmationModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget); // ปุ่มที่เรียก modal
+    var fieldId = button.data('id'); // หาค่า id ของฟิลด์ที่ต้องการลบ
+    
+    // ตั้งค่าที่อยู่ของ URL ในฟอร์ม
+    var formAction = '/admin/formrecord_general_edit/' + fieldId;
+    $('#deleteForm').attr('action', formAction);
 });
+
+// เมื่อคลิกปุ่มลบใน modal
+$('#confirmDeleteBtn').click(function() {
+    $('#deleteForm').submit();
+});
+
 </script>
 
 <script>
