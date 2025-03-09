@@ -737,64 +737,68 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // กดปุ่ม "บันทึกแก้ไขรายการ" → แสดง Modal
-    document.querySelectorAll(".update-field-btn").forEach((button) => {
-        button.addEventListener("click", function() {
-            let fieldGroup = this.closest(".custom-field-group");
-            selectedFieldId = this.getAttribute("data-id");
+    document.addEventListener("DOMContentLoaded", function() {
+        let selectedFieldId = null;
+        let selectedFieldData = {};
 
-            selectedFieldData = {
-                label: fieldGroup.querySelector(".field-label").value,
-                name: fieldGroup.querySelector(".field-name").value,
-                field_type: fieldGroup.querySelector(".field-type").value,
-                options: []
-            };
+        document.querySelectorAll(".update-field-btn").forEach((button) => {
+            button.addEventListener("click", function() {
+                let fieldGroup = this.closest(".custom-field-group");
+                selectedFieldId = this.getAttribute("data-id");
 
-            if (["select", "radio", "checkbox"].includes(selectedFieldData.field_type)) {
-                fieldGroup.querySelectorAll(".option-input").forEach((input) => {
-                    if (input.value.trim() !== "") {
-                        selectedFieldData.options.push(input.value.trim());
-                    }
-                });
-            }
+                selectedFieldData = {
+                    label: fieldGroup.querySelector(".field-label").value,
+                    name: fieldGroup.querySelector(".field-name").value,
+                    field_type: fieldGroup.querySelector(".field-type").value,
+                    options: []
+                };
 
-            // ซ่อนข้อความ error (ถ้ามี)
-            document.getElementById("modal-error-message").classList.add("d-none");
-
-            // แสดง Modal
-            let confirmModal = new bootstrap.Modal(document.getElementById("confirmSaveModal"));
-            confirmModal.show();
-        });
-    });
-
-    // เมื่อกด "ยืนยัน" ใน Modal ให้ส่งข้อมูลไปยังเซิร์ฟเวอร์
-    document.getElementById("confirmSaveBtn").addEventListener("click", function() {
-        if (!selectedFieldId || !selectedFieldData) return;
-
-        fetch(`/custom-fields/update/${selectedFieldId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        "content"),
-                },
-                body: JSON.stringify(selectedFieldData),
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    // แสดงข้อผิดพลาดใน Modal
-                    let errorBox = document.getElementById("modal-error-message");
-                    errorBox.innerHTML = data.message;
-                    errorBox.classList.remove("d-none");
+                if (["select", "radio", "checkbox"].includes(selectedFieldData
+                        .field_type)) {
+                    fieldGroup.querySelectorAll(".option-input").forEach((input) => {
+                        if (input.value.trim() !== "") {
+                            selectedFieldData.options.push(input.value.trim());
+                        }
+                    });
                 }
-            })
-            .catch((error) => {
-                let errorBox = document.getElementById("modal-error-message");
-                errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
-                errorBox.classList.remove("d-none");
+
+                document.getElementById("modal-error-message").classList.add("d-none");
+
+                let confirmModal = new bootstrap.Modal(document.getElementById(
+                    "confirmSaveModal"));
+                confirmModal.show();
             });
+        });
+
+        document.getElementById("confirmSaveBtn").addEventListener("click", function() {
+            if (!selectedFieldId || !selectedFieldData) return;
+
+            fetch(`/custom-fields/update/${selectedFieldId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute("content"),
+                    },
+                    body: JSON.stringify(selectedFieldData),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        // ✅ รีเฟรชหน้าและให้ session success ทำงาน
+                        window.location.href = window.location.pathname + "?success=1";
+                    } else {
+                        let errorBox = document.getElementById("modal-error-message");
+                        errorBox.innerHTML = data.message;
+                        errorBox.classList.remove("d-none");
+                    }
+                })
+                .catch((error) => {
+                    let errorBox = document.getElementById("modal-error-message");
+                    errorBox.innerHTML = "❌ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
+                    errorBox.classList.remove("d-none");
+                });
+        });
     });
 });
 </script>
