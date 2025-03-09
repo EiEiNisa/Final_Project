@@ -83,36 +83,34 @@
         
         // Create or update age chart
         if (!ageChart) {
-            const ageChart = new Chart(document.getElementById("ageChart"), {
+           const customBackgroundPlugin = {
+    id: "customCanvasBackgroundColor",
+    beforeDraw: (chart) => {
+        const ctx = chart.canvas.getContext("2d");
+        ctx.save();
+        ctx.fillStyle = "#003366"; // เปลี่ยนพื้นหลังเป็นสีน้ำเงินเข้ม
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+    }
+};
+
+const ageChart = new Chart(document.getElementById("ageChart"), {
     type: "bar",
     data: {
         labels: data.age_labels,
         datasets: [{
             label: "จำนวนสมาชิก",
             data: data.age_data,
-            backgroundColor: "#ffffff"  // สีของแท่งกราฟ
+            backgroundColor: "#ffffff"
         }]
     },
     options: {
         responsive: true,
-        maintainAspectRatio: true,
-        scales: {
-            x: {
-                grid: {
-                    color: "rgba(255, 255, 255, 0.2)", // สีเส้นกริด
-                    backgroundColor: "#003366" // เปลี่ยนพื้นหลังของ chart area
-                }
-            },
-            y: {
-                grid: {
-                    color: "rgba(255, 255, 255, 0.2)", 
-                    backgroundColor: "#003366"
-                },
-                beginAtZero: true
-            }
-        }
-    }
+        maintainAspectRatio: true
+    },
+    plugins: [customBackgroundPlugin] // ใช้ plugin ที่สร้างขึ้น
 });
+
 
         } else {
             ageChart.data.labels = data.age_labels;
