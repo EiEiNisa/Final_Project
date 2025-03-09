@@ -46,13 +46,14 @@ class FormController extends Controller
     }
 
     // จัดการไฟล์วิดีโอ
-    $videoPath = null;
-    if ($request->hasFile('video_upload')) {
-        $video = $request->file('video_upload');
-        $videoName = time() . '.' . $video->getClientOriginalExtension();
-        $videoDestinationPath = public_path('videos');
-        $video->move($videoDestinationPath, $videoName); // เก็บไฟล์ในโฟลเดอร์ public/videos
-        $videoPath = 'videos/' . $videoName;
+    // จัดการไฟล์วิดีโอ
+$videoPath = null;
+if ($request->hasFile('video_upload')) {
+    $video = $request->file('video_upload');
+    $videoName = time() . '.' . $video->getClientOriginalExtension();
+    $videoDestinationPath = public_path('upload'); // เปลี่ยนจาก 'videos' เป็น 'upload'
+    $video->move($videoDestinationPath, $videoName); 
+    $videoPath = 'upload/' . $videoName; // อัปเดตพาธให้สอดคล้องกับที่เก็บไฟล์
     }
 
     // เก็บลิงก์วิดีโอจาก YouTube (ถ้ามี)
