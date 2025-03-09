@@ -554,8 +554,8 @@ form {
                 @elseif($customField->field_type == 'select')
                 @php
                 // ตรวจสอบว่า options เป็น string หรือไม่ ถ้าใช่ให้แปลงเป็น array
-                $options = is_array($customField->options) ? $customField->options : json_decode($customField->options,
-                true);
+                $options = is_string($customField->options) ? json_decode($customField->options, true) :
+                $customField->options;
                 @endphp
                 <select name="{{ $customField->name }}" class="form-control">
                     @foreach($options as $option)
