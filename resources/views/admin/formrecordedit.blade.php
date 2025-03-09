@@ -787,7 +787,7 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then((data) => {
                 if (data.success) {
-                    window.location.href = "/custom-fields/edit?success=1";
+                    window.location.replace("{{ route('customfields.edit') }}");
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
                     errorBox.innerHTML = data.message;
