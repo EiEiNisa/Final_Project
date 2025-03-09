@@ -495,8 +495,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     fieldContainer.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
-            let optionContainer = event.target.closest('.form-group').querySelector('.option-container');
-            let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest('.custom-field-group'));
+            let optionContainer = event.target.closest('.form-group').querySelector(
+            '.option-container');
+            let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
+                '.custom-field-group'));
 
             let newOption = document.createElement("input");
             newOption.type = "text";
@@ -514,8 +516,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     fieldContainer.addEventListener("change", function(event) {
         if (event.target && event.target.name === "field_type[]") {
-            let optionsGroup = event.target.closest('.custom-field-group').querySelector('.options-group');
-            if (event.target.value === "select" || event.target.value === "radio" || event.target.value === "checkbox") {
+            let optionsGroup = event.target.closest('.custom-field-group').querySelector(
+                '.options-group');
+            if (event.target.value === "select" || event.target.value === "radio" || event.target
+                .value === "checkbox") {
                 optionsGroup.style.display = "block";
             } else {
                 optionsGroup.style.display = "none";
@@ -527,18 +531,22 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");
 
-            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
+                'deleteConfirmationModal'));
             deleteConfirmationModal.show();
 
             document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
                 try {
-                    const response = await fetch(`/admin/formrecord_general_edit/${fieldId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    });
+                    const response = await fetch(
+                        `/admin/formrecord_general_edit/${fieldId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute(
+                                    'content')
+                            }
+                        });
 
                     const result = await response.json();
 
@@ -560,12 +568,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         successAlert.remove();
                     } else {
-                        throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
+                        throw new Error(result.message ||
+                            "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    let errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-                    document.querySelector("#errorModal .modal-body").innerHTML = error.message || "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
+                    let errorModal = new bootstrap.Modal(document.getElementById(
+                        'errorModal'));
+                    document.querySelector("#errorModal .modal-body").innerHTML = error
+                        .message ||
+                        "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
                     errorModal.show();
                 }
             });
@@ -607,28 +619,34 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!selectedFieldId || !selectedFieldData) return;
 
         fetch(`/admin/formrecord_general_edit/${selectedFieldId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-            },
-            body: JSON.stringify(selectedFieldData),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-                window.location.replace("{{ route('customfieldgeneral.edit') }}");
-            } else {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        "content"),
+                },
+                body: JSON.stringify(selectedFieldData),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // แสดงข้อความ success
+                    let successMessage = document.getElementById("success");
+                    successMessage.classList.remove("d-none");
+
+                    window.location.replace("{{ route('customfieldgeneral.edit') }}");
+
+                } else {
+                    let errorBox = document.getElementById("modal-error-message");
+                    errorBox.innerHTML = data.message;
+                    errorBox.classList.remove("d-none");
+                }
+            })
+            .catch((error) => {
                 let errorBox = document.getElementById("modal-error-message");
-                errorBox.innerHTML = data.message;
+                errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
                 errorBox.classList.remove("d-none");
-            }
-        })
-        .catch((error) => {
-            let errorBox = document.getElementById("modal-error-message");
-            errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
-            errorBox.classList.remove("d-none");
-        });
+            });
     });
 });
 </script>

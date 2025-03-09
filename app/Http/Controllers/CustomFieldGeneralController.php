@@ -55,7 +55,8 @@ class CustomFieldGeneralController extends Controller
             $customField = CustomFieldGeneral::findOrFail($id);
             $customField->delete();
 
-            return response()->json(['success' => true, 'mesฟsage' => 'ลบฟิลด์สำเร็จ']);
+            session()->flash('success', 'ลบรายการสำเร็จ');
+            return response()->json(['success' => true]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
         }
@@ -80,7 +81,8 @@ class CustomFieldGeneralController extends Controller
                 'options' => json_encode($request->options ?? []),
             ]);
 
-            return response()->json(['success' => true]);
+            session()->flash('success', 'อัปเดตรายการสำเร็จ');
+            return response()->json(['success' => true], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการอัปเดต'], 500);
         }
