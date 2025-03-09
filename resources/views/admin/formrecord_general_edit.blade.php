@@ -482,175 +482,56 @@ select {
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-
-    let showFormBtn = document.getElementById("show-form-btn");
-
     let customFieldForm = document.getElementById("custom-field-form");
-
     let addFieldBtn = document.getElementById("add-field-btn");
-
     let fieldContainer = document.getElementById("field-container");
-
     let selectedFieldId = null;
-
     let selectedFieldData = {};
-
     let currentFieldId;
-
     let currentOptionIndex;
-
     let deleteFieldId = null;
 
-
-
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
-
     showFormBtn.addEventListener("click", function() {
-
         customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
-
     });
-
-
 
     addFieldBtn.addEventListener("click", function() {
-
         let fieldIndex = fieldContainer.children.length;
-
         let fieldHTML = `
-
-            <div class="form-group custom-field-group">
-
-                <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
-
-                <input type="text" class="form-control field-label" name="label[]" required>
-
-
-
-                <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
-
-                <input type="text" class="form-control field-name" name="name[]" required>
-
-
-
-                <label class="input-label">รูปแบบข้อมูล</label>
-
-                <select class="form-control field-type" name="field_type[]" required>
-
-                    <option value="text">ช่องกรอกข้อความ</option>
-
-                    <option value="select">เลือกจากรายการ</option>
-
-                    <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
-
-                    <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
-
-                </select>
-
-
-
-                <div class="form-group options-group" style="display: none;">
-
-                    <label class="input-label">ตัวเลือก</label>
-
-                    <div class="option-container">
-
-                        <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
-
-                    </div>
-
-                    <div class="button-group">
-
-                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-
-                    </div>
-
-                </div>
-
-                <br>
-
-                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
-
-            </div>
-
-        `;
-
+            <div class="form-group custom-field-group">
+                <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
+                <input type="text" class="form-control field-label" name="label[]" required>
+                <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
+                <input type="text" class="form-control field-name" name="name[]" required>
+                <label class="input-label">รูปแบบข้อมูล</label>
+                <select class="form-control field-type" name="field_type[]" required>
+                    <option value="text">ช่องกรอกข้อความ</option>
+                    <option value="select">เลือกจากรายการ</option>
+                    <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
+                    <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
+                </select>
+                <div class="form-group options-group" style="display: none;">
+                    <label class="input-label">ตัวเลือก</label>
+                    <div class="option-container">
+                        <input type="text" class="form-control option-input" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                    </div>
+                </div>
+                <br>
+                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
+            </div>
+        `;
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
-
     });
 
-
-
-    fieldContainer.addEventListener("click", function(event) {
-
-        if (event.target && event.target.classList.contains("add-option-btn")) {
-
-            let optionContainer = event.target.closest('.form-group').querySelector(
-
-                '.option-container');
-
-            let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
-
-                '.custom-field-group'));
-
-
-
-            let newOption = document.createElement("input");
-
-            newOption.type = "text";
-
-            newOption.className = "form-control option-input rounded-pill mt-2";
-
-            newOption.name = `options[${fieldIndex}][]`;
-
-            newOption.placeholder = "เพิ่มค่าตัวเลือก";
-
-
-
-            optionContainer.appendChild(newOption);
-
-        }
-
-
-
-        if (event.target && event.target.classList.contains("delete-field-btn")) {
-
-            event.target.closest('.custom-field-group').remove();
-
-        }
-
-    });
-
-
-
-    fieldContainer.addEventListener("change", function(event) {
-
-        if (event.target && event.target.name === "field_type[]") {
-
-            let optionsGroup = event.target.closest('.custom-field-group').querySelector(
-
-                '.options-group');
-
-            if (event.target.value === "select" || event.target.value === "radio" || event.target
-
-                .value === "checkbox") {
-
-                optionsGroup.style.display = "block";
-
-            } else {
-
-                optionsGroup.style.display = "none";
-
-            }
-
-        }
-
-    });
-
+    // การลบฟิลด์
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             deleteFieldId = event.target.getAttribute("data-id");
-            console.log("Delete Field ID:", deleteFieldId); // ดูว่า ID ถูกรับค่ามาหรือไม่
+            console.log("Delete Field ID:", deleteFieldId);
 
             let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
                 'deleteConfirmationModal'));
@@ -658,17 +539,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    document.querySelector("#existing-fields").addEventListener("click", function(event) {
-        if (event.target && event.target.classList.contains("delete-field-btn")) {
-            deleteFieldId = event.target.getAttribute("data-id");
-            console.log("Delete Field ID:", deleteFieldId); // ดูว่า ID ถูกรับค่ามาหรือไม่
-
-            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
-                'deleteConfirmationModal'));
-            deleteConfirmationModal.show();
-        }
-    });
-
+    // ยืนยันการลบ
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
         console.log("Delete Field ID:", deleteFieldId); // ตรวจสอบค่าของ deleteFieldId
 
@@ -681,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // ตรวจสอบ CSRF Token ใน console
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
                 'content');
-            console.log('CSRF Token:', csrfToken); // ตรวจสอบ CSRF Token
+            console.log('CSRF Token:', csrfToken);
 
             const response = await fetch(`/admin/formrecord_general_edit/${deleteFieldId}`, {
                 method: 'DELETE',
@@ -699,7 +570,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             const result = await response.json();
-            console.log("Result:", result); // ตรวจสอบผลลัพธ์จาก server
+            console.log("Result:", result);
 
             if (result.success) {
                 // ซ่อน Modal หลังจากลบสำเร็จ
@@ -731,7 +602,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
-
 
     document.querySelectorAll(".update-field-btn").forEach((button) => {
 
