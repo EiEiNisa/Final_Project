@@ -658,6 +658,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            deleteFieldId = event.target.getAttribute("data-id");
+            console.log("Delete Field ID:", deleteFieldId); // ดูว่า ID ถูกรับค่ามาหรือไม่
+
+            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
+                'deleteConfirmationModal'));
+            deleteConfirmationModal.show();
+        }
+    });
+
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
         console.log("Delete Field ID:", deleteFieldId); // ตรวจสอบค่าของ deleteFieldId
 
@@ -691,19 +702,20 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Result:", result); // ตรวจสอบผลลัพธ์จาก server
 
             if (result.success) {
+                // ซ่อน Modal หลังจากลบสำเร็จ
                 let deleteConfirmationModal = bootstrap.Modal.getInstance(document.getElementById(
                     'deleteConfirmationModal'));
                 if (deleteConfirmationModal) {
                     deleteConfirmationModal.hide();
                 }
 
+                // ลบ element จากหน้า
                 const elementToRemove = document.querySelector(`[data-id="${deleteFieldId}"]`);
                 if (elementToRemove) {
                     elementToRemove.remove();
                 }
 
                 alert("ลบฟิลด์สำเร็จ!");
-                window.location.reload(); // รีเฟรชหน้าใหม่
             } else {
                 throw new Error(result.message || "ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง");
             }
@@ -719,6 +731,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
+
 
     document.querySelectorAll(".update-field-btn").forEach((button) => {
 

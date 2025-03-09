@@ -50,17 +50,21 @@ class CustomFieldGeneralController extends Controller
     }
 
     public function delete($id)
-    {
-        try {
-            $customField = CustomFieldGeneral::findOrFail($id);
-            $customField->delete();
+{
+    try {
+        $customField = CustomFieldGeneral::findOrFail($id);
+        $customField->delete();
 
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            \Log::error($e->getMessage()); // บันทึก Error ใน Log
-            return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
-        }
+        // ส่งผลลัพธ์เป็น JSON หากลบสำเร็จ
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        \Log::error($e->getMessage()); // บันทึก Error ใน Log
+
+        // ส่งข้อผิดพลาดเป็น JSON หากเกิดปัญหา
+        return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
     }
+}
+
 
     public function deleteOption($fieldId, $optionIndex)
 {
