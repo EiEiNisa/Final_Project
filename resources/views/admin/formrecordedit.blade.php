@@ -490,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function() {
     addFieldBtn.addEventListener("click", function() {
         let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
         let fieldHTML = `
-            <div class="form-group">
+            <div class="form-group custom-field-group">
                 <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
                 <input type="text" class="form-control" name="label[]" required>
 
