@@ -29,10 +29,11 @@
             <input type="text" class="form-control" id="title" name="title" required style="border: 2px solid #5a9fcf; transition: 0.3s;" onfocus="this.style.backgroundColor='#e0f2ff'" onblur="this.style.backgroundColor='white'">
         </div>
         
-        <div class="mb-3">
-            <label for="image" class="form-label fw-bold" style="color: #005f99;">อัปโหลดรูปภาพ</label>
-            <input type="file" class="form-control" id="image" name="image" accept="image/*" required style="border: 2px solid #5a9fcf;">
-        </div>
+      <div class="mb-3">
+            <label for="images" class="form-label fw-bold" style="color: #005f99;">อัปโหลดรูปภาพ (อัปโหลดได้หลายไฟล์)</label>
+            <input type="file" class="form-control" id="images" name="images[]" accept="image/*" multiple required style="border: 2px solid #5a9fcf;">
+       </div>
+
         
         <div class="mb-3">
             <label for="description" class="form-label fw-bold" style="color: #005f99;">คำอธิบายในโพสต์</label>
