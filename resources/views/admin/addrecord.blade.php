@@ -1137,8 +1137,9 @@ form {
 
             @foreach($customFieldsGeneral as $field)
             <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center p-3 w-100">
-                    <h4 class="form-label fw-bold" style="color:#020364;" for="{{ $field->name }}" >{{ $field->label }}</h4>
+                <div class="d-flex justify-content-between align-items-center p-3 w-100 mb-0">
+                    <h3 class="form-label fw-bold" style="color:#020364;" for="{{ $field->name }}">{{ $field->label }}
+                    </h3>
                 </div>
                 <div class="col-12">
                     @if($field->field_type == 'text')
@@ -1158,7 +1159,8 @@ form {
                             <input type="{{ $field->field_type }}"
                                 name="{{ $field->name }}{{ $field->field_type == 'checkbox' ? '[]' : '' }}"
                                 value="{{ $option }}" class="form-check-input">
-                            <label style="font-size: 15px; font-weight: bold; color: #020364; text-align: left;">{{ $option }}</label>
+                            <label
+                                style="font-size: 15px; font-weight: bold; color: #020364; text-align: left;">{{ $option }}</label>
                         </div>
                         @endforeach
                     </div>
