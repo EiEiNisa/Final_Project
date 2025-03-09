@@ -703,46 +703,51 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-            let optionItem = this.closest('.option-item');
-            let fieldId = optionItem.closest('.custom-field-group').dataset.id;
-            let optionIndex = optionItem.dataset.index;
+    button.addEventListener('click', function() {
+        let optionItem = this.closest('.option-item');
+        let fieldId = optionItem.closest('.custom-field-group').dataset.id;
+        let optionIndex = optionItem.dataset.index;
 
-            console.log('Field ID:', fieldId); // ตรวจสอบค่าของ fieldId
-            console.log('Option Index:', optionIndex); // ตรวจสอบค่าของ optionIndex
+        console.log('Field ID:', fieldId);
+        console.log('Option Index:', optionIndex);
 
-            // ตั้งค่าการยืนยันการลบ
-            document.getElementById("confirmDeleteBtn").onclick = function() {
-                // ส่งคำขอลบไปยังเซิร์ฟเวอร์
-                fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute("content"),
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log("ตัวเลือกถูกลบสำเร็จ");
+        document.getElementById("confirmDeleteBtn").onclick = function() {
+            fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("ตัวเลือกถูกลบสำเร็จ");
 
-                            // ลบตัวเลือกจากหน้าเว็บ (DOM)
-                            optionItem.remove();
+                    // แสดงข้อความแจ้งเตือน
+                    let successMessage = document.getElementById("success");
+                    successMessage.classList.remove("d-none");
 
-                            // ปิด Modal
-                            $('#deleteModal').modal('hide');
-                        } else {
-                            console.error("เกิดข้อผิดพลาดในการลบตัวเลือก");
-                        }
-                    })
-                    .catch(error => console.error("เกิดข้อผิดพลาดในการลบตัวเลือก", error));
-            };
+                    // ลบตัวเลือกจากหน้าเว็บ (DOM)
+                    optionItem.remove();
 
-            // แสดง Modal
-            $('#deleteModal').modal('show');
-        });
+                    // ปิด Modal
+                    $('#deleteModal').modal('hide');
+
+                    // หน่วงเวลาการรีเฟรชหน้า
+                    setTimeout(function() {
+                        window.location.reload(); // รีเฟรชหน้า
+                    }, 1000); // 1 วินาที
+                } else {
+                    console.error("เกิดข้อผิดพลาดในการลบตัวเลือก");
+                }
+            })
+            .catch(error => console.error("เกิดข้อผิดพลาดในการลบตัวเลือก", error));
+        };
+
+        $('#deleteModal').modal('show');
     });
+});
 });
 </script>
 @endsection
