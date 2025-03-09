@@ -66,34 +66,25 @@ class CustomFieldGeneralController extends Controller
     }
 
     public function deleteOption($fieldId, $optionIndex)
-    {
-        // ค้นหาฟิลด์ที่ต้องการแก้ไข
+{
+    try {
         $field = CustomFieldGeneral::findOrFail($fieldId);
-
-        // แปลงตัวเลือกจาก JSON เป็น array
         $options = json_decode($field->options, true);
 
-        // ตรวจสอบว่า $optionIndex อยู่ใน array หรือไม่
-        if (isset($options[$optionIndex])) {
-            // ลบตัวเลือกจาก array
+        if (is_array($options) && isset($options[$optionIndex])) {
             unset($options[$optionIndex]);
-
-            // รีดัช (Reindex) array เพื่อให้ไม่มีค่า key ที่หายไป
             $options = array_values($options);
-
-            // แปลง array กลับเป็น JSON และอัปเดตฟิลด์
             $field->options = json_encode($options);
-
-            // บันทึกการเปลี่ยนแปลง
             $field->save();
-
             session()->flash('success', 'ลบรายการสำเร็จ');
             return response()->json(['success' => true], 200);
         }
 
-        // หากไม่พบตัวเลือกที่ต้องการลบ
         return response()->json(['success' => false, 'message' => 'ไม่พบตัวเลือกที่ต้องการลบ'], 404);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการลบ: ' . $e->getMessage()], 500);
     }
+}
 
     public function update(Request $request, $id)
     {

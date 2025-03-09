@@ -717,14 +717,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
-            // หาตัวเลือกที่ถูกคลิก
             let optionItem = this.closest('.option-item');
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
-            let optionIndex = optionItem.dataset.index;
+            let optionIndex = parseInt(optionItem.dataset.index); // แปลงเป็น integer
 
-            // ตั้งค่าการยืนยันการลบ
+            if (isNaN(optionIndex)) {
+                console.error("optionIndex ไม่ถูกต้อง");
+                return;
+            }
+
             document.getElementById("confirmDeleteBtn").onclick = function() {
-                // ส่งคำขอลบไปยังเซิร์ฟเวอร์
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
                         headers: {
@@ -737,20 +739,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     .then(data => {
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
-
-                            // ลบตัวเลือกจากหน้าเว็บ
                             document.querySelector(
-                                    `.option-item[data-index="${optionIndex}"]`)
-                                .remove();
-
-                            // ปิด Modal
+                                `.option-item[data-index="${optionIndex}"]`)
+                            .remove();
                             let deleteModal = new bootstrap.Modal(document
                                 .getElementById('deleteModal'));
                             deleteModal.hide();
-
-                            // รีเฟรชหน้า
-                            window.location.replace(
-                                "{{ route('customfieldgeneral.edit') }}");
+                            window.location.reload(); // รีเฟรชหน้า
                         } else {
                             console.error("เกิดข้อผิดพลาดในการลบตัวเลือก:", data
                                 .message);
@@ -761,13 +756,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
             };
 
-            // แสดง Modal
             let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show();
         });
     });
 
-    // เมื่อกดปุ่ม "ยกเลิก" จะปิด Modal
     document.querySelector('#deleteModal .btn-secondary').addEventListener('click', function() {
         let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         deleteModal.hide();
