@@ -680,7 +680,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (data.success) {
                     let successMessage = document.createElement('div');
-                    successMessage.classList.add('alert', 'alert-success');
 
                     document.body.appendChild(successMessage);
 
