@@ -568,15 +568,25 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // การยืนยันการลบฟิลด์
-    document.querySelector("#existing-fields").addEventListener("click", function(event) {
-        if (event.target && event.target.classList.contains("delete-field-btn")) {
-            deleteFieldId = event.target.getAttribute("data-id");
-            console.log("Delete Field ID:", deleteFieldId);
-            let deleteConfirmationModal = new bootstrap.Modal(document.getElementById(
-                'deleteConfirmationModal'));
-            deleteConfirmationModal.show();
+    document.getElementById("existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("add-option-btn")) {
+            let fieldGroup = event.target.closest('.custom-field-group');
+            let fieldId = fieldGroup.getAttribute("data-id");
+            let optionContainer = fieldGroup.querySelector('.option-container');
+            
+            // สร้างช่องกรอกข้อมูลสำหรับตัวเลือกใหม่
+            let newOption = document.createElement("div");
+            newOption.classList.add("option-item");
+            newOption.innerHTML = `
+                <input type="text" class="form-control option-input" name="options[${fieldId}][]" placeholder="เพิ่มค่าตัวเลือก">
+                <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
+            `;
+            
+            // เพิ่มตัวเลือกใหม่ลงใน container
+            optionContainer.appendChild(newOption);
         }
     });
+
 
     // การลบฟิลด์หลังจากยืนยัน
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
