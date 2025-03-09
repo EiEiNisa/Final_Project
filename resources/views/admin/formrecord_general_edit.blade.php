@@ -707,19 +707,6 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             let optionItem = this.closest('.option-item');
-            currentFieldId = optionItem.closest('.custom-field-group').dataset.id;
-            currentOptionIndex = optionItem.dataset.index;
-
-            console.log('Field ID:', currentFieldId);
-            console.log('Option Index:', currentOptionIndex);
-
-            $('#deleteModal').modal('show');
-        });
-    });
-
-    document.querySelectorAll('.delete-option-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-            let optionItem = this.closest('.option-item');
             let fieldId = optionItem.closest('.custom-field-group').dataset.id;
             let optionIndex = optionItem.dataset.index;
 
