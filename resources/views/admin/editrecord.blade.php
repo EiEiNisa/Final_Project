@@ -522,18 +522,6 @@ form {
             }
             </script>
 
-            <div class="form-group1">
-                <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
-                <input type="tel" class="form-control" id="phone" name="phone"
-                    value="{{ old('phone', $recorddata->phone) }}" maxlength="10">
-            </div>
-
-            <div class="form-group1">
-                <label for="idline" class="form-label">ID Line</label>
-                <input type="text" class="form-control" id="idline" name="idline"
-                    value="{{ old('idline', $recorddata->idline) }}">
-            </div>
-
             @foreach($customFields as $customField)
             <div class="form-group">
                 <label for="{{ $customField->name }}">{{ $customField->label }}</label>
@@ -543,7 +531,7 @@ form {
                     value="{{ $customFieldValuesMap[$customField->id] ?? '' }}">
                 @elseif($customField->field_type == 'checkbox')
                 @php
-                // แปลงค่าใน json_decode ให้เป็น array สำหรับ checkbox
+                // แปลงค่าจาก JSON เป็น Array สำหรับ checkbox
                 $checkedValues = json_decode($customFieldValuesMap[$customField->id] ?? '[]', true);
                 @endphp
                 @foreach($customField->options as $option)
@@ -553,7 +541,7 @@ form {
                 @endforeach
                 @elseif($customField->field_type == 'select')
                 @php
-                // ตรวจสอบว่า options เป็น string หรือไม่ ถ้าใช่ให้แปลงเป็น array
+                // ตรวจสอบว่า $customField->options เป็น string หรือไม่ ถ้าเป็น string แปลงให้เป็น array
                 $options = is_string($customField->options) ? json_decode($customField->options, true) :
                 $customField->options;
                 @endphp
