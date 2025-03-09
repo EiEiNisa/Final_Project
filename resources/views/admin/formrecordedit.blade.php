@@ -622,12 +622,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let deleteFieldId = null;
     let fieldToDeleteId = null;
 
-    let showFormBtn = document.getElementById("show-form-btn");
-    let customFieldForm = document.getElementById("custom-field-form");
-    let addFieldBtn = document.getElementById("add-field-btn");
-    let fieldContainer = document.getElementById("field-container");
-    let fieldToDeleteId = null;
-
     // Toggle form visibility
     showFormBtn.addEventListener("click", function() {
         customFieldForm.style.display = customFieldForm.style.display === "none" ? "block" : "none";
