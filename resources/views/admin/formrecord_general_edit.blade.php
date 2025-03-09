@@ -145,12 +145,20 @@ select {
     gap: 10px;
 }
 
-.option-input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* ระยะห่างระหว่าง input และปุ่มลบ */
 }
+
+.option-item input {
+    flex: 1; /* ให้ input ใช้พื้นที่เหลือทั้งหมด */
+}
+
+.option-item button {
+    flex-shrink: 0; /* ไม่ให้ปุ่มลบหดตัว */
+}
+
 
 .button-group {
     display: flex;
@@ -318,132 +326,131 @@ select {
         <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back">กลับ</a>
     </div>
 
-    <div class="card-body">
-        <div id="existing-fields">
-            @foreach($customFields as $field)
-            <div class="form-group custom-field-group" data-id="{{ $field->id }}">
-                <div class="left-column">
-                    <label class="input-label">ชื่อหัวข้อ</label>
-                    <input type="text" class="form-control field-label" name="label[]" value="{{ $field->label }}"
-                        required>
-                    <label class="input-label">ชื่อตัวแปร</label>
-                    <input type="text" class="form-control field-name" name="name[]" value="{{ $field->name }}"
-                        required>
-                </div>
+    <div id="existing-fields">
+        @foreach($customFields as $field)
+        <div class="form-group custom-field-group" data-id="{{ $field->id }}">
+            <div class="left-column">
+                <label class="input-label">ชื่อหัวข้อ</label>
+                <input type="text" class="form-control field-label" name="label[]" value="{{ $field->label }}" required>
+                <label class="input-label">ชื่อตัวแปร</label>
+                <input type="text" class="form-control field-name" name="name[]" value="{{ $field->name }}" required>
+            </div>
 
-                <div class="right-column">
-                    <label class="input-label">รูปแบบข้อมูล</label>
-                    <select class="form-control field-type" name="field_type[]" required>
-                        <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ
-                        </option>
-                        <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
-                        </option>
-                        <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>
-                            ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
-                        <option value="radio" {{ $field->field_type == 'radio' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
-                            (เลือกได้รายการเดียว)</option>
-                    </select>
+            <div class="right-column">
+                <label class="input-label">รูปแบบข้อมูล</label>
+                <select class="form-control field-type" name="field_type[]" required>
+                    <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ
+                    </option>
+                    <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
+                    </option>
+                    <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>
+                        ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
+                    <option value="radio" {{ $field->field_type == 'radio' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
+                        (เลือกได้รายการเดียว)</option>
+                </select>
 
-                    <div class="form-group options-group"
-                        style="{{ in_array($field->field_type, ['select', 'radio', 'checkbox']) ? 'display: block;' : 'display: none;' }}">
-                        <label class="input-label">ตัวเลือก</label>
-                        <div class="option-container">
-                            @foreach(json_decode($field->options) ?? [] as $option)
+                <div class="form-group options-group"
+                    style="{{ in_array($field->field_type, ['select', 'radio', 'checkbox']) ? 'display: block;' : 'display: none;' }}">
+                    <label class="input-label">ตัวเลือก</label>
+                    <div class="option-container">
+                        @foreach(json_decode($field->options) ?? [] as $index => $option)
+                        <div class="option-item" data-index="{{ $index }}">
                             <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
                                 value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
-                            @endforeach
+                            <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
                         </div>
-                        <div class="button-group">
-                            <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
-                        </div>
+                        @endforeach
                     </div>
-                </div>
-
-                <br>
-                <div class="button-group">
-                    <button type="button" class="btn btn-success update-field-btn"
-                        data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
-                    <button type="button" class="btn btn-danger delete-field-btn"
-                        data-id="{{ $field->id }}">ลบรายการ</button>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <!-- Modal ยืนยันการบันทึก -->
-        <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmSaveLabel">ยืนยันการบันทึก</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="modal-error-message" class="alert alert-danger d-none"></div>
-                        คุณต้องการบันทึกการแก้ไขรายการนี้หรือไม่?
-                    </div>
-                    <div class="modal-footer d-flex gap-2 justify-content-end">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" class="btn btn-success" id="confirmSaveBtn">ยืนยัน</button>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal for Delete Confirmation -->
-        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
-            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        คุณต้องการลบฟิลด์นี้หรือไม่?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
-                    </div>
-                </div>
+            <br>
+            <div class="button-group">
+                <button type="button" class="btn btn-success update-field-btn"
+                    data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
+                <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
+                    data-toggle="modal" data-target="#deleteModal">ลบรายการ</button>
             </div>
         </div>
+        @endforeach
+    </div>
 
-        <!-- Modal for Error -->
-        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="errorModalLabel">เกิดข้อผิดพลาด</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                    </div>
+    <!-- Modal ยืนยันการบันทึก -->
+    <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmSaveLabel">ยืนยันการบันทึก</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-error-message" class="alert alert-danger d-none"></div>
+                    คุณต้องการบันทึกการแก้ไขรายการนี้หรือไม่?
+                </div>
+                <div class="modal-footer d-flex gap-2 justify-content-end">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-success" id="confirmSaveBtn">ยืนยัน</button>
                 </div>
             </div>
-        </div>
-
-        <br>
-        <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่มรายการ</button>
-
-        <div id="custom-field-form" style="display: none;">
-            <form action="{{ route('customfieldgeneral.store') }}" method="POST">
-                @csrf
-                <div id="field-container">
-                </div>
-
-                <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+ เพิ่มรายการ</button>
-
-                <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
-            </form>
         </div>
     </div>
+
+    <!-- Modal for Delete Confirmation -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">ยืนยันการลบ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    คุณต้องการลบฟิลด์นี้หรือไม่?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Error -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">เกิดข้อผิดพลาด</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <button type="button" class="btn btn-primary rounded-pill mb-3" id="show-form-btn">เพิ่มรายการ</button>
+
+    <div id="custom-field-form" style="display: none;">
+        <form action="{{ route('customfieldgeneral.store') }}" method="POST">
+            @csrf
+            <div id="field-container">
+            </div>
+
+            <button type="button" class="btn btn-outline-secondary mt-3" id="add-field-btn">+ เพิ่มรายการ</button>
+
+            <button type="submit" class="btn btn-primary rounded-pill mt-3 w-100">บันทึก</button>
+        </form>
+    </div>
+</div>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
