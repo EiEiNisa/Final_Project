@@ -403,8 +403,16 @@ form {
 
             <div class="form-group1">
                 <label for="id_card">เลขบัตรประจำตัวประชาชน <span style="color: red;">*</span></label>
-                <input type="number" class="form-control" id="id_card" name="id_card" pattern="^[1-9]\d{12}$"
-                    maxlength="13" placeholder="กรอกเลขบัตรประจำตัวประชาชน" required>
+                <input type="number" class="form-control" id="id_card" name="id_card"
+                    placeholder="กรอกเลขบัตรประจำตัวประชาชน" required oninput="this.value = this.value.slice(0, 13)" />
+
+                <script>
+                document.getElementById('id_card').addEventListener('input', function() {
+                    if (this.value.length > 13) {
+                        this.value = this.value.slice(0, 13);
+                    }
+                });
+                </script>
             </div>
 
             <script>
