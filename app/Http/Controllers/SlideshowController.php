@@ -73,7 +73,7 @@ public function destroy($id)
 public function delete($id)
 {
     // หาข้อมูลสไลด์จากฐานข้อมูล
-    $slide = Slide::findOrFail($id);
+    $slide = Slideshow::findOrFail($id);
 
     // ลบไฟล์รูปภาพจากโฟลเดอร์ public/images
     $filePath = public_path('images/' . $slide->path);
