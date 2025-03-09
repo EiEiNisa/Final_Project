@@ -557,7 +557,7 @@ form {
                 @php $options = json_decode($field->options, true) ?? []; @endphp
                 <div class="checkbox-group">
                     @foreach($options as $option)
-                    <div class="form-check">
+                    <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
                             value="{{ $option }}"
                             {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
@@ -570,7 +570,7 @@ form {
                 @php $options = json_decode($field->options, true) ?? []; @endphp
                 <div class="radio-group">
                     @foreach($options as $option)
-                    <div class="form-check">
+                    <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
                             {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
