@@ -62,21 +62,31 @@ class CustomFieldController extends Controller
     }
 
     public function deleteOption($fieldId, $optionIndex)
-    {
-        $field = CustomField::findOrFail($fieldId);
+{
+    try {
+        $field = CustomFieldGeneral::findOrFail($fieldId);
         $options = json_decode($field->options, true);
 
-        if (isset($options[$optionIndex])) {
+        if (!is_array($options)) {
+            return response()->json(['success' => false, 'message' => 'ข้อมูลตัวเลือกไม่ถูกต้อง'], 500);
+        }
+
+        if (array_key_exists($optionIndex, $options)) {
             unset($options[$optionIndex]);
+
+            // ใช้ array_values() เพื่อรีเซ็ต index ใหม่
             $options = array_values($options);
             $field->options = json_encode($options);
             $field->save();
-            session()->flash('success', 'ลบตัวเลือกสำเร็จ');
+
             return response()->json(['success' => true, 'message' => 'ลบตัวเลือกสำเร็จ'], 200);
         }
 
         return response()->json(['success' => false, 'message' => 'ไม่พบตัวเลือกที่ต้องการลบ'], 404);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
     }
+}
 
     public function update(Request $request, $id)
     {

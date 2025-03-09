@@ -817,11 +817,16 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
-                location.reload(); // โหลดหน้าใหม่หลังจากลบสำเร็จ
+                console.log("Response:", data); // ดู response ที่ได้รับ
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert("Error: " + data.message);
+                }
             })
             .catch(error => {
-                alert("เกิดข้อผิดพลาด: " + error);
+                console.error("เกิดข้อผิดพลาด:", error);
             });
 
         optionToDelete = null;
