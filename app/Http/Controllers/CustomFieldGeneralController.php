@@ -15,8 +15,8 @@ class CustomFieldGeneralController extends Controller
 
     public function edit()
     {
-        $customField = CustomFieldGeneral::findOrFail($id);  // แก้ไขเพื่อดึงข้อมูลที่ต้องการ
-        return view('admin.formrecord_general_edit', compact('customField'));  // ส่งข้อมูลไปที่ view
+        $customFields = CustomField::all(); 
+        return view('admin.formrecord_general_edit', compact('customField')); 
     }
 
     public function store(Request $request)
