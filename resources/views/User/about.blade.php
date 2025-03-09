@@ -6,11 +6,11 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #f4f7fb;
+    background-color: #f0f4f8;
 }
 
 .header-banner {
-    background-color: #090A77;
+    background: linear-gradient(135deg, #4e79a7, #f2994a);
     color: #fff;
     text-align: center;
     padding: 50px 20px;
@@ -20,7 +20,7 @@ body, html {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
     margin-bottom: 30px;
 }
 
@@ -39,9 +39,15 @@ body, html {
     max-width: 1100px;
     margin: 0 auto;
     padding: 30px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-section:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.15);
 }
 
 .info-section h4 {
@@ -60,15 +66,16 @@ table {
 
 .table, th, td {
     border: 1px solid #ddd;
-    padding: 12px;
+    padding: 15px 20px;
     text-align: left;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 .table th {
-    background-color: #F7F7F7;
+    background-color: #6c5b7b;
+    color: white;
     font-weight: bold;
-    color: #555;
+    text-transform: uppercase;
 }
 
 .table td {
@@ -77,7 +84,7 @@ table {
 }
 
 .table td strong {
-    color: #090A77;
+    color: #6c5b7b;
 }
 
 .table tr:nth-child(even) td {
@@ -85,7 +92,7 @@ table {
 }
 
 .table tr:hover td {
-    background-color: #e0e0e0;
+    background-color: #ffb4a2;
 }
 
 .form-container {
