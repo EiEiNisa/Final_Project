@@ -714,10 +714,19 @@ document.addEventListener("DOMContentLoaded", function() {
             let fieldGroup = this.closest(".custom-field-group");
             selectedFieldId = this.getAttribute("data-id");
 
+            let fieldLabel = fieldGroup.querySelector(".field-label");
+            let fieldName = fieldGroup.querySelector(".field-name");
+            let fieldType = fieldGroup.querySelector(".field-type");
+
+            if (!fieldLabel || !fieldName || !fieldType) {
+                console.error("ไม่พบองค์ประกอบฟิลด์อย่างน้อยหนึ่งรายการในกลุ่มฟิลด์");
+                return; // ออกจากฟังก์ชันหากองค์ประกอบหายไป
+            }
+
             selectedFieldData = {
-                label: fieldGroup.querySelector(".field-label").value,
-                name: fieldGroup.querySelector(".field-name").value,
-                field_type: fieldGroup.querySelector(".field-type").value,
+                label: fieldLabel.value,
+                name: fieldName.value,
+                field_type: fieldType.value,
                 options: []
             };
 
@@ -764,7 +773,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("เกิดข้อผิดพลาด:", error);
                 showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
             });
-
     });
 
     document.querySelectorAll('.delete-option-btn').forEach(function(button) {
