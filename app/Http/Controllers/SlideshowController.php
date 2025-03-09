@@ -11,10 +11,7 @@ class SlideshowController extends Controller
 {
     $slides = Slideshow::orderBy('order')->get(); // ดึงข้อมูลสไลด์จากฐานข้อมูล
     
-    return view('admin.addslide', compact('slides'))
-           ->with('slides', $slides)  // ส่งข้อมูลไปยังหน้า Admin
-           ->with('slides', $slides)  // ส่งข้อมูลไปยังหน้า User Homepage
-           ->with('slides', $slides); // ส่งข้อมูลไปยังหน้า Home
+    return view('admin.addslide', compact('slides'));
 }
 
    
