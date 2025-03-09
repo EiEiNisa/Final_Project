@@ -597,7 +597,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
-            // Store the ID of the field to delete
             fieldToDeleteId = event.target.getAttribute("data-id");
         }
     });
@@ -640,7 +639,7 @@ document.addEventListener("DOMContentLoaded", function() {
             modalInstance.hide();
         }
     }
-    
+
     document.querySelectorAll(".update-field-btn").forEach((button) => {
         button.addEventListener("click", function() {
             let fieldGroup = this.closest(".custom-field-group");
