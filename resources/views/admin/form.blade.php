@@ -29,17 +29,10 @@
             <input type="text" class="form-control" id="title" name="title" required style="border: 2px solid #5a9fcf; transition: 0.3s;" onfocus="this.style.backgroundColor='#e0f2ff'" onblur="this.style.backgroundColor='white'">
         </div>
         
-@php
-    $images = json_decode($article->image, true); // แปลง JSON เป็น array
-@endphp
-
-@if ($images)
-    <div class="d-flex flex-wrap">
-        @foreach ($images as $image)
-            <img src="{{ asset($image) }}" alt="รูปภาพ" class="img-fluid m-2" style="max-width: 200px; border: 2px solid #5a9fcf;">
-        @endforeach
-    </div>
-@endif
+<div class="mb-3">
+    <label for="images" class="form-label fw-bold" style="color: #005f99;">อัปโหลดรูปภาพ (อัปโหลดได้หลายไฟล์)</label>
+    <input type="file" class="form-control" id="images" name="images[]" accept="image/*" multiple required style="border: 2px solid #5a9fcf;">
+</div>
 
         <div class="mb-3">
             <label for="description" class="form-label fw-bold" style="color: #005f99;">คำอธิบายในโพสต์</label>
