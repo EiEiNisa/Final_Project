@@ -577,32 +577,34 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     addFieldBtn.addEventListener("click", function() {
-        let fieldIndex = fieldContainer.children.length; // กำหนด fieldIndex
+        let fieldIndex = fieldContainer.children.length; 
         let fieldHTML = `
-                <div class="field-container">
-                <label class="input-label">ชื่อหัวข้อ <span class="placeholder">(เช่น ชื่อ)</span></label>
-                <input type="text" class="input-box" name="label[]" required>
+            <div class="form-group custom-field-group">
+                <label class="input-label">ชื่อหัวข้อ (เช่น ชื่อ)</label>
+                <input type="text" class="form-control" name="label[]" required>
 
-                <label class="input-label">ชื่อตัวแปร <span class="placeholder">(เช่น name)</span></label>
-                <input type="text" class="input-box" name="name[]" required>
+                <label class="input-label">ชื่อตัวแปร (เช่น name)</label>
+                <input type="text" class="form-control" name="name[]" required>
 
                 <label class="input-label">รูปแบบข้อมูล</label>
-                <select class="input-box field-type" name="field_type[]" required>
+                <select class="form-control" name="field_type[]" required>
                     <option value="text">ช่องกรอกข้อความ</option>
                     <option value="select">เลือกจากรายการ</option>
                     <option value="checkbox">ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
                     <option value="radio">ช่องทำเครื่องหมาย (เลือกได้รายการเดียว)</option>
                 </select>
 
-                <div class="option-group" style="display: none;">
+                <div class="form-group options-group" style="display: none;">
                     <label class="input-label">ตัวเลือก</label>
-                    <div class="option-list">
-                        <input type="text" class="input-box option-input" name="options[]" placeholder="เพิ่มค่าตัวเลือก">
+                    <div class="option-container">
+                        <input type="text" class="form-control" name="options[${fieldIndex}][]" placeholder="เพิ่มค่าตัวเลือก">
                     </div>
-                    <button type="button" class="btn add-option">+ เพิ่มตัวเลือก</button>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary add-option-btn">+ เพิ่มตัวเลือก</button>
+                    </div>
                 </div>
-
-                <button type="button" class="btn delete-field">ลบฟิลด์</button>
+                <br>
+                <button type="button" class="btn btn-danger delete-field-btn">ลบฟิลด์</button>
             </div>
         `;
         fieldContainer.insertAdjacentHTML('beforeend', fieldHTML);
