@@ -473,7 +473,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let fieldContainer = document.getElementById("field-container");
     let selectedFieldId = null;
     let selectedFieldData = {};
-
+    const deleteModal = document.getElementById("deleteConfirmationModal");
+    let fieldToDeleteId = null; 
     let existingFields = document.getElementById("existing-fields");
 
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
@@ -687,6 +688,59 @@ document.addEventListener("DOMContentLoaded", function() {
                 errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
                 errorBox.classList.remove("d-none");
             });
+    });
+
+    // เมื่อเปิด Modal
+    deleteModal.addEventListener("shown.bs.modal", function() {
+        deleteModal.removeAttribute("aria-hidden");
+    });
+
+    // เมื่อปิด Modal
+    deleteModal.addEventListener("hidden.bs.modal", function() {
+        deleteModal.setAttribute("aria-hidden", "true");
+    });
+
+    // การจับคลิกที่ปุ่ม "ลบรายการ"
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            // เก็บ ID ของฟิลด์ที่จะลบ
+            fieldToDeleteId = event.target.getAttribute("data-id");
+            // เปิด Modal
+            $('#deleteConfirmationModal').modal('show');
+        }
+    });
+
+    // เมื่อกดยืนยันการลบ
+    document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
+        if (fieldToDeleteId) {
+            let fieldGroup = document.querySelector(
+                `.custom-field-group[data-id="${fieldToDeleteId}"]`
+            );
+
+            fetch(`/delete-custom-field/${fieldToDeleteId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // ลบฟิลด์จากหน้า
+                        fieldGroup.remove();
+                        // ปิด Modal
+                        $('#deleteConfirmationModal').modal('hide');
+                    } else {
+                        alert("เกิดข้อผิดพลาดในการลบรายการ!");
+                    }
+                })
+                .catch(error => {
+                    console.error("เกิดข้อผิดพลาด: ", error);
+                    alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                });
+        }
     });
 });
 </script>
