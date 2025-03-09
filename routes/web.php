@@ -234,4 +234,8 @@ Route::delete('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralControll
 Route::delete('/admin/deleteOption/{fieldId}/{optionIndex}', [CustomFieldGeneralController::class, 'deleteOption'])->name('customfieldgeneral.deleteOption');
 Route::put('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralController::class, 'update'])->name('customfieldgeneral.update');
 
+// Route สำหรับหน้า User.homepage
+Route::get('/User/homepage', [SlideshowController::class, 'showSlides']);  // สำหรับ User.homepage
 
+// Route สำหรับหน้า home
+Route::get('/', [SlideshowController::class, 'showHomePage']);  // สำหรับหน้า home
