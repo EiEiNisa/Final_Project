@@ -26,7 +26,7 @@ use App\Http\Controllers\UserArticleController;
 use App\Http\Controllers\GuestArticleController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\CustomFieldController;
-
+use App\Http\Controllers\CustomFieldGeneralController;
 
 Route::get('/', function () {
     return view('home');
@@ -220,9 +220,15 @@ Route::prefix('admin')->group(function() {
     Route::delete('slideshow/delete/{id}', [SlideshowController::class, 'destroy'])->name('slideshow.delete');
 });
 
+//CustomField
 Route::get('/admin/formrecordedit', [CustomFieldController::class, 'edit'])->name('customfields.edit');
 Route::post('/admin/formrecordedit', [CustomFieldController::class, 'store'])->name('customfields.store');
-// Route สำหรับลบ CustomField
 Route::delete('/delete-custom-field/{id}', [CustomFieldController::class, 'delete'])->name('delete.custom.field');
 Route::post('/custom-fields/update/{id}', [CustomFieldController::class, 'update'])->name('custom-fields.update');
+Route::get('/formrecord_general_edit', [CustomFieldGeneralController::class, 'index'])->name('customfields.index');
 
+//CustomFieldGeneral
+Route::get('/admin/formrecord_general_edit/{id}/edit', [CustomFieldGeneralController::class, 'edit'])->name('customfields.edit');
+Route::post('/admin/formrecord_general_edit', [CustomFieldGeneralController::class, 'store'])->name('customfields.store');
+Route::delete('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralController::class, 'delete'])->name('customfields.delete');
+Route::put('/admin/formrecord_general_edit/{id}', [CustomFieldGeneralController::class, 'update'])->name('customfields.update');

@@ -381,7 +381,7 @@ select {
     @endif
 
     <div class="card-header">
-        <h4><strong>แก้ไขฟอร์มข้อมูลส่วนตัว</strong></h4>
+        <h4><strong>แก้ไขฟอร์มข้อมูลทั้วไป</strong></h4>
         <a href="{{ url('admin/addrecord') }}" class="btn btn-secondary btn-back">กลับ</a>
     </div>
 
@@ -681,14 +681,16 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
                 try {
                     // ส่งคำขอลบไปยัง Controller
-                    const response = await fetch(`/delete-custom-field/${fieldId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute(
-                                'content')
-                        }
+                    // Delete request
+                    const response = await fetch(
+                        `/admin/formrecord_general_edit/${fieldId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute(
+                                    'content')
+                            }
                     });
 
                     const result = await response.json();
@@ -770,8 +772,9 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("confirmSaveBtn").addEventListener("click", function() {
         if (!selectedFieldId || !selectedFieldData) return;
 
-        fetch(`/custom-fields/update/${selectedFieldId}`, {
-                method: "POST",
+        // Update request
+        fetch(`/admin/formrecord_general_edit/${selectedFieldId}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
@@ -779,15 +782,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: JSON.stringify(selectedFieldData),
             })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("HTTP status " + response.status);
-                }
-                return response.json();
-            })
+            .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    window.location.href = "/custom-fields/edit?success=1";
+                    window.location.replace("{{ route('customfields.edit') }}");
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
                     errorBox.innerHTML = data.message;
@@ -799,6 +797,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 errorBox.innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง!";
                 errorBox.classList.remove("d-none");
             });
+
     });
 });
 </script>

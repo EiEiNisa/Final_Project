@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('custom_fields', function (Blueprint $table) {
+        Schema::create('custom_field_general', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // ชื่อของฟิลด์ เช่น 'married_status'
             $table->string('label'); // ชื่อแสดงใน UI เช่น 'คุณแต่งงานหรือยัง'
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_fields');
+        Schema::dropIfExists('custom_fields_general');
     }
 
     public function customFields(): HasMany
