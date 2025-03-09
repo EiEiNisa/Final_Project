@@ -542,14 +542,20 @@ form {
                 <input type="text" name="{{ $customField->name }}" class="form-control"
                     value="{{ $customFieldValuesMap[$customField->id] ?? '' }}">
                 @elseif($customField->field_type == 'checkbox')
-                <input type="checkbox" name="{{ $customField->name }}[]" value="{{ $customField->id }}"
-                    @if(in_array($customField->id, json_decode($customFieldValuesMap[$customField->id] ?? '[]')))
-                checked @endif>
+                @php
+                // แปลงค่าใน json_decode ให้เป็น array สำหรับ checkbox
+                $checkedValues = json_decode($customFieldValuesMap[$customField->id] ?? '[]', true);
+                @endphp
+                @foreach($customField->options as $option)
+                <input type="checkbox" name="{{ $customField->name }}[]" value="{{ $option }}" @if(in_array($option,
+                    $checkedValues)) checked @endif>
+                <label>{{ $option }}</label><br>
+                @endforeach
                 @elseif($customField->field_type == 'select')
                 @php
-                // ตรวจสอบว่า $customField->options เป็นอาเรย์หรือไม่ ถ้าไม่ใช่ให้แปลงเป็นอาเรย์
-                $options = is_array($customField->options) ? $customField->options : explode(',',
-                $customField->options);
+                // แปลงค่าใน options ให้เป็นอาเรย์ ถ้าเป็น string
+                $options = is_array($customField->options) ? $customField->options : json_decode($customField->options,
+                true);
                 @endphp
                 <select name="{{ $customField->name }}" class="form-control">
                     @foreach($options as $option)
