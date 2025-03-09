@@ -92,29 +92,30 @@ class CustomFieldGeneralController extends Controller
     return response()->json(['success' => false, 'message' => 'ไม่พบตัวเลือกที่ต้องการลบ'], 404);
 }
 
-    public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'label' => 'required|string',
-            'name' => 'required|string|distinct',
-            'field_type' => 'required|in:text,select,checkbox,radio',
-            'options' => 'nullable|array',
-            'options.*' => 'nullable|string',
+public function update(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'label' => 'required|string',
+        'name' => 'required|string|distinct',
+        'field_type' => 'required|in:text,select,checkbox,radio',
+        'options' => 'nullable|array',
+        'options.*' => 'nullable|string',
+    ]);
+
+    try {
+        $customField = CustomFieldGeneral::findOrFail($id);
+        $customField->update([
+            'label' => $request->label,
+            'name' => $request->name,
+            'field_type' => $request->field_type,
+            'options' => json_encode($request->options ?? []),  // ตรวจสอบให้แน่ใจว่า options มีค่า
         ]);
 
-        try {
-            $customField = CustomFieldGeneral::findOrFail($id);
-            $customField->update([
-                'label' => $request->label,
-                'name' => $request->name,
-                'field_type' => $request->field_type,
-                'options' => json_encode($request->options ?? []),
-            ]);
-
-            session()->flash('success', 'อัปเดตรายการสำเร็จ');
-            return response()->json(['success' => true], 200);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการอัปเดต'], 500);
-        }
+        session()->flash('success', 'อัปเดตรายการสำเร็จ');
+        return response()->json(['success' => true], 200);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการอัปเดต'], 500);
     }
+}
+
 }
