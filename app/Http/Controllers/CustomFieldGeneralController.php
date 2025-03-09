@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\CustomFieldGeneral; 
-use Illuminate\Support\Collection;
+use App\Models\CustomFieldGeneral;
 
 class CustomFieldGeneralController extends Controller
 {
@@ -16,8 +15,8 @@ class CustomFieldGeneralController extends Controller
 
     public function edit()
     {
-        $allFields = CustomFieldGeneral::all();
-        return view('admin.formrecord_general_edit', compact('allFields'));
+        $customField = CustomFieldGeneral::findOrFail($id);  // แก้ไขเพื่อดึงข้อมูลที่ต้องการ
+        return view('admin.formrecord_general_edit', compact('customField'));  // ส่งข้อมูลไปที่ view
     }
 
     public function store(Request $request)
@@ -51,39 +50,39 @@ class CustomFieldGeneralController extends Controller
     }
 
     public function delete($id)
-{
-    try {
-        $customField = CustomFieldGeneral::findOrFail($id);
-        $customField->delete();
+    {
+        try {
+            $customField = CustomFieldGeneral::findOrFail($id);
+            $customField->delete();
 
-        return response()->json(['success' => true, 'message' => 'ลบฟิลด์สำเร็จ']);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
+            return response()->json(['success' => true, 'message' => 'ลบฟิลด์สำเร็จ']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'ไม่สามารถลบฟิลด์ได้ กรุณาลองใหม่อีกครั้ง'], 500);
+        }
     }
-}
 
-public function update(Request $request, $id)
-{
-    $validatedData = $request->validate([
-        'label' => 'required|string',
-        'name' => 'required|string|distinct',
-        'field_type' => 'required|in:text,select,checkbox,radio',
-        'options' => 'nullable|array',
-        'options.*' => 'nullable|string',
-    ]);
-
-    try {
-        $customField = CustomFieldGeneral::findOrFail($id);
-        $customField->update([
-            'label' => $request->label,
-            'name' => $request->name,
-            'field_type' => $request->field_type,
-            'options' => json_encode($request->options ?? []),
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'label' => 'required|string',
+            'name' => 'required|string|distinct',
+            'field_type' => 'required|in:text,select,checkbox,radio',
+            'options' => 'nullable|array',
+            'options.*' => 'nullable|string',
         ]);
 
-        return response()->json(['success' => true]);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการอัปเดต'], 500);
+        try {
+            $customField = CustomFieldGeneral::findOrFail($id);
+            $customField->update([
+                'label' => $request->label,
+                'name' => $request->name,
+                'field_type' => $request->field_type,
+                'options' => json_encode($request->options ?? []),
+            ]);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการอัปเดต'], 500);
+        }
     }
-}
 }

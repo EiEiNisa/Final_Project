@@ -699,7 +699,7 @@ form {
 
             <div class="d-flex justify-content-between align-items-center p-3 w-100">
                 <h4 class="fw-bold m-0" style="color:#020364;">ข้อมูลทั่วไป</h4>
-                <a href="{{ route('admin.formrecord_general_edit') }}" class="btn btn-primary">
+                <a href="{{ route('customfieldgeneral.edit') }}" class="btn btn-primary">
                     <i class="fas fa-edit me-1"></i> แก้ไขฟอร์มข้อมูลทั่วไป
                 </a>
             </div>
