@@ -40,7 +40,7 @@ public function show($id)
         return view('/admin/form');
     }
     
-  public function store(Request $request)
+ public function store(Request $request)
 {
     $validated = $request->validate([
         'title' => 'required|string|max:255',
@@ -57,9 +57,15 @@ public function show($id)
     $imagePaths = [];
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $image) {
-            // ใช้ store เพื่อเก็บไฟล์ในโฟลเดอร์ public/images
-            $filePath = $image->store('images', 'public');  // เก็บใน public/images
-            $imagePaths[] = $filePath;  // เก็บพาธของไฟล์
+            // กำหนดชื่อไฟล์ใหม่เพื่อป้องกันการซ้ำ
+            $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            // ใช้ move เพื่อย้ายไฟล์ไปที่ public/image
+            $destinationPath = public_path('image'); // โฟลเดอร์ที่ต้องการเก็บไฟล์
+            $image->move($destinationPath, $fileName); // ย้ายไฟล์ไปยังโฟลเดอร์ public/image
+            
+            // เก็บพาธของไฟล์ (public/image/<fileName>)
+            $imagePaths[] = 'image/' . $fileName;
         }
     }
 
@@ -86,6 +92,7 @@ public function show($id)
 
     return redirect()->route('admin.homepage')->with('success', 'เพิ่มบทความสำเร็จ!');
 }
+
     public function search(Request $request)
     {
         // รับค่า query จากผู้ใช้
