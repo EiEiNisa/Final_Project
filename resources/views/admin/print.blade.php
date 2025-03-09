@@ -212,6 +212,7 @@
         @endif
         @endforeach
         <br>
+        <h2 class="text-center">ข้อมูลบุคคล</h2>
         <div class="page-break"></div>
         @endforeach
     </div>
