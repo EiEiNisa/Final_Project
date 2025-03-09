@@ -85,7 +85,8 @@ class CustomFieldController extends Controller
         $customField->options = json_encode($request->options ?? []);
         $customField->save();
 
-        return response()->json(['success' => true, 'message' => 'อัปเดตสำเร็จ']);
+        session()->flash('success', 'ลบรายการสำเร็จ');
+        return response()->json(['success' => true]);
     } catch (\Exception $e) {
         return response()->json(['success' => false, 'message' => 'เกิดข้อผิดพลาดในการอัปเดต'], 500);
     }
