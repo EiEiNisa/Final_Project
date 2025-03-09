@@ -78,10 +78,9 @@
 }
 
 #option-container input {
-    border-radius: 30px;
     margin-bottom: 10px;
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 15px;
     border: 1px solid #ddd;
     width: 100%;
 }
@@ -118,27 +117,22 @@
     color: #020364;
 }
 
-/* Group Styles */
 .personal-info-group,
 .contact-info-group {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    /* Adds space between inputs */
 }
 
 .personal-info-group .input-container,
 .contact-info-group .input-container {
     flex: 1 1 calc(33.33% - 20px);
-    /* 3 inputs per row for personal-info-group */
 }
 
 .contact-info-group .input-container {
     flex: 1 1 calc(50% - 20px);
-    /* 2 inputs per row for contact-info-group */
 }
 
-/* Additional Styles */
 .personal-info-group .input-container {
     max-width: calc(33.33% - 20px);
 }
@@ -262,7 +256,6 @@ input[type="text"], select {
     background-color: #c82333;
 }
 
-/* Mobile Friendly */
 @media (max-width: 768px) {
     .card-container {
         padding: 20px;
