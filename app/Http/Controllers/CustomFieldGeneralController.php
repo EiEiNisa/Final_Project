@@ -8,10 +8,11 @@ use App\Models\CustomFieldGeneral;
 class CustomFieldGeneralController extends Controller
 {
     public function index()
-    {
-        $fields = CustomFieldGeneral::all();
-        return view('admin.formrecord_general_edit', compact('fields'));
-    }
+{
+    $customFields = CustomFieldGeneral::all();
+    return view('admin.formrecord_general_edit', compact('customFields'));
+}
+
 
     public function edit()
     {

@@ -346,12 +346,11 @@ select {
             <div class="right-column">
                 <label class="input-label">รูปแบบข้อมูล</label>
                 <select class="form-control field-type" name="field_type[]" required>
-                    <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ
-                    </option>
+                    <option value="text" {{ $field->field_type == 'text' ? 'selected' : '' }}>ช่องกรอกข้อความ</option>
                     <option value="select" {{ $field->field_type == 'select' ? 'selected' : '' }}>เลือกจากรายการ
                     </option>
-                    <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>
-                        ช่องทำเครื่องหมาย (เลือกได้หลายรายการ)</option>
+                    <option value="checkbox" {{ $field->field_type == 'checkbox' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
+                        (เลือกได้หลายรายการ)</option>
                     <option value="radio" {{ $field->field_type == 'radio' ? 'selected' : '' }}>ช่องทำเครื่องหมาย
                         (เลือกได้รายการเดียว)</option>
                 </select>
@@ -379,7 +378,7 @@ select {
                 <button type="button" class="btn btn-success update-field-btn"
                     data-id="{{ $field->id }}">บันทึกแก้ไขรายการ</button>
                 <button type="button" class="btn btn-danger delete-field-btn" data-id="{{ $field->id }}"
-                    data-toggle="modal" data-target="#deleteModal">ลบรายการ</button>
+                    data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">ลบรายการ</button>
             </div>
         </div>
         @endforeach
@@ -599,7 +598,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
             let fieldGroup = document.querySelector(
-            `.custom-field-group[data-id="${fieldToDeleteId}"]`);
+                `.custom-field-group[data-id="${fieldToDeleteId}"]`);
 
             fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
                     method: 'DELETE',
