@@ -784,6 +784,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (data.success) {
                     let successMessage = document.getElementById("success");
                     successMessage.classList.remove("d-none");
+                    
+                    window.location.replace("{{ route('customfields.edit') }}");
 
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
