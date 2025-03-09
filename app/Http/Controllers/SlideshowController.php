@@ -11,7 +11,12 @@ class SlideshowController extends Controller
     {
         $slides = Slideshow::orderBy('order')->get(); 
         
-    return view('admin.addslide', compact('slides'));
+    $adminView = view('admin.addslide', compact('slides'))->render();
+
+        // ส่งข้อมูลไปยังหน้า userhomepage และ home
+        return view('User.homepage', compact('slides')) // หน้าสำหรับผู้ใช้
+                ->with('adminView', $adminView) // ส่งตัวแปร $adminView ไปที่หน้า userhomepage
+                ->with('home', $adminView);
     }
    
     public function store(Request $request)
