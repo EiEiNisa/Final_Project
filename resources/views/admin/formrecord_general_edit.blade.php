@@ -604,39 +604,36 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector("#confirmDeleteBtn").addEventListener("click", function() {
         if (fieldToDeleteId) {
-            let fieldGroup = document.querySelector(
-                `.custom-field-group[data-id="${fieldToDeleteId}"]`
-            );
+            let fieldGroup = document.querySelector(`.custom-field-group[data-id="${fieldToDeleteId}"]`);
 
             fetch(`/admin/formrecord_general_edit/${fieldToDeleteId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        fieldGroup.remove();
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fieldGroup.remove();
 
-                        let deleteModal = document.getElementById("deleteModal");
-                        let modalInstance = bootstrap.Modal.getInstance(deleteModal);
-                        modalInstance.hide();
+                    let deleteModal = document.getElementById("deleteModal");
+                    let modalInstance = bootstrap.Modal.getInstance(deleteModal);
+                    modalInstance.hide();
 
-                        showSuccessMessage("ลบรายการสำเร็จ!"); // แสดงข้อความสำเร็จ
+                    showSuccessMessage("ลบรายการสำเร็จ!"); // แสดงข้อความสำเร็จ
 
-                        window.location.replace(
-                            "{{ route('customfieldgeneral.edit') }}");
-                    } else {
-                        showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
-                    }
-                })
-                .catch(error => {
-                    console.error("เกิดข้อผิดพลาด: ", error);
-                    showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
-                });
+                    // รีเฟรชหน้าเว็บแทนการ redirect
+                    window.location.reload();
+                } else {
+                    showErrorMessage("เกิดข้อผิดพลาดในการลบรายการ!");
+                }
+            })
+            .catch(error => {
+                console.error("เกิดข้อผิดพลาด: ", error);
+                showErrorMessage("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+            });
         }
     });
 
