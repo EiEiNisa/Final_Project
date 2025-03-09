@@ -547,10 +547,12 @@ form {
                 @php $options = json_decode($field->options, true) ?? []; @endphp
                 <select class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
-                    <option value="{{ $option }}"
-                        {{ old($field->name, $customFieldValuesMap[$field->id] ?? '') == $option ? 'selected' : '' }}>
-                        {{ $option }}
-                    </option>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                            value="{{ $option }}"
+                            {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
                     @endforeach
                 </select>
 
@@ -561,10 +563,11 @@ form {
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
                             value="{{ $option }}"
-                            {{ in_array($option, old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
+                            {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
+
                 </div>
 
                 @elseif($field->field_type == 'radio')
@@ -572,8 +575,9 @@ form {
                 <div class="radio-group">
                     @foreach($options as $option)
                     <div class="form-check">
-                        <input class="radio-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
-                            {{ old($field->name, $customFieldValuesMap[$field->id] ?? '') == $option ? 'checked' : '' }}>
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                            value="{{ $option }}"
+                            {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
