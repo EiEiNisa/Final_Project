@@ -363,7 +363,6 @@ select {
                         <div class="option-item" data-index="{{ $index }}">
                             <input type="text" class="form-control option-input" name="options[{{ $field->id }}][]"
                                 value="{{ $option }}" placeholder="เพิ่มค่าตัวเลือก">
-                            <button type="button" class="btn btn-danger delete-option-btn">ลบ</button>
                         </div>
                         @endforeach
                     </div>
