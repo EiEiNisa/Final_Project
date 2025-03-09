@@ -148,15 +148,18 @@ select {
 .option-item {
     display: flex;
     align-items: center;
-    gap: 10px; /* ระยะห่างระหว่าง input และปุ่มลบ */
+    gap: 10px;
+    /* ระยะห่างระหว่าง input และปุ่มลบ */
 }
 
 .option-item input {
-    flex: 1; /* ให้ input ใช้พื้นที่เหลือทั้งหมด */
+    flex: 1;
+    /* ให้ input ใช้พื้นที่เหลือทั้งหมด */
 }
 
 .option-item button {
-    flex-shrink: 0; /* ไม่ให้ปุ่มลบหดตัว */
+    flex-shrink: 0;
+    /* ไม่ให้ปุ่มลบหดตัว */
 }
 
 
@@ -376,6 +379,28 @@ select {
             </div>
         </div>
         @endforeach
+    </div>
+
+    <!-- Modal for Delete Confirmation -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">ยืนยันการลบ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    คุณต้องการลบตัวเลือกนี้ใช่หรือไม่?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">ลบ</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal ยืนยันการบันทึก -->
