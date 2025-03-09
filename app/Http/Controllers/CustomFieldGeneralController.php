@@ -51,7 +51,7 @@ class CustomFieldGeneralController extends Controller
 
     public function delete($id)
     {
-        Log::info("Deleting CustomFieldGeneral with ID: " . $id); // เพิ่ม Log
+        dd($id); 
 
         try {
             $customField = CustomFieldGeneral::findOrFail($id);
