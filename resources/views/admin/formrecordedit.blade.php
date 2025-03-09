@@ -548,23 +548,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Event Listener สำหรับการเพิ่มตัวเลือกใน existing-fields
-    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+    fieldContainer.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
+            console.log("คลิกที่ปุ่มเพิ่มตัวเลือก");
             let optionContainer = event.target.closest('.form-group').querySelector(
-                '.option-container');
-            let fieldId = event.target.closest('.custom-field-group').getAttribute('data-id');
+            '.option-container');
+            let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
+                '.custom-field-group'));
 
             let newOption = document.createElement("input");
             newOption.type = "text";
             newOption.className = "form-control option-input rounded-pill mt-2";
-            newOption.name = `options[${fieldId}][]`;
+            newOption.name = `options[${fieldIndex}][]`; // แก้ไข name ให้ถูกต้อง
             newOption.placeholder = "เพิ่มค่าตัวเลือก";
 
             optionContainer.appendChild(newOption);
         }
+
+        if (event.target && event.target.classList.contains("delete-field-btn")) {
+            event.target.closest('.custom-field-group').remove(); // ลบฟิลด์
+        }
     });
-    
+
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");
