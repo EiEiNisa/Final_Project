@@ -496,7 +496,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fieldContainer.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
-            '.option-container');
+                '.option-container');
             let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
                 '.custom-field-group'));
 
@@ -531,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
-            '.option-container');
+                '.option-container');
             let fieldId = event.target.closest('.custom-field-group').getAttribute('data-id');
 
             let newOption = document.createElement("input");
@@ -652,10 +652,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     let successMessage = document.getElementById("success");
                     successMessage.classList.remove("d-none");
 
-                    // หน่วงเวลาการรีเฟรชหน้า 1 วินาที เพื่อให้เห็นข้อความ success
-                    setTimeout(function() {
-                        window.location.replace("{{ route('customfieldgeneral.edit') }}");
-                    }, 1000); // 1000 มิลลิวินาที = 1 วินาที
+                     window.location.replace("{{ route('customfieldgeneral.edit') }}");
                 } else {
                     let errorBox = document.getElementById("modal-error-message");
                     errorBox.innerHTML = data.message;
