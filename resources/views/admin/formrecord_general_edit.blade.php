@@ -709,12 +709,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // ตั้งค่าการยืนยันการลบ
             document.getElementById("confirmDeleteBtn").onclick = function() {
-                // ลบตัวเลือก
-                optionItem.remove();
-
-                // ปิด Modal
-                $('#deleteModal').modal('hide');
-
                 // ส่งคำขอลบไปยังเซิร์ฟเวอร์
                 fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
@@ -728,6 +722,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     .then(data => {
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
+
+                            // ลบตัวเลือกจากหน้าเว็บ (DOM)
+                            optionItem.remove();
+
+                            // ปิด Modal
+                            $('#deleteModal').modal('hide');
                         } else {
                             console.error("เกิดข้อผิดพลาดในการลบตัวเลือก");
                         }
@@ -739,7 +739,6 @@ document.addEventListener("DOMContentLoaded", function() {
             $('#deleteModal').modal('show');
         });
     });
-
 });
 </script>
 @endsection
