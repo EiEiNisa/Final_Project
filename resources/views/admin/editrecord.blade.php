@@ -521,12 +521,13 @@ form {
                 }
             }
             </script>
-            
+
             @foreach($customFields as $field)
             <div class="form-group1">
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
                 @php
+                // ดึงค่าจาก customFieldValuesMap หรือ old() สำหรับกรณีที่มีการ submit ฟอร์มแล้วมีการ validation
                 $fieldValue = $customFieldValuesMap[$field->id] ?? old($field->name, '');
                 @endphp
 
@@ -536,12 +537,12 @@ form {
                 @elseif($field->field_type == 'select')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // หาก fieldValue เป็น 1 ให้ดึงค่านั้นมา
-                $selectedValues = ($fieldValue == '1') ? ['1'] : (array) $fieldValue;
+                // ถ้าค่าที่ได้จาก customFieldValuesMap เป็น 1 ให้เลือกตัวเลือกที่มีค่า 1
+                $selectedValue = ($fieldValue == '1') ? '1' : $fieldValue;
                 @endphp
                 <select class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
-                    <option value="{{ $option }}" {{ in_array($option, $selectedValues) ? 'selected' : '' }}>
+                    <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
                         {{ $option }}
                     </option>
                     @endforeach
@@ -550,7 +551,7 @@ form {
                 @elseif($field->field_type == 'checkbox')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // หาก fieldValue เป็น 1 ให้เลือก checkbox ที่มีค่า 1
+                // กำหนดค่าที่เลือกจาก customFieldValuesMap ถ้ามีค่าเป็น 1 ให้ทำการเลือก
                 $checkedValues = ($fieldValue == '1') ? ['1'] : (array) $fieldValue;
                 @endphp
                 <div class="checkbox-group">
@@ -566,7 +567,7 @@ form {
                 @elseif($field->field_type == 'radio')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // หาก fieldValue เป็น 1 ให้เลือก radio ที่มีค่า 1
+                // ถ้าค่าเป็น 1 ให้เลือก radio ที่มีค่า 1
                 $selectedRadio = ($fieldValue == '1') ? '1' : $fieldValue;
                 @endphp
                 <div class="radio-group">
