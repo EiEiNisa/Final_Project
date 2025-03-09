@@ -553,7 +553,7 @@ select {
         </form>
     </div>
 </div>
-</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     let showFormBtn = document.getElementById("show-form-btn");
@@ -610,7 +610,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fieldContainer.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("add-option-btn")) {
             let optionContainer = event.target.closest('.form-group').querySelector(
-            '.option-container');
+                '.option-container');
             let fieldIndex = [...fieldContainer.children].indexOf(event.target.closest(
                 '.custom-field-group'));
 
@@ -714,6 +714,11 @@ document.addEventListener("DOMContentLoaded", function() {
         button.addEventListener("click", function() {
             let fieldGroup = this.closest(".custom-field-group");
             let selectedFieldId = this.getAttribute("data-id");
+
+            // กำหนดค่าให้กับ input hidden
+            document.getElementById("selectedFieldId").value = selectedFieldId;
+
+            // ทำการตั้งค่า selectedFieldData
             let selectedFieldData = {
                 label: fieldGroup.querySelector(".field-label").value,
                 name: fieldGroup.querySelector(".field-name").value,
@@ -728,8 +733,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
 
+            // แสดง modal สำหรับยืนยันการบันทึก
             document.getElementById("modal-error-message").classList.add("d-none");
-
             let confirmModal = new bootstrap.Modal(document.getElementById("confirmSaveModal"));
             confirmModal.show();
         });
