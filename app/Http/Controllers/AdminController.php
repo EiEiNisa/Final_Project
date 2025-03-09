@@ -62,32 +62,46 @@ public function changeRole($id)
 
 
 public function submitForm(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_link' => 'nullable|url', // กรอกลิงก์วิดีโอ
-            'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:20480', // ไฟล์วิดีโอ
-            'description' => 'required|string',
-            'post_date' => 'required|date',
-            'author' => 'required|string|max:255',
-        ]);
-    
-        $imagePath = $request->file('image')->store('images', 'public');
-        $videoPath = $request->hasFile('video_upload') ? $request->file('video_upload')->store('videos', 'public') : null;
-        
-        Article::create([
-            'title' => $request->input('title'),
-            'image' => $imagePath,
-            'description' => $request->input('description'),
-            'post_date' => $request->input('post_date'),
-            'author' => $request->input('author'),
-            'video_link' => $request->input('video_link'),  // ถ้ามีลิงก์วิดีโอให้ใช้ค่า
-            'video_upload' => $videoPath,  // ถ้ามีไฟล์วิดีโอให้ใช้ค่า
-        ]);
-    
-        return redirect()->route('admin.homepage')->with('success', 'บทความใหม่ได้ถูกเพิ่ม');
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'images' => 'required|array',  // รองรับหลายไฟล์
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // กำหนดขนาดไฟล์ที่อนุญาต (ไม่เกิน 2MB)
+        'video_link' => 'nullable|url', // กรอกลิงก์วิดีโอ
+        'video_upload' => 'nullable|mimes:mp4,avi,mov,wmv|max:20480', // ไฟล์วิดีโอ
+        'description' => 'required|string',
+        'post_date' => 'required|date',
+        'author' => 'required|string|max:255',
+    ]);
+
+    // บันทึกรูปภาพหลายไฟล์
+    $imagePaths = [];
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            // ตรวจสอบขนาดไฟล์
+            if ($image->getSize() > 2048 * 1024) { 
+                return redirect()->back()->with('error', 'ขนาดไฟล์รูปภาพไม่สามารถเกิน 2MB');
+            }
+            $imagePaths[] = $image->store('images', 'public');
+        }
     }
+
+    // ถ้ามีไฟล์วิดีโอ ให้ทำการบันทึก
+    $videoPath = $request->hasFile('video_upload') ? $request->file('video_upload')->store('videos', 'public') : null;
+    
+    // สร้างบทความใหม่
+    Article::create([
+        'title' => $request->input('title'),
+        'image' => json_encode($imagePaths), // เก็บหลายไฟล์เป็น JSON
+        'description' => $request->input('description'),
+        'post_date' => $request->input('post_date'),
+        'author' => $request->input('author'),
+        'video_link' => $request->input('video_link'),  // ถ้ามีลิงก์วิดีโอให้ใช้ค่า
+        'video_upload' => $videoPath,  // ถ้ามีไฟล์วิดีโอให้ใช้ค่า
+    ]);
+
+    return redirect()->route('admin.homepage')->with('success', 'บทความใหม่ได้ถูกเพิ่ม');
+}
 
 
     public function showForm()
