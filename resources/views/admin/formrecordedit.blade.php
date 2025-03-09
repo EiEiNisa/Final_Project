@@ -642,32 +642,46 @@ document.addEventListener("DOMContentLoaded", function() {
             let newOption = document.createElement("input");
             newOption.type = "text";
             newOption.className = "form-control option-input rounded-pill mt-2";
-            newOption.name = `options[${fieldIndex}][]`; // แก้ไข name ให้ถูกต้อง
+            newOption.name = `options[${fieldIndex}][]`;
             newOption.placeholder = "เพิ่มค่าตัวเลือก";
 
             optionContainer.appendChild(newOption);
         }
 
         if (event.target && event.target.classList.contains("delete-field-btn")) {
-            event.target.closest('.custom-field-group').remove(); // ลบฟิลด์
+            event.target.closest('.custom-field-group').remove();
         }
     });
 
-    // ฟังก์ชันเพื่อแสดง/ซ่อนตัวเลือกเมื่อเลือก field type
     fieldContainer.addEventListener("change", function(event) {
         if (event.target && event.target.name === "field_type[]") {
-            // หาตำแหน่งของ options-group ในฟอร์มที่เลือก
             let optionsGroup = event.target.closest('.custom-field-group').querySelector(
                 '.options-group');
             if (event.target.value === "select" || event.target.value === "radio" || event.target
                 .value === "checkbox") {
-                optionsGroup.style.display = "block"; // แสดงตัวเลือก
+                optionsGroup.style.display = "block";
             } else {
-                optionsGroup.style.display = "none"; // ซ่อนตัวเลือก
+                optionsGroup.style.display = "none";
             }
         }
     });
 
+    document.querySelector("#existing-fields").addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("add-option-btn")) {
+            let optionContainer = event.target.closest('.form-group').querySelector(
+                '.option-container');
+            let fieldId = event.target.closest('.custom-field-group').getAttribute('data-id');
+
+            let newOption = document.createElement("input");
+            newOption.type = "text";
+            newOption.className = "form-control option-input rounded-pill mt-2";
+            newOption.name = `options[${fieldId}][]`;
+            newOption.placeholder = "เพิ่มค่าตัวเลือก";
+
+            optionContainer.appendChild(newOption);
+        }
+    });
+    
     document.querySelector("#existing-fields").addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("delete-field-btn")) {
             let fieldId = event.target.getAttribute("data-id");
