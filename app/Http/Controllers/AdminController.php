@@ -82,13 +82,22 @@ public function submitForm(Request $request)
             if ($image->getSize() > 2048 * 1024) { 
                 return redirect()->back()->with('error', 'ขนาดไฟล์รูปภาพไม่สามารถเกิน 2MB');
             }
-            $imagePaths[] = $image->store('images', 'public');
+
+            // กำหนดชื่อไฟล์และที่เก็บ
+            $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('image'); // กำหนดให้เก็บในโฟลเดอร์ public/image
+
+            // ย้ายไฟล์ไปที่ public/image
+            $image->move($destinationPath, $fileName);
+
+            // เก็บเส้นทางของไฟล์
+            $imagePaths[] = 'image/' . $fileName;
         }
     }
 
     // ถ้ามีไฟล์วิดีโอ ให้ทำการบันทึก
     $videoPath = $request->hasFile('video_upload') ? $request->file('video_upload')->store('videos', 'public') : null;
-    
+
     // สร้างบทความใหม่
     Article::create([
         'title' => $request->input('title'),
@@ -102,7 +111,6 @@ public function submitForm(Request $request)
 
     return redirect()->route('admin.homepage')->with('success', 'บทความใหม่ได้ถูกเพิ่ม');
 }
-
 
     public function showForm()
 {
