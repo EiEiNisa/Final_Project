@@ -21,10 +21,6 @@
     <a href="/admin/homepage" class="btn btn-light text-primary mb-4" style="border: 2px solid #5a9fcf; color: #005f99;">&larr; กลับสู่หน้าหลัก</a>
     <h2 class="text-center mb-4" style="color: #005f99; font-weight: bold; position: relative;">เพิ่มบทความใหม่</h2>
     
-    <div class="text-center mb-3">
-        <img src="/images/doctor-cartoon.png" alt="การ์ตูนแพทย์" style="width: 100px; animation: bounce 1.5s infinite;">
-    </div>
-
     <form action="{{ route('admin.form.submit') }}" method="POST" enctype="multipart/form-data" class="p-3 border rounded bg-white shadow-sm" style="border-color: #5a9fcf;">
         @csrf
         
@@ -66,12 +62,5 @@
         <button type="submit" class="btn w-100 fw-bold" style="background-color: #5a9fcf; color: white; border: 2px solid #005f99; transition: 0.3s;" onmouseover="this.style.backgroundColor='#005f99'" onmouseout="this.style.backgroundColor='#5a9fcf'">เสร็จสิ้น</button>
     </form>
 </div>
-
-<style>
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-</style>
 
 @endsection
