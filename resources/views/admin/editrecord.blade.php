@@ -539,40 +539,51 @@ form {
                 <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
                 @if($field->field_type == 'text')
+                <!-- ดึงค่าจาก customFieldValuesMap -->
                 <input type="text" class="form-control" name="{{ $field->name }}"
                     value="{{ old($field->name, $customFieldValuesMap[$field->id] ?? '') }}">
 
                 @elseif($field->field_type == 'select')
-                @php $options = json_decode($field->options, true) ?? []; @endphp
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                // ถ้ามีค่าจาก customFieldValuesMap ให้เลือกตัวเลือกที่ตรงกับค่าใน customFieldValuesMap
+                $selectedValues = (array) old($field->name, $customFieldValuesMap[$field->id] ?? []);
+                @endphp
                 <select class="form-control" name="{{ $field->name }}">
                     @foreach($options as $option)
-                    <option value="{{ $option }}"
-                        {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'selected' : '' }}>
+                    <option value="{{ $option }}" {{ in_array($option, $selectedValues) ? 'selected' : '' }}>
                         {{ $option }}
                     </option>
                     @endforeach
                 </select>
 
                 @elseif($field->field_type == 'checkbox')
-                @php $options = json_decode($field->options, true) ?? []; @endphp
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                // กำหนดค่า checkbox ที่ถูกเลือกจาก customFieldValuesMap
+                $checkedValues = (array) old($field->name, $customFieldValuesMap[$field->id] ?? []);
+                @endphp
                 <div class="checkbox-group">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
-                            value="{{ $option }}"
-                            {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
+                            value="{{ $option }}" {{ in_array($option, $checkedValues) ? 'checked' : '' }}>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
                 </div>
 
                 @elseif($field->field_type == 'radio')
-                @php $options = json_decode($field->options, true) ?? []; @endphp
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                // กำหนดค่า radio ที่ถูกเลือกจาก customFieldValuesMap
+                $selectedRadio = old($field->name, $customFieldValuesMap[$field->id] ?? '');
+                @endphp
                 <div class="radio-group">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
-                            {{ in_array($option, (array) old($field->name, $customFieldValuesMap[$field->id] ?? [])) ? 'checked' : '' }}>
+                            {{ $selectedRadio == $option ? 'checked' : '' }}>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
