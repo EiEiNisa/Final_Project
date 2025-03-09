@@ -489,6 +489,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let fieldContainer = document.getElementById("field-container");
     let selectedFieldId = null;
     let selectedFieldData = {};
+    let currentFieldId;
+    let currentOptionIndex;
 
     // ฟังก์ชันสำหรับแสดงฟอร์มเพิ่ม Custom Field
     showFormBtn.addEventListener("click", function() {
@@ -702,45 +704,31 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        let currentFieldId;
-        let currentOptionIndex;
+    document.querySelectorAll('.delete-option-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            let optionItem = this.closest('.option-item');
+            currentFieldId = optionItem.closest('.custom-field-group').dataset.id;
+            currentOptionIndex = optionItem.dataset.index;
 
-        document.querySelectorAll('.delete-option-btn').forEach(function(button) {
-            button.addEventListener('click', function() {
-                let optionItem = this.closest('.option-item');
-                currentFieldId = optionItem.closest('.custom-field-group').dataset.id;
-                currentOptionIndex = optionItem.dataset.index;
+            console.log('Field ID:', currentFieldId);
+            console.log('Option Index:', currentOptionIndex);
 
-                console.log('Field ID:', currentFieldId);
-                console.log('Option Index:', currentOptionIndex);
-
-                $('#deleteModal').modal('show');
-            });
+            $('#deleteModal').modal('show');
         });
+    });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            let currentFieldId;
-            let currentOptionIndex;
+    // เพิ่ม event listener สำหรับปุ่มลบ
+    document.querySelectorAll('.delete-option-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // หาตัวเลือกที่ถูกคลิก
+            let optionItem = this.closest('.option-item');
+            let fieldId = optionItem.closest('.custom-field-group').dataset.id;
+            let optionIndex = optionItem.dataset.index;
 
-            document.querySelectorAll('.delete-option-btn').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    let optionItem = this.closest('.option-item');
-                    currentFieldId = optionItem.closest('.custom-field-group')
-                        .dataset.id;
-                    currentOptionIndex = optionItem.dataset.index;
-
-                    console.log('Field ID:', currentFieldId);
-                    console.log('Option Index:', currentOptionIndex);
-
-                    // แสดง Modal โดยใช้ Bootstrap 5
-                    new bootstrap.Modal(document.getElementById(
-                        'deleteConfirmationModal')).show();
-                });
-            });
-
-            document.getElementById("confirmDeleteBtn").addEventListener('click', function() {
-                fetch(`/admin/deleteOption/${currentFieldId}/${currentOptionIndex}`, {
+            // ตั้งค่าการยืนยันการลบ
+            document.getElementById("confirmDeleteBtn").onclick = function() {
+                // ส่งคำขอลบไปยังเซิร์ฟเวอร์
+                fetch(`/admin/deleteOption/${fieldId}/${optionIndex}`, {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
@@ -754,36 +742,43 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (data.success) {
                             console.log("ตัวเลือกถูกลบสำเร็จ");
 
-                            let successMessage = document.getElementById("success");
+                            // แสดงข้อความสำเร็จ
+                            let successMessage = document.getElementById(
+                                "success");
                             successMessage.classList.remove("d-none");
 
+                            // ลบตัวเลือกจากหน้าเว็บ
                             document.querySelector(
-                                `.option-item[data-index="${currentOptionIndex}"]`
+                                `.option-item[data-index="${optionIndex}"]`
                             ).remove();
 
-                            // ซ่อน Modal โดยใช้ Bootstrap 5
-                            new bootstrap.Modal(document.getElementById(
-                                'deleteConfirmationModal')).hide();
+                            // ปิด Modal
+                            $('#deleteConfirmationModal').modal('hide');
 
+                            // รีเฟรชหน้า
                             window.location.replace(
-                                "{{ route('customfieldgeneral.edit') }}");
+                                "{{ route('customfieldgeneral.edit') }}"
+                            );
                         } else {
                             console.error("เกิดข้อผิดพลาดในการลบตัวเลือก");
                         }
                     })
-                    .catch(error => console.error("เกิดข้อผิดพลาดในการลบตัวเลือก",
-                        error));
-            });
+                    .catch(error => console.error(
+                        "เกิดข้อผิดพลาดในการลบตัวเลือก", error));
+            };
 
-            // ซ่อน Modal เมื่อคลิกปุ่ม "ยกเลิก" โดยใช้ Bootstrap 5
-            document.querySelector('#deleteConfirmationModal .btn-secondary').addEventListener(
-                'click',
-                function() {
-                    new bootstrap.Modal(document.getElementById('deleteConfirmationModal'))
-                        .hide();
-                });
+            // แสดง Modal
+            new bootstrap.Modal(document.getElementById('deleteConfirmationModal'))
+                .show();
         });
     });
+
+    // เมื่อกดปุ่ม "ยกเลิก" จะปิด Modal
+    document.querySelector('#deleteConfirmationModal .btn-secondary').addEventListener('click',
+        function() {
+            new bootstrap.Modal(document.getElementById('deleteConfirmationModal')).hide();
+        });
+
 });
 </script>
 @endsection
