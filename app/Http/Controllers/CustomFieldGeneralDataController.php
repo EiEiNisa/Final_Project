@@ -19,7 +19,7 @@ class CustomFieldGeneralDataController extends Controller
     {
         $validated = $request->validate([
             'recorddata_id' => 'required|exists:recorddata,id',
-            'custom_field_id' => 'required|exists:custom_fields,id',
+            'custom_field_general_id' => 'required|exists:custom_fields,id',
             'value' => 'required|string',
             'field_type' => 'required|in:text,select,checkbox,radio',
             'option_values' => 'nullable|string',

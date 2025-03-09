@@ -150,7 +150,7 @@ class RecorddataController
 
                 \App\Models\CustomFieldGeneralData::create([
                     'recorddata_id' => $recorddata->id, // ใช้ ID ของ recorddata
-                    'custom_field_id' => $field->id,     // ใช้ ID ของ custom_field
+                    'custom_field_general_id' => $field->id,     // ใช้ ID ของ custom_field
                     'value' => $value,                   // ค่าที่กรอกจากฟอร์ม
                     'field_type' => $field->field_type,  // ประเภทฟิลด์ เช่น text, select, checkbox, radio
                     'option_values' => $field->options ?? null, // ถ้ามี options เช่น select, checkbox, radio
