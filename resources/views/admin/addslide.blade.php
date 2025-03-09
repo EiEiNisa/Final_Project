@@ -68,7 +68,7 @@
 </div>
 
 <!-- ฟอร์มเพิ่มสไลด์ -->
-<!-- วางไว้ก่อนปิด </body> -->
+<body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("add-slide-btn").addEventListener("click", function () {
