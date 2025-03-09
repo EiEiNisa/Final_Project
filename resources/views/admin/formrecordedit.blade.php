@@ -566,7 +566,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // ตรวจจับการเปลี่ยนค่า field type และแสดงตัวเลือกถ้าจำเป็น
     document.addEventListener("change", function(event) {
         if (event.target.classList.contains("field-type")) {
-            let optionsGroup = event.target.closest(".custom-field-group").querySelector(".options-group");
+            let optionsGroup = event.target.closest(".custom-field-group").querySelector(
+                ".options-group");
             if (["select", "radio", "checkbox"].includes(event.target.value)) {
                 optionsGroup.style.display = "block";
             } else {
@@ -752,10 +753,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 })
                 .then(data => {
                     if (data.success) {
-                        // ลบฟิลด์จากหน้า
                         fieldGroup.remove();
-                        // ปิด Modal
-                        $('#deleteConfirmationModal').modal('hide');
+
+                        // ปิด Modal แบบ Bootstrap 5
+                        let deleteModal = document.getElementById("deleteConfirmationModal");
+                        let modalInstance = bootstrap.Modal.getInstance(deleteModal);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+
+                        window.location.replace(
+                            "{{ route('customfieldgeneral.edit') }}");
+                        window.location.reload();
                     } else {
                         // แสดงข้อผิดพลาดด้วย Modal
                         showErrorModal("เกิดข้อผิดพลาดในการลบรายการ!");
