@@ -587,11 +587,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    let deleteFieldId;
-
     document.querySelectorAll('.delete-field-btn').forEach(button => {
         button.addEventListener('click', function(event) {
-            deleteFieldId = event.target.getAttribute('data-id');
+            let deleteFieldId = event.target.getAttribute('data-id');
             console.log("Field ID ที่ต้องการลบ:", deleteFieldId);
 
             // แสดง Modal
@@ -604,7 +602,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // เมื่อคลิกที่ปุ่ม "ลบ" ใน Modal
     document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
         console.log("Field ID ที่จะลบ:", deleteFieldId);
-
+        
+        let deleteFieldId = window.deleteFieldId;
         if (!deleteFieldId) {
             console.error("Field ID ไม่ได้ถูกกำหนด");
             return;
