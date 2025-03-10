@@ -270,7 +270,7 @@ form {
 }
 
 .custom-btn-small {
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background-color: #007bff; 
     color: white;
     border: none;
     padding: 5px 12px;
@@ -282,7 +282,7 @@ form {
 }
 
 .custom-btn-small:hover {
-    background: linear-gradient(135deg, #0056b3, #003d80);
+    background-color: #0056b3; 
     transform: scale(1.03);
 }
 
