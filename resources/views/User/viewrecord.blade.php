@@ -656,44 +656,75 @@ form {
                                         @endif
                                     </div>
 
-                                    @foreach($customFieldsGeneral as $field)
-                                    <div class="col-12">
-                                        <div class="d-flex justify-content-between align-items-center p-0 w-100 mb-1">
-                                            <h6 class="form-label fw-bold" style="color:#020364; font-size: 19px;"
-                                                for="{{ $field->name }}">
-                                                {{ $field->label }}
-                                            </h6>
-                                        </div>
-                                        <div class="col-12">
+                                    <div class="row">
+                                        @foreach($customFieldsGeneral as $field)
+                                        <div class="form-group1">
+                                            <label
+                                                style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
+
+                                            @php
+                                            $storedValue = $customFieldGeneralValuesMap[$field->id] ?? old($field->name,
+                                            '');
+
+                                            if (is_string($storedValue) && str_starts_with($storedValue, '[')) {
+                                            $storedValue = json_decode($storedValue, true);
+                                            }
+
+                                            // Check if the value is '1', if not set to 'ไม่มีค่า'
+                                            $displayValue = $storedValue;
+                                            if ($storedValue == '' || (is_array($storedValue) && empty($storedValue))) {
+                                            $displayValue = 'ไม่มีค่า';
+                                            }
+                                            @endphp
+
                                             @if($field->field_type == 'text')
-                                            <input type="text" name="{{ $field->name }}" id="{{ $field->name }}"
-                                                class="form-control w-100" style="font-size: 17px; padding: 5px;">
+                                            <input type="text" class="form-control" name="{{ $field->name }}"
+                                                value="{{ $displayValue }}" readonly>
 
                                             @elseif($field->field_type == 'select')
-                                            <select name="{{ $field->name }}" id="{{ $field->name }}"
-                                                class="form-select w-100" style="font-size: 17px; padding: 5px;">
-                                                @foreach(json_decode($field->options, true) as $option)
-                                                <option value="{{ $option }}">{{ $option }}</option>
-                                                @endforeach
-                                            </select>
+                                            @php
+                                            $options = json_decode($field->options, true) ?? [];
+                                            $selectedValue = ($storedValue == '1') ? '1' : $displayValue;
+                                            @endphp
+                                            <input type="text" class="form-control" name="{{ $field->name }}"
+                                                value="{{ $selectedValue }}" readonly>
 
-                                            @elseif($field->field_type == 'checkbox' || $field->field_type == 'radio')
-                                            <div class="d-flex flex-wrap gap-3">
-                                                @foreach(json_decode($field->options, true) as $option)
-                                                <div class="form-check">
-                                                    <input type="{{ $field->field_type }}"
-                                                        name="{{ $field->name }}{{ $field->field_type == 'checkbox' ? '[]' : '' }}"
-                                                        value="{{ $option }}" class="form-check-input">
-                                                    <label
-                                                        style="font-size: 17px; font-weight: bold; color: #020364; text-align: left;">{{ $option }}</label>
-                                                </div>
-                                                @endforeach
-                                            </div>
+                                            @elseif($field->field_type == 'checkbox')
+                                            @php
+                                            $options = json_decode($field->options, true) ?? [];
+                                            $checkedValues = is_array($storedValue) ? $storedValue :
+                                            (is_string($storedValue) ? [$storedValue] : []);
+
+                                            // Check if any values are selected, otherwise set to 'ไม่มีค่า'
+                                            if (empty($checkedValues)) {
+                                            $displayValue = 'ไม่มีค่า';
+                                            } else {
+                                            // Join the selected checkbox values
+                                            $displayValue = implode(', ', $checkedValues);
+                                            }
+                                            @endphp
+                                            <input type="text" class="form-control" name="{{ $field->name }}"
+                                                value="{{ $displayValue }}" readonly>
+
+                                            @elseif($field->field_type == 'radio')
+                                            @php
+                                            $options = json_decode($field->options, true) ?? [];
+                                            $selectedRadio = ($storedValue == '1') ? '1' : $displayValue;
+
+                                            // If no value selected, set to 'ไม่มีค่า'
+                                            if (empty($storedValue) || $storedValue == '0') {
+                                            $displayValue = 'ไม่มีค่า';
+                                            }
+                                            @endphp
+                                            <input type="text" class="form-control" name="{{ $field->name }}"
+                                                value="{{ $displayValue }}" readonly>
+
                                             @endif
                                         </div>
+                                        @endforeach
                                     </div>
-                                    @endforeach
 
+                                    <br>
                                     <div class="row">
                                         <div class="col-12">
                                             <label for="user_name">ผู้บันทึกข้อมูล</label>
