@@ -880,6 +880,11 @@ public function update_form_general_information(Request $request, $recorddata_id
     foreach ($customFieldsGeneral as $field) {
         $fieldValue = $request->input($field->name, '');
 
+        // ตรวจสอบว่าค่า fieldValue เป็น array หรือไม่
+        if (is_array($fieldValue)) {
+            $fieldValue = json_encode($fieldValue);  // แปลง array เป็น JSON string
+        }
+
         // ตรวจสอบว่ามีข้อมูล CustomFieldGeneralData อยู่แล้วหรือไม่
         $customFieldGeneralData = \App\Models\CustomFieldGeneralData::where('recorddata_id', $recorddata_id)
             ->where('custom_field_general_id', $field->id)
