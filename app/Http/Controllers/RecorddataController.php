@@ -881,7 +881,7 @@ public function update_form_general_information(Request $request, $recorddata_id
         $fieldValue = $request->input($field->name, '');
 
         // ตรวจสอบว่ามีข้อมูล CustomFieldGeneralData อยู่แล้วหรือไม่
-        $customFieldGeneralData = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)
+        $customFieldGeneralData = \App\Models\CustomFieldGeneralData::where('recorddata_id', $recorddata_id)
             ->where('custom_field_general_id', $field->id)
             ->first();
 
@@ -892,7 +892,7 @@ public function update_form_general_information(Request $request, $recorddata_id
         } else {
             // ถ้ายังไม่มี ให้สร้างใหม่
             \App\Models\CustomFieldGeneralData::create([
-                'recorddata_id' => $id,
+                'recorddata_id' => $recorddata_id,
                 'custom_field_general_id' => $field->id,
                 'value' => $fieldValue,
             ]);
