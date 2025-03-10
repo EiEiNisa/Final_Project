@@ -384,7 +384,6 @@ class RecorddataController
     ));
 }
 
-
 public function view($id, Request $request)
 {
     $recorddata = Recorddata::findOrFail($id);
@@ -518,8 +517,15 @@ public function view($id, Request $request)
         return [$fieldData->custom_field_id => $fieldData->value];
     })->toArray();
 
+    $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();
+    $customFieldGeneralValues = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)->get();
+
+    $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
+        return [$fieldData->custom_field_general_id => $fieldData->value];
+    })->toArray();
+
     return view('User.viewrecord', compact(
-        'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
+        'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'customFieldGeneralValuesMap', 'customFieldsGeneral',
         'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', 'customFields', 'customFieldValuesMap',
     ));
 }
