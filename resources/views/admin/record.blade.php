@@ -1165,12 +1165,12 @@ tbody {
                                                         data-bs-parent="#dataAccordion">
                                                         <div class="accordion-body">
 
-                                                            <!---<div class="d-flex align-items-center mb-2">
+                                                            <div class="d-flex align-items-center mb-2">
                                                                 <input type="checkbox" id="selectAll"
                                                                     class="form-check-input me-2">
                                                                 <label
                                                                     class="form-check-label fw-bold text-danger">เลือกทั้งหมด</label>
-                                                            </div>--->
+                                                            </div>
 
                                                             <div class="row">
                                                                 @foreach ($items->slice($offset, $perPage) as $item)
