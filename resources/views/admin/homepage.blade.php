@@ -200,6 +200,10 @@
     <a href="form" class="btn-add">+ เพิ่มบทความ</a>
 </div>
 
+<div class="container">
+    <a href="addslide" class="btn-add">+ แก้ไขสไลด์</a>
+</div>
+
 <!-- Article Slideshow -->
 <div class="article-slideshow-container py-3">
     @php
