@@ -521,7 +521,7 @@ public function searchByDate(Request $request)
     //dd($request->all()); // ตรวจสอบค่าที่ส่งมาจากฟอร์ม
 
     $searchDate = $request->input('search_date');
-    dd($searchDate); 
+    //dd($searchDate); 
     if (!$searchDate) {
         return back()->with('error', 'กรุณากรอกวันที่');
     }
@@ -546,23 +546,29 @@ public function update(Request $request, $id)
 {
     $data = Recorddata::findOrFail($id);
     
-    // ดึงค่า extra_fields ที่มีอยู่
-    $existing_extra_fields = json_decode($data->extra_fields, true);
-    
-    $extra_fields = $request->input('extra_fields');  
+    // อัปเดต CustomFieldData
+    $customFields = \App\Models\CustomField::all();
+    foreach ($customFields as $field) {
+        $fieldValue = $request->input($field->name, '');
 
-    if (isset($extra_fields) && is_array($extra_fields)) {
-        foreach ($existing_extra_fields as $key => $field) {
-            // ใช้ label ในการค้นหา value ที่จะอัปเดต
-            if (isset($extra_fields[$field['label']])) {
-                // อัปเดตเฉพาะค่า value
-                $existing_extra_fields[$key]['value'] = $extra_fields[$field['label']];
-            }
+        // ตรวจสอบว่ามีข้อมูล CustomFieldData อยู่แล้วหรือไม่
+        $customFieldData = \App\Models\CustomFieldData::where('recorddata_id', $id)
+                            ->where('custom_field_id', $field->id)
+                            ->first();
+
+        if ($customFieldData) {
+            // อัปเดตค่าใหม่
+            $customFieldData->value = $fieldValue;
+            $customFieldData->save();
+        } else {
+            // ถ้ายังไม่มี ให้สร้างใหม่
+            \App\Models\CustomFieldData::create([
+                'recorddata_id' => $id,
+                'custom_field_id' => $field->id,
+                'value' => $fieldValue,
+            ]);
         }
     }
-    // แปลงกลับเป็น JSON และบันทึกลงในฐานข้อมูล
-    $data->extra_fields = json_encode($existing_extra_fields, JSON_UNESCAPED_UNICODE);
-
     // อัปเดตข้อมูลอื่นๆ
     $data->prefix = $request->input('prefix');
     $data->name = $request->input('name');
