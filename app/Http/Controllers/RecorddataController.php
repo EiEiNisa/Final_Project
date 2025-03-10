@@ -375,18 +375,12 @@ class RecorddataController
         return [$fieldData->custom_field_id => $fieldData->value];
     })->toArray();
 
-    $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();
-    $customFieldGeneralValues = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)->get();
-
-     $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
-        return [$fieldData->custom_field_general_id => $fieldData->value];
-    })->toArray();
     //dd($customFieldValuesMap);
 
     return view('admin.editrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases', 
         'diseaseNames', 'lifestylesHabit', 'elderlyInfo', 'user', 'extra_fields_recorddata', 
-        'customFields', 'customFieldsGeneral', 'customFieldValuesMap', 'customFieldGeneralValuesMap'
+        'customFields',  'customFieldValuesMap', 
     ));
 }
 
