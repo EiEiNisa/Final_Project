@@ -753,7 +753,7 @@ form {
 
                                             @if($field->field_type == 'text')
                                             <input type="text" class="form-control" name="{{ $field->name }}"
-                                                value="{{ $displayValue }}">
+                                                value="{{ $displayValue }}" readonly>
 
                                             @elseif($field->field_type == 'select')
                                             @php
@@ -761,7 +761,7 @@ form {
                                             $selectedValue = ($storedValue == '1') ? '1' : $displayValue;
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
-                                                value="{{ $selectedValue }}">
+                                                value="{{ $selectedValue }}" readonly>
 
                                             @elseif($field->field_type == 'checkbox')
                                             @php
@@ -778,7 +778,7 @@ form {
                                             }
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
-                                                value="{{ $displayValue }}">
+                                                value="{{ $displayValue }}" readonly>
 
                                             @elseif($field->field_type == 'radio')
                                             @php
@@ -791,7 +791,7 @@ form {
                                             }
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
-                                                value="{{ $displayValue }}">
+                                                value="{{ $displayValue }}" readonly>
 
                                             @endif
                                         </div>
