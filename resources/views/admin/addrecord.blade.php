@@ -1145,8 +1145,8 @@ form {
 
             @foreach($customFieldsGeneral as $field)
             <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center p-3 w-100 mb-1">
-                    <h6 class="form-label fw-bold" style="color:#020364;" for="{{ $field->name }}">
+                <div class="d-flex justify-content-between align-items-center p-0 w-100 mb-1">
+                    <h6 class="form-label fw-bold" style="color:#020364; font-size: 18px;" for="{{ $field->name }}">
                         {{ $field->label }}
                     </h6>
                 </div>
