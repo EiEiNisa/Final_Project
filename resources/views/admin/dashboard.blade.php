@@ -4,6 +4,15 @@
 <div class="container py-4">
     <h2 class="text-white text-center mb-4">Dashboard</h2>
     
+    <!-- ช่วงเวลาที่ต้องการดูข้อมูล -->
+    <div class="text-center mb-4">
+        <select id="time-period" class="form-select w-25 mx-auto my-3 rounded-pill">
+            <option value="monthly">รายเดือน</option>
+            <option value="quarterly">รายไตรมาส</option>
+            <option value="yearly">รายปี</option>
+        </select>
+    </div>
+
     <div class="row text-center my-4">
         <!-- Card 1: Total Members -->
         <div class="col-md-4 col-sm-12 mb-3">
@@ -65,8 +74,8 @@
     let ageChart = null;
     let diseaseChart = null;
 
-    async function fetchDashboardData() {
-        let response = await fetch("https://thungsetthivhv.pcnone.com/dashboard/data");
+    async function fetchDashboardData(timePeriod = 'monthly') {
+        let response = await fetch(`https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`);
 
         if (!response.ok) {
             alert("ไม่สามารถดึงข้อมูลได้");
@@ -253,6 +262,11 @@
         if (dashboardData) {
             updateDiseaseChart(selectedFilter, dashboardData);
         }
+    });
+
+    document.getElementById("time-period").addEventListener("change", function() {
+        let selectedPeriod = this.value;
+        fetchDashboardData(selectedPeriod);
     });
 
     fetchDashboardData();
