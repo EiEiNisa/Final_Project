@@ -878,44 +878,51 @@ public function update_form_general_information(Request $request, $recorddata_id
     foreach ($customFieldsGeneral as $field) {
         $fieldName = $field->name;
         $fieldType = $field->field_type;
-
+    
         if ($fieldType == 'text') {
             $storedValue = $request->input($fieldName);
-            // Update or create record in a table corresponding to $field
-            // Example: Update in a custom fields table
-            CustomFieldValue::updateOrCreate(
-                ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                ['value' => $storedValue]
-            );
+            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
+            if ($storedValue !== null) {
+                CustomFieldValue::updateOrCreate(
+                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
+                    ['value' => $storedValue]
+                );
+            }
         }
-
+    
         if ($fieldType == 'select') {
             $storedValue = $request->input($fieldName);
-            // Handle select value
-            CustomFieldValue::updateOrCreate(
-                ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                ['value' => $storedValue]
-            );
+            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
+            if ($storedValue !== null) {
+                CustomFieldValue::updateOrCreate(
+                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
+                    ['value' => $storedValue]
+                );
+            }
         }
-
+    
         if ($fieldType == 'checkbox') {
-            $storedValues = $request->input($fieldName, []); // Get all selected values as an array
-            // Update or create record in a custom field table
-            CustomFieldValue::updateOrCreate(
-                ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                ['value' => json_encode($storedValues)] // Store multiple values as JSON
-            );
+            $storedValues = $request->input($fieldName, []); // ค่าเป็น array
+            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
+            if (!empty($storedValues)) {
+                CustomFieldValue::updateOrCreate(
+                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
+                    ['value' => json_encode($storedValues)] // เก็บค่าเป็น JSON
+                );
+            }
         }
-
+    
         if ($fieldType == 'radio') {
             $storedValue = $request->input($fieldName);
-            // Update or create record in a custom field table
-            CustomFieldValue::updateOrCreate(
-                ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                ['value' => $storedValue]
-            );
+            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
+            if ($storedValue !== null) {
+                CustomFieldValue::updateOrCreate(
+                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
+                    ['value' => $storedValue]
+                );
+            }
         }
-    }
+    }    
 
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id) 
