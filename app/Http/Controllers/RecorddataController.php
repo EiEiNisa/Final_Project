@@ -853,6 +853,7 @@ public function destroyPermanently($id)
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_index)
 {
+    $customFieldsGeneral = CustomField::all(); 
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
     $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
@@ -915,7 +916,7 @@ public function update_form_general_information(Request $request, $recorddata_id
             );
         }
     }
-    
+
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id) 
                             ->first();
