@@ -80,172 +80,134 @@
     let diseaseChart = null;
 
     // ฟังก์ชันดึงข้อมูลจาก API ตามช่วงเวลา
-    async function fetchDashboardData(timePeriod = 'monthly', startDate = null, endDate = null) {
-        let url = `https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`;
-        
-        if (timePeriod === 'custom' && startDate && endDate) {
-            url += `&start_date=${startDate}&end_date=${endDate}`;
-        }
+   // ฟังก์ชันดึงข้อมูลจาก API ตามช่วงเวลา
+async function fetchDashboardData(timePeriod = 'monthly', startDate = null, endDate = null) {
+    let url = `https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`;
 
-        let response = await fetch(url);
-
-        if (!response.ok) {
-            alert("ไม่สามารถดึงข้อมูลได้");
-            return;
-        }
-        let data = await response.json();
-        dashboardData = data;
-
-        // อัปเดตข้อมูลในกราฟและการแสดงผล
-        updateDashboard(data);
+    if (timePeriod === 'custom' && startDate && endDate) {
+        url += `&start_date=${startDate}&end_date=${endDate}`;
     }
 
-    // อัปเดตข้อมูลใน Dashboard
-    function updateDashboard(data) {
-        document.getElementById("total-members").innerText = data.total + " คน";
-        document.getElementById("female-members").innerText = data.female + " คน";
-        document.getElementById("male-members").innerText = data.male + " คน";
-        
-        updateAgeChart(data);
-        updateDiseaseChart("all", data);
+    let response = await fetch(url);
+
+    if (!response.ok) {
+        alert("ไม่สามารถดึงข้อมูลได้");
+        return;
+    }
+    let data = await response.json();
+    dashboardData = data;
+
+    // อัปเดตข้อมูลในกราฟและการแสดงผล
+    updateDashboard(data, timePeriod);
+}
+
+// อัปเดตข้อมูลใน Dashboard
+function updateDashboard(data, timePeriod) {
+    document.getElementById("total-members").innerText = data.total + " คน";
+    document.getElementById("female-members").innerText = data.female + " คน";
+    document.getElementById("male-members").innerText = data.male + " คน";
+    
+    // แสดงข้อมูลสำหรับช่วงเวลา
+    updateTimePeriodData(data, timePeriod);
+
+    updateAgeChart(data);
+    updateDiseaseChart("all", data);
+}
+
+// แสดงข้อมูลสำหรับช่วงเวลา
+function updateTimePeriodData(data, timePeriod) {
+    const timePeriodElement = document.getElementById("time-period");
+    
+    // เช็คข้อมูลช่วงเวลา
+    if (timePeriod === 'daily') {
+        document.getElementById("time-period-title").innerText = "ข้อมูลรายวัน";
+        // ตัวอย่างแสดงข้อมูลการกรอกข้อมูลรายวัน
+        document.getElementById("daily-data").innerText = `จำนวนคนที่กรอกข้อมูลวันนี้: ${data.dailyEntries} คน`;
+    } else if (timePeriod === 'monthly') {
+        document.getElementById("time-period-title").innerText = "ข้อมูลรายเดือน";
+        // ตัวอย่างแสดงข้อมูลการกรอกข้อมูลรายเดือน
+        document.getElementById("monthly-data").innerText = `จำนวนคนที่กรอกข้อมูลเดือนนี้: ${data.monthlyEntries} คน`;
+    } else if (timePeriod === 'yearly') {
+        document.getElementById("time-period-title").innerText = "ข้อมูลรายปี";
+        // ตัวอย่างแสดงข้อมูลการกรอกข้อมูลรายปี
+        document.getElementById("yearly-data").innerText = `จำนวนคนที่กรอกข้อมูลปีนี้: ${data.yearlyEntries} คน`;
+    } else if (timePeriod === 'custom') {
+        document.getElementById("time-period-title").innerText = `ข้อมูลจาก ${startDate} ถึง ${endDate}`;
+        // ตัวอย่างแสดงข้อมูลการกรอกข้อมูลช่วงเวลาที่กำหนดเอง
+        document.getElementById("custom-data").innerText = `จำนวนคนที่กรอกข้อมูลช่วงนี้: ${data.customEntries} คน`;
+    }
+}
+
+// ฟังก์ชันสำหรับเลือกช่วงเวลา
+document.getElementById("time-period").addEventListener("change", function() {
+    let selectedPeriod = this.value;
+
+    if (selectedPeriod === 'custom') {
+        document.getElementById('custom-date-range').classList.remove('d-none');
+    } else {
+        document.getElementById('custom-date-range').classList.add('d-none');
     }
 
-    // อัปเดตกราฟอายุ
-    function updateAgeChart(data) {
-        if (!ageChart) {
-            const ctx = document.getElementById("ageChart").getContext("2d");
-            ageChart = new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: data.age_labels,
-                    datasets: [{
-                        label: "จำนวนสมาชิก",
-                        data: data.age_data,
-                        backgroundColor: "rgba(0, 150, 136, 0.7)",
-                        borderColor: "rgba(0, 0, 0, 0.1)",
-                        borderWidth: 1,
-                        hoverBorderColor: "rgba(0, 0, 0, 0.5)",
-                        hoverBorderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    legend: { position: "bottom" },
-                    scales: {
-                        x: {
-                            ticks: { font: { size: 12 } }
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } else {
-            ageChart.data.labels = data.age_labels;
-            ageChart.data.datasets[0].data = data.age_data;
-            ageChart.update();
-        }
-    }
+    let startDate = document.getElementById('start-date').value;
+    let endDate = document.getElementById('end-date').value;
 
-    // อัปเดตกราฟโรค
-    function updateDiseaseChart(filter, data) {
-        let dataset = [];
+    fetchDashboardData(selectedPeriod, startDate, endDate);
+});
 
-        if (filter === "all") {
-            dataset = [
-                {
-                    label: 'เบาหวาน',
-                    data: data.diseases['diabetes'],
-                    backgroundColor: 'rgba(255, 193, 7, 0.7)',
-                    borderColor: 'rgba(255, 193, 7, 1)',
+// การอัปเดตกราฟ
+function updateAgeChart(data) {
+    if (!ageChart) {
+        const ctx = document.getElementById("ageChart").getContext("2d");
+        ageChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: data.age_labels,
+                datasets: [{
+                    label: "จำนวนสมาชิก",
+                    data: data.age_data,
+                    backgroundColor: "rgba(0, 150, 136, 0.7)",
+                    borderColor: "rgba(0, 0, 0, 0.1)",
                     borderWidth: 1
-                },
-                {
-                    label: 'หลอดเลือดในสมอง',
-                    data: data.diseases['cerebral_artery'],
-                    backgroundColor: 'rgba(255, 82, 82, 0.7)',
-                    borderColor: 'rgba(255, 82, 82, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ไต',
-                    data: data.diseases['kidney'],
-                    backgroundColor: 'rgba(33, 150, 243, 0.7)',
-                    borderColor: 'rgba(33, 150, 243, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ความดันโลหิตสูง',
-                    data: data.diseases['blood_pressure'],
-                    backgroundColor: 'rgba(76, 175, 80, 0.7)',
-                    borderColor: 'rgba(76, 175, 80, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'หัวใจ',
-                    data: data.diseases['heart'],
-                    backgroundColor: 'rgba(156, 39, 176, 0.7)',
-                    borderColor: 'rgba(156, 39, 176, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ตา',
-                    data: data.diseases['eye'],
-                    backgroundColor: 'rgba(255, 87, 34, 0.7)',
-                    borderColor: 'rgba(255, 87, 34, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'อื่นๆ',
-                    data: data.diseases['other'],
-                    backgroundColor: 'rgba(233, 30, 99, 0.7)',
-                    borderColor: 'rgba(233, 30, 99, 1)',
-                    borderWidth: 1
-                }
-            ];
-        } else {
-            if (data.diseases[filter]) {
-                dataset = [
-                    {
-                        label: data.disease_labels[filter],
-                        data: data.diseases[filter],
-                        backgroundColor: 'rgba(255, 193, 7, 0.7)',
-                        borderColor: 'rgba(255, 193, 7, 1)',
-                        borderWidth: 1
-                    }
-                ];
+                }]
             }
-        }
-
-        if (!diseaseChart) {
-            diseaseChart = new Chart(document.getElementById("diseaseChart"), {
-                type: "bar",
-                data: {
-                    labels: data.months,
-                    datasets: dataset
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    legend: { position: "bottom" },
-                    scales: {
-                        x: {
-                            ticks: { font: { size: 12 } }
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } else {
-            diseaseChart.data.labels = data.months;
-            diseaseChart.data.datasets = dataset;
-            diseaseChart.update();
-        }
+        });
+    } else {
+        ageChart.data.labels = data.age_labels;
+        ageChart.data.datasets[0].data = data.age_data;
+        ageChart.update();
     }
+}
+
+function updateDiseaseChart(filter, data) {
+    let dataset = [];
+
+    if (filter === "all") {
+        dataset = [
+            { label: 'เบาหวาน', data: data.diseases['diabetes'], backgroundColor: 'rgba(255, 193, 7, 0.7)' },
+            { label: 'หลอดเลือดในสมอง', data: data.diseases['cerebral_artery'], backgroundColor: 'rgba(255, 82, 82, 0.7)' },
+            { label: 'ไต', data: data.diseases['kidney'], backgroundColor: 'rgba(33, 150, 243, 0.7)' },
+            { label: 'ความดันโลหิตสูง', data: data.diseases['blood_pressure'], backgroundColor: 'rgba(76, 175, 80, 0.7)' },
+            { label: 'หัวใจ', data: data.diseases['heart'], backgroundColor: 'rgba(156, 39, 176, 0.7)' },
+            { label: 'ตา', data: data.diseases['eye'], backgroundColor: 'rgba(255, 87, 34, 0.7)' },
+            { label: 'อื่นๆ', data: data.diseases['other'], backgroundColor: 'rgba(233, 30, 99, 0.7)' }
+        ];
+    }
+
+    if (!diseaseChart) {
+        diseaseChart = new Chart(document.getElementById("diseaseChart"), {
+            type: "bar",
+            data: {
+                labels: data.months,
+                datasets: dataset
+            }
+        });
+    } else {
+        diseaseChart.data.labels = data.months;
+        diseaseChart.data.datasets = dataset;
+        diseaseChart.update();
+    }
+}
+
 
     // ฟังก์ชันสำหรับเลือกช่วงเวลา
     document.getElementById("time-period").addEventListener("change", function() {
