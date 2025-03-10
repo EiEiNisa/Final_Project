@@ -839,7 +839,7 @@ form {
             </div>
 
             @foreach($customFieldsGeneral as $field)
-            <div class="form-group1 row-12" style="width: 100%; margin-bottom: 15px;">
+            <div class="row-12" style="width: 100%; margin-bottom: 15px;">
                 <label
                     style="display: block; margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
