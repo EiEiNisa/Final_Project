@@ -853,7 +853,7 @@ public function destroyPermanently($id)
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_index)
 {
-    $customFieldsGeneral = CustomField::all(); 
+    
     $recorddata = Recorddata::findOrFail($recorddata_id);
 
     $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
@@ -875,54 +875,29 @@ public function update_form_general_information(Request $request, $recorddata_id
         'blood_level' => $request->input('blood_level'),
     ]);
 
+    $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();
+
     foreach ($customFieldsGeneral as $field) {
-        $fieldName = $field->name;
-        $fieldType = $field->field_type;
-    
-        if ($fieldType == 'text') {
-            $storedValue = $request->input($fieldName);
-            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
-            if ($storedValue !== null) {
-                CustomFieldValue::updateOrCreate(
-                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                    ['value' => $storedValue]
-                );
-            }
+        $fieldValue = $request->input($field->name, '');
+
+        // ตรวจสอบว่ามีข้อมูล CustomFieldGeneralData อยู่แล้วหรือไม่
+        $customFieldGeneralData = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)
+            ->where('custom_field_general_id', $field->id)
+            ->first();
+
+        if ($customFieldGeneralData) {
+            // อัปเดตค่าใหม่
+            $customFieldGeneralData->value = $fieldValue;
+            $customFieldGeneralData->save();
+        } else {
+            // ถ้ายังไม่มี ให้สร้างใหม่
+            \App\Models\CustomFieldGeneralData::create([
+                'recorddata_id' => $id,
+                'custom_field_general_id' => $field->id,
+                'value' => $fieldValue,
+            ]);
         }
-    
-        if ($fieldType == 'select') {
-            $storedValue = $request->input($fieldName);
-            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
-            if ($storedValue !== null) {
-                CustomFieldValue::updateOrCreate(
-                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                    ['value' => $storedValue]
-                );
-            }
-        }
-    
-        if ($fieldType == 'checkbox') {
-            $storedValues = $request->input($fieldName, []); // ค่าเป็น array
-            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
-            if (!empty($storedValues)) {
-                CustomFieldValue::updateOrCreate(
-                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                    ['value' => json_encode($storedValues)] // เก็บค่าเป็น JSON
-                );
-            }
-        }
-    
-        if ($fieldType == 'radio') {
-            $storedValue = $request->input($fieldName);
-            // ตรวจสอบว่าได้รับค่าในฟอร์มหรือไม่
-            if ($storedValue !== null) {
-                CustomFieldValue::updateOrCreate(
-                    ['recorddata_id' => $recorddata_id, 'field_id' => $field->id],
-                    ['value' => $storedValue]
-                );
-            }
-        }
-    }    
+    }
 
     $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id) 
