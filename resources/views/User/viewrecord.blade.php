@@ -485,15 +485,14 @@ form {
                 @endphp
 
                 @if($field->field_type == 'text')
-                <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}">
+                <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}" disabled>
 
                 @elseif($field->field_type == 'select')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // ตรวจสอบว่าค่าเป็น 1 หรือมีค่าที่เลือกไว้
                 $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
-                <select class="form-control" name="{{ $field->name }}">
+                <select class="form-control" name="{{ $field->name }}" disabled>
                     @foreach($options as $option)
                     <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
                         {{ $option }}
@@ -504,7 +503,6 @@ form {
                 @elseif($field->field_type == 'checkbox')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // ตรวจสอบว่าเป็น JSON หรือไม่ แล้วแปลงให้เป็น array
                 $checkedValues = is_array($storedValue) ? $storedValue : (is_string($storedValue) ? [$storedValue] :
                 []);
                 @endphp
@@ -512,7 +510,7 @@ form {
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
-                            value="{{ $option }}" {{ in_array($option, $checkedValues) ? 'checked' : '' }}>
+                            value="{{ $option }}" {{ in_array($option, $checkedValues) ? 'checked' : '' }} disabled>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
@@ -521,14 +519,13 @@ form {
                 @elseif($field->field_type == 'radio')
                 @php
                 $options = json_decode($field->options, true) ?? [];
-                // ตรวจสอบว่าค่าเป็น 1 หรือมีค่าที่เลือกไว้
                 $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
                 <div class="radio-group">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
-                            {{ $selectedRadio == $option ? 'checked' : '' }}>
+                            {{ $selectedRadio == $option ? 'checked' : '' }} disabled>
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
@@ -536,7 +533,6 @@ form {
                 @endif
             </div>
             @endforeach
-
 
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
