@@ -269,33 +269,164 @@
         fetchDashboardData(selectedPeriod);
     });
 
-    fetchDashboardData();
+    // ฟังก์ชันดึงข้อมูลจาก API ตามช่วงเวลา
+    async function fetchDashboardData(timePeriod = 'monthly') {
+        let response = await fetch(`https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`);
+
+        if (!response.ok) {
+            alert("ไม่สามารถดึงข้อมูลได้");
+            return;
+        }
+
+        let data = await response.json();
+        dashboardData = data;
+
+        // อัปเดตข้อมูลใน Card
+        document.getElementById("total-members").innerText = data.total + " คน";
+        document.getElementById("female-members").innerText = data.female + " คน";
+        document.getElementById("male-members").innerText = data.male + " คน";
+
+        // อัปเดตกราฟอายุ
+        if (!ageChart) {
+            const customBackgroundPlugin = {
+                id: "customCanvasBackgroundColor",
+                beforeDraw: (chart) => {
+                    const ctx = chart.canvas.getContext("2d");
+                    ctx.save();
+                    ctx.fillStyle = "#FFFFFF"; 
+                    ctx.fillRect(0, 0, chart.width, chart.height);
+                    ctx.restore();
+                }
+            };
+
+            const ctx = document.getElementById("ageChart").getContext("2d");
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, "rgba(255, 165, 0, 0.7)");
+            gradient.addColorStop(1, "rgba(0, 150, 136, 0.7)");
+
+            ageChart = new Chart(document.getElementById("ageChart"), {
+                type: "bar",
+                data: {
+                    labels: data.age_labels,
+                    datasets: [{
+                        label: "จำนวนสมาชิก",
+                        data: data.age_data,
+                        backgroundColor: gradient,
+                        borderColor: "rgba(0, 0, 0, 0.1)",
+                        borderWidth: 1,
+                        hoverBorderColor: "rgba(0, 0, 0, 0.5)",
+                        hoverBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: { position: "bottom" },
+                    scales: { x: { ticks: { font: { size: 12 } } }, y: { beginAtZero: true } }
+                },
+                plugins: [customBackgroundPlugin]
+            });
+        } else {
+            ageChart.data.labels = data.age_labels;
+            ageChart.data.datasets[0].data = data.age_data;
+            ageChart.update();
+        }
+
+        // อัปเดตกราฟโรคประจำตัว
+        updateDiseaseChart("all", data);
+    }
+
+    function updateDiseaseChart(filter, data) {
+        let dataset = [];
+
+        if (filter === "all") {
+            dataset = [
+                {
+                    label: 'เบาหวาน',
+                    data: data.diseases['diabetes'],
+                    backgroundColor: 'rgba(255, 193, 7, 0.7)',
+                    borderColor: 'rgba(255, 193, 7, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'หลอดเลือดในสมอง',
+                    data: data.diseases['cerebral_artery'],
+                    backgroundColor: 'rgba(255, 82, 82, 0.7)',
+                    borderColor: 'rgba(255, 82, 82, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'ไต',
+                    data: data.diseases['kidney'],
+                    backgroundColor: 'rgba(33, 150, 243, 0.7)',
+                    borderColor: 'rgba(33, 150, 243, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'ความดันโลหิตสูง',
+                    data: data.diseases['blood_pressure'],
+                    backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'หัวใจ',
+                    data: data.diseases['heart'],
+                    backgroundColor: 'rgba(156, 39, 176, 0.7)',
+                    borderColor: 'rgba(156, 39, 176, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'ตา',
+                    data: data.diseases['eye'],
+                    backgroundColor: 'rgba(255, 87, 34, 0.7)',
+                    borderColor: 'rgba(255, 87, 34, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'อื่นๆ',
+                    data: data.diseases['other'],
+                    backgroundColor: 'rgba(233, 30, 99, 0.7)',
+                    borderColor: 'rgba(233, 30, 99, 1)',
+                    borderWidth: 1
+                }
+            ];
+        } else {
+            if (data.diseases[filter]) {
+                dataset = [
+                    {
+                        label: data.disease_labels[filter],
+                        data: data.diseases[filter],
+                        backgroundColor: 'rgba(255, 193, 7, 0.7)',
+                        borderColor: 'rgba(255, 193, 7, 1)',
+                        borderWidth: 1
+                    }
+                ];
+            }
+        }
+
+        if (!diseaseChart) {
+            diseaseChart = new Chart(document.getElementById("diseaseChart"), {
+                type: "bar",
+                data: { labels: data.months, datasets: dataset },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: { position: "bottom" },
+                    scales: { x: { ticks: { font: { size: 12 } } }, y: { beginAtZero: true } }
+                }
+            });
+        } else {
+            diseaseChart.data.labels = data.months;
+            diseaseChart.data.datasets = dataset;
+            diseaseChart.update();
+        }
+    }
+
+    document.getElementById("time-period").addEventListener("change", function() {
+        let selectedPeriod = this.value;
+        fetchDashboardData(selectedPeriod);
+    });
 </script>
-
-<style>
-    /* Card Margin */
-    .card {
-        margin-bottom: 1.5rem;
-    }
-
-    /* Adjust the font size for smaller screens */
-    .member-count {
-        font-size: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-        .member-count {
-            font-size: 1.2rem;
-        }
-
-        #ageChart, #diseaseChart {
-            max-height: 400px;
-        }
-
-        .form-select {
-            width: 80%;
-        }
-    }
-</style>
 
 @endsection
