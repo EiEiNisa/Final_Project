@@ -763,92 +763,93 @@ public function destroyPermanently($id)
         return view('User.record', compact('recorddata', 'users', 'diseases'));
     }
 
-public function edit_general_information(Request $request, $recorddata_id, $checkup_index)  
-{
-    $recorddata = Recorddata::findOrFail($recorddata_id);
-
-    $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
-                                 ->orderBy('id', 'asc') 
-                                 ->get();
-
-    if ($healthRecords->isEmpty()) {
-        return back()->with('error', 'ไม่พบข้อมูลการตรวจ');
-    }
-
-    if ($checkup_index > $healthRecords->count() || $checkup_index < 1) {
-        return back()->with('error', 'ไม่พบข้อมูลการตรวจครั้งที่ ' . $checkup_index);
-    }
-
-    $healthRecord = $healthRecords[$checkup_index - 1];
-
-    $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
+    public function edit_general_information(Request $request, $recorddata_id, $checkup_index)  
+    {
+        $recorddata = Recorddata::findOrFail($recorddata_id);
+    
+        $healthRecords = HealthRecord::where('recorddata_id', $recorddata_id)
+                                     ->orderBy('id', 'asc') 
+                                     ->get();
+    
+        if ($healthRecords->isEmpty()) {
+            return back()->with('error', 'ไม่พบข้อมูลการตรวจ');
+        }
+    
+        if ($checkup_index > $healthRecords->count() || $checkup_index < 1) {
+            return back()->with('error', 'ไม่พบข้อมูลการตรวจครั้งที่ ' . $checkup_index);
+        }
+    
+        $healthRecord = $healthRecords[$checkup_index - 1];
+    
+        $healthZone = HealthZone::where('recorddata_id', $recorddata_id)
+                                ->where('id', $healthRecord->id) 
+                                ->first();
+        $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
+                                ->where('id', $healthRecord->id) 
+                                ->first();
+        $diseases = Disease::where('recorddata_id', $recorddata_id)
                             ->where('id', $healthRecord->id) 
                             ->first();
-    $healthZone2 = HealthZone2::where('recorddata_id', $recorddata_id)
-                            ->where('id', $healthRecord->id) 
-                            ->first();
-    $diseases = Disease::where('recorddata_id', $recorddata_id)
-                        ->where('id', $healthRecord->id) 
-                        ->first();
-
-    $diseaseNamesFormatted = [];
-
+    
+        $diseaseNamesFormatted = [];
+    
         foreach ($diseases as $index => $disease) {
             if (!isset($disease['other']) || $disease['other'] != 1) {
                 $diseaseNamesFormatted[$index] = !empty($disease['names']) ? $disease['names'] : 'ไม่มีโรคประจำตัว';
             } else {
                 $diseaseNamesFormatted[$index] = $disease['other_text'];
             }
-        }                        
+        }
     
-    $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
-                                ->where('id', $healthRecord->id)
-                                ->first();
+        $lifestyles = LifestyleHabit::where('recorddata_id', $recorddata_id)
+                                    ->where('id', $healthRecord->id)
+                                    ->first();
+        
+        $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
+                                            ->where('id', $healthRecord->id)
+                                            ->first();
     
-    $elderlyInfos = ElderlyInformation::where('recorddata_id', $recorddata_id)
-                                        ->where('id', $healthRecord->id)
-                                        ->first();
-
-    $zones = [
-        'zone1_normal' => ['value' => $healthZone->zone1_normal ?? 0, 'label' => '≤ 120/80 mmHg'],
-        'zone1_risk_group' => ['value' => $healthZone->zone1_risk_group ?? 0, 'label' => '120/80 - 139/89 mmHg'],
-        'zone1_good_control' => ['value' => $healthZone->zone1_good_control ?? 0, 'label' => '< 139/89 mmHg'],
-        'zone1_watch_out' => ['value' => $healthZone->zone1_watch_out ?? 0, 'label' => '140/90 - 159/99 mmHg'],
-        'zone1_danger' => ['value' => $healthZone->zone1_danger ?? 0, 'label' => '160/100 - 179/109 mmHg'],
-        'zone1_critical' => ['value' => $healthZone->zone1_critical ?? 0, 'label' => '≥ 180/110 mmHg'],
-        'zone1_complications' => ['value' => $healthZone->zone1_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
-        'zone1_heart' => ['value' => $healthZone->zone1_heart ?? 0, 'label' => 'หัวใจ'],
-        'zone1_cerebrovascular' => ['value' => $healthZone->zone1_cerebrovascular ?? 0, 'label' => 'หลอดเลือดสมอง'],
-        'zone1_kidney' => ['value' => $healthZone->zone1_kidney ?? 0, 'label' => 'ไต'],
-        'zone1_eye' => ['value' => $healthZone->zone1_eye ?? 0, 'label' => 'ตา'],
-        'zone1_foot' => ['value' => $healthZone->zone1_foot ?? 0, 'label' => 'เท้า'],
-    ];
-
-    $zones2 = [
-        'zone2_normal' => ['value' => $healthZone2->zone2_normal ?? 0, 'label' => '≥ 180/110 mmHg'],
-        'zone2_risk_group' => ['value' => $healthZone2->zone2_risk_group ?? 0, 'label' => '100-125 mg/dl'],
-        'zone2_good_control' => ['value' => $healthZone2->zone2_good_control ?? 0, 'label' => '125 mg/dl'],
-        'zone2_watch_out' => ['value' => $healthZone2->zone2_watch_out ?? 0, 'label' => '126-154 mg/dl HbA1c < 7'],
-        'zone2_danger' => ['value' => $healthZone2->zone2_danger ?? 0, 'label' => '155-182 mg/dl HbA1c 7-7.9'],
-        'zone2_critical' => ['value' => $healthZone2->zone2_critical ?? 0, 'label' => '≥ 183 mg/dl HbA1c 8%'],
-        'zone2_complications' => ['value' => $healthZone2->zone2_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
-        'zone2_heart' => ['value' => $healthZone2->zone2_heart ?? 0, 'label' => 'หัวใจ'],
-        'zone2_eye' => ['value' => $healthZone2->zone2_eye ?? 0, 'label' => 'ตา'],
-    ];
-
-    $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();
-    $customFieldGeneralValues = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)->get();
-
-    $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
-        return [$fieldData->custom_field_general_id => $fieldData->value];
-    })->toArray();
-
-    // ส่งข้อมูลไปยังหน้า view
-    return view('admin.editrecord_general_information', compact(
-        'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'recorddata_id' , 'customFieldsGeneral' , 'customFieldGeneralValuesMap',
-        'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2', 'diseaseNamesFormatted'
-    ));
-}
+        $zones = [
+            'zone1_normal' => ['value' => $healthZone->zone1_normal ?? 0, 'label' => '≤ 120/80 mmHg'],
+            'zone1_risk_group' => ['value' => $healthZone->zone1_risk_group ?? 0, 'label' => '120/80 - 139/89 mmHg'],
+            'zone1_good_control' => ['value' => $healthZone->zone1_good_control ?? 0, 'label' => '< 139/89 mmHg'],
+            'zone1_watch_out' => ['value' => $healthZone->zone1_watch_out ?? 0, 'label' => '140/90 - 159/99 mmHg'],
+            'zone1_danger' => ['value' => $healthZone->zone1_danger ?? 0, 'label' => '160/100 - 179/109 mmHg'],
+            'zone1_critical' => ['value' => $healthZone->zone1_critical ?? 0, 'label' => '≥ 180/110 mmHg'],
+            'zone1_complications' => ['value' => $healthZone->zone1_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
+            'zone1_heart' => ['value' => $healthZone->zone1_heart ?? 0, 'label' => 'หัวใจ'],
+            'zone1_cerebrovascular' => ['value' => $healthZone->zone1_cerebrovascular ?? 0, 'label' => 'หลอดเลือดสมอง'],
+            'zone1_kidney' => ['value' => $healthZone->zone1_kidney ?? 0, 'label' => 'ไต'],
+            'zone1_eye' => ['value' => $healthZone->zone1_eye ?? 0, 'label' => 'ตา'],
+            'zone1_foot' => ['value' => $healthZone->zone1_foot ?? 0, 'label' => 'เท้า'],
+        ];
+    
+        $zones2 = [
+            'zone2_normal' => ['value' => $healthZone2->zone2_normal ?? 0, 'label' => '≥ 180/110 mmHg'],
+            'zone2_risk_group' => ['value' => $healthZone2->zone2_risk_group ?? 0, 'label' => '100-125 mg/dl'],
+            'zone2_good_control' => ['value' => $healthZone2->zone2_good_control ?? 0, 'label' => '125 mg/dl'],
+            'zone2_watch_out' => ['value' => $healthZone2->zone2_watch_out ?? 0, 'label' => '126-154 mg/dl HbA1c < 7'],
+            'zone2_danger' => ['value' => $healthZone2->zone2_danger ?? 0, 'label' => '155-182 mg/dl HbA1c 7-7.9'],
+            'zone2_critical' => ['value' => $healthZone2->zone2_critical ?? 0, 'label' => '≥ 183 mg/dl HbA1c 8%'],
+            'zone2_complications' => ['value' => $healthZone2->zone2_complications ?? 0, 'label' => 'โรคแทรกซ้อน'],
+            'zone2_heart' => ['value' => $healthZone2->zone2_heart ?? 0, 'label' => 'หัวใจ'],
+            'zone2_eye' => ['value' => $healthZone2->zone2_eye ?? 0, 'label' => 'ตา'],
+        ];
+    
+        $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();
+        $customFieldGeneralValues = \App\Models\CustomFieldGeneralData::where('recorddata_id', $recorddata_id)->get();
+    
+        $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
+            return [$fieldData->custom_field_general_id => $fieldData->value];
+        })->toArray();
+    
+        // ส่งข้อมูลไปยังหน้า view
+        return view('admin.editrecord_general_information', compact(
+            'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'recorddata_id' , 'customFieldsGeneral' , 'customFieldGeneralValuesMap',
+            'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2', 'diseaseNamesFormatted'
+        ));
+    }
+    
 
 public function update_form_general_information(Request $request, $recorddata_id, $checkup_index)
 {
