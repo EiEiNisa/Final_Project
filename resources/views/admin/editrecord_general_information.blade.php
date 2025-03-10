@@ -656,7 +656,7 @@ form {
                         var otherInputDiv = document.getElementById("other_input");
 
                         if (checkbox.checked) {
-                            otherInputDiv.style.display = "block"; 
+                            otherInputDiv.style.display = "block";
                         } else {
                             otherInputDiv.style.display = "none";
                         }
@@ -837,6 +837,71 @@ form {
                     </div>
                 </div>
             </div>
+
+
+            @foreach($customFieldsGeneral as $field)
+            <div class="form-group1">
+                <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
+
+                @php
+                $storedValue = $customFieldGeneralValuesMap[$field->id] ?? old($field->name,
+                '');
+
+                if (is_string($storedValue) && str_starts_with($storedValue, '[')) {
+                $storedValue = json_decode($storedValue, true);
+                }
+                @endphp
+
+                @if($field->field_type == 'text')
+                <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}">
+
+                @elseif($field->field_type == 'select')
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
+                @endphp
+                <select class="form-control" name="{{ $field->name }}">
+                    @foreach($options as $option)
+                    <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
+                        {{ $option }}
+                    </option>
+                    @endforeach
+                </select>
+
+                @elseif($field->field_type == 'checkbox')
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                $checkedValues = is_array($storedValue) ? $storedValue :
+                (is_string($storedValue) ? [$storedValue] : []);
+                @endphp
+                <div class="checkbox-group">
+                    @foreach($options as $option)
+                    <div class="form-check" style="display: inline-block; margin-right: 15px;">
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                            value="{{ $option }}" {{ in_array($option, $checkedValues) ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
+                </div>
+
+                @elseif($field->field_type == 'radio')
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
+                @endphp
+                <div class="radio-group">
+                    @foreach($options as $option)
+                    <div class="form-check" style="display: inline-block; margin-right: 15px;">
+                        <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
+                            {{ $selectedRadio == $option ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+            @endforeach
+
 
             <div class="form-group-name"
                 style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
