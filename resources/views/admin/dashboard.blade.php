@@ -81,10 +81,10 @@
 
     // ฟังก์ชันดึงข้อมูลจาก API ตามช่วงเวลา
     async function fetchDashboardData(timePeriod = 'monthly', startDate = null, endDate = null) {
-        let url = https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod};
+        let url = `https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`;
         
         if (timePeriod === 'custom' && startDate && endDate) {
-            url += &start_date=${startDate}&end_date=${endDate};
+            url += `&start_date=${startDate}&end_date=${endDate}`;
         }
 
         let response = await fetch(url);
