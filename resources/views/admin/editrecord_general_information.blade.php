@@ -840,8 +840,9 @@ form {
 
             @foreach($customFieldsGeneral as $field)
             <div class="col-12" style="width: 100%; margin-bottom: 15px;">
-                <label
-                    style="display: block; margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
+                <h6 class="form-label fw-bold" style="color:#020364; font-size: 19px;" for="{{ $field->name }}">
+                    {{ $field->label }}
+                </h6>
 
                 @php
                 $storedValue = $customFieldGeneralValuesMap[$field->id] ?? old($field->name, '');
@@ -881,7 +882,7 @@ form {
                 <div class="col-12 checkbox-group" style="width: 100%;">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
-                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                        <input class="form-check" type="checkbox" name="{{ $field->name }}[]"
                             value="{{ $option }}" {{ in_array($option, $checkedValues) ? 'checked' : '' }}
                             style="width: auto;">
                         <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
