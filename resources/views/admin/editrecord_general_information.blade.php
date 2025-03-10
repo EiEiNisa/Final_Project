@@ -839,7 +839,7 @@ form {
             </div>
 
             @foreach($customFieldsGeneral as $field)
-            <div class="row-12" style="width: 100%; margin-bottom: 15px;">
+            <div class="col-12" style="width: 100%; margin-bottom: 15px;">
                 <label
                     style="display: block; margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
@@ -852,7 +852,7 @@ form {
                 @endphp
 
                 @if($field->field_type == 'text')
-                <div class="row-12">
+                <div class="col-12">
                     <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}"
                         style="width: 100%;">
                 </div>
@@ -862,7 +862,7 @@ form {
                 $options = json_decode($field->options, true) ?? [];
                 $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
-                <div class="row-12">
+                <div class="col-12">
                     <select class="form-control" name="{{ $field->name }}" style="width: 100%;">
                         @foreach($options as $option)
                         <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
@@ -878,7 +878,7 @@ form {
                 $checkedValues = is_array($storedValue) ? $storedValue : (is_string($storedValue) ? [$storedValue] :
                 []);
                 @endphp
-                <div class="row-12 checkbox-group" style="width: 100%;">
+                <div class="col-12 checkbox-group" style="width: 100%;">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
@@ -894,7 +894,7 @@ form {
                 $options = json_decode($field->options, true) ?? [];
                 $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
-                <div class="row-12 radio-group" style="width: 100%;">
+                <div class="col-12 radio-group" style="width: 100%;">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
