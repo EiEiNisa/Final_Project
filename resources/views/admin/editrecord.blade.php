@@ -743,16 +743,22 @@ form {
                                             if (is_string($storedValue) && str_starts_with($storedValue, '[')) {
                                             $storedValue = json_decode($storedValue, true);
                                             }
+
+                                            // Check if the value is '1', if not set to 'ไม่มีค่า'
+                                            $displayValue = $storedValue;
+                                            if ($storedValue == '' || (is_array($storedValue) && empty($storedValue))) {
+                                            $displayValue = 'ไม่มีค่า';
+                                            }
                                             @endphp
 
                                             @if($field->field_type == 'text')
                                             <input type="text" class="form-control" name="{{ $field->name }}"
-                                                value="{{ $storedValue }}">
+                                                value="{{ $displayValue }}">
 
                                             @elseif($field->field_type == 'select')
                                             @php
                                             $options = json_decode($field->options, true) ?? [];
-                                            $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
+                                            $selectedValue = ($storedValue == '1') ? '1' : $displayValue;
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
                                                 value="{{ $selectedValue }}">
@@ -762,14 +768,16 @@ form {
                                             $options = json_decode($field->options, true) ?? [];
                                             $checkedValues = is_array($storedValue) ? $storedValue :
                                             (is_string($storedValue) ? [$storedValue] : []);
+                                            $displayValue = (empty($checkedValues)) ? 'ไม่มีค่า' : implode(', ',
+                                            $checkedValues);
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
-                                                value="{{ implode(', ', $checkedValues) }}">
+                                                value="{{ $displayValue }}">
 
                                             @elseif($field->field_type == 'radio')
                                             @php
                                             $options = json_decode($field->options, true) ?? [];
-                                            $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
+                                            $selectedRadio = ($storedValue == '1') ? '1' : $displayValue;
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
                                                 value="{{ $selectedRadio }}">
