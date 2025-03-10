@@ -754,14 +754,8 @@ form {
                                             $options = json_decode($field->options, true) ?? [];
                                             $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
                                             @endphp
-                                            <select class="form-control" name="{{ $field->name }}">
-                                                @foreach($options as $option)
-                                                <option value="{{ $option }}"
-                                                    {{ $selectedValue == $option ? 'selected' : '' }}>
-                                                    {{ $option }}
-                                                </option>
-                                                @endforeach
-                                            </select>
+                                            <input type="text" class="form-control" name="{{ $field->name }}"
+                                                value="{{ $selectedValue }}">
 
                                             @elseif($field->field_type == 'checkbox')
                                             @php
@@ -769,36 +763,17 @@ form {
                                             $checkedValues = is_array($storedValue) ? $storedValue :
                                             (is_string($storedValue) ? [$storedValue] : []);
                                             @endphp
-                                            <div class="checkbox-group">
-                                                @foreach($options as $option)
-                                                <div class="form-check"
-                                                    style="display: inline-block; margin-right: 15px;">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        name="{{ $field->name }}[]" value="{{ $option }}"
-                                                        {{ in_array($option, $checkedValues) ? 'checked' : '' }}>
-                                                    <label
-                                                        style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
-                                                </div>
-                                                @endforeach
-                                            </div>
+                                            <input type="text" class="form-control" name="{{ $field->name }}"
+                                                value="{{ implode(', ', $checkedValues) }}">
 
                                             @elseif($field->field_type == 'radio')
                                             @php
                                             $options = json_decode($field->options, true) ?? [];
                                             $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
                                             @endphp
-                                            <div class="radio-group">
-                                                @foreach($options as $option)
-                                                <div class="form-check"
-                                                    style="display: inline-block; margin-right: 15px;">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="{{ $field->name }}" value="{{ $option }}"
-                                                        {{ $selectedRadio == $option ? 'checked' : '' }}>
-                                                    <label
-                                                        style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
-                                                </div>
-                                                @endforeach
-                                            </div>
+                                            <input type="text" class="form-control" name="{{ $field->name }}"
+                                                value="{{ $selectedRadio }}">
+
                                             @endif
                                         </div>
                                         @endforeach
