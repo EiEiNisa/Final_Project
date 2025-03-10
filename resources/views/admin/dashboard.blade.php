@@ -73,7 +73,6 @@
         <canvas id="diseaseChart" class="mt-3"></canvas>
     </div>
 </div>
-@endsection
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let dashboardData = null;
@@ -273,3 +272,4 @@
     }
 </style>
 
+@endsection
