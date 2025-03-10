@@ -839,9 +839,9 @@ form {
             </div>
 
             @foreach($customFieldsGeneral as $field)
-            <div class="form-group1" style="width: 100%; margin-bottom: 15px;">
+            <div class="form-group1 row-12" style="width: 100%; margin-bottom: 15px;">
                 <label
-                    style="display: block; margin-bottom: 5px; text-align: left; color: #020364; font-size: 19px;">{{ $field->label }}</label>
+                    style="display: block; margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
 
                 @php
                 $storedValue = $customFieldGeneralValuesMap[$field->id] ?? old($field->name, '');
@@ -852,21 +852,25 @@ form {
                 @endphp
 
                 @if($field->field_type == 'text')
-                <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}"
-                    style="width: 100%; font-size: 17px;">
+                <div class="row-12">
+                    <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}"
+                        style="width: 100%;">
+                </div>
 
                 @elseif($field->field_type == 'select')
                 @php
                 $options = json_decode($field->options, true) ?? [];
                 $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
-                <select class="form-control" name="{{ $field->name }}" style="width: 100%; font-size: 17px;" >
-                    @foreach($options as $option)
-                    <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
-                        {{ $option }}
-                    </option>
-                    @endforeach
-                </select>
+                <div class="row-12">
+                    <select class="form-control" name="{{ $field->name }}" style="width: 100%;">
+                        @foreach($options as $option)
+                        <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
+                            {{ $option }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
 
                 @elseif($field->field_type == 'checkbox')
                 @php
@@ -874,13 +878,13 @@ form {
                 $checkedValues = is_array($storedValue) ? $storedValue :
                 (is_string($storedValue) ? [$storedValue] : []);
                 @endphp
-                <div class="checkbox-group" style="width: 100%; font-size: 17px;">
+                <div class="row-12 checkbox-group" style="width: 100%;">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
                             value="{{ $option }}" {{ in_array($option, $checkedValues) ? 'checked' : '' }}
                             style="width: auto;">
-                        <label style="margin-bottom: 5px; font-size: 17px;  text-align: left; color: #020364;">{{ $option }}</label>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
                 </div>
@@ -890,12 +894,12 @@ form {
                 $options = json_decode($field->options, true) ?? [];
                 $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
                 @endphp
-                <div class="radio-group" style="width: 100%; font-size: 17px;">
+                <div class="row-12 radio-group" style="width: 100%;">
                     @foreach($options as $option)
                     <div class="form-check" style="display: inline-block; margin-right: 15px;">
                         <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
                             {{ $selectedRadio == $option ? 'checked' : '' }} style="width: auto;">
-                        <label style="margin-bottom: 5px; text-align: left; color: #020364; font-size: 17px;">{{ $option }}</label>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
                     </div>
                     @endforeach
                 </div>
