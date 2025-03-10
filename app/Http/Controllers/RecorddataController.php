@@ -836,9 +836,16 @@ public function edit_general_information(Request $request, $recorddata_id, $chec
         'zone2_eye' => ['value' => $healthZone2->zone2_eye ?? 0, 'label' => 'ตา'],
     ];
 
+    $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();
+    $customFieldGeneralValues = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)->get();
+
+    $customFieldGeneralValuesMap = $customFieldGeneralValues->mapWithKeys(function ($fieldData) {
+        return [$fieldData->custom_field_general_id => $fieldData->value];
+    })->toArray();
+
     // ส่งข้อมูลไปยังหน้า view
     return view('admin.editrecord_general_information', compact(
-        'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'recorddata_id' ,
+        'recorddata', 'healthRecord', 'healthZone', 'healthZone2', 'recorddata_id' , 'customFieldsGeneral' , 'customFieldGeneralValuesMap',
         'diseases', 'lifestyles', 'elderlyInfos', 'checkup_index', 'zones', 'zones2', 'diseaseNamesFormatted'
     ));
 }

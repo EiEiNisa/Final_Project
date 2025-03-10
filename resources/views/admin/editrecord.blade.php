@@ -768,8 +768,14 @@ form {
                                             $options = json_decode($field->options, true) ?? [];
                                             $checkedValues = is_array($storedValue) ? $storedValue :
                                             (is_string($storedValue) ? [$storedValue] : []);
-                                            $displayValue = (empty($checkedValues)) ? 'ไม่มีค่า' : implode(', ',
-                                            $checkedValues);
+
+                                            // Check if any values are selected, otherwise set to 'ไม่มีค่า'
+                                            if (empty($checkedValues)) {
+                                            $displayValue = 'ไม่มีค่า';
+                                            } else {
+                                            // Join the selected checkbox values
+                                            $displayValue = implode(', ', $checkedValues);
+                                            }
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
                                                 value="{{ $displayValue }}">
@@ -778,15 +784,21 @@ form {
                                             @php
                                             $options = json_decode($field->options, true) ?? [];
                                             $selectedRadio = ($storedValue == '1') ? '1' : $displayValue;
+
+                                            // If no value selected, set to 'ไม่มีค่า'
+                                            if (empty($storedValue) || $storedValue == '0') {
+                                            $displayValue = 'ไม่มีค่า';
+                                            }
                                             @endphp
                                             <input type="text" class="form-control" name="{{ $field->name }}"
-                                                value="{{ $selectedRadio }}">
+                                                value="{{ $displayValue }}">
 
                                             @endif
                                         </div>
                                         @endforeach
                                     </div>
 
+                                    <br>
                                     <div class="row">
                                         <div class="col-12">
                                             <label for="user_name">ผู้บันทึกข้อมูล</label>
