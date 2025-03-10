@@ -29,7 +29,7 @@
         background-color: #7DA7D8;
         display: flex;
         margin: 0;
-        font-family: 'Poppins';
+        font-family: 'Sarabun';
         font-size: 14px;
     }
 
