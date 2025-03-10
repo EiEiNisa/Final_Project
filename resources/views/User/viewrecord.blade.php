@@ -656,6 +656,44 @@ form {
                                         @endif
                                     </div>
 
+                                    @foreach($customFieldsGeneral as $field)
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between align-items-center p-0 w-100 mb-1">
+                                            <h6 class="form-label fw-bold" style="color:#020364; font-size: 19px;"
+                                                for="{{ $field->name }}">
+                                                {{ $field->label }}
+                                            </h6>
+                                        </div>
+                                        <div class="col-12">
+                                            @if($field->field_type == 'text')
+                                            <input type="text" name="{{ $field->name }}" id="{{ $field->name }}"
+                                                class="form-control w-100" style="font-size: 17px; padding: 5px;">
+
+                                            @elseif($field->field_type == 'select')
+                                            <select name="{{ $field->name }}" id="{{ $field->name }}"
+                                                class="form-select w-100" style="font-size: 17px; padding: 5px;">
+                                                @foreach(json_decode($field->options, true) as $option)
+                                                <option value="{{ $option }}">{{ $option }}</option>
+                                                @endforeach
+                                            </select>
+
+                                            @elseif($field->field_type == 'checkbox' || $field->field_type == 'radio')
+                                            <div class="d-flex flex-wrap gap-3">
+                                                @foreach(json_decode($field->options, true) as $option)
+                                                <div class="form-check">
+                                                    <input type="{{ $field->field_type }}"
+                                                        name="{{ $field->name }}{{ $field->field_type == 'checkbox' ? '[]' : '' }}"
+                                                        value="{{ $option }}" class="form-check-input">
+                                                    <label
+                                                        style="font-size: 17px; font-weight: bold; color: #020364; text-align: left;">{{ $option }}</label>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @endforeach
+
                                     <div class="row">
                                         <div class="col-12">
                                             <label for="user_name">ผู้บันทึกข้อมูล</label>
