@@ -510,9 +510,17 @@ public function view($id, Request $request)
         ];
     });
 
+    $customFields = \App\Models\CustomField::all();
+    $customFieldValues = \App\Models\CustomFieldData::where('recorddata_id', $id)->get();
+
+    // Map the values from customFieldValues to a key-value format
+    $customFieldValuesMap = $customFieldValues->mapWithKeys(function ($fieldData) {
+        return [$fieldData->custom_field_id => $fieldData->value];
+    })->toArray();
+
     return view('User.viewrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', // เปลี่ยนจาก user เป็น userName
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', '$customFields', '$customFieldValuesMap',
     ));
 }
 

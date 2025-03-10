@@ -397,7 +397,7 @@ form {
             <div class="form-group1">
                 <label for="age" class="form-label">อายุ</label>
                 <input type="number" class="form-control" id="age" name="age" value="{{ old('age', $recorddata->age) }}"
-                disabled>
+                    disabled>
             </div>
 
             <script>
@@ -456,7 +456,7 @@ form {
             <div class="form-group1">
                 <label for="bmi" class="form-label">ดัชนีมวล BMI</label>
                 <input type="number" class="form-control" id="bmi" name="bmi" value="{{ old('bmi', $recorddata->bmi) }}"
-                disabled>
+                    disabled>
             </div>
 
             <div class="form-group1">
@@ -469,6 +469,74 @@ form {
                 <input type="text" class="form-control" id="idline" name="idline"
                     value="{{ old('idline', $recorddata->idline) }}" disabled>
             </div>
+
+            @foreach($customFields as $field)
+            <div class="form-group1">
+                <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $field->label }}</label>
+
+                @php
+                // ดึงค่าจาก customFieldValuesMap หรือ old() (กรณีมีการ submit แล้ว validation ไม่ผ่าน)
+                $storedValue = $customFieldValuesMap[$field->id] ?? old($field->name, '');
+
+                // ตรวจสอบว่าเป็น JSON string หรือไม่ ถ้าใช่ให้แปลงเป็น array
+                if (is_string($storedValue) && str_starts_with($storedValue, '[')) {
+                $storedValue = json_decode($storedValue, true);
+                }
+                @endphp
+
+                @if($field->field_type == 'text')
+                <input type="text" class="form-control" name="{{ $field->name }}" value="{{ $storedValue }}">
+
+                @elseif($field->field_type == 'select')
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                // ตรวจสอบว่าค่าเป็น 1 หรือมีค่าที่เลือกไว้
+                $selectedValue = ($storedValue == '1') ? '1' : $storedValue;
+                @endphp
+                <select class="form-control" name="{{ $field->name }}">
+                    @foreach($options as $option)
+                    <option value="{{ $option }}" {{ $selectedValue == $option ? 'selected' : '' }}>
+                        {{ $option }}
+                    </option>
+                    @endforeach
+                </select>
+
+                @elseif($field->field_type == 'checkbox')
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                // ตรวจสอบว่าเป็น JSON หรือไม่ แล้วแปลงให้เป็น array
+                $checkedValues = is_array($storedValue) ? $storedValue : (is_string($storedValue) ? [$storedValue] :
+                []);
+                @endphp
+                <div class="checkbox-group">
+                    @foreach($options as $option)
+                    <div class="form-check" style="display: inline-block; margin-right: 15px;">
+                        <input class="form-check-input" type="checkbox" name="{{ $field->name }}[]"
+                            value="{{ $option }}" {{ in_array($option, $checkedValues) ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
+                </div>
+
+                @elseif($field->field_type == 'radio')
+                @php
+                $options = json_decode($field->options, true) ?? [];
+                // ตรวจสอบว่าค่าเป็น 1 หรือมีค่าที่เลือกไว้
+                $selectedRadio = ($storedValue == '1') ? '1' : $storedValue;
+                @endphp
+                <div class="radio-group">
+                    @foreach($options as $option)
+                    <div class="form-check" style="display: inline-block; margin-right: 15px;">
+                        <input class="form-check-input" type="radio" name="{{ $field->name }}" value="{{ $option }}"
+                            {{ $selectedRadio == $option ? 'checked' : '' }}>
+                        <label style="margin-bottom: 5px; text-align: left; color: #020364;">{{ $option }}</label>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+            @endforeach
+
 
             <div class="form-group3">
                 <h4><strong>ข้อมูลทั่วไป</strong></h4>
