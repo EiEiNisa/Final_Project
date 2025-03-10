@@ -4,15 +4,6 @@
 <div class="container py-4">
     <h2 class="text-white text-center mb-4">Dashboard</h2>
     
-    <!-- ช่วงเวลาที่ต้องการดูข้อมูล -->
-    <div class="text-center mb-4">
-        <select id="time-period" class="form-select w-25 mx-auto my-3 rounded-pill">
-            <option value="monthly">รายเดือน</option>
-            <option value="quarterly">รายไตรมาส</option>
-            <option value="yearly">รายปี</option>
-        </select>
-    </div>
-
     <div class="row text-center my-4">
         <!-- Card 1: Total Members -->
         <div class="col-md-4 col-sm-12 mb-3">
@@ -45,6 +36,21 @@
         </div>
     </div>
     
+    <!-- ช่วงเวลา -->
+    <div class="text-center mb-4">
+        <select id="time-period" class="form-select w-25 mx-auto my-3 rounded-pill">
+            <option value="daily">รายวัน</option>
+            <option value="monthly">รายเดือน</option>
+            <option value="yearly">รายปี</option>
+            <option value="custom">ช่วงเวลา</option>
+        </select>
+        <!-- ตัวเลือกวันเริ่มต้นและวันสิ้นสุด (เฉพาะช่วงเวลา) -->
+        <div id="custom-date-range" class="d-none">
+            <input type="date" id="start-date" class="form-control my-2" />
+            <input type="date" id="end-date" class="form-control my-2" />
+        </div>
+    </div>
+
     <!-- Age Chart Section -->
     <div class="card p-3 bg-white text-dark">
         <h5 class="text-center">สมาชิกในชุมชนแยกตามอายุทั้งหมด</h5>
@@ -67,251 +73,55 @@
         <canvas id="diseaseChart" class="mt-3"></canvas>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let dashboardData = null;
     let ageChart = null;
     let diseaseChart = null;
 
-    async function fetchDashboardData(timePeriod = 'monthly') {
-        let response = await fetch(`https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`);
+    // ฟังก์ชันดึงข้อมูลจาก API ตามช่วงเวลา
+    async function fetchDashboardData(timePeriod = 'monthly', startDate = null, endDate = null) {
+        let url = `https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`;
+        
+        if (timePeriod === 'custom' && startDate && endDate) {
+            url += `&start_date=${startDate}&end_date=${endDate}`;
+        }
+
+        let response = await fetch(url);
 
         if (!response.ok) {
             alert("ไม่สามารถดึงข้อมูลได้");
             return;
         }
         let data = await response.json();
-        
         dashboardData = data;
 
-        // Update total, female, and male member counts
+        // อัปเดตข้อมูลในกราฟและการแสดงผล
+        updateDashboard(data);
+    }
+
+    // อัปเดตข้อมูลใน Dashboard
+    function updateDashboard(data) {
         document.getElementById("total-members").innerText = data.total + " คน";
         document.getElementById("female-members").innerText = data.female + " คน";
         document.getElementById("male-members").innerText = data.male + " คน";
         
-        // Create or update age chart
-        if (!ageChart) {
-            const customBackgroundPlugin = {
-                id: "customCanvasBackgroundColor",
-                beforeDraw: (chart) => {
-                    const ctx = chart.canvas.getContext("2d");
-                    ctx.save();
-                    ctx.fillStyle = "#FFFFFF"; 
-                    ctx.fillRect(0, 0, chart.width, chart.height);
-                    ctx.restore();
-                }
-            };
-
-            const ctx = document.getElementById("ageChart").getContext("2d");
-            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, "rgba(255, 165, 0, 0.7)");  // ส้ม
-            gradient.addColorStop(1, "rgba(0, 150, 136, 0.7)");  // เขียวมรกต
-
-            ageChart = new Chart(document.getElementById("ageChart"), {
-                type: "bar",
-                data: {
-                    labels: data.age_labels,
-                    datasets: [{
-                        label: "จำนวนสมาชิก",
-                        data: data.age_data,
-                        backgroundColor: gradient,
-                        borderColor: "rgba(0, 0, 0, 0.1)",
-                        borderWidth: 1,
-                        hoverBorderColor: "rgba(0, 0, 0, 0.5)",
-                        hoverBorderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    legend: {
-                        position: "bottom"
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                },
-                plugins: [customBackgroundPlugin]
-            });
-        } else {
-            ageChart.data.labels = data.age_labels;
-            ageChart.data.datasets[0].data = data.age_data;
-            ageChart.update();
-        }
-
-        // Update disease chart
+        updateAgeChart(data);
         updateDiseaseChart("all", data);
     }
 
-    function updateDiseaseChart(filter, data) {
-        let dataset = [];
-
-        if (filter === "all") {
-            dataset = [
-                {
-                    label: 'เบาหวาน',
-                    data: data.diseases['diabetes'],
-                    backgroundColor: 'rgba(255, 193, 7, 0.7)',  // สีทอง
-                    borderColor: 'rgba(255, 193, 7, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'หลอดเลือดในสมอง',
-                    data: data.diseases['cerebral_artery'],
-                    backgroundColor: 'rgba(255, 82, 82, 0.7)',  // สีแดงอ่อน
-                    borderColor: 'rgba(255, 82, 82, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ไต',
-                    data: data.diseases['kidney'],
-                    backgroundColor: 'rgba(33, 150, 243, 0.7)',  // สีน้ำเงิน
-                    borderColor: 'rgba(33, 150, 243, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ความดันโลหิตสูง',
-                    data: data.diseases['blood_pressure'],
-                    backgroundColor: 'rgba(76, 175, 80, 0.7)',  // สีเขียว
-                    borderColor: 'rgba(76, 175, 80, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'หัวใจ',
-                    data: data.diseases['heart'],
-                    backgroundColor: 'rgba(156, 39, 176, 0.7)',  // สีม่วง
-                    borderColor: 'rgba(156, 39, 176, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ตา',
-                    data: data.diseases['eye'],
-                    backgroundColor: 'rgba(255, 87, 34, 0.7)',  // สีส้ม
-                    borderColor: 'rgba(255, 87, 34, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'อื่นๆ',
-                    data: data.diseases['other'],
-                    backgroundColor: 'rgba(233, 30, 99, 0.7)',  // สีชมพู
-                    borderColor: 'rgba(233, 30, 99, 1)',
-                    borderWidth: 1
-                }
-            ];
-        } else {
-            if (data.diseases[filter]) {
-                dataset = [
-                    {
-                        label: data.disease_labels[filter],
-                        data: data.diseases[filter],
-                        backgroundColor: 'rgba(255, 193, 7, 0.7)',  // สีทอง
-                        borderColor: 'rgba(255, 193, 7, 1)',
-                        borderWidth: 1
-                    }
-                ];
-            }
-        }
-
-        // Create or update disease chart
-        if (!diseaseChart) {
-            diseaseChart = new Chart(document.getElementById("diseaseChart"), {
-                type: "bar",
-                data: {
-                    labels: data.months,
-                    datasets: dataset
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    legend: {
-                        position: "bottom"
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } else {
-            diseaseChart.data.labels = data.months;
-            diseaseChart.data.datasets = dataset;
-            diseaseChart.update();
-        }
-    }
-
-    document.getElementById("disease-filter").addEventListener("change", function() {
-        let selectedFilter = this.value;
-        if (dashboardData) {
-            updateDiseaseChart(selectedFilter, dashboardData);
-        }
-    });
-
-    document.getElementById("time-period").addEventListener("change", function() {
-        let selectedPeriod = this.value;
-        fetchDashboardData(selectedPeriod);
-    });
-
-    // ฟังก์ชันดึงข้อมูลจาก API ตามช่วงเวลา
-    async function fetchDashboardData(timePeriod = 'monthly') {
-        let response = await fetch(`https://thungsetthivhv.pcnone.com/dashboard/data?time_period=${timePeriod}`);
-
-        if (!response.ok) {
-            alert("ไม่สามารถดึงข้อมูลได้");
-            return;
-        }
-
-        let data = await response.json();
-        dashboardData = data;
-
-        // อัปเดตข้อมูลใน Card
-        document.getElementById("total-members").innerText = data.total + " คน";
-        document.getElementById("female-members").innerText = data.female + " คน";
-        document.getElementById("male-members").innerText = data.male + " คน";
-
-        // อัปเดตกราฟอายุ
+    // อัปเดตกราฟอายุ
+    function updateAgeChart(data) {
         if (!ageChart) {
-            const customBackgroundPlugin = {
-                id: "customCanvasBackgroundColor",
-                beforeDraw: (chart) => {
-                    const ctx = chart.canvas.getContext("2d");
-                    ctx.save();
-                    ctx.fillStyle = "#FFFFFF"; 
-                    ctx.fillRect(0, 0, chart.width, chart.height);
-                    ctx.restore();
-                }
-            };
-
             const ctx = document.getElementById("ageChart").getContext("2d");
-            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, "rgba(255, 165, 0, 0.7)");
-            gradient.addColorStop(1, "rgba(0, 150, 136, 0.7)");
-
-            ageChart = new Chart(document.getElementById("ageChart"), {
+            ageChart = new Chart(ctx, {
                 type: "bar",
                 data: {
                     labels: data.age_labels,
                     datasets: [{
                         label: "จำนวนสมาชิก",
                         data: data.age_data,
-                        backgroundColor: gradient,
+                        backgroundColor: "rgba(0, 150, 136, 0.7)",
                         borderColor: "rgba(0, 0, 0, 0.1)",
                         borderWidth: 1,
                         hoverBorderColor: "rgba(0, 0, 0, 0.5)",
@@ -322,20 +132,24 @@
                     responsive: true,
                     maintainAspectRatio: true,
                     legend: { position: "bottom" },
-                    scales: { x: { ticks: { font: { size: 12 } } }, y: { beginAtZero: true } }
-                },
-                plugins: [customBackgroundPlugin]
+                    scales: {
+                        x: {
+                            ticks: { font: { size: 12 } }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
             });
         } else {
             ageChart.data.labels = data.age_labels;
             ageChart.data.datasets[0].data = data.age_data;
             ageChart.update();
         }
-
-        // อัปเดตกราฟโรคประจำตัว
-        updateDiseaseChart("all", data);
     }
 
+    // อัปเดตกราฟโรค
     function updateDiseaseChart(filter, data) {
         let dataset = [];
 
@@ -408,12 +222,22 @@
         if (!diseaseChart) {
             diseaseChart = new Chart(document.getElementById("diseaseChart"), {
                 type: "bar",
-                data: { labels: data.months, datasets: dataset },
+                data: {
+                    labels: data.months,
+                    datasets: dataset
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
                     legend: { position: "bottom" },
-                    scales: { x: { ticks: { font: { size: 12 } } }, y: { beginAtZero: true } }
+                    scales: {
+                        x: {
+                            ticks: { font: { size: 12 } }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
             });
         } else {
@@ -423,10 +247,29 @@
         }
     }
 
+    // ฟังก์ชันสำหรับเลือกช่วงเวลา
     document.getElementById("time-period").addEventListener("change", function() {
         let selectedPeriod = this.value;
-        fetchDashboardData(selectedPeriod);
+
+        if (selectedPeriod === 'custom') {
+            document.getElementById('custom-date-range').classList.remove('d-none');
+        } else {
+            document.getElementById('custom-date-range').classList.add('d-none');
+        }
+
+        let startDate = document.getElementById('start-date').value;
+        let endDate = document.getElementById('end-date').value;
+
+        fetchDashboardData(selectedPeriod, startDate, endDate);
     });
+
+    fetchDashboardData();  // ดึงข้อมูลเริ่มต้น
 </script>
+<style>
+    /* ซ่อนตัวเลือกช่วงเวลา */
+    .d-none {
+        display: none;
+    }
+</style>
 
 @endsection
