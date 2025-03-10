@@ -214,7 +214,7 @@
         <div class="article-slides">
             @foreach($chunk as $article)
                 <div class="card">
-                  <img src="{{ asset($article->image) }}" alt="Article Image">
+        
                     <img src="{{ asset(json_decode($article->image)[0] ?? '') }}" alt="Article Image">
                     <div class="card-body">
                         <h5 class="card-title">{{ $article->title }}</h5>
