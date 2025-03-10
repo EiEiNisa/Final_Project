@@ -520,7 +520,7 @@ public function view($id, Request $request)
 
     return view('User.viewrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 
-        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', '$customFields', '$customFieldValuesMap',
+        'diseaseNames', 'lifestylesHabit','elderlyInfo', 'userName', 'customFields', 'customFieldValuesMap',
     ));
 }
 
