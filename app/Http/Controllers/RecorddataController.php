@@ -377,10 +377,18 @@ class RecorddataController
 
     //dd($customFieldValuesMap);
 
+    $customFieldsGeneral = \App\Models\CustomFieldGeneral::all();  // เพิ่มตัวแปรนี้เข้าไป
+    $customFieldValues = \App\Models\CustomFieldGeneralData::where('recorddata_id', $id)->get();  // เพิ่มตัวแปรนี้เข้าไป
+
+    // Map the values from customFieldValues to a key-value format
+    $customFieldValuesMap = $customFieldValues->mapWithKeys(function ($fieldData) {
+        return [$fieldData->custom_field_general_id => $fieldData->value];
+    })->toArray();
+
     return view('admin.editrecord', compact(
         'recorddata', 'healthRecords', 'healthZones', 'zones', 'zones2', 'diseases', 
         'diseaseNames', 'lifestylesHabit', 'elderlyInfo', 'user', 'extra_fields_recorddata', 
-        'customFields',  'customFieldValuesMap', 
+        'customFields',  'customFieldValuesMap', 'customFieldGeneralValuesMap', 'customFieldsGeneral',
     ));
 }
 
